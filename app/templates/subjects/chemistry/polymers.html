@@ -1,0 +1,2449 @@
+{% extends "base.html" %}
+
+{% block title %}
+Polymers | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — POLYMERS
+   DARK CHEMISTRY STUDY THEME
+   ========================================================= */
+
+:root {
+    --poly-bg: #070b14;
+    --poly-panel: #0d1422;
+    --poly-panel-2: #111a2b;
+    --poly-card: #0a101c;
+    --poly-border: rgba(148, 163, 184, 0.16);
+
+    --poly-text: #f8fafc;
+    --poly-muted: #94a3b8;
+
+    --poly-blue: #38bdf8;
+    --poly-blue-dark: #0284c7;
+    --poly-green: #34d399;
+    --poly-purple: #a78bfa;
+    --poly-yellow: #fbbf24;
+    --poly-red: #fb7185;
+
+    --poly-radius: 18px;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.polymers-page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 35px auto 70px;
+    color: var(--poly-text);
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 12px;
+
+    background: rgba(17, 26, 43, .85);
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.back-chemistry:hover {
+    transform: translateX(-4px);
+    border-color: rgba(56,189,248,.55);
+    background: #142033;
+    color: white;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.poly-header {
+    text-align: center;
+    padding: 35px 15px 30px;
+}
+
+.poly-header h1 {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 850;
+
+    letter-spacing: -1.5px;
+
+    color: white;
+}
+
+.poly-header h1 i {
+    color: var(--poly-blue);
+    margin-right: 8px;
+}
+
+.poly-header p {
+    max-width: 820px;
+
+    margin: 15px auto 0;
+
+    color: var(--poly-muted);
+
+    line-height: 1.8;
+    font-size: .98rem;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.poly-nav-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+
+    margin-bottom: 25px;
+
+    padding: 8px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 16px;
+
+    background: rgba(7,11,20,.90);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.poly-nav {
+    display: flex;
+    gap: 8px;
+
+    overflow-x: auto;
+
+    padding: 2px;
+
+    scrollbar-width: none;
+}
+
+.poly-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.poly-nav a {
+    flex: 0 0 auto;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid transparent;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: .84rem;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.poly-nav a:hover {
+    color: white;
+    background: #111a2b;
+    border-color: var(--poly-border);
+}
+
+/* =========================================================
+   MAIN SECTIONS
+   ========================================================= */
+
+.poly-section {
+    position: relative;
+
+    padding: 30px;
+
+    margin-bottom: 22px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: var(--poly-radius);
+
+    background: var(--poly-panel);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
+
+    scroll-margin-top: 90px;
+}
+
+.poly-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.poly-section-number {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: rgba(56,189,248,.12);
+    border: 1px solid rgba(56,189,248,.25);
+
+    color: var(--poly-blue);
+
+    font-weight: 800;
+    font-size: .95rem;
+}
+
+.poly-section h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.poly-section h3 {
+    margin-top: 28px;
+
+    color: #7dd3fc;
+
+    font-size: 1.15rem;
+}
+
+.poly-section p,
+.poly-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.poly-section li {
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   HIGHLIGHT
+   ========================================================= */
+
+.poly-highlight {
+    margin: 20px 0;
+
+    padding: 17px 19px;
+
+    border: 1px solid rgba(56,189,248,.18);
+    border-left: 4px solid var(--poly-blue);
+
+    border-radius: 12px;
+
+    background: rgba(56,189,248,.045);
+
+    color: #cbd5e1;
+
+    line-height: 1.7;
+}
+
+.poly-highlight strong {
+    color: #7dd3fc;
+}
+
+/* =========================================================
+   FORMULA
+   ========================================================= */
+
+.poly-formula {
+    margin: 18px 0;
+
+    padding: 18px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 13px;
+
+    background: #080e19;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 1.12rem;
+    font-weight: 700;
+
+    overflow-x: auto;
+}
+
+.poly-formula-note {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--poly-muted);
+
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+/* =========================================================
+   CONCEPT CARDS
+   ========================================================= */
+
+.poly-grid {
+    display: grid;
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.poly-grid.three {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.poly-grid.two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.poly-card {
+    padding: 21px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 15px;
+
+    background: var(--poly-card);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.poly-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(56,189,248,.35);
+
+    background: #0e1726;
+}
+
+.poly-card i {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--poly-blue);
+
+    font-size: 25px;
+}
+
+.poly-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+
+    font-size: 1.1rem;
+}
+
+.poly-card p {
+    margin: 0;
+
+    color: var(--poly-muted);
+
+    font-size: .91rem;
+}
+
+/* =========================================================
+   POLYMER LAB
+   ========================================================= */
+
+.poly-lab {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 16px;
+
+    background: #080e18;
+}
+
+.poly-lab-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+.poly-lab-head h3 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.25rem;
+}
+
+.poly-live {
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(52,211,153,.15);
+    border: 1px solid var(--poly-green);
+
+    color: var(--poly-green);
+
+    font-size: .72rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+/* =========================================================
+   CANVAS
+   ========================================================= */
+
+.poly-canvas-wrap {
+    position: relative;
+
+    border-radius: 12px;
+
+    background: #050810;
+
+    border: 1px solid var(--poly-border);
+
+    overflow: hidden;
+}
+
+#polymerCanvas {
+    display: block;
+
+    width: 100%;
+    height: 350px;
+}
+
+.poly-canvas-label {
+    position: absolute;
+
+    right: 10px;
+    bottom: 10px;
+
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    background: rgba(7,11,20,.8);
+
+    color: var(--poly-muted);
+
+    font-size: .7rem;
+}
+
+/* =========================================================
+   LAB CONTROLS
+   ========================================================= */
+
+.poly-controls {
+    display: grid;
+
+    grid-template-columns: repeat(3,minmax(0,1fr));
+
+    gap: 14px;
+
+    margin-top: 16px;
+
+    padding: 16px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.poly-control {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.poly-control label {
+    color: #cbd5e1;
+
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.poly-control input[type="range"] {
+    width: 100%;
+
+    height: 6px;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    border-radius: 4px;
+
+    background: #1e293b;
+}
+
+.poly-control input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: var(--poly-blue);
+
+    cursor: pointer;
+}
+
+.poly-control output {
+    color: var(--poly-blue);
+
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   LAB METRICS
+   ========================================================= */
+
+.poly-metrics {
+    display: grid;
+
+    grid-template-columns: repeat(4,minmax(0,1fr));
+
+    gap: 10px;
+
+    margin-top: 16px;
+}
+
+.poly-metric {
+    padding: 12px;
+
+    border: 1px solid var(--poly-border);
+    border-radius: 12px;
+
+    background: #0c1220;
+
+    text-align: center;
+}
+
+.poly-metric span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--poly-muted);
+
+    font-size: .7rem;
+
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+.poly-metric strong {
+    color: white;
+
+    font-size: 1.15rem;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.poly-table-wrap {
+    overflow-x: auto;
+
+    margin-top: 18px;
+
+    border: 1px solid var(--poly-border);
+
+    border-radius: 13px;
+}
+
+.poly-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.poly-table th,
+.poly-table td {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--poly-border);
+
+    text-align: left;
+
+    color: #cbd5e1;
+}
+
+.poly-table th {
+    background: #0a101c;
+
+    color: #7dd3fc;
+
+    font-weight: 700;
+}
+
+.poly-table tr:last-child td {
+    border-bottom: none;
+}
+
+.poly-table tr:hover td {
+    background: rgba(56,189,248,.035);
+}
+
+/* =========================================================
+   WORKED EXAMPLE
+   ========================================================= */
+
+.poly-example {
+    margin: 20px 0;
+
+    padding: 21px;
+
+    border: 1px solid var(--poly-border);
+
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.poly-example h4 {
+    margin-top: 0;
+
+    color: #7dd3fc;
+
+    font-size: 1.1rem;
+}
+
+.poly-step {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 15px 0;
+}
+
+.poly-step-number {
+    flex: 0 0 32px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: var(--poly-blue);
+
+    color: #06111c;
+
+    font-weight: 800;
+}
+
+.poly-step-text {
+    color: #cbd5e1;
+
+    line-height: 1.7;
+}
+
+.poly-answer {
+    margin-top: 16px;
+
+    padding: 15px 17px;
+
+    border-left: 4px solid var(--poly-green);
+
+    border-radius: 9px;
+
+    background: rgba(52,211,153,.055);
+
+    color: #cbd5e1;
+}
+
+/* =========================================================
+   POLYMERIZATION COMPARISON
+   ========================================================= */
+
+.reaction-box {
+    margin-top: 20px;
+
+    padding: 22px;
+
+    border: 1px solid var(--poly-border);
+
+    border-radius: 15px;
+
+    background: #080e18;
+}
+
+.reaction-row {
+    display: grid;
+
+    grid-template-columns: 1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.reaction-side {
+    padding: 18px;
+
+    border: 1px solid var(--poly-border);
+
+    border-radius: 13px;
+
+    background: #0a101c;
+
+    text-align: center;
+}
+
+.reaction-side h4 {
+    margin: 0 0 10px;
+
+    color: #7dd3fc;
+}
+
+.reaction-arrow {
+    color: var(--poly-blue);
+
+    font-size: 25px;
+}
+
+/* =========================================================
+   ASK AI
+   ========================================================= */
+
+.ask-ai {
+    margin-top: 30px;
+
+    padding: 32px;
+
+    border: 1px solid rgba(56,189,248,.18);
+
+    border-radius: 18px;
+
+    background: #0b1320;
+
+    text-align: center;
+}
+
+.ask-ai i {
+    margin-bottom: 12px;
+
+    color: var(--poly-blue);
+
+    font-size: 34px;
+}
+
+.ask-ai h3 {
+    margin: 0 0 10px;
+
+    color: white;
+
+    font-size: 1.5rem;
+}
+
+.ask-ai p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: #94a3b8;
+
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 19px;
+
+    border-radius: 11px;
+
+    background: #0284c7;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    transform: translateY(-2px);
+
+    background: #0369a1;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .polymers-page {
+        width: calc(100% - 20px);
+
+        margin: 15px auto 45px;
+    }
+
+    .poly-header {
+        padding: 25px 5px;
+    }
+
+    .poly-header h1 {
+        font-size: 2rem;
+
+        letter-spacing: -1px;
+    }
+
+    .poly-header p {
+        font-size: .9rem;
+    }
+
+    .back-chemistry {
+        width: 100%;
+
+        justify-content: center;
+
+        box-sizing: border-box;
+    }
+
+    .poly-section {
+        padding: 19px 16px;
+
+        border-radius: 15px;
+    }
+
+    .poly-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .poly-grid.three,
+    .poly-grid.two {
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+    }
+
+    .poly-nav-wrapper {
+        top: 0;
+
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .poly-nav a {
+        padding: 8px 12px;
+
+        font-size: .78rem;
+    }
+
+    .poly-formula {
+        padding: 15px;
+
+        font-size: .95rem;
+    }
+
+    .poly-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .poly-metrics {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+
+    .reaction-row {
+        grid-template-columns: 1fr;
+    }
+
+    .reaction-arrow {
+        transform: rotate(90deg);
+
+        justify-self: center;
+    }
+
+    .poly-table {
+        min-width: 600px;
+    }
+
+    .ask-ai {
+        padding: 24px 17px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .polymers-page {
+        width: calc(100% - 14px);
+    }
+
+    .poly-section {
+        padding: 16px 13px;
+    }
+
+    .poly-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .poly-card {
+        padding: 17px;
+    }
+
+    #polymerCanvas {
+        height: 280px;
+    }
+}
+</style>
+
+
+<div class="polymers-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="poly-header">
+
+        <h1>
+            <i class="fa-solid fa-link"></i>
+            Polymers
+        </h1>
+
+        <p>
+            A comprehensive study of polymers, monomers, polymerisation,
+            addition and condensation reactions, and common synthetic polymers.
+            Includes structural calculations and an interactive polymerisation laboratory.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <div class="poly-nav-wrapper">
+
+        <nav class="poly-nav">
+
+            <a href="#overview">Overview</a>
+            <a href="#monomers">Monomers</a>
+            <a href="#polymerisation">Polymerisation</a>
+            <a href="#addition">Addition</a>
+            <a href="#condensation">Condensation</a>
+            <a href="#lab">Interactive Lab</a>
+            <a href="#synthetic">Synthetic Polymers</a>
+            <a href="#calculations">Calculations</a>
+            <a href="#environment">Environment</a>
+            <a href="#exam">Exam Checklist</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         01 OVERVIEW
+         ===================================================== -->
+
+    <section class="poly-section" id="overview">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">01</div>
+
+            <div>
+                <h2>What Are Polymers?</h2>
+            </div>
+
+        </div>
+
+        <p>
+            A <strong>polymer</strong> is a very large molecule formed from
+            many smaller repeating molecules called <strong>monomers</strong>.
+            The word polymer comes from the idea of "many units".
+        </p>
+
+        <div class="poly-formula">
+
+            Monomer + Monomer + Monomer + ⋯
+            &nbsp;&rightarrow;&nbsp;
+            Polymer
+
+            <span class="poly-formula-note">
+                A polymer contains many repeating structural units.
+            </span>
+
+        </div>
+
+
+        <div class="poly-grid three">
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-circle-dot"></i>
+
+                <h3>Monomer</h3>
+
+                <p>
+                    A small molecule capable of joining with other molecules
+                    to form a polymer.
+                </p>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-link"></i>
+
+                <h3>Polymer</h3>
+
+                <p>
+                    A giant molecule containing many repeating monomer units.
+                </p>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-repeat"></i>
+
+                <h3>Repeating Unit</h3>
+
+                <p>
+                    The structural unit that repeats throughout the polymer chain.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         02 MONOMERS
+         ===================================================== -->
+
+    <section class="poly-section" id="monomers">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">02</div>
+
+            <div>
+                <h2>Monomers and Repeating Units</h2>
+            </div>
+
+        </div>
+
+        <p>
+            The identity and structure of a monomer determine the structure
+            and properties of the polymer formed from it.
+        </p>
+
+
+        <div class="poly-grid two">
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-vial"></i>
+
+                <h3>Ethene</h3>
+
+                <p>
+                    CH₂=CH₂ is an important monomer used to manufacture
+                    poly(ethene).
+                </p>
+
+                <div class="poly-formula">
+                    CH<sub>2</sub>=CH<sub>2</sub>
+                </div>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-flask"></i>
+
+                <h3>Propene</h3>
+
+                <p>
+                    CH₂=CHCH₃ can undergo addition polymerisation to form
+                    poly(propene).
+                </p>
+
+                <div class="poly-formula">
+                    CH<sub>2</sub>=CHCH<sub>3</sub>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="poly-highlight">
+
+            <strong>Key idea:</strong>
+
+            In addition polymerisation, the double bond in an alkene
+            provides the reactive site that allows monomers to join together.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         03 POLYMERISATION
+         ===================================================== -->
+
+    <section class="poly-section" id="polymerisation">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">03</div>
+
+            <div>
+                <h2>Polymerisation</h2>
+            </div>
+
+        </div>
+
+        <p>
+            <strong>Polymerisation</strong> is the chemical process in which
+            monomers join together to form a polymer.
+        </p>
+
+
+        <div class="poly-grid two">
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                <h3>Addition Polymerisation</h3>
+
+                <p>
+                    Unsaturated monomers, usually alkenes, join together
+                    without producing a small molecule as a by-product.
+                </p>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <h3>Condensation Polymerisation</h3>
+
+                <p>
+                    Monomers containing suitable functional groups join
+                    together while a small molecule such as water is eliminated.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         04 ADDITION
+         ===================================================== -->
+
+    <section class="poly-section" id="addition">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">04</div>
+
+            <div>
+                <h2>Addition Polymerisation</h2>
+            </div>
+
+        </div>
+
+        <p>
+            In addition polymerisation, many alkene molecules react together.
+            The carbon-carbon double bond opens and new carbon-carbon single
+            bonds connect the monomers into a long chain.
+        </p>
+
+
+        <div class="reaction-box">
+
+            <div class="reaction-row">
+
+                <div class="reaction-side">
+
+                    <h4>Monomer</h4>
+
+                    CH<sub>2</sub>=CH<sub>2</sub>
+
+                    <p>
+                        Ethene
+                    </p>
+
+                </div>
+
+
+                <div class="reaction-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+
+
+                <div class="reaction-side">
+
+                    <h4>Polymer</h4>
+
+                    [−CH<sub>2</sub>−CH<sub>2</sub>−]<sub>n</sub>
+
+                    <p>
+                        Poly(ethene)
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="poly-formula">
+
+            nCH<sub>2</sub>=CH<sub>2</sub>
+            &nbsp;&rightarrow;&nbsp;
+            [−CH<sub>2</sub>−CH<sub>2</sub>−]<sub>n</sub>
+
+            <span class="poly-formula-note">
+                The double bond opens as the polymer chain forms.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         05 CONDENSATION
+         ===================================================== -->
+
+    <section class="poly-section" id="condensation">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">05</div>
+
+            <div>
+                <h2>Condensation Polymerisation</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Condensation polymerisation involves monomers with two or more
+            reactive functional groups. When the monomers join, a small
+            molecule such as water is eliminated.
+        </p>
+
+
+        <div class="poly-highlight">
+
+            <strong>General pattern:</strong><br>
+
+            Monomer + Monomer
+            &nbsp;&rightarrow;&nbsp;
+            Larger molecule + Small molecule
+
+            <br><br>
+
+            Common small molecules released include
+            <strong>H₂O</strong> and <strong>HCl</strong>.
+
+        </div>
+
+
+        <div class="poly-grid two">
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-link"></i>
+
+                <h3>Polyesters</h3>
+
+                <p>
+                    Formed from monomers containing alcohol and carboxylic-acid
+                    functional groups.
+                </p>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-atom"></i>
+
+                <h3>Polyamides</h3>
+
+                <p>
+                    Formed using monomers capable of creating amide links
+                    between repeating units.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         06 INTERACTIVE LAB
+         ===================================================== -->
+
+    <section class="poly-section" id="lab">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">06</div>
+
+            <div>
+                <h2>Interactive Polymerisation Lab</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Build a polymer chain from individual monomers. Increase the
+            monomer count and observe how the chain length and number of
+            repeating units change.
+        </p>
+
+
+        <div class="poly-lab">
+
+            <div class="poly-lab-head">
+
+                <h3>
+                    Monomer → Polymer Chain
+                </h3>
+
+                <span class="poly-live">
+                    Simulation Active
+                </span>
+
+            </div>
+
+
+            <div class="poly-canvas-wrap">
+
+                <canvas id="polymerCanvas"></canvas>
+
+                <div class="poly-canvas-label">
+                    Polymerisation model
+                </div>
+
+            </div>
+
+
+            <div class="poly-metrics">
+
+                <div class="poly-metric">
+
+                    <span>Monomers</span>
+
+                    <strong id="monomerCount">
+                        8
+                    </strong>
+
+                </div>
+
+
+                <div class="poly-metric">
+
+                    <span>Repeating units</span>
+
+                    <strong id="unitCount">
+                        8
+                    </strong>
+
+                </div>
+
+
+                <div class="poly-metric">
+
+                    <span>Chain length</span>
+
+                    <strong id="chainLength">
+                        7
+                    </strong>
+
+                </div>
+
+
+                <div class="poly-metric">
+
+                    <span>Polymer type</span>
+
+                    <strong id="polymerType">
+                        Addition
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="poly-controls">
+
+                <div class="poly-control">
+
+                    <label>
+                        Number of monomers
+                    </label>
+
+                    <input
+                        id="monomerControl"
+                        type="range"
+                        min="2"
+                        max="18"
+                        step="1"
+                        value="8"
+                    >
+
+                    <output id="monomerValue">
+                        8
+                    </output>
+
+                </div>
+
+
+                <div class="poly-control">
+
+                    <label>
+                        Bond strength
+                    </label>
+
+                    <input
+                        id="bondControl"
+                        type="range"
+                        min="0.5"
+                        max="1.5"
+                        step="0.1"
+                        value="1"
+                    >
+
+                    <output id="bondValue">
+                        1.0×
+                    </output>
+
+                </div>
+
+
+                <div class="poly-control">
+
+                    <label>
+                        Chain motion
+                    </label>
+
+                    <input
+                        id="motionControl"
+                        type="range"
+                        min="0"
+                        max="2"
+                        step="0.1"
+                        value="0.7"
+                    >
+
+                    <output id="motionValue">
+                        0.7×
+                    </output>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         07 SYNTHETIC POLYMERS
+         ===================================================== -->
+
+    <section class="poly-section" id="synthetic">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">07</div>
+
+            <div>
+                <h2>Common Synthetic Polymers</h2>
+            </div>
+
+        </div>
+
+
+        <div class="poly-table-wrap">
+
+            <table class="poly-table">
+
+                <tr>
+                    <th>Polymer</th>
+                    <th>Monomer / Source</th>
+                    <th>Common Uses</th>
+                </tr>
+
+                <tr>
+                    <td><strong>Poly(ethene)</strong></td>
+                    <td>Ethene</td>
+                    <td>Plastic bags, containers, packaging</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Poly(propene)</strong></td>
+                    <td>Propene</td>
+                    <td>Ropes, containers, fibres</td>
+                </tr>
+
+                <tr>
+                    <td><strong>PVC</strong></td>
+                    <td>Chloroethene</td>
+                    <td>Pipes, cable insulation</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Polystyrene</strong></td>
+                    <td>Phenylethene</td>
+                    <td>Packaging and insulation</td>
+                </tr>
+
+                <tr>
+                    <td><strong>PTFE</strong></td>
+                    <td>Tetrafluoroethene</td>
+                    <td>Non-stick coatings</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         08 CALCULATIONS
+         ===================================================== -->
+
+    <section class="poly-section" id="calculations">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">08</div>
+
+            <div>
+                <h2>Polymer Calculations</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Polymer questions can involve the number of repeating units,
+            relative molecular mass, and degree of polymerisation.
+        </p>
+
+
+        <div class="poly-example">
+
+            <h4>
+                Worked Example — Degree of Polymerisation
+            </h4>
+
+            <p>
+                A polymer has an average relative molecular mass of
+                <strong>28,000</strong>. The repeating unit has a relative
+                molecular mass of <strong>28</strong>. Calculate the number
+                of repeating units.
+            </p>
+
+
+            <div class="poly-step">
+
+                <div class="poly-step-number">
+                    1
+                </div>
+
+                <div class="poly-step-text">
+
+                    Use:
+
+                    <strong>
+                        Degree of polymerisation =
+                        polymer Mr ÷ repeating-unit Mr
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="poly-step">
+
+                <div class="poly-step-number">
+                    2
+                </div>
+
+                <div class="poly-step-text">
+
+                    Substitute:
+
+                    <strong>
+                        28,000 ÷ 28
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="poly-answer">
+
+                <strong>
+                    Degree of polymerisation = 1000 repeating units
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="poly-formula">
+
+            n =
+            <span>
+                M<sub>polymer</sub> /
+                M<sub>repeat</sub>
+            </span>
+
+            <span class="poly-formula-note">
+                n represents the approximate number of repeating units.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         09 ENVIRONMENT
+         ===================================================== -->
+
+    <section class="poly-section" id="environment">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">09</div>
+
+            <div>
+                <h2>Environmental Impact of Polymers</h2>
+            </div>
+
+        </div>
+
+        <div class="poly-grid three">
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-recycle"></i>
+
+                <h3>Recycling</h3>
+
+                <p>
+                    Recycling allows some polymer materials to be processed
+                    and used again, reducing demand for new raw materials.
+                </p>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-trash-can"></i>
+
+                <h3>Waste</h3>
+
+                <p>
+                    Many synthetic polymers degrade slowly and can persist
+                    in the environment for long periods.
+                </p>
+
+            </div>
+
+
+            <div class="poly-card">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                <h3>Alternatives</h3>
+
+                <p>
+                    Biodegradable and renewable polymer materials can provide
+                    alternatives for selected applications.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10 EXAM CHECKLIST
+         ===================================================== -->
+
+    <section class="poly-section" id="exam">
+
+        <div class="poly-section-header">
+
+            <div class="poly-section-number">10</div>
+
+            <div>
+                <h2>Exam Checklist</h2>
+            </div>
+
+        </div>
+
+        <ul>
+
+            <li>
+                Know the difference between a
+                <strong>monomer</strong> and a <strong>polymer</strong>.
+            </li>
+
+            <li>
+                Know how addition polymerisation uses
+                <strong>alkene double bonds</strong>.
+            </li>
+
+            <li>
+                Be able to identify the repeating unit of a polymer.
+            </li>
+
+            <li>
+                Know the difference between
+                <strong>addition</strong> and
+                <strong>condensation</strong> polymerisation.
+            </li>
+
+            <li>
+                Know common synthetic polymers and their uses.
+            </li>
+
+            <li>
+                Be able to calculate the approximate number of repeating units.
+            </li>
+
+            <li>
+                Understand the environmental issues associated with
+                synthetic polymers.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>
+            Need help with Polymers?
+        </h3>
+
+        <p>
+            Ask Insite AI to explain polymerisation, identify repeating units,
+            solve polymer calculations, or compare synthetic polymers.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — POLYMERISATION LAB
+   RESPONSIVE PARTICLE SCALING
+   ========================================================= */
+
+const polymerCanvas =
+    document.getElementById("polymerCanvas");
+
+const polymerCtx =
+    polymerCanvas.getContext("2d");
+
+let polymerUnits = 8;
+let bondStrength = 1;
+let chainMotion = 0.7;
+
+let polymerTime = 0;
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+function resizePolymerCanvas() {
+
+    const rect =
+        polymerCanvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    polymerCanvas.width =
+        rect.width * ratio;
+
+    polymerCanvas.height =
+        rect.height * ratio;
+
+    polymerCtx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+}
+
+
+/* =========================================================
+   DRAW BACKGROUND
+   ========================================================= */
+
+function drawPolymerBackground(width, height) {
+
+    polymerCtx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    polymerCtx.strokeStyle =
+        "rgba(148,163,184,.045)";
+
+    polymerCtx.lineWidth = 1;
+
+    for (
+        let x = 0;
+        x < width;
+        x += 40
+    ) {
+
+        polymerCtx.beginPath();
+
+        polymerCtx.moveTo(x, 0);
+
+        polymerCtx.lineTo(x, height);
+
+        polymerCtx.stroke();
+    }
+
+    for (
+        let y = 0;
+        y < height;
+        y += 40
+    ) {
+
+        polymerCtx.beginPath();
+
+        polymerCtx.moveTo(0, y);
+
+        polymerCtx.lineTo(width, y);
+
+        polymerCtx.stroke();
+    }
+}
+
+
+/* =========================================================
+   DRAW BOND
+   ========================================================= */
+
+function drawBond(x1, y1, x2, y2, radius) {
+
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+
+    const distance =
+        Math.sqrt(dx * dx + dy * dy) || 1;
+
+    const nx = dx / distance;
+    const ny = dy / distance;
+
+    /*
+       Start and end the bond slightly inside
+       the monomers so it remains visible without
+       drawing through the particles.
+    */
+
+    const startX =
+        x1 + nx * radius * 0.72;
+
+    const startY =
+        y1 + ny * radius * 0.72;
+
+    const endX =
+        x2 - nx * radius * 0.72;
+
+    const endY =
+        y2 - ny * radius * 0.72;
+
+
+    polymerCtx.beginPath();
+
+    polymerCtx.moveTo(
+        startX,
+        startY
+    );
+
+    polymerCtx.lineTo(
+        endX,
+        endY
+    );
+
+    polymerCtx.strokeStyle =
+        `rgba(56,189,248,${0.45 + bondStrength * .25})`;
+
+    /*
+       Bond also scales down slightly on small screens.
+    */
+
+    polymerCtx.lineWidth =
+        Math.max(
+            1.2,
+            Math.min(
+                3 * bondStrength,
+                radius * 0.24
+            )
+        );
+
+    polymerCtx.stroke();
+}
+
+
+/* =========================================================
+   DRAW MONOMER
+   ========================================================= */
+
+function drawMonomer(x, y, index, radius) {
+
+    polymerCtx.beginPath();
+
+    polymerCtx.arc(
+        x,
+        y,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+
+    const particleColor =
+        index % 2 === 0
+            ? "#38bdf8"
+            : "#a78bfa";
+
+
+    polymerCtx.fillStyle =
+        particleColor;
+
+    /*
+       Glow scales with the particle.
+    */
+
+    polymerCtx.shadowBlur =
+        Math.max(
+            4,
+            radius * 0.9
+        );
+
+    polymerCtx.shadowColor =
+        particleColor;
+
+    polymerCtx.fill();
+
+    polymerCtx.shadowBlur = 0;
+
+
+    /*
+       Keep the label proportional.
+       Hide it when the particle becomes
+       too small to display it properly.
+    */
+
+    if (radius >= 7) {
+
+        polymerCtx.fillStyle =
+            "#06111c";
+
+        polymerCtx.font =
+            `800 ${Math.max(7, radius * 0.62)}px Arial`;
+
+        polymerCtx.textAlign =
+            "center";
+
+        polymerCtx.textBaseline =
+            "middle";
+
+        polymerCtx.fillText(
+            "M",
+            x,
+            y
+        );
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE PARTICLE SIZE
+   ========================================================= */
+
+function getPolymerRadius(width) {
+
+    /*
+       The particle gets smaller when:
+
+       1. The screen becomes narrower.
+       2. More monomers are added.
+
+       This prevents mobile clustering.
+    */
+
+    const screenScale =
+        Math.min(
+            1,
+            width / 700
+        );
+
+
+    /*
+       More particles = smaller particles.
+    */
+
+    const unitScale =
+        Math.sqrt(
+            8 / Math.max(polymerUnits, 1)
+        );
+
+
+    let radius =
+        16 *
+        screenScale *
+        unitScale;
+
+
+    /*
+       Hard limits keep the particles
+       professional and readable.
+    */
+
+    radius =
+        Math.max(
+            6,
+            Math.min(
+                16,
+                radius
+            )
+        );
+
+
+    return radius;
+}
+
+
+/* =========================================================
+   DRAW CHAIN
+   ========================================================= */
+
+function drawPolymerChain() {
+
+    const rect =
+        polymerCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 350;
+
+
+    drawPolymerBackground(
+        width,
+        height
+    );
+
+
+    /*
+       Responsive radius.
+    */
+
+    const radius =
+        getPolymerRadius(width);
+
+
+    /*
+       Leave enough room for the particles.
+
+       The spacing automatically becomes
+       smaller as the number of monomers increases,
+       but NEVER becomes smaller than the
+       diameter + a small bond gap.
+    */
+
+    const minimumSpacing =
+        radius * 2 + Math.max(7, radius * 0.45);
+
+
+    const availableWidth =
+        Math.max(
+            80,
+            width - 40
+        );
+
+
+    const calculatedSpacing =
+        availableWidth /
+        Math.max(
+            polymerUnits - 1,
+            1
+        );
+
+
+    const spacing =
+        Math.max(
+            minimumSpacing,
+            Math.min(
+                65,
+                calculatedSpacing
+            )
+        );
+
+
+    /*
+       If the chain cannot fit in one row,
+       scale the spacing down while preserving
+       a minimum visible bond gap.
+    */
+
+    const finalSpacing =
+        polymerUnits > 1
+            ? Math.min(
+                spacing,
+                availableWidth /
+                (polymerUnits - 1)
+            )
+            : 0;
+
+
+    const totalWidth =
+        finalSpacing *
+        Math.max(
+            polymerUnits - 1,
+            0
+        );
+
+
+    const startX =
+        (width - totalWidth) / 2;
+
+
+    const centerY =
+        height / 2;
+
+
+    const positions = [];
+
+
+    /* =====================================================
+       PARTICLE POSITIONS
+       ===================================================== */
+
+    for (
+        let i = 0;
+        i < polymerUnits;
+        i++
+    ) {
+
+        const wave =
+            Math.sin(
+                polymerTime *
+                0.035 *
+                chainMotion +
+                i * .55
+            ) *
+            Math.min(
+                8 * chainMotion,
+                radius * 0.55
+            );
+
+
+        const x =
+            startX +
+            i * finalSpacing;
+
+
+        const y =
+            centerY +
+            wave;
+
+
+        positions.push({
+            x,
+            y
+        });
+    }
+
+
+    /* =====================================================
+       BONDS FIRST
+       ===================================================== */
+
+    for (
+        let i = 0;
+        i < positions.length - 1;
+        i++
+    ) {
+
+        drawBond(
+            positions[i].x,
+            positions[i].y,
+            positions[i + 1].x,
+            positions[i + 1].y,
+            radius
+        );
+    }
+
+
+    /* =====================================================
+       MONOMERS
+       ===================================================== */
+
+    positions.forEach(
+        (position, index) => {
+
+            drawMonomer(
+                position.x,
+                position.y,
+                index,
+                radius
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       LABEL
+       ===================================================== */
+
+    polymerCtx.fillStyle =
+        "#94a3b8";
+
+    polymerCtx.font =
+        `${Math.max(9, Math.min(12, width / 55))}px Arial`;
+
+    polymerCtx.textAlign =
+        "center";
+
+    polymerCtx.fillText(
+        "Polymer chain",
+        width / 2,
+        height - 20
+    );
+
+
+    polymerTime++;
+
+
+    requestAnimationFrame(
+        drawPolymerChain
+    );
+}
+
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+function updatePolymerMetrics() {
+
+    document.getElementById(
+        "monomerCount"
+    ).textContent =
+        polymerUnits;
+
+
+    document.getElementById(
+        "unitCount"
+    ).textContent =
+        polymerUnits;
+
+
+    document.getElementById(
+        "chainLength"
+    ).textContent =
+        Math.max(
+            polymerUnits - 1,
+            1
+        );
+
+
+    document.getElementById(
+        "polymerType"
+    ).textContent =
+        "Addition";
+}
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+document
+    .getElementById("monomerControl")
+    .addEventListener(
+        "input",
+        function () {
+
+            polymerUnits =
+                Number(this.value);
+
+            document.getElementById(
+                "monomerValue"
+            ).textContent =
+                polymerUnits;
+
+            updatePolymerMetrics();
+        }
+    );
+
+
+document
+    .getElementById("bondControl")
+    .addEventListener(
+        "input",
+        function () {
+
+            bondStrength =
+                Number(this.value);
+
+            document.getElementById(
+                "bondValue"
+            ).textContent =
+                bondStrength.toFixed(1) + "×";
+        }
+    );
+
+
+document
+    .getElementById("motionControl")
+    .addEventListener(
+        "input",
+        function () {
+
+            chainMotion =
+                Number(this.value);
+
+            document.getElementById(
+                "motionValue"
+            ).textContent =
+                chainMotion.toFixed(1) + "×";
+        }
+    );
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+window.addEventListener(
+    "resize",
+    resizePolymerCanvas
+);
+
+resizePolymerCanvas();
+
+updatePolymerMetrics();
+
+drawPolymerChain();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1856 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+Numbers & Fractions | Mathematics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================================
+   PAGE
+================================ */
+
+.numbers-page {
+    min-height: 100vh;
+    background: #0b0f19;
+    color: #f1f5f9;
+    padding-bottom: 80px;
+}
+
+
+/* ================================
+   BACK BUTTON
+================================ */
+
+.lesson-back {
+    padding: 25px 0 10px;
+}
+
+.lesson-back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    padding: 9px 15px;
+    border-radius: 10px;
+
+    transition: .25s ease;
+}
+
+.lesson-back a:hover {
+    background: rgba(255,255,255,.08);
+    color: white;
+    transform: translateX(-3px);
+}
+
+
+/* ================================
+   HERO
+================================ */
+
+.numbers-hero {
+    padding: 45px 20px;
+    text-align: center;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(13,110,253,.22),
+            rgba(111,66,193,.18)
+        );
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    margin-bottom: 35px;
+}
+
+.numbers-hero .icon {
+    width: 75px;
+    height: 75px;
+
+    margin: auto;
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #111827;
+
+    font-size: 32px;
+    color: #60a5fa;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.numbers-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.numbers-hero p {
+    max-width: 750px;
+    margin: auto;
+
+    color: #aeb8c8;
+    font-size: 1.05rem;
+}
+
+
+/* ================================
+   CONTENT NAVIGATION
+================================ */
+
+.lesson-nav {
+    position: sticky;
+    top: 90px;
+
+    background: #111827;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 16px;
+
+    padding: 20px;
+}
+
+.lesson-nav h5 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.lesson-nav a {
+    display: block;
+
+    text-decoration: none;
+
+    color: #aeb8c8;
+
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    margin-bottom: 5px;
+
+    transition: .2s;
+}
+
+.lesson-nav a:hover {
+    background: rgba(59,130,246,.15);
+    color: #60a5fa;
+}
+
+
+/* ================================
+   LESSON SECTION
+================================ */
+
+.lesson-section {
+    background: #111827;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    border-radius: 18px;
+
+    padding: clamp(22px, 4vw, 35px);
+
+    margin-bottom: 28px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.section-number {
+    min-width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    font-weight: 800;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-weight: 750;
+}
+
+
+/* ================================
+   TOPIC
+================================ */
+
+.topic {
+    padding: 20px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.topic:last-child {
+    border-bottom: none;
+}
+
+.topic h3 {
+    color: #60a5fa;
+
+    font-size: 1.3rem;
+
+    margin-bottom: 12px;
+}
+
+.topic h4 {
+    margin-top: 20px;
+    color: #e2e8f0;
+}
+
+.topic p,
+.topic li {
+    color: #c1cad8;
+    line-height: 1.75;
+}
+
+.topic ul {
+    padding-left: 25px;
+}
+
+
+/* ================================
+   EXAMPLES
+================================ */
+
+.example-box {
+    background: #0b1220;
+
+    border-left: 4px solid #3b82f6;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    border-radius: 10px;
+}
+
+.example-box strong {
+    color: #60a5fa;
+}
+
+
+/* ================================
+   TIP
+================================ */
+
+.tip-box {
+    background: rgba(245,158,11,.08);
+
+    border-left: 4px solid #f59e0b;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    border-radius: 10px;
+}
+
+.tip-box strong {
+    color: #fbbf24;
+}
+
+
+/* ================================
+   WARNING
+================================ */
+
+.warning-box {
+    background: rgba(239,68,68,.08);
+
+    border-left: 4px solid #ef4444;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    border-radius: 10px;
+}
+
+
+/* ================================
+   FORMULA
+================================ */
+
+.formula {
+    background: #020617;
+
+    padding: 18px;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    font-size: 1.15rem;
+
+    color: #93c5fd;
+
+    margin: 18px 0;
+
+    overflow-x: auto;
+}
+
+
+/* ================================
+   TABLE
+================================ */
+
+.math-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin: 20px 0;
+}
+
+.math-table th,
+.math-table td {
+    padding: 12px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    text-align: left;
+}
+
+.math-table th {
+    background: #1e293b;
+    color: #93c5fd;
+}
+
+.math-table td {
+    color: #cbd5e1;
+}
+
+
+/* ================================
+   PRACTICE
+================================ */
+
+.practice-card {
+    background: #0b1220;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 991px) {
+
+    .lesson-nav {
+        position: static;
+
+        margin-bottom: 25px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .numbers-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .numbers-hero {
+        padding: 35px 15px;
+    }
+
+    .lesson-section {
+        padding: 20px 16px;
+    }
+
+    .topic h3 {
+        font-size: 1.15rem;
+    }
+
+}
+
+</style>
+
+
+<div class="numbers-page">
+
+<div class="container">
+
+
+<!-- ================================
+     BACK BUTTON
+================================ -->
+
+<div class="lesson-back">
+
+    <a href="{{ url_for('math_page') }}">
+
+        <i class="fas fa-arrow-left"></i>
+
+        Back to Mathematics
+
+    </a>
+
+</div>
+
+
+<!-- ================================
+     HERO
+================================ -->
+
+<section class="numbers-hero">
+
+    <div class="icon">
+
+        <i class="fas fa-calculator"></i>
+
+    </div>
+
+    <h1>Numbers & Fractions</h1>
+
+    <p>
+        Build a strong mathematical foundation by learning how numbers,
+        fractions, decimals, percentages, ratios and proportions work.
+    </p>
+
+</section>
+
+
+<div class="row">
+
+
+<!-- ================================
+     CONTENT NAV
+================================ -->
+
+<div class="col-lg-3">
+
+<div class="lesson-nav">
+
+    <h5>
+        <i class="fas fa-list"></i>
+        Contents
+    </h5>
+
+    <a href="#number-systems">
+        1. Number Systems
+    </a>
+
+    <a href="#fractions">
+        2. Fractions
+    </a>
+
+    <a href="#fraction-operations">
+        3. Fraction Operations
+    </a>
+
+    <a href="#decimals">
+        4. Decimals & Percentages
+    </a>
+
+    <a href="#ratio">
+        5. Ratio & Proportion
+    </a>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     MAIN CONTENT
+================================ -->
+
+<div class="col-lg-9">
+
+
+<!-- =========================================
+     SECTION 1
+========================================= -->
+
+<section class="lesson-section" id="number-systems">
+
+<div class="section-heading">
+
+    <div class="section-number">
+        1
+    </div>
+
+    <h2>Number Systems & Properties</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Natural Numbers</h3>
+
+<p>
+Natural numbers are the positive counting numbers.
+</p>
+
+<p>
+1, 2, 3, 4, 5, 6, 7, ...
+</p>
+
+<p>
+They are commonly used when counting objects.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+If there are 12 students in a classroom, 12 is a natural number.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Whole Numbers</h3>
+
+<p>
+Whole numbers include zero together with the natural numbers.
+</p>
+
+<p>
+0, 1, 2, 3, 4, 5, ...
+</p>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Integers</h3>
+
+<p>
+Integers include positive numbers, negative numbers and zero.
+</p>
+
+<div class="formula">
+
+... −5, −4, −3, −2, −1, 0, 1, 2, 3, 4, 5 ...
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Even and Odd Numbers</h3>
+
+<p>
+An even number is divisible by 2 without a remainder.
+</p>
+
+<p>
+Examples: 2, 4, 6, 8, 10, 12.
+</p>
+
+<p>
+An odd number cannot be divided by 2 exactly.
+</p>
+
+<p>
+Examples: 1, 3, 5, 7, 9, 11.
+</p>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Prime Numbers</h3>
+
+<p>
+A prime number has exactly two positive factors:
+1 and itself.
+</p>
+
+<p>
+Examples:
+2, 3, 5, 7, 11, 13, 17, 19.
+</p>
+
+<div class="tip-box">
+
+<strong>Important:</strong>
+
+<p>
+2 is the only even prime number.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Factors</h3>
+
+<p>
+A factor is a number that divides another number exactly.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+The factors of 18 are:
+</p>
+
+<p>
+1, 2, 3, 6, 9 and 18.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Multiples</h3>
+
+<p>
+Multiples are numbers obtained by multiplying a number by whole numbers.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Multiples of 4:
+</p>
+
+<p>
+4, 8, 12, 16, 20, 24, ...
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Highest Common Factor</h3>
+
+<p>
+The Highest Common Factor, or HCF, is the greatest factor shared by two
+or more numbers.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Find the HCF of 12 and 18.
+</p>
+
+<p>
+Factors of 12:
+1, 2, 3, 4, 6, 12
+</p>
+
+<p>
+Factors of 18:
+1, 2, 3, 6, 9, 18
+</p>
+
+<p>
+Therefore:
+</p>
+
+<strong>HCF = 6</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Lowest Common Multiple</h3>
+
+<p>
+The Lowest Common Multiple, or LCM, is the smallest positive number
+that is a multiple of two or more numbers.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Multiples of 4:
+4, 8, 12, 16, 20
+</p>
+
+<p>
+Multiples of 6:
+6, 12, 18, 24
+</p>
+
+<strong>LCM = 12</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Order of Operations</h3>
+
+<p>
+When an expression contains several operations, use the correct order.
+</p>
+
+<div class="formula">
+
+Brackets → Orders → Division/Multiplication → Addition/Subtraction
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Calculate:
+</p>
+
+<p>
+8 + 2 × 5
+</p>
+
+<p>
+Multiplication comes first:
+</p>
+
+<p>
+2 × 5 = 10
+</p>
+
+<p>
+Therefore:
+</p>
+
+<strong>8 + 10 = 18</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 2
+========================================= -->
+
+<section class="lesson-section" id="fractions">
+
+<div class="section-heading">
+
+<div class="section-number">
+2
+</div>
+
+<h2>Fractions</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>What Is a Fraction?</h3>
+
+<p>
+A fraction represents part of a whole.
+</p>
+
+<div class="formula">
+
+a / b
+
+</div>
+
+<p>
+The top number is called the numerator.
+The bottom number is called the denominator.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+In 3/5:
+</p>
+
+<p>
+3 = numerator
+</p>
+
+<p>
+5 = denominator
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Proper Fractions</h3>
+
+<p>
+A proper fraction has a numerator smaller than its denominator.
+</p>
+
+<p>
+Examples:
+</p>
+
+<p>
+1/2, 3/5, 7/10.
+</p>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Improper Fractions</h3>
+
+<p>
+An improper fraction has a numerator greater than or equal to its denominator.
+</p>
+
+<p>
+Examples:
+</p>
+
+<p>
+5/3, 8/5, 9/9.
+</p>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Mixed Numbers</h3>
+
+<p>
+A mixed number contains a whole number and a fraction.
+</p>
+
+<p>
+Example:
+</p>
+
+<strong>2 1/3</strong>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Converting Mixed Numbers to Improper Fractions</h3>
+
+<div class="formula">
+
+Whole number × denominator + numerator
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Convert 2 1/3 into an improper fraction.
+</p>
+
+<p>
+2 × 3 = 6
+</p>
+
+<p>
+6 + 1 = 7
+</p>
+
+<strong>
+2 1/3 = 7/3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Equivalent Fractions</h3>
+
+<p>
+Equivalent fractions have different numbers but represent the same value.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+1/2 = 2/4 = 3/6 = 4/8
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Simplifying Fractions</h3>
+
+<p>
+To simplify a fraction, divide the numerator and denominator by their
+greatest common factor.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Simplify 12/18.
+</p>
+
+<p>
+The HCF of 12 and 18 is 6.
+</p>
+
+<p>
+12 ÷ 6 = 2
+</p>
+
+<p>
+18 ÷ 6 = 3
+</p>
+
+<strong>
+12/18 = 2/3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Comparing Fractions</h3>
+
+<p>
+Fractions can be compared by finding a common denominator or converting
+them into decimals.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Compare 2/3 and 3/5.
+</p>
+
+<p>
+Using a common denominator of 15:
+</p>
+
+<p>
+2/3 = 10/15
+</p>
+
+<p>
+3/5 = 9/15
+</p>
+
+<strong>
+Therefore 2/3 &gt; 3/5
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 3
+========================================= -->
+
+<section class="lesson-section" id="fraction-operations">
+
+<div class="section-heading">
+
+<div class="section-number">
+3
+</div>
+
+<h2>Operations with Fractions</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Adding Fractions with the Same Denominator</h3>
+
+<p>
+When denominators are the same, add the numerators and keep the denominator.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+2/7 + 3/7
+</p>
+
+<strong>
+= 5/7
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Subtracting Fractions</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+6/9 − 2/9
+</p>
+
+<strong>
+= 4/9
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Adding Fractions with Different Denominators</h3>
+
+<p>
+Find a common denominator before adding.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+1/2 + 1/3
+</p>
+
+<p>
+LCM of 2 and 3 = 6.
+</p>
+
+<p>
+1/2 = 3/6
+</p>
+
+<p>
+1/3 = 2/6
+</p>
+
+<p>
+Therefore:
+</p>
+
+<strong>
+3/6 + 2/6 = 5/6
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Multiplying Fractions</h3>
+
+<p>
+Multiply the numerators together and multiply the denominators together.
+</p>
+
+<div class="formula">
+
+a/b × c/d = ac/bd
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+2/3 × 4/5
+</p>
+
+<p>
+= 8/15
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Dividing Fractions</h3>
+
+<p>
+To divide fractions, multiply by the reciprocal of the second fraction.
+</p>
+
+<div class="formula">
+
+a/b ÷ c/d = a/b × d/c
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+2/3 ÷ 4/5
+</p>
+
+<p>
+= 2/3 × 5/4
+</p>
+
+<p>
+= 10/12
+</p>
+
+<strong>
+= 5/6
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Fractions of Quantities</h3>
+
+<p>
+To find a fraction of a quantity, multiply the fraction by the quantity.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Find 3/5 of 40.
+</p>
+
+<p>
+3/5 × 40
+</p>
+
+<strong>
+= 24
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Fractions in Word Problems</h3>
+
+<p>
+Fractions are frequently used in real-life situations such as sharing,
+measurements, cooking, money and distance.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+A student spends 2/5 of ₦10,000.
+How much is spent?
+</p>
+
+<p>
+2/5 × 10,000
+</p>
+
+<strong>
+= ₦4,000
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 4
+========================================= -->
+
+<section class="lesson-section" id="decimals">
+
+<div class="section-heading">
+
+<div class="section-number">
+4
+</div>
+
+<h2>Decimals, Percentages & Approximation</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Decimal Numbers</h3>
+
+<p>
+Decimals represent numbers using a decimal point.
+</p>
+
+<p>
+Examples:
+</p>
+
+<p>
+0.5, 1.25, 3.75, 10.04.
+</p>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Place Value</h3>
+
+<table class="math-table">
+
+<tr>
+<th>Value</th>
+<th>Place</th>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Ones</td>
+</tr>
+
+<tr>
+<td>0.4</td>
+<td>Tenths</td>
+</tr>
+
+<tr>
+<td>0.05</td>
+<td>Hundredths</td>
+</tr>
+
+<tr>
+<td>0.006</td>
+<td>Thousandths</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Fractions to Decimals</h3>
+
+<p>
+Divide the numerator by the denominator.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+1/4
+</p>
+
+<p>
+1 ÷ 4 = 0.25
+</p>
+
+<strong>
+1/4 = 0.25
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Decimals to Fractions</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+0.75
+</p>
+
+<p>
+75/100
+</p>
+
+<p>
+Divide by 25:
+</p>
+
+<strong>
+0.75 = 3/4
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Percentages</h3>
+
+<p>
+A percentage means "out of 100".
+</p>
+
+<div class="formula">
+
+Percentage = part / whole × 100
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+What percentage is 25 out of 100?
+</p>
+
+<p>
+25/100 × 100
+</p>
+
+<strong>
+= 25%
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Percentage Increase</h3>
+
+<div class="formula">
+
+Percentage Increase =
+Increase / Original × 100
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Percentage Decrease</h3>
+
+<div class="formula">
+
+Percentage Decrease =
+Decrease / Original × 100
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Rounding Numbers</h3>
+
+<p>
+Numbers can be rounded to a required number of decimal places.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Round 4.736 to 2 decimal places.
+</p>
+
+<p>
+The third decimal digit is 6.
+</p>
+
+<p>
+Therefore the second decimal digit increases.
+</p>
+
+<strong>
+4.74
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Significant Figures</h3>
+
+<p>
+Significant figures are used to represent the meaningful digits in a number.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+4,782 to 2 significant figures:
+</p>
+
+<strong>
+4,800
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 5
+========================================= -->
+
+<section class="lesson-section" id="ratio">
+
+<div class="section-heading">
+
+<div class="section-number">
+5
+</div>
+
+<h2>Ratio & Proportion</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>What Is a Ratio?</h3>
+
+<p>
+A ratio compares two or more quantities.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+If there are 2 boys and 3 girls:
+</p>
+
+<strong>
+Boys : Girls = 2 : 3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Simplifying Ratios</h3>
+
+<p>
+Divide all parts of a ratio by their greatest common factor.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+12 : 18
+</p>
+
+<p>
+Divide both by 6.
+</p>
+
+<strong>
+2 : 3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Sharing in a Ratio</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Share ₦5,000 in the ratio 2 : 3.
+</p>
+
+<p>
+Total parts = 2 + 3 = 5.
+</p>
+
+<p>
+One part = ₦5,000 ÷ 5 = ₦1,000.
+</p>
+
+<p>
+First share = 2 × ₦1,000 = ₦2,000.
+</p>
+
+<p>
+Second share = 3 × ₦1,000 = ₦3,000.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Direct Proportion</h3>
+
+<p>
+Two quantities are directly proportional when one increases as the other
+increases in a constant relationship.
+</p>
+
+<div class="formula">
+
+y ∝ x
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Inverse Proportion</h3>
+
+<p>
+Two quantities are inversely proportional when one increases while the
+other decreases in a corresponding relationship.
+</p>
+
+<div class="formula">
+
+y ∝ 1/x
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Ratio and Real-Life Applications</h3>
+
+<ul>
+
+<li>Recipes</li>
+
+<li>Maps</li>
+
+<li>Scale drawings</li>
+
+<li>Speed and distance</li>
+
+<li>Currency</li>
+
+<li>Sharing money</li>
+
+<li>Mixtures</li>
+
+<li>Construction</li>
+
+</ul>
+
+</div>
+
+</section>
+
+
+<!-- ================================
+     FINAL SUMMARY
+================================ -->
+
+<section class="lesson-section">
+
+<div class="section-heading">
+
+<div class="section-number">
+✓
+</div>
+
+<h2>Quick Summary</h2>
+
+</div>
+
+<ul>
+
+<li>Numbers form the foundation of Mathematics.</li>
+
+<li>Factors divide numbers exactly.</li>
+
+<li>Multiples are produced by repeated multiplication.</li>
+
+<li>Fractions represent parts of a whole.</li>
+
+<li>The numerator is above the denominator.</li>
+
+<li>Fractions can be simplified using common factors.</li>
+
+<li>Different-denominator fractions require a common denominator for addition and subtraction.</li>
+
+<li>Decimals can be converted to fractions and vice versa.</li>
+
+<li>Percentages represent quantities out of 100.</li>
+
+<li>Ratios compare quantities.</li>
+
+<li>Proportion describes relationships between quantities.</li>
+
+</ul>
+
+</section>
+
+
+<!-- ================================
+     PRACTICE
+================================ -->
+
+<section class="lesson-section">
+
+<div class="section-heading">
+
+<div class="section-number">
+?
+</div>
+
+<h2>Practice Questions</h2>
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>1.</strong>
+
+Find the HCF of 24 and 36.
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>2.</strong>
+
+Find the LCM of 8 and 12.
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>3.</strong>
+
+Simplify 18/24.
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>4.</strong>
+
+Calculate:
+
+2/3 + 1/6
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>5.</strong>
+
+Calculate:
+
+3/4 × 2/5
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>6.</strong>
+
+Convert 0.625 into a fraction.
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>7.</strong>
+
+Find 25% of ₦8,000.
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>8.</strong>
+
+Share ₦12,000 in the ratio 1 : 2 : 3.
+
+</div>
+
+
+<div class="tip-box">
+
+<strong>Need help?</strong>
+
+<p>
+If you don't understand a question, you can ask Insite AI to explain it
+step by step.
+</p>
+
+</div>
+
+</section>
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
+```

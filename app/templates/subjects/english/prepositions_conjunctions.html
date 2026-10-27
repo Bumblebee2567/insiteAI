@@ -1,0 +1,709 @@
+{% extends "base.html" %}
+
+{% block title %}
+Prepositions & Conjunctions | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENGLISH HUB: PREPOSITIONS & CONJUNCTIONS (ULTRA-DETAILED)
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: var(--eng-blue-light);
+    margin-top: 22px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.eng-section li {
+    margin-bottom: 10px;
+}
+
+.eng-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--eng-border);
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: var(--eng-cyan-light);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 30px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--eng-border);
+    background: #0a111d;
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 25px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 600px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 13px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.exam-question {
+    margin-top: 25px;
+    padding: 24px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--eng-cyan-light);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.exam-answer {
+    margin-top: 15px;
+    padding: 18px 20px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.ask-ai {
+    margin-top: 35px;
+    padding: 35px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 22px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-link"></i>
+            Prepositions & Conjunctions Masterclass
+        </h1>
+        <p>
+            An exhaustive academic masterclass covering spatial and temporal prepositions, fixed dependent prepositions, 
+            coordinating and subordinating conjunctions, correlative structures, and complex syntactic connectors tested in JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">01. Overview</a>
+        <a href="#timeplace">02. Time & Place</a>
+        <a href="#dependent">03. Dependent Prepositions</a>
+        <a href="#conjunctions">04. Conjunction Types</a>
+        <a href="#correlative">05. Correlative Pairs</a>
+        <a href="#test">06. Interactive Test</a>
+        <a href="#problems">07. Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Comprehensive Introduction to Relational Connectives</h2>
+        </div>
+        <p>
+            Language relies heavily on relational connectives to establish logical, spatial, and temporal bridges between words, phrases, and clauses. 
+            Without <strong>prepositions</strong> and <strong>conjunctions</strong>, sentences would disintegrate into isolated, disconnected fragments 
+            devoid of coherent structural relationships.
+        </p>
+        <p>
+            In West African examinations such as JAMB and WAEC, test items focusing on prepositions and conjunctions frequently exploit idiomatic 
+            collocations and fixed dependent pairings. Examiners deliberately construct trick questions where candidates are tempted to translate 
+            literal vernacular prepositions into formal English, resulting in unidiomatic structures.
+        </p>
+        <div class="eng-info">
+            <strong>Core Syntactic Principle:</strong><br>
+            A preposition invariably requires an object (a noun, pronoun, or noun phrase) in the objective case, establishing a directional or 
+            locational relationship. A conjunction, by contrast, serves to link grammatical equals (coordinating) or subordinate a dependent clause 
+            to a main clause (subordinating) without taking an object.
+        </div>
+    </section>
+
+    <!-- 02 TIME & PLACE -->
+    <section class="eng-section" id="timeplace">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Prepositions of Time and Place (At, On, In)</h2>
+        </div>
+        <p>
+            The spatial and temporal prepositions <em>at</em>, <em>on</em>, and <em>in</em> form a descending pyramid of specificity that examiners test rigorously.
+        </p>
+        <h3>Temporal Prepositions</h3>
+        <ul>
+            <li><strong>AT:</strong> Used for precise, exact clock times or specific clock hours (e.g., *at 4:00 PM, at noon, at midnight*).</li>
+            <li><strong>ON:</strong> Used for specific days, dates, and recurring calendar events (e.g., *on Monday, on October 1st, on Christmas Day*).</li>
+            <li><strong>IN:</strong> Used for extended periods such as months, years, centuries, decades, and seasons (e.g., *in July, in 2024, in the 21st century*).</li>
+        </ul>
+        <h3>Spatial Prepositions</h3>
+        <ul>
+            <li><strong>AT:</strong> Indicates an exact point or specific location (e.g., *at the bus stop, at the entrance*).</li>
+            <li><strong>ON:</strong> Indicates a physical surface or boundary (e.g., *on the wall, on the desk, on the floor*).</li>
+            <li><strong>IN:</strong> Indicates containment within an enclosed three-dimensional space or geographical boundary (e.g., *in the room, in Lagos, in a box*).</li>
+        </ul>
+    </section>
+
+    <!-- 03 DEPENDENT PREPOSITIONS -->
+    <section class="eng-section" id="dependent">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Fixed Dependent Prepositions (JAMB Favorites)</h2>
+        </div>
+        <p>
+            Many English verbs, adjectives, and nouns demand specific prepositions by idiomatic convention. Memorizing these fixed pairings 
+            is essential for securing high scores in lexical and structure tests.
+        </p>
+
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <thead>
+                    <tr>
+                        <th>Base Word / Expression</th>
+                        <th>Required Dependent Preposition</th>
+                        <th>Example Usage in Context</th>
+                        <th>Common Exam Trap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Accuse</td>
+                        <td><strong>of</strong></td>
+                        <td>*The suspect was accused <strong>of</strong> embezzlement.*</td>
+                        <td>Avoid *accused for*.</td>
+                    </tr>
+                    <tr>
+                        <td>Comply</td>
+                        <td><strong>with</strong></td>
+                        <td>*All citizens must comply <strong>with</strong> traffic laws.*</td>
+                        <td>Avoid *comply to*.</td>
+                    </tr>
+                    <tr>
+                        <td>Different</td>
+                        <td><strong>from</strong></td>
+                        <td>*Your perspective is different <strong>from</strong> mine.*</td>
+                        <td>Avoid *different than* in formal exams.</td>
+                    </tr>
+                    <tr>
+                        <td>Provoked / Abstain</td>
+                        <td><strong>from</strong></td>
+                        <td>*Candidates must abstain <strong>from</strong> exam malpractice.*</td>
+                        <td>Avoid *abstain in*.</td>
+                    </tr>
+                    <tr>
+                        <td>Superior / Inferior</td>
+                        <td><strong>to</strong></td>
+                        <td>*This imported fabric is superior <strong>to</strong> local variants.*</td>
+                        <td>Avoid *superior than*.</td>
+                    </tr>
+                    <tr>
+                        <td>Consist</td>
+                        <td><strong>of</strong> (or <strong>in</strong>)</td>
+                        <td>*Matter consists <strong>of</strong> atoms.* / *Success consists <strong>in</strong> hard work.*</td>
+                        <td>Context determines 'of' vs 'in'.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 04 CONJUNCTION TYPES -->
+    <section class="eng-section" id="conjunctions">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Coordinating & Subordinating Conjunctions</h2>
+        </div>
+        <p>
+            Conjunctions are divided into categories based on the structural weight of the clauses they connect.
+        </p>
+        <h3>Coordinating Conjunctions (FANBOYS)</h3>
+        <p>
+            Coordinating conjunctions connect words, phrases, or independent clauses of equal grammatical rank. They are easily memorized via the acronym 
+            <strong>FANBOYS</strong>: *For, And, Nor, But, Or, Yet, So*.
+        </p>
+        <h3>Subordinating Conjunctions</h3>
+        <p>
+            Subordinating conjunctions introduce dependent (subordinate) clauses, binding them to a main independent clause while establishing a logical 
+            relationship of time, cause, condition, or concession (e.g., *although, because, unless, whereas, provided that, since, while*).
+        </p>
+    </section>
+
+    <!-- 05 CORRELATIVE PAIRS -->
+    <section class="eng-section" id="correlative">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Correlative Conjunctions & Parallelism</h2>
+        </div>
+        <p>
+            Correlative conjunctions operate in paired sets to join grammatically equivalent sentence elements (*either...or, neither...nor, 
+            not only...but also, both...and, whether...or*).
+        </p>
+        <div class="eng-info">
+            <strong>The Parallelism Rule:</strong><br>
+            When using correlative conjunctions, the grammatical structure following the first word must strictly parallel the structure following the second word.<br>
+            ❌ *Incorrect:* He not only <strong>passed the examination</strong>, but <strong>also won a scholarship</strong>. (Mixed verb phrases vs clauses).<br>
+            ✔️ *Correct:* He <strong>not only passed</strong> the examination <strong>but also won</strong> a scholarship.
+        </div>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="eng-section" id="test">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Interactive Preposition Test</h2>
+        </div>
+        <p>Test your absolute mastery of dependent prepositions and fixed collocations with this advanced past-question simulator.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> JAMB Objective Test Simulator</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Choose the correct option to complete the standard English sentence:<br>
+                    <em>"The committee chairman warned the defiant members to desist _________ disrupting legislative proceedings."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer4">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">from stopping</option>
+                    <option value="correct">from</option>
+                    <option value="wrong2">against</option>
+                    <option value="wrong3">in</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng4">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Dependent Preposition Correction):</strong>
+            <p>Analyze and correct the error in this WAEC objective item: <br><em>"The accused fraudster was charged for stealing public funds before the federal high court."</em></p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution & Grammatical Breakdown:</strong><br>
+                1. <strong>Identify Idiomatic Collocation:</strong> In legal and standard English grammar, the verb "charge" when referring to criminal offenses takes the preposition <em>"with"</em>, not "for".<br>
+                2. <strong>Contrast:</strong> You are charged *with* a crime, even though you may be arrested *for* a crime.<br>
+                3. <strong>Fully Corrected Version:</strong><br>
+                <em>"The accused fraudster was charged <strong>with</strong> stealing public funds before the federal high court."</em>
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Correlative Conjunction Parallelism):</strong>
+            <p>Explain why examiners marked the following sentence as ungrammatical: <br><em>"The school principal is responsible both for student discipline as well as academic excellence."</em></p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                1. <strong>Identify Correlative Pair:</strong> The sentence uses the correlative pair <em>"both...and"</em>.<br>
+                2. <strong>Diagnose Error:</strong> The sentence incorrectly mixes "both" with "as well as" instead of its required partner "and". Furthermore, the prepositional phrase "for" is misplaced.<br>
+                3. <strong>Correction:</strong> Restructure the sentence to ensure absolute parallelism.<br>
+                4. <strong>Fully Corrected Version:</strong><br>
+                <em>"The school principal is responsible <strong>for both</strong> student discipline <strong>and</strong> academic excellence."</em>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:32px; margin-bottom:12px;"></i>
+        <h3 style="margin:0 0 10px; color:white; font-size:1.4rem;">Need further assistance with prepositions or conjunctions?</h3>
+        <p style="color:var(--eng-muted); margin:0 auto; max-width:650px; line-height:1.7;">
+            Ask Insite AI to clarify correlative structures, subordinate clause connectors, or provide targeted JAMB past questions.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — PREPOSITIONS & CONJUNCTIONS INTERACTIVE TEST SCRIPT
+   ========================================================= */
+
+const engAnswer4 = document.getElementById("engAnswer4");
+const checkEng4 = document.getElementById("checkEng4");
+const engResult4 = document.getElementById("engResult4");
+
+checkEng4.addEventListener("click", function () {
+    const val = engAnswer4.value;
+    engResult4.style.display = "block";
+
+    if (val === "correct") {
+        engResult4.className = "test-result correct";
+        engResult4.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Flawless Dependent Preposition Collocation!</div>
+            <div>In standard English, verbs like "desist" and "abstain" strictly require the dependent preposition "from" followed by a gerund. Options like "against" or "in" represent unidiomatic errors penalized in WAEC and JAMB.</div>
+        `;
+    } else if (val === "") {
+        engResult4.className = "test-result wrong";
+        engResult4.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select one of the provided options from the dropdown menu before evaluating your answer.</div>
+        `;
+    } else {
+        engResult4.className = "test-result wrong";
+        engResult4.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect. Review Dependent Prepositions.</div>
+            <div>"Desist" idiomatically collocates with the preposition <strong>from</strong>. Avoid substituting it with "against" or "in".</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

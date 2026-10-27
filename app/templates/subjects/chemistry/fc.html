@@ -1,0 +1,2868 @@
+{% extends "base.html" %}
+
+{% block title %}
+Functional Groups | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — FUNCTIONAL GROUPS
+   DARK PREMIUM CHEMISTRY THEME
+   ========================================================= */
+
+:root {
+    --fg-bg: #070b14;
+    --fg-panel: #0d1422;
+    --fg-panel-2: #111a2b;
+    --fg-card: #0a101c;
+    --fg-border: rgba(148, 163, 184, 0.16);
+
+    --fg-text: #f8fafc;
+    --fg-muted: #94a3b8;
+
+    --fg-blue: #38bdf8;
+    --fg-blue-dark: #0284c7;
+
+    --fg-green: #34d399;
+    --fg-red: #fb7185;
+    --fg-yellow: #fbbf24;
+    --fg-purple: #a78bfa;
+    --fg-orange: #fb923c;
+
+    --fg-radius: 18px;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.functional-page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 35px auto 70px;
+    color: var(--fg-text);
+    box-sizing: border-box;
+}
+
+.functional-page *,
+.functional-page *::before,
+.functional-page *::after {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--fg-border);
+    border-radius: 12px;
+
+    background: rgba(17, 26, 43, .85);
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.back-chemistry:hover {
+    transform: translateX(-4px);
+    border-color: rgba(56, 189, 248, .55);
+    background: #142033;
+    color: white;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.functional-header {
+    text-align: center;
+    padding: 35px 15px 30px;
+}
+
+.functional-header h1 {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 850;
+
+    letter-spacing: -1.5px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #7dd3fc
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.functional-header h1 i {
+    color: var(--fg-blue);
+    margin-right: 8px;
+}
+
+.functional-header p {
+    max-width: 820px;
+
+    margin: 15px auto 0;
+
+    color: var(--fg-muted);
+
+    line-height: 1.8;
+    font-size: .98rem;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.functional-nav-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+
+    margin-bottom: 25px;
+
+    padding: 8px;
+
+    border: 1px solid var(--fg-border);
+    border-radius: 16px;
+
+    background: rgba(7, 11, 20, .86);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.functional-nav {
+    display: flex;
+    gap: 8px;
+
+    overflow-x: auto;
+
+    padding: 2px;
+
+    scrollbar-width: none;
+}
+
+.functional-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.functional-nav a {
+    flex: 0 0 auto;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid transparent;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: .84rem;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.functional-nav a:hover {
+    color: white;
+    background: #111a2b;
+    border-color: var(--fg-border);
+}
+
+/* =========================================================
+   MAIN SECTIONS
+   ========================================================= */
+
+.functional-section {
+    position: relative;
+
+    padding: 30px;
+
+    margin-bottom: 22px;
+
+    border: 1px solid var(--fg-border);
+    border-radius: var(--fg-radius);
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(56, 189, 248, .055),
+            transparent 35%
+        ),
+        var(--fg-panel);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
+
+    scroll-margin-top: 90px;
+}
+
+.functional-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.functional-section-number {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: rgba(56,189,248,.12);
+    border: 1px solid rgba(56,189,248,.25);
+
+    color: var(--fg-blue);
+
+    font-weight: 800;
+    font-size: .95rem;
+}
+
+.functional-section h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.functional-section h3 {
+    margin-top: 28px;
+
+    color: #7dd3fc;
+
+    font-size: 1.15rem;
+}
+
+.functional-section p,
+.functional-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.functional-section li {
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   FUNCTIONAL GROUP CARDS
+   ========================================================= */
+
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+
+    margin-top: 22px;
+}
+
+.group-card {
+    position: relative;
+
+    padding: 22px;
+
+    border: 1px solid var(--fg-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+
+    overflow: hidden;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.group-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: var(--fg-blue);
+
+    opacity: .75;
+}
+
+.group-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(56,189,248,.35);
+
+    background: #0e1726;
+}
+
+.group-icon {
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 12px;
+
+    background: rgba(56,189,248,.10);
+
+    border: 1px solid rgba(56,189,248,.20);
+
+    color: var(--fg-blue);
+
+    font-size: 20px;
+}
+
+.group-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+
+    font-size: 1.1rem;
+}
+
+.group-card p {
+    margin: 0;
+
+    color: var(--fg-muted);
+
+    font-size: .9rem;
+
+    line-height: 1.7;
+}
+
+.group-formula {
+    margin-top: 14px;
+
+    padding: 10px;
+
+    border-radius: 9px;
+
+    background: #080e19;
+
+    border: 1px solid var(--fg-border);
+
+    color: #e0f2fe;
+
+    font-family: "Courier New", monospace;
+
+    text-align: center;
+
+    font-size: .9rem;
+}
+
+/* =========================================================
+   HIGHLIGHT
+   ========================================================= */
+
+.highlight {
+    margin: 20px 0;
+
+    padding: 17px 19px;
+
+    border: 1px solid rgba(56,189,248,.18);
+
+    border-left: 4px solid var(--fg-blue);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(56,189,248,.08),
+            rgba(56,189,248,.025)
+        );
+
+    color: #cbd5e1;
+
+    line-height: 1.7;
+}
+
+.highlight strong {
+    color: #7dd3fc;
+}
+
+/* =========================================================
+   FORMULA BOX
+   ========================================================= */
+
+.formula {
+    margin: 18px 0;
+
+    padding: 18px;
+
+    border: 1px solid var(--fg-border);
+
+    border-radius: 13px;
+
+    background: #080e19;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 1.08rem;
+
+    font-weight: 700;
+
+    overflow-x: auto;
+}
+
+.formula-note {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--fg-muted);
+
+    font-size: .8rem;
+
+    font-weight: 400;
+}
+
+/* =========================================================
+   STRUCTURE DISPLAY
+   ========================================================= */
+
+.structure-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0,1fr));
+
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.structure-card {
+    padding: 20px;
+
+    border: 1px solid var(--fg-border);
+
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.structure-label {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+.structure-label strong {
+    color: white;
+}
+
+.badge {
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    background: rgba(56,189,248,.10);
+
+    border: 1px solid rgba(56,189,248,.20);
+
+    color: #7dd3fc;
+
+    font-size: .68rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+.structure {
+    padding: 15px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--fg-border);
+
+    background: #050810;
+
+    color: #e0f2fe;
+
+    text-align: center;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 1.05rem;
+
+    overflow-x: auto;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+
+    border-radius: 13px;
+
+    border: 1px solid var(--fg-border);
+
+    margin-top: 18px;
+}
+
+.compare-table {
+    width: 100%;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    min-width: 680px;
+}
+
+.compare-table th,
+.compare-table td {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--fg-border);
+
+    text-align: left;
+
+    color: #cbd5e1;
+}
+
+.compare-table th {
+    background: #0a101c;
+
+    color: #7dd3fc;
+
+    font-weight: 700;
+}
+
+.compare-table tr:last-child td {
+    border-bottom: none;
+}
+
+.compare-table tr:hover td {
+    background: rgba(56,189,248,.035);
+}
+
+.compare-table code {
+    color: #bae6fd;
+}
+
+/* =========================================================
+   REACTION PATHWAY
+   ========================================================= */
+
+.reaction-path {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin: 24px 0;
+}
+
+.reaction-node {
+    min-width: 150px;
+
+    padding: 15px;
+
+    text-align: center;
+
+    border: 1px solid var(--fg-border);
+
+    border-radius: 12px;
+
+    background: #080e19;
+
+    color: white;
+}
+
+.reaction-node strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #7dd3fc;
+}
+
+.reaction-arrow {
+    color: var(--fg-blue);
+
+    font-size: 20px;
+}
+
+/* =========================================================
+   WORKED EXAMPLE
+   ========================================================= */
+
+.example-box {
+    margin: 20px 0;
+
+    padding: 21px;
+
+    border: 1px solid var(--fg-border);
+
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.example-title {
+    margin-bottom: 12px;
+
+    color: #7dd3fc;
+
+    font-weight: 800;
+}
+
+.step {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 15px 0;
+}
+
+.step-number {
+    flex: 0 0 32px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #38bdf8,
+        #0284c7
+    );
+
+    color: white;
+
+    font-weight: 800;
+}
+
+.step-text {
+    color: #cbd5e1;
+
+    line-height: 1.7;
+}
+
+.answer-box {
+    margin-top: 16px;
+
+    padding: 15px 17px;
+
+    border-left: 4px solid var(--fg-green);
+
+    border-radius: 9px;
+
+    background: rgba(52,211,153,.055);
+
+    color: #cbd5e1;
+}
+
+/* =========================================================
+   INTERACTIVE LAB
+   ========================================================= */
+
+.functional-lab {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--fg-border);
+
+    border-radius: 16px;
+
+    background: #080e18;
+}
+
+.lab-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 16px;
+}
+
+.lab-header h3 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.25rem;
+}
+
+.lab-status {
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    border: 1px solid var(--fg-green);
+
+    background: rgba(52,211,153,.12);
+
+    color: var(--fg-green);
+
+    font-size: .7rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+.functional-lab-canvas-wrap {
+    position: relative;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--fg-border);
+
+    background: #050810;
+
+    overflow: hidden;
+}
+
+#functionalCanvas {
+    display: block;
+
+    width: 100%;
+
+    height: 300px;
+}
+
+.canvas-caption {
+    position: absolute;
+
+    right: 10px;
+    bottom: 10px;
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: rgba(7,11,20,.82);
+
+    color: var(--fg-muted);
+
+    font-size: .68rem;
+}
+
+.lab-controls {
+    display: grid;
+
+    grid-template-columns: repeat(3,minmax(0,1fr));
+
+    gap: 14px;
+
+    margin-top: 16px;
+
+    padding: 16px;
+
+    border: 1px solid var(--fg-border);
+
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.lab-control {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.lab-control label {
+    color: #cbd5e1;
+
+    font-size: .78rem;
+
+    font-weight: 600;
+}
+
+.lab-control select {
+    width: 100%;
+
+    padding: 9px 10px;
+
+    border-radius: 8px;
+
+    border: 1px solid var(--fg-border);
+
+    background: #080e19;
+
+    color: white;
+
+    outline: none;
+}
+
+.lab-control select:focus {
+    border-color: rgba(56,189,248,.5);
+}
+
+.lab-output {
+    margin-top: 14px;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #050810;
+
+    border: 1px solid var(--fg-border);
+
+    color: #cbd5e1;
+
+    text-align: center;
+}
+
+.lab-output strong {
+    color: #7dd3fc;
+}
+
+/* =========================================================
+   QUICK IDENTIFICATION
+   ========================================================= */
+
+.identify-box {
+    display: grid;
+
+    grid-template-columns: repeat(3,minmax(0,1fr));
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.identify-item {
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #0a101c;
+
+    border: 1px solid var(--fg-border);
+
+    text-align: center;
+}
+
+.identify-item span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--fg-muted);
+
+    font-size: .72rem;
+
+    text-transform: uppercase;
+}
+
+.identify-item strong {
+    color: white;
+
+    font-family: "Courier New", monospace;
+}
+
+/* =========================================================
+   ASK INSITE AI
+   ========================================================= */
+
+.ask-ai {
+    margin-top: 30px;
+
+    padding: 32px;
+
+    border: 1px solid rgba(56,189,248,.18);
+
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(56,189,248,.12),
+            transparent 55%
+        ),
+        #0b1320;
+
+    text-align: center;
+}
+
+.ask-ai i {
+    margin-bottom: 12px;
+
+    color: #38bdf8;
+
+    font-size: 34px;
+}
+
+.ask-ai h3 {
+    color: white;
+
+    font-size: 1.5rem;
+
+    margin: 0 0 10px;
+}
+
+.ask-ai p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: #94a3b8;
+
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 19px;
+
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #38bdf8,
+        #0284c7
+    );
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(14,165,233,.25);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .group-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+
+    .lab-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .identify-box {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width: 768px) {
+
+    .functional-page {
+        width: calc(100% - 20px);
+
+        margin: 15px auto 45px;
+    }
+
+    .functional-header {
+        padding: 25px 5px;
+    }
+
+    .functional-header h1 {
+        font-size: 2rem;
+    }
+
+    .functional-header p {
+        font-size: .9rem;
+    }
+
+    .back-chemistry {
+        width: 100%;
+
+        justify-content: center;
+
+        padding: 10px;
+    }
+
+    .functional-section {
+        padding: 19px 16px;
+
+        border-radius: 15px;
+    }
+
+    .functional-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .functional-nav-wrapper {
+        top: 0;
+
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .functional-nav a {
+        padding: 8px 12px;
+
+        font-size: .78rem;
+    }
+
+    .group-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .structure-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .identify-box {
+        grid-template-columns: 1fr;
+    }
+
+    .formula {
+        padding: 15px;
+
+        font-size: .95rem;
+    }
+
+    .reaction-path {
+        flex-direction: column;
+    }
+
+    .reaction-arrow {
+        transform: rotate(90deg);
+    }
+
+    #functionalCanvas {
+        height: 250px;
+    }
+
+    .ask-ai {
+        padding: 24px 17px;
+    }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .functional-page {
+        width: calc(100% - 14px);
+    }
+
+    .functional-section {
+        padding: 16px 13px;
+    }
+
+    .functional-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .group-card {
+        padding: 17px;
+    }
+
+    .functional-section-number {
+        flex-basis: 34px;
+
+        width: 34px;
+        height: 34px;
+    }
+
+    .functional-section-header {
+        gap: 10px;
+    }
+
+    #functionalCanvas {
+        height: 220px;
+    }
+}
+</style>
+
+
+<div class="functional-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="functional-header">
+
+        <h1>
+            <i class="fa-solid fa-atom"></i>
+            Functional Groups
+        </h1>
+
+        <p>
+            Learn how specific groups of atoms control the characteristic
+            properties and reactions of organic compounds, including
+            alcohols, carboxylic acids, esters, aldehydes, ketones and amines.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <div class="functional-nav-wrapper">
+
+        <nav class="functional-nav">
+
+            <a href="#overview">Overview</a>
+
+            <a href="#alcohols">Alcohols</a>
+
+            <a href="#acids">Acids</a>
+
+            <a href="#esters">Esters</a>
+
+            <a href="#aldehydes">Aldehydes</a>
+
+            <a href="#ketones">Ketones</a>
+
+            <a href="#amines">Amines</a>
+
+            <a href="#reactions">Reactions</a>
+
+            <a href="#compare">Compare</a>
+
+            <a href="#lab">Interactive Lab</a>
+
+            <a href="#practice">Exam Checklist</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         01 OVERVIEW
+         ===================================================== -->
+
+    <section class="functional-section" id="overview">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                01
+            </div>
+
+            <div>
+                <h2>What Is a Functional Group?</h2>
+            </div>
+
+        </div>
+
+        <p>
+            A <strong>functional group</strong> is a specific arrangement of
+            atoms within an organic molecule that gives the molecule its
+            characteristic chemical behaviour. The carbon skeleton provides
+            the framework, while the functional group strongly influences
+            how the molecule reacts.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Key idea:</strong><br>
+
+            When two different organic molecules contain the same functional
+            group, they often show related chemical behaviour because that
+            group provides a common reactive site.
+            
+        </div>
+
+        <div class="group-grid">
+
+            <div class="group-card">
+
+                <div class="group-icon">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+
+                <h3>Alcohol</h3>
+
+                <p>
+                    Contains a hydroxyl group attached to carbon.
+                </p>
+
+                <div class="group-formula">
+                    R–OH
+                </div>
+
+            </div>
+
+
+            <div class="group-card">
+
+                <div class="group-icon">
+                    <i class="fa-solid fa-flask"></i>
+                </div>
+
+                <h3>Carboxylic Acid</h3>
+
+                <p>
+                    Contains a carbonyl group together with a hydroxyl group.
+                </p>
+
+                <div class="group-formula">
+                    R–COOH
+                </div>
+
+            </div>
+
+
+            <div class="group-card">
+
+                <div class="group-icon">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+
+                <h3>Ester</h3>
+
+                <p>
+                    Contains a carbonyl group bonded to an oxygen that is
+                    connected to another carbon group.
+                </p>
+
+                <div class="group-formula">
+                    R–COOR
+                </div>
+
+            </div>
+
+
+            <div class="group-card">
+
+                <div class="group-icon">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+
+                <h3>Aldehyde</h3>
+
+                <p>
+                    Contains a terminal carbonyl carbon bonded to hydrogen.
+                </p>
+
+                <div class="group-formula">
+                    R–CHO
+                </div>
+
+            </div>
+
+
+            <div class="group-card">
+
+                <div class="group-icon">
+                    <i class="fa-solid fa-circle-nodes"></i>
+                </div>
+
+                <h3>Ketone</h3>
+
+                <p>
+                    Contains a carbonyl carbon bonded to two carbon groups.
+                </p>
+
+                <div class="group-formula">
+                    R–CO–R
+                </div>
+
+            </div>
+
+
+            <div class="group-card">
+
+                <div class="group-icon">
+                    <i class="fa-solid fa-n"></i>
+                </div>
+
+                <h3>Amine</h3>
+
+                <p>
+                    Contains nitrogen bonded into a hydrocarbon framework.
+                </p>
+
+                <div class="group-formula">
+                    R–NH₂
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         02 ALCOHOLS
+         ===================================================== -->
+
+    <section class="functional-section" id="alcohols">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                02
+            </div>
+
+            <div>
+                <h2>Alcohols</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Alcohols contain the <strong>–OH hydroxyl group</strong> bonded
+            to a carbon atom. A common example is ethanol, CH₃CH₂OH.
+        </p>
+
+        <div class="structure-grid">
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>General structure</strong>
+
+                    <span class="badge">Alcohol</span>
+
+                </div>
+
+                <div class="structure">
+                    R–OH
+                </div>
+
+            </div>
+
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Example</strong>
+
+                    <span class="badge">Ethanol</span>
+
+                </div>
+
+                <div class="structure">
+                    CH₃–CH₂–OH
+                </div>
+
+            </div>
+
+        </div>
+
+        <h3>Important reactions</h3>
+
+        <div class="reaction-path">
+
+            <div class="reaction-node">
+
+                <strong>Alcohol</strong>
+
+                R–OH
+
+            </div>
+
+            <div class="reaction-arrow">
+                →
+            </div>
+
+            <div class="reaction-node">
+
+                <strong>Oxidation</strong>
+
+                Controlled oxidation
+
+            </div>
+
+            <div class="reaction-arrow">
+                →
+            </div>
+
+            <div class="reaction-node">
+
+                <strong>Carbonyl compound</strong>
+
+                Aldehyde / ketone
+
+            </div>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Remember:</strong>
+            The exact oxidation product depends on the type of alcohol
+            and the reaction conditions.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         03 CARBOXYLIC ACIDS
+         ===================================================== -->
+
+    <section class="functional-section" id="acids">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                03
+            </div>
+
+            <div>
+                <h2>Carboxylic Acids</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Carboxylic acids contain the <strong>carboxyl group,
+            –COOH</strong>. The group combines a carbonyl C=O with
+            a hydroxyl –OH group.
+        </p>
+
+        <div class="formula">
+
+            R–COOH
+
+            <span class="formula-note">
+                General structure of a carboxylic acid
+            </span>
+
+        </div>
+
+        <div class="structure-grid">
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Example</strong>
+
+                    <span class="badge">Ethanoic acid</span>
+
+                </div>
+
+                <div class="structure">
+                    CH₃–COOH
+                </div>
+
+            </div>
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Characteristic group</strong>
+
+                    <span class="badge">Carboxyl</span>
+
+                </div>
+
+                <div class="structure">
+                    –C(=O)OH
+                </div>
+
+            </div>
+
+        </div>
+
+        <h3>Reaction with an alcohol</h3>
+
+        <div class="formula">
+
+            Carboxylic acid + Alcohol
+            ⇌
+            Ester + Water
+
+        </div>
+
+        <div class="highlight">
+
+            This reaction is commonly called <strong>esterification</strong>.
+            It forms an ester and water from a carboxylic acid and an alcohol.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         04 ESTERS
+         ===================================================== -->
+
+    <section class="functional-section" id="esters">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                04
+            </div>
+
+            <div>
+                <h2>Esters</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Esters contain the functional arrangement
+            <strong>R–COOR</strong>. They can be formed when a carboxylic
+            acid reacts with an alcohol.
+        </p>
+
+        <div class="formula">
+
+            R–C(=O)–O–R′
+
+            <span class="formula-note">
+                General structure of an ester
+            </span>
+
+        </div>
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Example — Ethyl ethanoate
+            </div>
+
+            <div class="structure">
+                CH₃COOCH₂CH₃
+            </div>
+
+            <p>
+                Ethyl ethanoate is formed from ethanoic acid and ethanol.
+            </p>
+
+            <div class="formula">
+
+                CH₃COOH + CH₃CH₂OH
+                ⇌
+                CH₃COOCH₂CH₃ + H₂O
+
+            </div>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Naming clue:</strong>
+            Ester names commonly contain an alkyl part followed by an
+            <strong>–oate</strong> ending, such as ethyl ethanoate.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         05 ALDEHYDES
+         ===================================================== -->
+
+    <section class="functional-section" id="aldehydes">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                05
+            </div>
+
+            <div>
+                <h2>Aldehydes</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Aldehydes contain a carbonyl group in which the carbonyl carbon
+            is bonded to at least one hydrogen atom.
+        </p>
+
+        <div class="formula">
+
+            R–CHO
+
+            <span class="formula-note">
+                General structure of an aldehyde
+            </span>
+
+        </div>
+
+        <div class="structure-grid">
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Functional arrangement</strong>
+
+                    <span class="badge">Terminal carbonyl</span>
+
+                </div>
+
+                <div class="structure">
+                    R–C(=O)–H
+                </div>
+
+            </div>
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Example</strong>
+
+                    <span class="badge">Ethanal</span>
+
+                </div>
+
+                <div class="structure">
+                    CH₃–CHO
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="highlight">
+
+            Aldehydes are commonly identified by the
+            <strong>–CHO</strong> group and use the
+            <strong>–al</strong> naming ending.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         06 KETONES
+         ===================================================== -->
+
+    <section class="functional-section" id="ketones">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                06
+            </div>
+
+            <div>
+                <h2>Ketones</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Ketones contain a carbonyl group in which the carbonyl carbon
+            is bonded to two carbon groups.
+        </p>
+
+        <div class="formula">
+
+            R–CO–R′
+
+            <span class="formula-note">
+                General structure of a ketone
+            </span>
+
+        </div>
+
+        <div class="structure-grid">
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Functional arrangement</strong>
+
+                    <span class="badge">Internal carbonyl</span>
+
+                </div>
+
+                <div class="structure">
+                    R–C(=O)–R′
+                </div>
+
+            </div>
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Example</strong>
+
+                    <span class="badge">Propanone</span>
+
+                </div>
+
+                <div class="structure">
+                    CH₃–CO–CH₃
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Fast identification:</strong>
+            If the carbonyl carbon has carbon groups on both sides,
+            you are looking at a ketone.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         07 AMINES
+         ===================================================== -->
+
+    <section class="functional-section" id="amines">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                07
+            </div>
+
+            <div>
+                <h2>Amines</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Amines are nitrogen-containing organic compounds in which
+            nitrogen is bonded to one or more carbon-containing groups.
+            Simple amines include primary, secondary and tertiary forms.
+        </p>
+
+        <div class="structure-grid">
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Primary amine</strong>
+
+                    <span class="badge">1°</span>
+
+                </div>
+
+                <div class="structure">
+                    R–NH₂
+                </div>
+
+            </div>
+
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Secondary amine</strong>
+
+                    <span class="badge">2°</span>
+
+                </div>
+
+                <div class="structure">
+                    R–NH–R′
+                </div>
+
+            </div>
+
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Tertiary amine</strong>
+
+                    <span class="badge">3°</span>
+
+                </div>
+
+                <div class="structure">
+                    R–N(R′)–R″
+                </div>
+
+            </div>
+
+
+            <div class="structure-card">
+
+                <div class="structure-label">
+
+                    <strong>Example</strong>
+
+                    <span class="badge">Ethanamine</span>
+
+                </div>
+
+                <div class="structure">
+                    CH₃–CH₂–NH₂
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Important:</strong>
+            Amines are generally basic because the nitrogen atom has a
+            lone pair that can participate in acid-base reactions.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         08 REACTIONS
+         ===================================================== -->
+
+    <section class="functional-section" id="reactions">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                08
+            </div>
+
+            <div>
+                <h2>Functional Group Reaction Pathways</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Functional groups are useful because they allow us to predict
+            broad classes of reactions and transformations in organic chemistry.
+        </p>
+
+        <div class="reaction-path">
+
+            <div class="reaction-node">
+
+                <strong>Alcohol</strong>
+
+                R–OH
+
+            </div>
+
+            <div class="reaction-arrow">
+                →
+            </div>
+
+            <div class="reaction-node">
+
+                <strong>Aldehyde</strong>
+
+                R–CHO
+
+            </div>
+
+            <div class="reaction-arrow">
+                →
+            </div>
+
+            <div class="reaction-node">
+
+                <strong>Carboxylic acid</strong>
+
+                R–COOH
+
+            </div>
+
+        </div>
+
+        <div class="reaction-path">
+
+            <div class="reaction-node">
+
+                <strong>Carboxylic acid</strong>
+
+                R–COOH
+
+            </div>
+
+            <div class="reaction-arrow">
+                +
+            </div>
+
+            <div class="reaction-node">
+
+                <strong>Alcohol</strong>
+
+                R′–OH
+
+            </div>
+
+            <div class="reaction-arrow">
+                ⇌
+            </div>
+
+            <div class="reaction-node">
+
+                <strong>Ester</strong>
+
+                R–COOR′
+
+            </div>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Reaction map:</strong>
+            Learning the functional group often gives you the first clue
+            about which reagents, products and reaction family are involved.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         09 COMPARISON
+         ===================================================== -->
+
+    <section class="functional-section" id="compare">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                09
+            </div>
+
+            <div>
+                <h2>Functional Group Comparison</h2>
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table class="compare-table">
+
+                <tr>
+
+                    <th>Functional group</th>
+
+                    <th>General structure</th>
+
+                    <th>Example</th>
+
+                    <th>Naming clue</th>
+
+                </tr>
+
+                <tr>
+
+                    <td><strong>Alcohol</strong></td>
+
+                    <td><code>R–OH</code></td>
+
+                    <td>Ethanol</td>
+
+                    <td>–ol</td>
+
+                </tr>
+
+                <tr>
+
+                    <td><strong>Aldehyde</strong></td>
+
+                    <td><code>R–CHO</code></td>
+
+                    <td>Ethanal</td>
+
+                    <td>–al</td>
+
+                </tr>
+
+                <tr>
+
+                    <td><strong>Ketone</strong></td>
+
+                    <td><code>R–CO–R′</code></td>
+
+                    <td>Propanone</td>
+
+                    <td>–one</td>
+
+                </tr>
+
+                <tr>
+
+                    <td><strong>Carboxylic acid</strong></td>
+
+                    <td><code>R–COOH</code></td>
+
+                    <td>Ethanoic acid</td>
+
+                    <td>–oic acid</td>
+
+                </tr>
+
+                <tr>
+
+                    <td><strong>Ester</strong></td>
+
+                    <td><code>R–COOR′</code></td>
+
+                    <td>Ethyl ethanoate</td>
+
+                    <td>–oate</td>
+
+                </tr>
+
+                <tr>
+
+                    <td><strong>Amine</strong></td>
+
+                    <td><code>R–NH₂</code></td>
+
+                    <td>Ethanamine</td>
+
+                    <td>–amine</td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10 IDENTIFICATION
+         ===================================================== -->
+
+    <section class="functional-section">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                10
+            </div>
+
+            <div>
+                <h2>Quick Identification Method</h2>
+            </div>
+
+        </div>
+
+        <p>
+            When given an unfamiliar organic structure, locate the important
+            atoms and bonds first. The carbonyl group, C=O, is especially
+            useful because what is attached to the carbonyl carbon determines
+            whether the compound is an aldehyde, ketone, acid or ester.
+        </p>
+
+        <div class="identify-box">
+
+            <div class="identify-item">
+
+                <span>Look for</span>
+
+                <strong>–OH</strong>
+
+            </div>
+
+            <div class="identify-item">
+
+                <span>Look for</span>
+
+                <strong>C=O + H</strong>
+
+            </div>
+
+            <div class="identify-item">
+
+                <span>Look for</span>
+
+                <strong>C=O + C</strong>
+
+            </div>
+
+            <div class="identify-item">
+
+                <span>Look for</span>
+
+                <strong>–COOH</strong>
+
+            </div>
+
+            <div class="identify-item">
+
+                <span>Look for</span>
+
+                <strong>–COOR</strong>
+
+            </div>
+
+            <div class="identify-item">
+
+                <span>Look for</span>
+
+                <strong>–NH₂</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         11 WORKED EXAMPLE
+         ===================================================== -->
+
+    <section class="functional-section">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                11
+            </div>
+
+            <div>
+                <h2>Worked Identification Example</h2>
+            </div>
+
+        </div>
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Identify the functional group in CH₃COCH₃
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div class="step-text">
+                    Find the oxygen-containing feature.
+                </div>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div class="step-text">
+                    The molecule contains a C=O carbonyl group.
+                </div>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <div class="step-text">
+                    The carbonyl carbon is bonded to carbon groups on both
+                    sides.
+                </div>
+
+            </div>
+
+            <div class="answer-box">
+
+                <strong>Answer:</strong>
+                CH₃COCH₃ is a <strong>ketone</strong>, specifically propanone.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         12 INTERACTIVE LAB
+         ===================================================== -->
+
+    <section class="functional-section" id="lab">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                12
+            </div>
+
+            <div>
+                <h2>Interactive Functional Group Lab</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Select a functional group and inspect its general structure,
+            molecular example and characteristic naming clue.
+        </p>
+
+        <div class="functional-lab">
+
+            <div class="lab-header">
+
+                <h3>Functional Group Explorer</h3>
+
+                <span class="lab-status">
+                    Interactive
+                </span>
+
+            </div>
+
+            <div class="functional-lab-canvas-wrap">
+
+                <canvas id="functionalCanvas"></canvas>
+
+                <div class="canvas-caption">
+                    Functional-group structure display
+                </div>
+
+            </div>
+
+            <div class="lab-controls">
+
+                <div class="lab-control">
+
+                    <label for="functionalSelect">
+                        Select functional group
+                    </label>
+
+                    <select id="functionalSelect">
+
+                        <option value="alcohol">
+                            Alcohol
+                        </option>
+
+                        <option value="acid">
+                            Carboxylic Acid
+                        </option>
+
+                        <option value="ester">
+                            Ester
+                        </option>
+
+                        <option value="aldehyde">
+                            Aldehyde
+                        </option>
+
+                        <option value="ketone">
+                            Ketone
+                        </option>
+
+                        <option value="amine">
+                            Amine
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="lab-control">
+
+                    <label>
+                        General structure
+                    </label>
+
+                    <output id="functionalStructure">
+                        R–OH
+                    </output>
+
+                </div>
+
+                <div class="lab-control">
+
+                    <label>
+                        Naming clue
+                    </label>
+
+                    <output id="functionalName">
+                        –ol
+                    </output>
+
+                </div>
+
+            </div>
+
+            <div class="lab-output">
+
+                Example:
+                <strong id="functionalExample">
+                    Ethanol — CH₃CH₂OH
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         13 EXAM CHECKLIST
+         ===================================================== -->
+
+    <section class="functional-section" id="practice">
+
+        <div class="functional-section-header">
+
+            <div class="functional-section-number">
+                13
+            </div>
+
+            <div>
+                <h2>Exam Checklist</h2>
+            </div>
+
+        </div>
+
+        <ul>
+
+            <li>
+                Be able to identify the functional group from a structural
+                or displayed formula.
+            </li>
+
+            <li>
+                Know the general structures of alcohols, aldehydes, ketones,
+                carboxylic acids, esters and amines.
+            </li>
+
+            <li>
+                Distinguish an aldehyde from a ketone by examining what is
+                attached to the carbonyl carbon.
+            </li>
+
+            <li>
+                Recognize that carboxylic acids contain both C=O and –OH
+                within the same functional group.
+            </li>
+
+            <li>
+                Recognize esters as compounds containing
+                <strong>R–COOR</strong>.
+            </li>
+
+            <li>
+                Know the major naming endings:
+                <strong>–ol, –al, –one, –oic acid, –oate and –amine.</strong>
+            </li>
+
+            <li>
+                Understand the basic relationship between alcohols,
+                carboxylic acids and esters.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>
+            Need help with Functional Groups?
+        </h3>
+
+        <p>
+            Ask Insite AI to identify an unknown functional group,
+            name an organic compound, explain a reaction pathway,
+            or work through an organic chemistry problem.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   INSITE AI — FUNCTIONAL GROUP EXPLORER
+   ========================================================= */
+
+const functionalCanvas =
+    document.getElementById("functionalCanvas");
+
+const functionalCtx =
+    functionalCanvas.getContext("2d");
+
+const functionalSelect =
+    document.getElementById("functionalSelect");
+
+const functionalStructure =
+    document.getElementById("functionalStructure");
+
+const functionalName =
+    document.getElementById("functionalName");
+
+const functionalExample =
+    document.getElementById("functionalExample");
+
+
+const FUNCTIONAL_GROUPS = {
+
+    alcohol: {
+        structure: "R–OH",
+        name: "–ol",
+        example: "Ethanol — CH₃CH₂OH",
+        color: "#38bdf8"
+    },
+
+    acid: {
+        structure: "R–COOH",
+        name: "–oic acid",
+        example: "Ethanoic acid — CH₃COOH",
+        color: "#fb7185"
+    },
+
+    ester: {
+        structure: "R–COOR′",
+        name: "–oate",
+        example: "Ethyl ethanoate — CH₃COOCH₂CH₃",
+        color: "#a78bfa"
+    },
+
+    aldehyde: {
+        structure: "R–CHO",
+        name: "–al",
+        example: "Ethanal — CH₃CHO",
+        color: "#34d399"
+    },
+
+    ketone: {
+        structure: "R–CO–R′",
+        name: "–one",
+        example: "Propanone — CH₃COCH₃",
+        color: "#fbbf24"
+    },
+
+    amine: {
+        structure: "R–NH₂",
+        name: "–amine",
+        example: "Ethanamine — CH₃CH₂NH₂",
+        color: "#fb923c"
+    }
+
+};
+
+
+function resizeFunctionalCanvas() {
+
+    const rect =
+        functionalCanvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    functionalCanvas.width =
+        rect.width * ratio;
+
+    functionalCanvas.height =
+        rect.height * ratio;
+
+    functionalCtx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+
+    drawFunctionalGroup();
+
+}
+
+
+function drawFunctionalGroup() {
+
+    const rect =
+        functionalCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 300;
+
+    functionalCtx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* Background */
+
+    functionalCtx.fillStyle =
+        "#050810";
+
+    functionalCtx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* Grid */
+
+    functionalCtx.strokeStyle =
+        "rgba(148,163,184,.045)";
+
+    functionalCtx.lineWidth = 1;
+
+    for (
+        let x = 0;
+        x < width;
+        x += 40
+    ) {
+
+        functionalCtx.beginPath();
+
+        functionalCtx.moveTo(x, 0);
+
+        functionalCtx.lineTo(x, height);
+
+        functionalCtx.stroke();
+
+    }
+
+
+    for (
+        let y = 0;
+        y < height;
+        y += 40
+    ) {
+
+        functionalCtx.beginPath();
+
+        functionalCtx.moveTo(0, y);
+
+        functionalCtx.lineTo(width, y);
+
+        functionalCtx.stroke();
+
+    }
+
+
+    const selected =
+        FUNCTIONAL_GROUPS[
+            functionalSelect.value
+        ];
+
+
+    const centerX =
+        width / 2;
+
+    const centerY =
+        height / 2;
+
+
+    /* Molecule nodes */
+
+    const nodes = {
+
+        alcohol: [
+            ["R", centerX - 75, centerY],
+            ["O", centerX, centerY],
+            ["H", centerX + 75, centerY]
+        ],
+
+        acid: [
+            ["R", centerX - 120, centerY],
+            ["C", centerX - 40, centerY],
+            ["O", centerX + 30, centerY - 55],
+            ["OH", centerX + 55, centerY + 55]
+        ],
+
+        ester: [
+            ["R", centerX - 125, centerY],
+            ["C", centerX - 45, centerY],
+            ["O", centerX + 25, centerY - 55],
+            ["O", centerX + 35, centerY + 55],
+            ["R′", centerX + 115, centerY + 55]
+        ],
+
+        aldehyde: [
+            ["R", centerX - 105, centerY],
+            ["C", centerX - 25, centerY],
+            ["O", centerX + 45, centerY - 55],
+            ["H", centerX + 65, centerY + 55]
+        ],
+
+        ketone: [
+            ["R", centerX - 110, centerY],
+            ["C", centerX, centerY],
+            ["O", centerX + 35, centerY - 60],
+            ["R′", centerX + 110, centerY]
+        ],
+
+        amine: [
+            ["R", centerX - 105, centerY],
+            ["N", centerX, centerY],
+            ["H", centerX + 85, centerY - 48],
+            ["H", centerX + 85, centerY + 48]
+        ]
+
+    };
+
+
+    const currentNodes =
+        nodes[functionalSelect.value];
+
+
+    /* Bonds */
+
+    functionalCtx.strokeStyle =
+        "rgba(203,213,225,.7)";
+
+    functionalCtx.lineWidth = 3;
+
+    for (
+        let i = 0;
+        i < currentNodes.length - 1;
+        i++
+    ) {
+
+        const a =
+            currentNodes[i];
+
+        const b =
+            currentNodes[i + 1];
+
+        functionalCtx.beginPath();
+
+        functionalCtx.moveTo(
+            a[1],
+            a[2]
+        );
+
+        functionalCtx.lineTo(
+            b[1],
+            b[2]
+        );
+
+        functionalCtx.stroke();
+
+    }
+
+
+    /* Nodes */
+
+    currentNodes.forEach(
+        node => {
+
+            const x = node[1];
+            const y = node[2];
+
+            functionalCtx.beginPath();
+
+            functionalCtx.arc(
+                x,
+                y,
+                25,
+                0,
+                Math.PI * 2
+            );
+
+            functionalCtx.fillStyle =
+                "#0d1422";
+
+            functionalCtx.fill();
+
+            functionalCtx.strokeStyle =
+                selected.color;
+
+            functionalCtx.lineWidth = 2;
+
+            functionalCtx.stroke();
+
+
+            functionalCtx.fillStyle =
+                "#f8fafc";
+
+            functionalCtx.font =
+                "700 13px Arial";
+
+            functionalCtx.textAlign =
+                "center";
+
+            functionalCtx.textBaseline =
+                "middle";
+
+            functionalCtx.fillText(
+                node[0],
+                x,
+                y
+            );
+
+        }
+    );
+
+
+    /* Title */
+
+    functionalCtx.fillStyle =
+        "#94a3b8";
+
+    functionalCtx.font =
+        "600 12px Arial";
+
+    functionalCtx.textAlign =
+        "left";
+
+    functionalCtx.fillText(
+        "Functional group structure",
+        15,
+        22
+    );
+
+}
+
+
+function updateFunctionalInfo() {
+
+    const selected =
+        FUNCTIONAL_GROUPS[
+            functionalSelect.value
+        ];
+
+    functionalStructure.textContent =
+        selected.structure;
+
+    functionalName.textContent =
+        selected.name;
+
+    functionalExample.textContent =
+        selected.example;
+
+    drawFunctionalGroup();
+
+}
+
+
+functionalSelect.addEventListener(
+    "change",
+    updateFunctionalInfo
+);
+
+
+window.addEventListener(
+    "resize",
+    resizeFunctionalCanvas
+);
+
+
+resizeFunctionalCanvas();
+
+updateFunctionalInfo();
+
+</script>
+
+{% endblock %}

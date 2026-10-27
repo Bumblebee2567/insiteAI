@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+
+{% block title %}
+Semiconductors & Electronics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-microchip"></i>
+            Semiconductors & Electronics
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering energy band theory in solids, intrinsic and extrinsic semiconductors, 
+            p-n junction diodes, forward and reverse biasing, bipolar junction transistors, and digital logic gates.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#bands">Energy Bands</a>
+        <a href="#semiconductors">Intrinsic & Extrinsic</a>
+        <a href="#pn_junction">P-N Junction</a>
+        <a href="#transistors">Transistors</a>
+        <a href="#logic">Logic Gates</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Solid-State Electronics</h2>
+        </div>
+        <p>
+            Semiconductors are crystalline materials whose electrical conductivity falls between that of good conductors (metals) and insulators (glass or rubber). 
+            The ability to precisely control and manipulate semiconductor conductivity through chemical doping forms the bedrock of modern microelectronics, 
+            enabling computers, smartphones, microprocessors, and solid-state memory.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Semiconductor behavior is governed by quantum mechanical energy bands. At absolute zero temperature, a pure semiconductor acts as a perfect insulator. 
+            As temperature rises or impurities are introduced, charge carriers (electrons and holes) become mobile, allowing electrical current to flow.
+        </div>
+    </section>
+
+    <!-- 02 ENERGY BANDS -->
+    <section class="phys-section" id="bands">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Energy Band Theory in Solids</h2>
+        </div>
+        <p>
+            When individual atoms combine to form a solid crystal lattice, interacting electron orbitals merge into continuous ranges of allowed energy states called <strong>energy bands</strong>, separated by forbidden energy gaps (band gaps).
+        </p>
+        <ul>
+            <li><strong>Valence Band:</strong> The highest range of electron energies in which electrons are bound tightly to specific atomic sites within the crystal lattice.</li>
+            <li><strong>Conduction Band:</strong> The range of higher electron energies where electrons are free to move throughout the entire crystal lattice, carrying electric current.</li>
+            <li><strong>Forbidden Energy Gap (Band Gap, E<sub>g</sub>):</strong> The energy difference between the top of the valence band and the bottom of the conduction band.<br>
+                &bull; <strong>Insulators:</strong> Large band gap (E<sub>g</sub> &gt; 5 eV), preventing thermal excitation of electrons.<br>
+                &bull; <strong>Semiconductors:</strong> Narrow band gap (E<sub>g</sub> &approx; 0.7 to 1.1 eV, such as germanium and silicon), allowing electrons to bridge the gap via thermal energy.<br>
+                &bull; <strong>Conductors:</strong> Overlapping valence and conduction bands with zero band gap.</li>
+        </ul>
+    </section>
+
+    <!-- 03 INTRINSIC & EXTRINSIC -->
+    <section class="phys-section" id="semiconductors">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Intrinsic and Extrinsic Semiconductors</h2>
+        </div>
+        <p>
+            Semiconductors are classified based on their purity and chemical composition:
+        </p>
+        <ul>
+            <li><strong>Intrinsic Semiconductors:</strong> Pure, undoped semiconductor crystals (such as pure silicon or germanium). 
+            Thermal agitation breaks covalent bonds, creating equal numbers of free conduction electrons and vacant electron sites called <strong>holes</strong> (which act as positive charge carriers).</li>
+            <li><strong>Extrinsic Semiconductors (Doping):</strong> Semiconductors intentionally contaminated with microscopic impurity atoms to drastically enhance conductivity:<br>
+                &bull; <strong>N-Type Semiconductor:</strong> Doped with pentavalent impurities (such as phosphorus or arsenic, having 5 valence electrons), 
+                providing excess free conduction electrons (majority charge carriers).<br>
+                &bull; <strong>P-Type Semiconductor:</strong> Doped with trivalent impurities (such as boron or gallium, having 3 valence electrons), 
+                creating electron deficiencies known as holes (majority charge carriers).</li>
+        </ul>
+    </section>
+
+    <!-- 04 P-N JUNCTION -->
+    <section class="phys-section" id="pn_junction">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>P-N Junction Diodes</h2>
+        </div>
+        <p>
+            A P-N junction is formed by joining a p-type semiconductor block with an n-type semiconductor block, creating a foundational electronic component called a <strong>diode</strong>.
+        </p>
+        <ul>
+            <li><strong>Depletion Region:</strong> Near the junction, free electrons from the n-side diffuse across to recombine with holes on the p-side, 
+            leaving behind uncompensated ionized donors and acceptors. This creates an internal electric field barrier that stops further net diffusion.</li>
+            <li><strong>Forward Biasing:</strong> Connecting the positive terminal of a battery to the p-side and the negative terminal to the n-side narrows the depletion region, 
+            lowering the potential barrier and allowing substantial electric current to flow easily.</li>
+            <li><strong>Reverse Biasing:</strong> Connecting the positive terminal to the n-side and the negative terminal to the p-side widten the depletion region, 
+            preventing current flow except for a tiny leakage current. Diodes thus act as electrical one-way valves (rectifiers).</li>
+        </ul>
+    </section>
+
+    <!-- 05 TRANSISTORS -->
+    <section class="phys-section" id="transistors">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Bipolar Junction Transistors (BJTs)</h2>
+        </div>
+        <p>
+            A transistor is a three-terminal semiconductor device used to amplify electrical signals or act as an electronic switch. 
+            A Bipolar Junction Transistor (BJT) consists of two p-n junctions back-to-back, categorized as either NPN or PNP configurations.
+        </p>
+        <ul>
+            <li><strong>Three Transistor Regions:</strong><br>
+                &bull; <strong>Emitter (E):</strong> Heavily doped region designed to inject a large number of charge carriers.<br>
+                &bull; <strong>Base (B):</strong> Extremely thin, lightly doped middle region that controls carrier flow.<br>
+                &bull; <strong>Collector (C):</strong> Moderately doped region designed to collect the injected charge carriers.</li>
+            <li><strong>Amplification Action:</strong> A tiny electric current entering the base terminal controls a much larger electric current flowing between the emitter and collector (I<sub>C</sub> = &beta; * I<sub>B</sub>).</li>
+        </ul>
+    </section>
+
+    <!-- 06 LOGIC GATES -->
+    <section class="phys-section" id="logic">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Digital Electronics and Logic Gates</h2>
+        </div>
+        <p>
+            Digital electronics process binary information represented by two voltage levels: HIGH (Binary 1, typically +5V) and LOW (Binary 0, typically 0V). 
+            Logic gates are electronic circuits constructed from interconnected diodes and transistors that perform fundamental Boolean logic operations.
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Logic Gate Type</th>
+                        <th>Boolean Expression</th>
+                        <th>Circuit Behavior & Truth Table Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AND Gate</strong></td>
+                        <td>Y = A &bull; B</td>
+                        <td>Output is HIGH (1) only if <strong>both</strong> input A and input B are HIGH (1). Otherwise, output is LOW (0).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OR Gate</strong></td>
+                        <td>Y = A + B</td>
+                        <td>Output is HIGH (1) if <strong>either</strong> input A or input B (or both) are HIGH (1).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NOT Gate (Inverter)</strong></td>
+                        <td>Y = A&#773; (Not A)</td>
+                        <td>Inverts the input signal. If input is HIGH (1), output is LOW (0), and vice versa.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NAND Gate</strong></td>
+                        <td>Y = (A &bull; B)&#773;</td>
+                        <td>Combination of AND and NOT. Output is LOW (0) only when both inputs are HIGH (1). Universal gate.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NOR Gate</strong></td>
+                        <td>Y = (A + B)&#773;</td>
+                        <td>Combination of OR and NOT. Output is HIGH (1) only when both inputs are LOW (0). Universal gate.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Interactive Semiconductors Test</h2>
+        </div>
+        <p>Test your conceptual understanding of doping, diodes, and digital logic gates.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> P-N Junction Diode Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    When a P-N junction diode is connected in a 
+                    <strong>forward-bias</strong> configuration (positive battery terminal connected to the p-side), what happens to the width of the depletion region?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">The depletion region narrows significantly, allowing current to flow easily</option>
+                    <option value="wrong1">The depletion region widens, preventing any current from flowing</option>
+                    <option value="wrong2">The depletion region remains completely unchanged in width</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Transistor Current Gain Calculation):</strong>
+            <p>In a common-emitter bipolar junction transistor (BJT) circuit, the base current is measured as I<sub>B</sub> = 25.0 microamperes (2.50 &times; 10<sup>-5</sup> A) 
+            and the collector current is I<sub>C</sub> = 2.50 milliamperes (2.50 &times; 10<sup>-3</sup> A). 
+            Calculate: (a) the DC current gain (&beta;), and (b) the emitter current (I<sub>E</sub>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) DC Current Gain (&beta;):</strong><br>
+                - Formula: &beta; = I<sub>C</sub> / I<sub>B</sub>.<br>
+                - Convert currents to matching units: I<sub>C</sub> = 2.50 mA = 2500 microamperes, I<sub>B</sub> = 25.0 microamperes.<br>
+                - &beta; = 2500 / 25.0 = <strong>100</strong>.<br><br>
+                <strong>(b) Emitter Current (I<sub>E</sub>):</strong><br>
+                - Kirchhoff's Current Law for transistors: I<sub>E</sub> = I<sub>C</sub> + I<sub>B</sub>.<br>
+                - I<sub>E</sub> = 2.50 mA + 0.025 mA = <strong>2.525 milliamperes</strong> (2.53 mA).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Diode Forward Voltage Drop):</strong>
+            <p>A silicon P-N junction diode has a forward voltage drop of V<sub>D</sub> = 0.70 V. 
+            It is connected in series with a resistor R = 430 ohms and a DC voltage supply of V<sub>cc</sub> = 5.0 V. 
+            Calculate the electric current flowing through the circuit.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Apply Kirchhoff's Voltage Law around the loop: V<sub>cc</sub> - V<sub>D</sub> - (I * R) = 0.<br>
+                - Voltage across the resistor: V<sub>R</sub> = V<sub>cc</sub> - V<sub>D</sub> = 5.0 V - 0.70 V = 4.30 Volts.<br>
+                - Using Ohm's Law: I = V<sub>R</sub> / R.<br>
+                - I = (4.30 V) / (430 ohms) = <strong>0.010 Amperes</strong> (10.0 milliamperes).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Intrinsic Charge Carrier Concentration):</span></strong>
+            <p>Calculate the thermal energy threshold at room temperature (T = 300 Kelvin) in electron-volts (eV). 
+            Given Boltzmann constant k<sub>B</sub> = 8.617 &times; 10<sup>-5</sup> eV/K.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Thermal energy formula: E<sub>th</sub> = k<sub>B</sub> * T.<br>
+                - Substitute values:<br>
+                E<sub>th</sub> = (8.617 &times; 10<sup>-5</sup> eV/K) &times; (300 K).<br>
+                - Multiplication: 8.617 &times; 300 = 2585.1.<br>
+                - Adjust exponent: 2585.1 &times; 10<sup>-5</sup> = 0.02585 eV &approx; <strong>0.0259 eV</strong> (approx 26 meV, governing thermal carrier generation in silicon).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with semiconductor physics or logic gate design?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down MOSFET operational characteristics, Fermi-Dirac distribution functions, or Boolean algebra Karnaugh maps.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>When a P-N junction diode is forward-biased, the external voltage opposes the internal built-in electric field, causing the depletion region to <strong>narrow significantly</strong> and allowing high current flow.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Forward biasing counteracts the internal barrier potential, causing the depletion region to <strong>narrow</strong> rather than widen.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

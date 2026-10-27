@@ -1,0 +1,624 @@
+{% extends "base.html" %}
+
+{% block title %}
+Physical Optics & Wave Interference | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-rainbow"></i>
+            Physical Optics & Wave Interference
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering wave optics, Huygens' principle, Young's double-slit interference, 
+            thin-film interference, diffraction gratings, single-slit diffraction, and electromagnetic polarization.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#huygens">Huygens' Principle</a>
+        <a href="#young">Double-Slit Interference</a>
+        <a href="#thin_film">Thin-Film Interference</a>
+        <a href="#diffraction">Diffraction Gratings</a>
+        <a href="#polarization">Polarization</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Physical Optics</h2>
+        </div>
+        <p>
+            While geometrical optics treats light as straight-line rays, <strong>physical optics</strong> (or wave optics) studies light explicitly as electromagnetic waves. 
+            Phenomena such as interference, diffraction, and polarization cannot be explained by ray optics alone; 
+            they require an understanding of how light waves overlap, superimpose, and interact with microscopic apertures and boundaries.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Light exhibits wave-particle duality. In physical optics, the wave nature of light dominates when light encounters obstacles 
+            or openings comparable in size to its wavelength.
+        </div>
+    </section>
+
+    <!-- 02 HUYGENS' PRINCIPLE -->
+    <section class="phys-section" id="huygens">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Huygens' Principle and Wave Propagation</h2>
+        </div>
+        <p>
+            Huygens' Principle is a geometrical construction method created by Christiaan Huygens to determine how a wave front propagates through space:
+        </p>
+        <ul>
+            <li><strong>Fundamental Statement:</strong> Every point on a wavefront acts as a source of secondary spherical wavelets. 
+            After a time interval, the new position of the wavefront is the envelope (tangent surface) tangent to all these secondary wavelets.</li>
+            <li><strong>Application:</strong> Huygens' principle provides a rigorous physical explanation for the laws of reflection and refraction, 
+            as well as why light bends (diffracts) around sharp edges and corners.</li>
+        </ul>
+    </section>
+
+    <!-- 03 YOUNG'S DOUBLE-SLIT INTERFERENCE -->
+    <section class="phys-section" id="young">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Young's Double-Slit Interference</h2>
+        </div>
+        <p>
+            Thomas Young's historic double-slit experiment provided undeniable proof of the wave nature of light by demonstrating that coherent light passing through two narrow slits 
+            produces an interference pattern of alternating bright and dark fringes on a viewing screen.
+        </p>
+        <ul>
+            <li><strong>Path Length Difference (Delta L):</strong> The difference in distance traveled by light waves from two slits separated by distance d meeting at an angle theta is:
+                <br><strong>Path Difference = Slit Separation &times; sine of Angle</strong> (Delta L = d &times; sin(theta)).</li>
+            <li><strong>Constructive Interference (Bright Fringes):</strong> Occurs when the path difference is an integer multiple of the wavelength:
+                <br><strong>d &times; sine(theta) = Order Number &times; Wavelength</strong> (d &times; sin(theta) = m &times; lambda, where m = 0, 1, 2, ...).</li>
+            <li><strong>Destructive Interference (Dark Fringes):</strong> Occurs when the path difference is a half-integer multiple of the wavelength:
+                <br><strong>d &times; sine(theta) = (Order Number + 0.5) &times; Wavelength</strong> (d &times; sin(theta) = (m + 0.5) &times; lambda).</li>
+        </ul>
+    </section>
+
+    <!-- 04 THIN-FILM INTERFERENCE -->
+    <section class="phys-section" id="thin_film">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Thin-Film Interference</h2>
+        </div>
+        <p>
+            The shimmering rainbow colors seen on soap bubbles and oil slicks on water are caused by thin-film interference. 
+            Light reflecting off the top and bottom boundaries of a transparent thin film interfere constructively or destructively depending on film thickness and wavelength.
+        </p>
+        <ul>
+            <li><strong>Phase Change on Reflection:</strong> When a light wave reflects from a boundary of a medium having a <em>higher</em> refractive index than the medium it is leaving, 
+            it undergoes a 180-degree phase shift (equivalent to a half-wavelength shift, lambda / 2). 
+            If reflecting from a lower refractive index medium, no phase shift occurs.</li>
+            <li><strong>Constructive Interference Condition for Thin Films (with one phase shift):</strong> 
+                <br><strong>2 &times; Refractive Index &times; Film Thickness = (Order Number + 0.5) &times; Wavelength</strong> (2 * n * t = (m + 0.5) &times; lambda).</li>
+        </ul>
+    </section>
+
+    <!-- 05 DIFFRACTION GRATINGS -->
+    <section class="phys-section" id="diffraction">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Diffraction and Diffraction Gratings</h2>
+        </div>
+        <p>
+            Diffraction is the bending of light waves around the edges of apertures or obstacles. 
+            A diffraction grating is an optical component containing thousands of closely spaced parallel slits per centimeter used to separate light into its component spectral colors with high precision.
+        </p>
+        <ul>
+            <li><strong>Grating Equation:</strong> Relates the slit spacing (d), diffraction angle (theta), order number (m), and wavelength (lambda):
+                <br><strong>Slit Spacing &times; sine(Angle) = Order Number &times; Wavelength</strong> (d &times; sin(theta) = m &times; lambda).</li>
+        </ul>
+    </section>
+
+    <!-- 06 POLARIZATION -->
+    <section class="phys-section" id="polarization">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Electromagnetic Polarization</h2>
+        </div>
+        <p>
+            Light is a transverse electromagnetic wave consisting of mutually perpendicular oscillating electric and magnetic fields. 
+            <strong>Polarization</strong> refers to the orientation of the electric field vector oscillations.
+        </p>
+        <ul>
+            <li><strong>Unpolarized Light:</strong> Light waves whose electric field vectors vibrate in all possible directions perpendicular to the direction of propagation (such as sunlight or incandescent bulbs).</li>
+            <li><strong>Polarizing Filters (Malus's Law):</strong> When unpolarized light passes through an ideal polarizing filter, its intensity is reduced by half. 
+            If polarized light of intensity I<sub>0</sub> passes through a second polarizing filter (analyzer) whose transmission axis is at an angle theta to the first, 
+            the transmitted intensity obeys <strong>Malus's Law</strong>:
+                <br><strong>Transmitted Intensity = Initial Intensity &times; cosine squared of Angle</strong> (I = I<sub>0</sub> &times; cos<sup>2</sup>(theta)).</li>
+            <li><strong>Brewster's Law:</strong> When unpolarized light strikes a reflective dielectric surface at a specific angle known as Brewster's angle (theta<sub>B</sub>), 
+            the reflected light is 100 percent polarized parallel to the surface:
+                <br><strong>tangent of Brewster Angle = Refractive Index of Second Medium / Refractive Index of First Medium</strong> (tan(theta<sub>B</sub>) = n<sub>2</sub> / n<sub>1</sub>).</li>
+        </ul>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Interactive Physical Optics Test</h2>
+        </div>
+        <p>Test your conceptual understanding of double-slit interference, thin films, and polarization.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Double-Slit Interference Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    In Young's double-slit experiment, if the distance between the two slits (d) is 
+                    <strong>halved</strong>, what happens to the spacing between adjacent bright interference fringes on the viewing screen?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">The fringe spacing doubles (fringes spread farther apart)</option>
+                    <option value="wrong1">The fringe spacing is halved (fringes crowd closer together)</option>
+                    <option value="wrong2">The fringe spacing remains exactly the same</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Young's Double-Slit Experiment):</strong>
+            <p>Monochromatic light of wavelength 550 nm is shone onto two narrow slits separated by 0.20 mm. 
+            The viewing screen is located at a distance of 1.50 m from the slits. 
+            Calculate: (a) the angular position of the second-order bright fringe (m = 2), and (b) the linear distance of this fringe from the central maximum on the screen.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Angular Position (theta):</strong><br>
+                - Formula: d &times; sin(theta) = m &times; lambda.<br>
+                - Convert wavelength to meters: lambda = 550 nm = 5.50 &times; 10<sup>-7</sup> m.<br>
+                - Slit separation d = 0.20 mm = 2.00 &times; 10<sup>-4</sup> m.<br>
+                - sin(theta) = (m &times; lambda) / d = (2 &times; 5.50 &times; 10<sup>-7</sup> m) / (2.00 &times; 10<sup>-4</sup> m) = 1.10 &times; 10<sup>-6</sup> / 2.00 &times; 10<sup>-4</sup> = 0.0055.<br>
+                - theta = arcsin(0.0055) approximately equal to <strong>0.315 degrees</strong>.<br><br>
+                <strong>(b) Linear Distance on Screen (y):</strong><br>
+                - Using small angle approximation (y = L &times; tan(theta) &approx; L &times; sin(theta) for small angles):<br>
+                - y = (1.50 m) &times; 0.0055 = 0.00825 meters = <strong>8.25 mm</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Diffraction Grating Resolution):</strong>
+            <p>A diffraction grating has 5000 lines per centimeter. 
+            Monochromatic light is shone onto the grating, producing a first-order bright fringe (m = 1) at an angle of 17.5 degrees. 
+            Calculate the wavelength of the incident light in nanometers.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Calculate slit spacing (d): 5000 lines per centimeter means 500,000 lines per meter.<br>
+                - d = 1 / 500,000 = 2.00 &times; 10<sup>-6</sup> meters (2.00 micrometers).<br>
+                - Grating equation: d &times; sin(theta) = m &times; lambda implies lambda = (d &times; sin(theta)) / m.<br>
+                - lambda = (2.00 &times; 10<sup>-6</sup> m) &times; sin(17.5 degrees) / 1 = (2.00 &times; 10<sup>-6</sup>) &times; 0.3007 = 6.014 &times; 10<sup>-7</sup> meters.<br>
+                - Convert to nanometers: lambda = 6.014 &times; 10<sup>-7</sup> m &times; 10<sup>9</sup> nm/m = <strong>601.4 nm</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Brewster's Angle Calculation):</strong>
+            <p>Calculate the polarizing Brewster's angle for light reflecting off a flat pool of water 
+            given that the refractive index of water is n = 1.33 and the refractive index of air is n = 1.00.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Brewster's Law formula: tan(theta<sub>B</sub>) = n<sub>2</sub> / n<sub>1</sub>.<br>
+                - tan(theta<sub>B</sub>) = 1.33 / 1.00 = 1.33.<br>
+                - Take inverse tangent: theta<sub>B</sub> = arctan(1.33) approximately equal to <strong>53.1 degrees</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with physical optics or wave interference?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down Michelson interferometer fringe shifts, thin-film wedge interference, or optical diffraction resolution limits.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>The fringe separation distance on the screen is inversely proportional to the slit separation (d). Halving the slit spacing (d) doubles the distance between adjacent bright interference fringes.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Fringe spacing is inversely proportional to slit distance (d), meaning halving the slit spacing causes the fringes to <strong>spread farther apart</strong> (double in spacing).</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

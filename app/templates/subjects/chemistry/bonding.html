@@ -1,0 +1,1609 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chemical Bonding | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .bonding-page {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    /* HEADER */
+    .bonding-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .bonding-header h1 {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 2.4rem;
+    }
+
+    .bonding-header p {
+        color: #9ca3af;
+        max-width: 780px;
+        margin: auto;
+        line-height: 1.7;
+    }
+
+    /* BACK BUTTON */
+    .back-chemistry {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        margin-bottom: 20px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        color: #e6edf3;
+        text-decoration: none;
+        transition: .25s;
+    }
+
+    .back-chemistry:hover {
+        border-color: #3b82f6;
+        color: #ffffff;
+        transform: translateX(-3px);
+    }
+
+    /* TOPIC NAVIGATION */
+    .bonding-nav-wrapper {
+        position: sticky;
+        top: 10px;
+        z-index: 20;
+        background: #0d1117;
+        padding: 8px 0;
+        margin-bottom: 25px;
+    }
+
+    .bonding-nav {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 5px;
+        scrollbar-width: thin;
+        scrollbar-color: #3b82f6 #161b22;
+    }
+
+    .bonding-nav::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .bonding-nav::-webkit-scrollbar-track {
+        background: #161b22;
+        border-radius: 10px;
+    }
+
+    .bonding-nav::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 10px;
+    }
+
+    .bonding-nav a {
+        flex: 0 0 auto;
+        padding: 9px 15px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        color: #c9d1d9;
+        text-decoration: none;
+        font-size: .9rem;
+        transition: .25s;
+    }
+
+    .bonding-nav a:hover {
+        border-color: #3b82f6;
+        color: #ffffff;
+    }
+
+    /* SECTIONS */
+    .bonding-section {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 22px;
+        scroll-margin-top: 90px;
+    }
+
+    .bonding-section h2 {
+        color: #ffffff;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .bonding-section h3 {
+        color: #58a6ff;
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    .bonding-section h4 {
+        color: #79c0ff;
+        margin-top: 20px;
+    }
+
+    .bonding-section p {
+        color: #c9d1d9;
+        line-height: 1.75;
+    }
+
+    .bonding-section li {
+        color: #c9d1d9;
+        margin-bottom: 8px;
+        line-height: 1.6;
+    }
+
+    /* INTRODUCTION */
+    .bonding-intro {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .bonding-intro strong {
+        color: #58a6ff;
+    }
+
+    /* HIGHLIGHT */
+    .highlight {
+        background: #0d1117;
+        border-left: 4px solid #3b82f6;
+        padding: 15px 18px;
+        margin: 18px 0;
+        border-radius: 8px;
+        color: #c9d1d9;
+        line-height: 1.7;
+    }
+
+    .highlight strong {
+        color: #58a6ff;
+    }
+
+    /* FORMULA */
+    .formula {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        padding: 16px;
+        margin: 15px 0;
+        border-radius: 10px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        overflow-x: auto;
+    }
+
+    /* BOND CARDS */
+    .bond-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 18px;
+    }
+
+    .bond-card {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 20px;
+        transition: .25s;
+    }
+
+    .bond-card:hover {
+        border-color: #3b82f6;
+        transform: translateY(-3px);
+    }
+
+    .bond-card i {
+        color: #3b82f6;
+        font-size: 27px;
+        margin-bottom: 12px;
+    }
+
+    .bond-card h4 {
+        color: #ffffff;
+        margin-top: 0;
+    }
+
+    .bond-card p {
+        color: #9ca3af;
+        font-size: .92rem;
+    }
+
+    /* COMPARISON TABLE */
+    .bond-table-container {
+        overflow-x: auto;
+        margin-top: 18px;
+    }
+
+    .bond-table {
+        width: 100%;
+        min-width: 700px;
+        border-collapse: collapse;
+    }
+
+    .bond-table th {
+        background: #0d1117;
+        color: #58a6ff;
+        padding: 13px;
+        border: 1px solid #30363d;
+        text-align: left;
+    }
+
+    .bond-table td {
+        color: #c9d1d9;
+        padding: 13px;
+        border: 1px solid #30363d;
+    }
+
+    .bond-table tr:hover td {
+        background: #111827;
+    }
+
+    /* EXAMPLE BOX */
+    .example-box {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-left: 4px solid #58a6ff;
+        border-radius: 10px;
+        padding: 18px;
+        margin: 18px 0;
+    }
+
+    .example-box .example-title {
+        color: #58a6ff;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .example-box p {
+        margin-bottom: 8px;
+    }
+
+    /* WARNING / NOTE */
+    .note-box {
+        background: #111827;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        padding: 17px;
+        margin: 18px 0;
+    }
+
+    .note-box strong {
+        color: #79c0ff;
+    }
+
+    /* LEWIS STRUCTURE */
+    .lewis-box {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 22px;
+        text-align: center;
+        margin: 18px 0;
+    }
+
+    .lewis-box .structure {
+        color: #ffffff;
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        margin: 12px 0;
+    }
+
+    /* TREND BOX */
+    .trend-box {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 15px;
+    }
+
+    .trend-arrow {
+        color: #58a6ff;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    /* STEP BOX */
+    .step-box {
+        display: grid;
+        grid-template-columns: 55px 1fr;
+        gap: 15px;
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 18px;
+        margin: 12px 0;
+    }
+
+    .step-number {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #161b22;
+        border: 1px solid #3b82f6;
+        color: #58a6ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .step-box h4 {
+        margin-top: 0;
+        color: #ffffff;
+    }
+
+    /* ASK AI */
+    .ask-ai {
+        background: linear-gradient(
+            135deg,
+            #161b22,
+            #111827
+        );
+        border: 1px solid #30363d;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .ask-ai i {
+        font-size: 32px;
+        color: #3b82f6;
+        margin-bottom: 12px;
+    }
+
+    .ask-ai h3 {
+        color: #ffffff;
+    }
+
+    .ask-ai p {
+        color: #9ca3af;
+    }
+
+    .ask-ai a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        background: #3b82f6;
+        color: white;
+        text-decoration: none;
+        transition: .25s;
+    }
+
+    .ask-ai a:hover {
+        background: #2563eb;
+        color: white;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+
+        .bonding-page {
+            padding: 12px;
+            margin: 15px auto;
+        }
+
+        .bonding-header h1 {
+            font-size: 1.9rem;
+        }
+
+        .bonding-section {
+            padding: 18px;
+        }
+
+        .bond-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .bonding-nav-wrapper {
+            top: 0;
+        }
+
+        .step-box {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="bonding-page">
+
+
+<!-- BACK BUTTON -->
+
+<a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+    <i class="fas fa-arrow-left"></i>
+    Back to Chemistry
+</a>
+
+
+<!-- HEADER -->
+
+<div class="bonding-header">
+
+    <h1>Chemical Bonding</h1>
+
+    <p>
+        Learn how atoms combine, why chemical bonds form,
+        how electrons are involved, and how bonding determines
+        the properties and shapes of substances.
+    </p>
+
+</div>
+
+
+<!-- TOPIC NAVIGATION -->
+
+<div class="bonding-nav-wrapper">
+
+    <div class="bonding-nav">
+
+        <a href="#introduction">Introduction</a>
+
+        <a href="#why-bonds">Why Bonds Form</a>
+
+        <a href="#valence">Valence Electrons</a>
+
+        <a href="#ionic">Ionic Bonding</a>
+
+        <a href="#covalent">Covalent Bonding</a>
+
+        <a href="#metallic">Metallic Bonding</a>
+
+        <a href="#lewis">Lewis Structures</a>
+
+        <a href="#octet">Octet Rule</a>
+
+        <a href="#polarity">Polarity</a>
+
+        <a href="#shapes">Molecular Shapes</a>
+
+        <a href="#intermolecular">Intermolecular Forces</a>
+
+        <a href="#bond-properties">Bond Properties</a>
+
+        <a href="#giant">Giant Structures</a>
+
+        <a href="#comparison">Comparison</a>
+
+        <a href="#examples">Examples</a>
+
+        <a href="#word-problems">Word Problems</a>
+
+    </div>
+
+</div>
+
+
+<!-- INTRODUCTION -->
+
+<section class="bonding-section" id="introduction">
+
+    <h2>1. What Is Chemical Bonding?</h2>
+
+    <div class="bonding-intro">
+
+        <p>
+            <strong>Chemical bonding</strong> is the attraction that holds
+            atoms or ions together in a substance.
+        </p>
+
+        <p>
+            Atoms do not normally exist as completely independent particles.
+            Many atoms combine with other atoms because doing so can produce
+            a more stable arrangement of electrons.
+        </p>
+
+        <p>
+            The electrons involved most directly in bonding are called
+            <strong>valence electrons</strong>. The way these electrons are
+            transferred, shared, or delocalised determines the type of bond
+            formed.
+        </p>
+
+    </div>
+
+    <div class="highlight">
+
+        <strong>Main idea:</strong>
+        Chemical bonding is fundamentally about the interactions between
+        positively charged nuclei and negatively charged electrons.
+        Different arrangements of these particles produce different types
+        of bonding and therefore different physical and chemical properties.
+
+    </div>
+
+</section>
+
+
+<!-- WHY BONDS FORM -->
+
+<section class="bonding-section" id="why-bonds">
+
+    <h2>2. Why Do Atoms Form Bonds?</h2>
+
+    <p>
+        Atoms form bonds because bonded arrangements can have lower
+        potential energy and therefore greater stability than separated
+        arrangements.
+    </p>
+
+    <h3>Energy and Stability</h3>
+
+    <p>
+        When two atoms approach one another, attractive forces can develop
+        between the nucleus of one atom and electrons associated with the
+        other atom. At the same time, repulsive forces also exist.
+    </p>
+
+    <p>
+        At a suitable distance, the attractive and repulsive interactions
+        produce a stable arrangement known as the
+        <strong>equilibrium bond length</strong>.
+    </p>
+
+    <div class="formula">
+        Lower potential energy → greater stability
+    </div>
+
+    <div class="highlight">
+
+        A chemical bond is not simply an atom "wanting" electrons.
+        Bond formation results from electrostatic interactions and the
+        overall energy of the system.
+
+    </div>
+
+</section>
+
+
+<!-- VALENCE ELECTRONS -->
+
+<section class="bonding-section" id="valence">
+
+    <h2>3. Valence Electrons</h2>
+
+    <p>
+        Valence electrons are the electrons in the outermost occupied
+        shell of an atom that are most involved in chemical bonding.
+    </p>
+
+    <h3>Why Are They Important?</h3>
+
+    <p>
+        The number of valence electrons strongly influences how an element
+        reacts and what type of ions or bonds it can form.
+    </p>
+
+    <div class="bond-grid">
+
+        <div class="bond-card">
+
+            <i class="fas fa-atom"></i>
+
+            <h4>Metals</h4>
+
+            <p>
+                Metals often lose valence electrons and form positively
+                charged ions called cations.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-circle-nodes"></i>
+
+            <h4>Nonmetals</h4>
+
+            <p>
+                Nonmetals often gain or share electrons when forming
+                chemical bonds.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Example: Sodium
+        </div>
+
+        <p>
+            Sodium has one valence electron.
+        </p>
+
+        <p>
+            It can lose that electron to form Na⁺.
+        </p>
+
+        <div class="formula">
+            Na → Na⁺ + e⁻
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- IONIC -->
+
+<section class="bonding-section" id="ionic">
+
+    <h2>4. Ionic Bonding</h2>
+
+    <p>
+        An <strong>ionic bond</strong> is the electrostatic attraction
+        between oppositely charged ions.
+    </p>
+
+    <p>
+        Ionic compounds commonly form when electrons are transferred
+        from a metal atom to a nonmetal atom.
+    </p>
+
+    <h3>Formation of Sodium Chloride</h3>
+
+    <div class="step-box">
+
+        <div class="step-number">1</div>
+
+        <div>
+            <h4>Sodium loses an electron</h4>
+
+            <p>
+                Sodium has one valence electron and can lose it.
+            </p>
+
+            <div class="formula">
+                Na → Na⁺ + e⁻
+            </div>
+        </div>
+
+    </div>
+
+    <div class="step-box">
+
+        <div class="step-number">2</div>
+
+        <div>
+            <h4>Chlorine gains the electron</h4>
+
+            <p>
+                Chlorine has seven valence electrons and can gain one
+                electron to complete its outer shell.
+            </p>
+
+            <div class="formula">
+                Cl + e⁻ → Cl⁻
+            </div>
+        </div>
+
+    </div>
+
+    <div class="step-box">
+
+        <div class="step-number">3</div>
+
+        <div>
+            <h4>The ions attract</h4>
+
+            <p>
+                Na⁺ and Cl⁻ have opposite charges, so they attract
+                electrostatically.
+            </p>
+
+            <div class="formula">
+                Na⁺ + Cl⁻ → NaCl
+            </div>
+        </div>
+
+    </div>
+
+    <h3>Ionic Lattice</h3>
+
+    <p>
+        Ionic compounds do not usually consist of separate NaCl molecules.
+        Instead, their ions form a repeating three-dimensional structure
+        called an <strong>ionic lattice</strong>.
+    </p>
+
+    <div class="highlight">
+
+        This is why writing NaCl represents the simplest ratio of ions
+        rather than a single isolated NaCl molecule in the solid.
+
+    </div>
+
+    <h3>Properties of Ionic Compounds</h3>
+
+    <ul>
+        <li>Usually high melting and boiling points.</li>
+        <li>Often form crystalline solids.</li>
+        <li>Many are soluble in polar solvents such as water.</li>
+        <li>Conduct electricity when molten.</li>
+        <li>Conduct electricity when dissolved in water if the ions are free to move.</li>
+        <li>Usually do not conduct electricity effectively as solid crystals because their ions cannot move freely.</li>
+    </ul>
+
+</section>
+
+
+<!-- COVALENT -->
+
+<section class="bonding-section" id="covalent">
+
+    <h2>5. Covalent Bonding</h2>
+
+    <p>
+        A <strong>covalent bond</strong> forms when atoms share electron
+        pairs.
+    </p>
+
+    <p>
+        Covalent bonding is particularly common between nonmetal atoms.
+    </p>
+
+    <h3>Single Covalent Bond</h3>
+
+    <p>
+        A single covalent bond contains one shared pair of electrons.
+    </p>
+
+    <div class="formula">
+        H — H
+    </div>
+
+    <h3>Double Covalent Bond</h3>
+
+    <p>
+        A double bond contains two shared electron pairs.
+    </p>
+
+    <div class="formula">
+        O = O
+    </div>
+
+    <h3>Triple Covalent Bond</h3>
+
+    <p>
+        A triple bond contains three shared electron pairs.
+    </p>
+
+    <div class="formula">
+        N ≡ N
+    </div>
+
+    <div class="bond-grid">
+
+        <div class="bond-card">
+
+            <i class="fas fa-link"></i>
+
+            <h4>Single Bond</h4>
+
+            <p>
+                One shared pair of electrons.
+                Generally longer and weaker than corresponding multiple bonds.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-link"></i>
+
+            <h4>Double Bond</h4>
+
+            <p>
+                Two shared electron pairs.
+                Generally shorter and stronger than a single bond between
+                the same atoms.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-link"></i>
+
+            <h4>Triple Bond</h4>
+
+            <p>
+                Three shared electron pairs.
+                Generally shorter and stronger than corresponding single
+                and double bonds.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-share-nodes"></i>
+
+            <h4>Coordinate Covalent Bond</h4>
+
+            <p>
+                A covalent bond in which both electrons in the shared pair
+                are supplied by the same atom.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- METALLIC -->
+
+<section class="bonding-section" id="metallic">
+
+    <h2>6. Metallic Bonding</h2>
+
+    <p>
+        Metallic bonding occurs between metal atoms. In a simplified
+        model, metal atoms contribute valence electrons to a
+        <strong>delocalised electron sea</strong> surrounding a lattice
+        of positive metal ions.
+    </p>
+
+    <h3>Why Metals Conduct Electricity</h3>
+
+    <p>
+        The electrons in a metallic structure are able to move through
+        the lattice. When a potential difference is applied, these
+        mobile electrons can carry electrical charge.
+    </p>
+
+    <h3>Why Metals Are Malleable</h3>
+
+    <p>
+        Layers of metal ions can shift while remaining attracted to the
+        delocalised electrons. This allows metals to bend and deform
+        without immediately breaking their entire structure.
+    </p>
+
+    <div class="bond-grid">
+
+        <div class="bond-card">
+            <i class="fas fa-bolt"></i>
+            <h4>Electrical Conductivity</h4>
+            <p>
+                Delocalised electrons can move through the metallic lattice.
+            </p>
+        </div>
+
+        <div class="bond-card">
+            <i class="fas fa-hammer"></i>
+            <h4>Malleability</h4>
+            <p>
+                Metal layers can move without completely destroying the
+                metallic bonding.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- LEWIS -->
+
+<section class="bonding-section" id="lewis">
+
+    <h2>7. Lewis Structures</h2>
+
+    <p>
+        Lewis structures are diagrams used to represent valence electrons
+        and bonding in molecules and ions.
+    </p>
+
+    <h3>What Do the Dots Represent?</h3>
+
+    <p>
+        Each dot represents a valence electron. A pair of dots between
+        atoms can represent a shared electron pair.
+    </p>
+
+    <div class="lewis-box">
+
+        <h4>Example: Hydrogen Molecule</h4>
+
+        <div class="structure">
+            H : H
+        </div>
+
+        <p>
+            The two hydrogen atoms share one pair of electrons.
+        </p>
+
+    </div>
+
+    <h3>Steps for Drawing a Lewis Structure</h3>
+
+    <div class="step-box">
+
+        <div class="step-number">1</div>
+
+        <div>
+            <h4>Count valence electrons</h4>
+            <p>
+                Determine the total number of valence electrons contributed
+                by all atoms.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="step-box">
+
+        <div class="step-number">2</div>
+
+        <div>
+            <h4>Choose the central atom</h4>
+            <p>
+                Usually the least electronegative atom is placed in the
+                centre, while hydrogen is almost always terminal.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="step-box">
+
+        <div class="step-number">3</div>
+
+        <div>
+            <h4>Connect the atoms</h4>
+            <p>
+                Draw single bonds between the central atom and surrounding
+                atoms.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="step-box">
+
+        <div class="step-number">4</div>
+
+        <div>
+            <h4>Complete outer shells</h4>
+            <p>
+                Distribute remaining electrons around the surrounding atoms
+                before placing remaining electrons on the central atom.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="step-box">
+
+        <div class="step-number">5</div>
+
+        <div>
+            <h4>Check the structure</h4>
+            <p>
+                Check the electron count, formal charges, and whether
+                multiple bonds are required.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- OCTET -->
+
+<section class="bonding-section" id="octet">
+
+    <h2>8. The Octet Rule</h2>
+
+    <p>
+        The octet rule states that many atoms tend to achieve a stable
+        arrangement involving eight electrons in their valence shell.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+        The octet rule is a useful guideline, not an absolute law.
+        There are important exceptions, including electron-deficient
+        species, odd-electron species, and atoms that can accommodate
+        expanded valence shells.
+
+    </div>
+
+    <h3>Common Ways Atoms Reach Stable Configurations</h3>
+
+    <ul>
+        <li>Loss of electrons.</li>
+        <li>Gain of electrons.</li>
+        <li>Sharing of electrons.</li>
+        <li>Delocalisation of electrons in metallic structures.</li>
+    </ul>
+
+</section>
+
+
+<!-- POLARITY -->
+
+<section class="bonding-section" id="polarity">
+
+    <h2>9. Electronegativity and Bond Polarity</h2>
+
+    <p>
+        <strong>Electronegativity</strong> describes the tendency of an
+        atom in a chemical bond to attract the shared electrons toward
+        itself.
+    </p>
+
+    <h3>Electronegativity Difference</h3>
+
+    <p>
+        When two bonded atoms have different electronegativities, the
+        bonding electrons may be pulled more strongly toward one atom.
+        This produces a polar bond.
+    </p>
+
+    <div class="formula">
+        ΔEN = |EN₁ − EN₂|
+    </div>
+
+    <p>
+        The exact classification boundaries depend on the scale and
+        convention being used, so electronegativity difference should not
+        be treated as a universal set of rigid cutoffs.
+    </p>
+
+    <h3>Nonpolar Covalent Bond</h3>
+
+    <p>
+        If the bonding electrons are shared relatively equally, the bond
+        is described as nonpolar covalent.
+    </p>
+
+    <h3>Polar Covalent Bond</h3>
+
+    <p>
+        If the electrons are shared unequally, partial charges can develop.
+    </p>
+
+    <div class="formula">
+        δ⁺ — δ⁻
+    </div>
+
+    <div class="note-box">
+
+        <strong>Remember:</strong>
+
+        Bond polarity and molecular polarity are not always the same thing.
+        The shape of the molecule determines whether individual bond
+        dipoles cancel or reinforce one another.
+
+    </div>
+
+</section>
+
+
+<!-- SHAPES -->
+
+<section class="bonding-section" id="shapes">
+
+    <h2>10. Molecular Shapes</h2>
+
+    <p>
+        Molecular shape is strongly influenced by the repulsions between
+        regions of electron density around a central atom.
+    </p>
+
+    <h3>VSEPR Theory</h3>
+
+    <p>
+        VSEPR stands for
+        <strong>Valence Shell Electron Pair Repulsion</strong>.
+    </p>
+
+    <p>
+        The central idea is that electron domains arrange themselves as
+        far apart as possible to reduce repulsion.
+    </p>
+
+    <div class="bond-grid">
+
+        <div class="bond-card">
+            <i class="fas fa-circle"></i>
+            <h4>Linear</h4>
+            <p>
+                Bond angle approximately 180° in the ideal two-domain case.
+            </p>
+        </div>
+
+        <div class="bond-card">
+            <i class="fas fa-draw-polygon"></i>
+            <h4>Trigonal Planar</h4>
+            <p>
+                Three electron domains arranged around the central atom.
+            </p>
+        </div>
+
+        <div class="bond-card">
+            <i class="fas fa-draw-polygon"></i>
+            <h4>Tetrahedral</h4>
+            <p>
+                Four bonding electron domains with an ideal angle of about
+                109.5°.
+            </p>
+        </div>
+
+        <div class="bond-card">
+            <i class="fas fa-shapes"></i>
+            <h4>Bent</h4>
+            <p>
+                Lone pairs on the central atom can produce a bent molecular
+                shape.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="highlight">
+
+        Lone pairs generally repel more strongly than bonding pairs.
+        Therefore, lone pairs can reduce bond angles from their ideal
+        electron-domain geometry values.
+
+    </div>
+
+</section>
+
+
+<!-- INTERMOLECULAR -->
+
+<section class="bonding-section" id="intermolecular">
+
+    <h2>11. Intermolecular Forces</h2>
+
+    <p>
+        Intermolecular forces are attractions between separate molecules.
+        They are different from the covalent or ionic interactions that
+        hold atoms or ions together within a substance.
+    </p>
+
+    <div class="bond-grid">
+
+        <div class="bond-card">
+
+            <i class="fas fa-wind"></i>
+
+            <h4>London Dispersion Forces</h4>
+
+            <p>
+                Attractions caused by temporary fluctuations in electron
+                distribution. They occur in all atoms and molecules.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-magnet"></i>
+
+            <h4>Dipole-Dipole Forces</h4>
+
+            <p>
+                Attractions between permanent partial charges in polar
+                molecules.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-droplet"></i>
+
+            <h4>Hydrogen Bonding</h4>
+
+            <p>
+                A particularly strong type of intermolecular attraction
+                involving hydrogen bonded to highly electronegative atoms,
+                especially N, O, or F.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="highlight">
+
+        Stronger intermolecular attractions generally require more energy
+        to separate molecules, which can contribute to higher boiling
+        points and melting points.
+
+    </div>
+
+</section>
+
+
+<!-- BOND PROPERTIES -->
+
+<section class="bonding-section" id="bond-properties">
+
+    <h2>12. Bond Properties</h2>
+
+    <h3>Bond Length</h3>
+
+    <p>
+        Bond length is the average distance between the nuclei of two
+        bonded atoms.
+    </p>
+
+    <h3>Bond Energy</h3>
+
+    <p>
+        Bond energy is related to the energy required to break a bond.
+        Stronger bonds generally require more energy to break.
+    </p>
+
+    <h3>Bond Order</h3>
+
+    <p>
+        Bond order describes the number of bonding pairs between two atoms
+        in simple Lewis structures.
+    </p>
+
+    <div class="formula">
+        Single bond → Bond order = 1
+        <br>
+        Double bond → Bond order = 2
+        <br>
+        Triple bond → Bond order = 3
+    </div>
+
+    <div class="trend-box">
+
+        <p>
+            <span class="trend-arrow">
+                Higher bond order → generally shorter, stronger bond
+            </span>
+        </p>
+
+        <p>
+            <span class="trend-arrow">
+                Lower bond order → generally longer, weaker bond
+            </span>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- GIANT STRUCTURES -->
+
+<section class="bonding-section" id="giant">
+
+    <h2>13. Giant Structures</h2>
+
+    <p>
+        Some substances form enormous continuous structures rather than
+        small independent molecules.
+    </p>
+
+    <h3>Giant Ionic Structures</h3>
+
+    <p>
+        Ionic solids contain a repeating lattice of positive and negative
+        ions.
+    </p>
+
+    <h3>Giant Covalent Structures</h3>
+
+    <p>
+        In giant covalent structures, atoms are connected by an extensive
+        network of covalent bonds.
+    </p>
+
+    <div class="bond-grid">
+
+        <div class="bond-card">
+
+            <i class="fas fa-gem"></i>
+
+            <h4>Diamond</h4>
+
+            <p>
+                Each carbon atom is strongly covalently bonded to four
+                neighbouring carbon atoms, producing a rigid three-dimensional
+                network.
+            </p>
+
+        </div>
+
+        <div class="bond-card">
+
+            <i class="fas fa-layer-group"></i>
+
+            <h4>Graphite</h4>
+
+            <p>
+                Carbon atoms form layers. Each carbon is covalently bonded
+                to three others, with delocalised electrons contributing
+                to electrical conductivity.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- COMPARISON -->
+
+<section class="bonding-section" id="comparison">
+
+    <h2>14. Comparing the Main Types of Bonding</h2>
+
+    <div class="bond-table-container">
+
+        <table class="bond-table">
+
+            <thead>
+
+                <tr>
+                    <th>Feature</th>
+                    <th>Ionic</th>
+                    <th>Covalent</th>
+                    <th>Metallic</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Basic idea</td>
+                    <td>Electrostatic attraction between ions</td>
+                    <td>Sharing of electron pairs</td>
+                    <td>Metal ions attracted to delocalised electrons</td>
+                </tr>
+
+                <tr>
+                    <td>Common elements</td>
+                    <td>Metal + nonmetal</td>
+                    <td>Usually nonmetal + nonmetal</td>
+                    <td>Metals</td>
+                </tr>
+
+                <tr>
+                    <td>Particles</td>
+                    <td>Ions</td>
+                    <td>Atoms in molecules or networks</td>
+                    <td>Metal ions and delocalised electrons</td>
+                </tr>
+
+                <tr>
+                    <td>Electrical conductivity</td>
+                    <td>When molten or dissolved</td>
+                    <td>Usually poor</td>
+                    <td>Generally good</td>
+                </tr>
+
+                <tr>
+                    <td>Typical structure</td>
+                    <td>Ionic lattice</td>
+                    <td>Molecules or giant networks</td>
+                    <td>Metallic lattice</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- EXAMPLES -->
+
+<section class="bonding-section" id="examples">
+
+    <h2>15. Worked Examples</h2>
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Example 1: What type of bond forms between sodium and chlorine?
+        </div>
+
+        <p>
+            Sodium is a metal and chlorine is a nonmetal.
+        </p>
+
+        <p>
+            Sodium can lose one electron while chlorine can gain one.
+        </p>
+
+        <div class="formula">
+            Na → Na⁺
+            &nbsp;&nbsp;&nbsp;
+            Cl → Cl⁻
+        </div>
+
+        <p>
+            The resulting electrostatic attraction is an
+            <strong>ionic bond</strong>.
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Example 2: Why is O₂ covalently bonded?
+        </div>
+
+        <p>
+            Oxygen is a nonmetal. Two oxygen atoms can share electrons
+            rather than one simply transferring electrons to the other.
+        </p>
+
+        <div class="formula">
+            O = O
+        </div>
+
+        <p>
+            The two oxygen atoms share two pairs of electrons, forming
+            a double covalent bond.
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Example 3: Why does MgCl₂ contain two chloride ions?
+        </div>
+
+        <p>
+            Magnesium forms Mg²⁺ by losing two electrons.
+        </p>
+
+        <p>
+            Each chlorine atom can gain one electron to form Cl⁻.
+        </p>
+
+        <div class="formula">
+            Mg²⁺ + 2Cl⁻ → MgCl₂
+        </div>
+
+        <p>
+            Two chloride ions are therefore required to balance the
+            +2 charge of one magnesium ion.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- WORD PROBLEMS -->
+
+<section class="bonding-section" id="word-problems">
+
+    <h2>16. Chemical Bonding Word Problems</h2>
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Problem 1
+        </div>
+
+        <p>
+            An element has one valence electron and reacts with an element
+            that has seven valence electrons. Predict the likely type of
+            bonding.
+        </p>
+
+        <p>
+            <strong>Solution:</strong>
+            An element with one valence electron is likely to lose that
+            electron, while an element with seven valence electrons can
+            gain one. This suggests electron transfer and therefore
+            <strong>ionic bonding</strong>.
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Problem 2
+        </div>
+
+        <p>
+            A substance conducts electricity when molten but does not
+            conduct electricity effectively as a solid. What type of
+            structure might it have?
+        </p>
+
+        <p>
+            <strong>Solution:</strong>
+            This behaviour is characteristic of an ionic compound.
+            In the solid, ions are fixed in the lattice. When molten,
+            the ions become mobile and can carry charge.
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <div class="example-title">
+            Problem 3
+        </div>
+
+        <p>
+            Explain why a metal can conduct electricity in the solid state.
+        </p>
+
+        <p>
+            <strong>Solution:</strong>
+            Metallic bonding contains delocalised electrons. These
+            electrons can move through the metallic structure and carry
+            electrical charge.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ASK AI -->
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With Chemical Bonding?</h3>
+
+    <p>
+        Still confused about ionic bonds, covalent bonds, Lewis structures,
+        electronegativity, molecular shapes, or intermolecular forces?
+        Ask Insite AI and get a step-by-step explanation.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

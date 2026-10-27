@@ -1,0 +1,671 @@
+{% extends "base.html" %}
+
+{% block title %}
+Biotechnology & Genomics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --bio-bg: #050a12;
+    --bio-panel: #0a111d;
+    --bio-border: rgba(100, 116, 139, .18);
+    --bio-text: #f1f5f9;
+    --bio-muted: #94a3b8;
+
+    --bio-blue: #1677b8;
+    --bio-blue-light: #2196d2;
+    --bio-cyan: #38bdf8;
+
+    --bio-green: #34d399;
+    --bio-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 5px rgba(33, 150, 210, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(33, 150, 210, 0.3); }
+    100% { box-shadow: 0 0 5px rgba(33, 150, 210, 0.1); }
+}
+
+.bio-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--bio-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.bio-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--bio-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.bio-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.bio-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.bio-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.bio-header h1 i {
+    color: var(--bio-blue-light);
+    margin-right: 8px;
+    animation: pulseGlow 3s infinite;
+}
+
+.bio-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--bio-muted);
+    line-height: 1.75;
+}
+
+.bio-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--bio-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.bio-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.bio-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.bio-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.bio-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.bio-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.bio-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bio-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.bio-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.bio-section h3 {
+    color: var(--bio-blue-light);
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--bio-border);
+    padding-bottom: 6px;
+}
+
+.bio-section h4 {
+    color: var(--bio-cyan);
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.bio-section p,
+.bio-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.bio-section li {
+    margin-bottom: 8px;
+}
+
+.bio-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--bio-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.bio-info:hover {
+    transform: translateX(4px);
+}
+
+.bio-info strong {
+    color: var(--bio-blue-light);
+}
+
+.bio-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.bio-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.bio-table th,
+.bio-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.bio-table th {
+    background: #081321;
+    color: var(--bio-blue-light);
+    font-size: .88rem;
+}
+
+.bio-table td {
+    color: #cbd5e1;
+}
+
+.bio-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--bio-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--bio-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--bio-green); }
+.test-result.wrong { border-left-color: var(--bio-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--bio-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--bio-blue-light);
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid var(--bio-blue-light);
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .bio-section { padding: 20px; }
+    .bio-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="bio-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('biology_page') }}" class="bio-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Biology Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="bio-header">
+        <h1>
+            <i class="fa-solid fa-flask-vial"></i>
+            Biotechnology & Genomics
+        </h1>
+        <p>
+            An exhaustive masterclass covering restriction enzyme digestion, polymerase chain reaction (PCR) amplification, 
+            agarose gel electrophoresis, recombinant plasmid cloning, and CRISPR-Cas9 precision gene editing.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="bio-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#pcr">PCR Amplification</a>
+        <a href="#gel">Gel Electrophoresis</a>
+        <a href="#plasmids">Recombinant Plasmids</a>
+        <a href="#crispr">CRISPR-Cas9 Editing</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="bio-section" id="intro">
+        <div class="bio-section-header">
+            <div class="bio-number">01</div>
+            <h2>Introduction to Modern Biotechnology</h2>
+        </div>
+        <p>
+            Biotechnology encompasses a wide range of procedures used to modify living organisms, study molecular genetics, 
+            and produce therapeutic proteins, agricultural crops, and forensic evidence.
+        </p>
+        <p>
+            At the heart of molecular biotechnology is <strong>recombinant DNA technology</strong>—the ability to isolate, cut, splice, 
+            and replicate specific nucleotide sequences from different biological sources using specialized molecular tools.
+        </p>
+        <div class="bio-info">
+            <strong>Core Molecular Principle:</strong><br>
+            Restriction endonucleases act as molecular scissors, cutting double-stranded DNA at specific palindromic recognition sequences, 
+            leaving either sticky or blunt ends that can be joined by DNA ligase.
+        </div>
+    </section>
+
+    <!-- 02 PCR AMPLIFICATION -->
+    <section class="bio-section" id="pcr">
+        <div class="bio-section-header">
+            <div class="bio-number">02</div>
+            <h2>Polymerase Chain Reaction (PCR)</h2>
+        </div>
+        <p>
+            The Polymerase Chain Reaction is an in vitro technique used to exponentially amplify millions to billions of copies 
+            of a specific target DNA segment from a microscopic sample (e.g., a single drop of blood or hair follicle). 
+            PCR relies on repeated thermal cycling across three distinct temperature stages:
+        </p>
+        <ul>
+            <li><strong>1. Denaturation (94 to 98 degrees C):</strong> Heat breaks the hydrogen bonds between complementary bases, separating the double-stranded DNA template into single strands.</li>
+            <li><strong>2. Annealing (50 to 65 degrees C):</strong> The reaction is cooled slightly to allow synthetic DNA primers to bind (anneal) to complementary sequences flanking the target region.</li>
+            <li><strong>3. Extension (72 degrees C):</strong> Heat-stable <strong>Taq polymerase</strong> (derived from the thermophilic bacterium <em>Thermus aquaticus</em>) synthesizes a new complementary strand by adding free dNTPs in the 5-prime to 3-prime direction.</li>
+        </ul>
+
+        <div class="bio-table-wrapper">
+            <table class="bio-table">
+                <thead>
+                    <tr>
+                        <th>Thermal Cycling Step</th>
+                        <th>Temperature</th>
+                        <th>Molecular Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Denaturation</strong></td>
+                        <td>94 - 98 degrees C</td>
+                        <td>Breaks hydrogen bonds, separating double-stranded DNA templates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Annealing</strong></td>
+                        <td>50 - 65 degrees C</td>
+                        <td>Enables synthetic DNA primers to bind flanking target sequences</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Extension</strong></td>
+                        <td>72 degrees C</td>
+                        <td>Taq DNA polymerase synthesizes new complementary strands</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 03 GEL ELECTROPHORESIS -->
+    <section class="bio-section" id="gel">
+        <div class="bio-section-header">
+            <div class="bio-number">03</div>
+            <h2>Agarose Gel Electrophoresis</h2>
+        </div>
+        <p>
+            Gel electrophoresis is an analytical technique used to separate DNA fragments based on size and molecular weight:
+        </p>
+        <ul>
+            <li><strong>Negative Charge of DNA:</strong> Because nucleic acid phosphate backbones carry a uniform negative electrical charge, DNA molecules migrate through the porous agarose gel matrix toward the positive anode (+) when an electric field is applied.</li>
+            <li><strong>Size Separation:</strong> Smaller DNA fragments navigate easily through the microscopic pores of the agarose mesh and travel farther and faster, whereas larger fragments become entangled and migrate more slowly.</li>
+            <li><strong>Visualization:</strong> DNA bands are stained with fluorescent dyes (such as ethidium bromide or GelRed) and illuminated under UV light to compare fragment lengths against a known DNA ladder.</li>
+        </ul>
+    </section>
+
+    <!-- 04 RECOMBINANT PLASMIDS -->
+    <section class="bio-section" id="plasmids">
+        <div class="bio-section-header">
+            <div class="bio-number">04</div>
+            <h2>Recombinant Plasmids & Bacterial Transformation</h2>
+        </div>
+        <p>
+            Plasmids are small, circular extrachromosomal DNA molecules found naturally in bacteria that can be engineered 
+            as vectors to carry foreign genes into host cells:
+        </p>
+        <ul>
+            <li><strong>Vector Design:</strong> An engineered plasmid vector contains a multiple cloning site (insertion point for foreign genes), an origin of replication (ori), and a selectable marker (such as an antibiotic resistance gene).</li>
+            <li><strong>Bacterial Transformation:</strong> Host bacteria (like <em>E. coli</em>) are treated with chemicals or electroporation to make their cell membranes permeable, allowing them to take up recombinant plasmids from their surroundings.</li>
+            <li><strong>Selection:</strong> Transformed bacteria are grown on nutrient agar plates containing antibiotics; only bacteria possessing the plasmid survive, ensuring successful gene cloning.</li>
+        </ul>
+    </section>
+
+    <!-- 05 CRISPR-CAS9 EDITING -->
+    <section class="bio-section" id="crispr">
+        <div class="bio-section-header">
+            <div class="bio-number">05</div>
+            <h2>CRISPR-Cas9 Precision Gene Editing</h2>
+        </div>
+        <p>
+            Derived from natural bacterial adaptive immune systems, CRISPR-Cas9 is a revolutionary gene-editing technology 
+            that allows scientists to alter DNA sequences and modify gene function with extreme precision:
+        </p>
+        <ul>
+            <li><strong>Guide RNA (gRNA):</strong> A specially engineered synthetic RNA molecule designed to match and bind to a specific target DNA sequence within the genome.</li>
+            <li><strong>Cas9 Endonuclease:</strong> An enzyme that acts as molecular scissors, forming a complex with the gRNA and making a precise double-stranded break at the target genomic site.</li>
+            <li><strong>Cellular Repair:</strong> The cell repairs the break either via non-homologous end joining (NHEJ)—which typically knocks out gene function by introducing random mutations—or homology-directed repair (HDR), which introduces specific corrective DNA sequences.</li>
+        </ul>
+        <div class="bio-info">
+            <strong>Key Biotechnological Breakthrough:</strong><br>
+            Unlike older gene therapies that inserted genes randomly into genomes (risking insertional mutagenesis), CRISPR-Cas9 targets exact chromosomal locations with base-pair precision.
+        </div>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="bio-section" id="test">
+        <div class="bio-section-header">
+            <div class="bio-number">06</div>
+            <h2>Interactive Biotech Test</h2>
+        </div>
+        <p>Test your understanding of PCR amplification, gel electrophoresis migration, and recombinant DNA technology.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Gel Electrophoresis Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    During agarose gel electrophoresis, which category of DNA fragments travels the fastest and farthest through the gel matrix?
+                </div>
+
+                <select class="test-select" id="bioAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">The largest DNA fragments</option>
+                    <option value="correct">The smallest DNA fragments</option>
+                    <option value="wrong2">Uncharged circular plasmids</option>
+                    <option value="wrong3">Neutral protein complexes</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkBio">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="bioResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="bio-section" id="problems">
+        <div class="bio-section-header">
+            <div class="bio-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (PCR Amplification Yield Calculation):</strong>
+            <p>If you start a polymerase chain reaction tube with exactly 2 double-stranded DNA molecules, calculate the total number of DNA target molecules produced after 30 complete thermal cycles.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - <strong>Formula:</strong> Total molecules = Initial quantity &times; (2 to the power of n), where n is the number of thermal cycles.<br>
+                - <strong>Substitution:</strong> Initial = 2 molecules; n = 30.<br>
+                - <strong>Calculation:</strong> 2 &times; (2 to the power of 30) = 2 to the power of 31.<br>
+                - <strong>Result:</strong> <strong>2,147,483,648 molecules</strong> (over 2.1 billion target copies from just 2 starting templates).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Restriction Mapping & Fragment Analysis):</strong>
+            <p>A circular plasmid of 6,000 base pairs (bp) is digested with a restriction enzyme that has two recognition sites located at position 1,500 bp and position 4,000 bp. Determine the number and sizes of the resulting DNA fragments.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Cutting a Circular DNA:</strong> Cutting a circular plasmid twice creates two separate linear fragments.<br>
+                - <strong>Fragment 1 Size:</strong> Distance between 1,500 bp and 4,000 bp = 4,000 - 1,500 = <strong>2,500 bp</strong>.<br>
+                - <strong>Fragment 2 Size:</strong> Remaining length from 4,000 bp around the circle back to 1,500 bp = (6,000 - 4,000) + 1,500 = 2,000 + 1,500 = <strong>3,500 bp</strong>.<br>
+                - <strong>Conclusion:</strong> Gel electrophoresis will reveal two distinct bands at 2,500 bp and 3,500 bp.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (CRISPR-Cas9 Mechanism of Action):</strong>
+            <p>Describe the specific roles of guide RNA (gRNA) and the Cas9 endonuclease in targeted gene editing.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Guide RNA (gRNA):</strong> Contains a customized user-designed spacer sequence (~20 nucleotides) that specifically binds via complementary base pairing to the target DNA sequence in the genome.<br>
+                - <strong>Cas9 Endonuclease:</strong> Acts as the molecular scissors. Guided by the gRNA to the exact genomic locus, Cas9 induces a precise double-stranded break in the DNA.<br>
+                - <strong>Cellular Repair:</strong> The cell's endogenous DNA repair machinery then repairs the break, allowing researchers to knockout, edit, or replace specific genes.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--bio-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with biotechnology or molecular genetics calculations?</h3>
+        <p style="color:var(--bio-muted); margin:0;">
+            Ask Insite AI to explain Sanger DNA sequencing, cDNA library construction, or forensic DNA fingerprinting.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const bioAnswer = document.getElementById("bioAnswer");
+const checkBio = document.getElementById("checkBio");
+const bioResult = document.getElementById("bioResult");
+
+checkBio.addEventListener("click", function () {
+    const val = bioAnswer.value;
+    bioResult.style.display = "block";
+
+    if (val === "correct") {
+        bioResult.className = "test-result correct";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Smaller DNA fragments navigate more easily through the microscopic pores of the agarose gel matrix, allowing them to migrate faster and travel farthest from the negative electrode.</div>
+        `;
+    } else if (val === "") {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Larger DNA fragments become entangled in the agarose pores and move slowly. The fragments that travel the fastest and farthest are <strong>the smallest DNA fragments</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,785 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reading Comprehension & Summary | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENGLISH HUB: READING COMPREHENSION & SUMMARY
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE (NO LATEX)
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: var(--eng-blue-light);
+    margin-top: 22px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.eng-section li {
+    margin-bottom: 10px;
+}
+
+.eng-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.passage-box {
+    margin: 20px 0;
+    padding: 22px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    color: #e2e8f0;
+    font-style: italic;
+    line-height: 1.9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--eng-border);
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: var(--eng-cyan-light);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 30px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--eng-border);
+    background: #0a111d;
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 25px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 600px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 13px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.exam-question {
+    margin-top: 25px;
+    padding: 24px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--eng-cyan-light);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.exam-answer {
+    margin-top: 15px;
+    padding: 18px 20px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.ask-ai {
+    margin-top: 35px;
+    padding: 35px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 22px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-book-open"></i>
+            Reading Comprehension & Summary Masterclass
+        </h1>
+        <p>
+            An exhaustive academic masterclass covering skimming and scanning strategies, identifying main ideas and authorial tone, 
+            decoding contextual vocabulary, summary writing techniques, and advanced examination practice for JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">01. Overview</a>
+        <a href="#strategies">02. Reading Strategies</a>
+        <a href="#questions">03. Comprehension Types</a>
+        <a href="#summary">04. Summary Techniques</a>
+        <a href="#confusing-traps">05. Exam Traps</a>
+        <a href="#tests">06. Practice Tests</a>
+        <a href="#problems">07. Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Comprehensive Introduction to Comprehension & Summary</h2>
+        </div>
+        <p>
+            In standardized examinations such as JAMB (UTME) and WAEC, the <strong>Reading Comprehension and Summary</strong> sections 
+            carry the highest aggregate marks. They are designed to test a candidate's ability to process lengthy prose, extract core arguments, 
+            evaluate authorial intent, deduce unfamiliar word meanings from context, and synthesize information concisely.
+        </p>
+        <p>
+            Many students struggle not because they lack intelligence, but because they approach passages reactively rather than systematically. 
+            Mastering this domain requires disciplined time management, strategic passage navigation, and rigorous practice in concise paraphrasing.
+        </p>
+        <div class="eng-info">
+            <strong>Core Exam Principle:</strong><br>
+            Never rely on outside general knowledge when answering comprehension or summary questions. Every correct answer must be supported 
+            directly by evidence within the passage text.
+        </div>
+    </section>
+
+    <!-- 02 READING STRATEGIES -->
+    <section class="eng-section" id="strategies">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Effective Reading Strategies (Skimming & Scanning)</h2>
+        </div>
+        <p>
+            Time is limited in examination halls. Employing efficient reading techniques allows you to navigate prose rapidly without losing comprehension.
+        </p>
+        <ul>
+            <li><strong>Skimming:</strong> Rapidly running your eyes over the passage to grasp the general theme, overarching argument, and authorial tone without getting bogged down by minor details.</li>
+            <li><strong>Scanning:</strong> Searching the text specifically for targeted data points, such as dates, names, statistical figures, or specific definitions required by the questions.</li>
+            <li><strong>First-Pass Question Review:</strong> Reviewing the questions *before* reading the detailed text so your brain actively hunts for specific answers while skimming.</li>
+        </ul>
+    </section>
+
+    <!-- 03 COMPREHENSION TYPES -->
+    <section class="eng-section" id="questions">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Types of Comprehension Questions</h2>
+        </div>
+        <p>
+            Examiners categorize comprehension items into distinct cognitive tiers that test different analytical skills.
+        </p>
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <thead>
+                    <tr>
+                        <th>Question Category</th>
+                        <th>Core Objective</th>
+                        <th>Strategic Approach</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Literal Questions</td>
+                        <td>Test direct factual recall stated explicitly in the text.</td>
+                        <td>Scan for keywords from the question and locate the exact sentence.</td>
+                    </tr>
+                    <tr>
+                        <td>Inferential Questions</td>
+                        <td>Test ability to read between the lines and deduce unstated conclusions.</td>
+                        <td>Analyze tone, premise, and logical clues surrounding the evidence.</td>
+                    </tr>
+                    <tr>
+                        <td>Vocabulary in Context</td>
+                        <td>Test ability to define words based on surrounding textual clues.</td>
+                        <td>Substitute option words into the sentence to check semantic fit.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 04 SUMMARY TECHNIQUES -->
+    <section class="eng-section" id="summary">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Summary Writing Techniques</h2>
+        </div>
+        <p>
+            Summary questions require condensing a lengthy paragraph or passage into a concise statement capturing the main points without redundancy.
+        </p>
+        <ul>
+            <li><strong>Eliminate Fluff:</strong> Strip away decorative adjectives, rhetorical examples, direct quotations, and personal anecdotes.</li>
+            <li><strong>Paraphrase Thoroughly:</strong> Rephrase core ideas using your own vocabulary rather than lifting sentences directly from the passage.</li>
+            <li><strong>Strict Word Count Adherence:</strong> Never exceed specified word limits, as excess words result in automatic point deductions.</li>
+        </ul>
+    </section>
+
+    <!-- 05 CONFUSING EXAM TRAPS -->
+    <section class="eng-section" id="confusing-traps">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Confusing Examination Traps & Distractors</h2>
+        </div>
+        <p>
+            Examiners construct multiple-choice options using clever distractors designed to catch careless readers.
+        </p>
+        <h3>Trap 1: True Facts Outside the Text</h3>
+        <p>
+            Selecting an option that states a historically or scientifically true fact, but one that is completely unmentioned in the provided passage.
+        </p>
+        <h3>Trap 2: Distortion of Extent</h3>
+        <p>
+            Options that use absolute qualifiers like <em>always</em>, <em>never</em>, or <em>all</em> when the passage uses conditional or moderate terms like <em>often</em> or <em>some</em>.
+        </p>
+    </section>
+
+    <!-- 06 INTERACTIVE TESTS -->
+    <section class="eng-section" id="tests">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Interactive Examination Practice Tests</h2>
+        </div>
+        <p>Read the short passage below and test your comprehension skills with three challenging past-question simulators.</p>
+
+        <div class="passage-box">
+            "Despite decades of heavy government investment in agricultural mechanization across sub-Saharan Africa, rural productivity has frequently lagged behind expectations. Analysts argue that the mere distribution of modern tractors and automated irrigation hardware fails without concurrent investments in farmers' technical training, reliable fuel supply chains, and accessible micro-credit financing. Consequently, technological transfer remains stunted in environments where structural support systems are underdeveloped."
+        </div>
+
+        <!-- TEST 1 -->
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 1: Main Idea Identification</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    According to the passage, why has agricultural mechanization lagged behind expectations in sub-Saharan Africa?
+                </div>
+
+                <select class="test-select" id="engAnswer20">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">African farmers completely refuse to adopt modern farming machinery.</option>
+                    <option value="correct">There is a lack of necessary structural support systems like training and financing alongside equipment.</option>
+                    <option value="wrong2">Governments have completely stopped investing in agricultural technologies.</option>
+                    <option value="wrong3">Tractors and irrigation systems are entirely unsuitable for African soil.</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng20">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult20"></div>
+            </div>
+        </div>
+
+        <!-- TEST 2 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 2: Vocabulary in Context</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    As used in the passage, what is the closest meaning of the word <em>stunted</em>?
+                </div>
+
+                <select class="test-select" id="engAnswer21">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Accelerated and expanded</option>
+                    <option value="correct">Hinders, checked, or prevented from normal growth</option>
+                    <option value="wrong2">Fully automated and modernized</option>
+                    <option value="wrong3">Completely abandoned and forgotten</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng21">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult21"></div>
+            </div>
+        </div>
+
+        <!-- TEST 3 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 3: Inferential Deduction</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    What can be inferred regarding agricultural technology transfer from the passage?
+                </div>
+
+                <select class="test-select" id="engAnswer22">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Equipment distribution alone guarantees immediate agricultural abundance.</option>
+                    <option value="correct">Hardware distribution must be accompanied by robust infrastructure and education to succeed.</option>
+                    <option value="wrong2">Financial credit is entirely unnecessary for rural development.</option>
+                    <option value="wrong3">Fuel supply chains are already perfectly established across the continent.</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng22">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult22"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Summarizing Core Arguments):</strong>
+            <p>Summarize the central argument of the passage above in a single concise sentence.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                1. <strong>Identify Core Elements:</strong> Mechanization fails without supporting infrastructure.<br>
+                2. <strong>Synthesize Summary:</strong> <em>Agricultural mechanization in sub-Saharan Africa remains ineffective without concurrent investments in technical training, financing, and supply chains.</em>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:32px; margin-bottom:12px;"></i>
+        <h3 style="margin:0 0 10px; color:white; font-size:1.4rem;">Need further assistance with reading comprehension?</h3>
+        <p style="color:var(--eng-muted); margin:0 auto; max-width:650px; line-height:1.7;">
+            Ask Insite AI to analyze passage tone, practice summary writing, or provide targeted JAMB past passages.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — COMPREHENSION INTERACTIVE TEST SCRIPTS
+   ========================================================= */
+
+// Test 1
+const engAnswer20 = document.getElementById("engAnswer20");
+const checkEng20 = document.getElementById("checkEng20");
+const engResult20 = document.getElementById("engResult20");
+
+checkEng20.addEventListener("click", function () {
+    const val = engAnswer20.value;
+    engResult20.style.display = "block";
+
+    if (val === "correct") {
+        engResult20.className = "test-result correct";
+        engResult20.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Excellent Textual Extraction!</div>
+            <div>The passage explicitly states that equipment distribution fails without concurrent training, fuel chains, and financing.</div>
+        `;
+    } else if (val === "") {
+        engResult20.className = "test-result wrong";
+        engResult20.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult20.className = "test-result wrong";
+        engResult20.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>The correct answer is <strong>There is a lack of necessary structural support systems like training and financing alongside equipment.</strong>.</div>
+        `;
+    }
+});
+
+// Test 2
+const engAnswer21 = document.getElementById("engAnswer21");
+const checkEng21 = document.getElementById("checkEng21");
+const engResult21 = document.getElementById("engResult21");
+
+checkEng21.addEventListener("click", function () {
+    const val = engAnswer21.value;
+    engResult21.style.display = "block";
+
+    if (val === "correct") {
+        engResult21.className = "test-result correct";
+        engResult21.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Flawless Contextual Vocabulary!</div>
+            <div>"Stunted" means hindered or prevented from growing or developing properly.</div>
+        `;
+    } else if (val === "") {
+        engResult21.className = "test-result wrong";
+        engResult21.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult21.className = "test-result wrong";
+        engResult21.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>In this context, stunted means <strong>Hinders, checked, or prevented from normal growth</strong>.</div>
+        `;
+    }
+});
+
+// Test 3
+const engAnswer22 = document.getElementById("engAnswer22");
+const checkEng22 = document.getElementById("checkEng22");
+const engResult22 = document.getElementById("engResult22");
+
+checkEng22.addEventListener("click", function () {
+    const val = engAnswer22.value;
+    engResult22.style.display = "block";
+
+    if (val === "correct") {
+        engResult22.className = "test-result correct";
+        engResult22.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Outstanding Inferential Reasoning!</div>
+            <div>The passage logically implies that hardware alone is insufficient; infrastructure and education are required.</div>
+        `;
+    } else if (val === "") {
+        engResult22.className = "test-result wrong";
+        engResult22.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult22.className = "test-result wrong";
+        engResult22.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>The correct logical inference is that <strong>Hardware distribution must be accompanied by robust infrastructure and education to succeed.</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

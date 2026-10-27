@@ -1,0 +1,620 @@
+{% extends "base.html" %}
+
+{% block title %}
+Geometrical Optics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-lightbulb"></i>
+            Geometrical Optics & Ray Tracing
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering the principles of light propagation, reflection, refraction, 
+            Snell's Law, total internal reflection, spherical mirrors, image formation, and thin lens optics.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#reflection">Reflection</a>
+        <a href="#refraction">Refraction & Snell</a>
+        <a href="#tir">Total Internal Reflection</a>
+        <a href="#mirrors">Spherical Mirrors</a>
+        <a href="#lenses">Thin Lenses</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Geometrical Optics</h2>
+        </div>
+        <p>
+            Geometrical optics (or ray optics) is the approximation in physics where light is modeled as imaginary straight-line rays 
+            traveling through space. This approximation is valid when the physical objects and apertures encountered by the light 
+            are much larger than the wavelength of the light, allowing wave diffraction effects to be ignored.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Light rays travel in straight lines in a homogeneous, isotropic medium and obey the laws of reflection and refraction 
+            when interacting with optical boundaries.
+        </div>
+    </section>
+
+    <!-- 02 REFLECTION -->
+    <section class="phys-section" id="reflection">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Laws of Reflection</h2>
+        </div>
+        <p>
+            When a ray of light strikes a smooth reflective surface (such as a flat mirror), it bounces off according to two strict geometric rules:
+        </p>
+        <ul>
+            <li><strong>First Law:</strong> The incident ray, the reflected ray, and the normal line perpendicular to the surface at the point of incidence all lie in the exact same plane.</li>
+            <li><strong>Second Law:</strong> The angle of reflection (theta<sub>r</sub>) measured relative to the surface normal is always equal to the angle of incidence (theta<sub>i</sub>):
+                <br><strong>Angle of Reflection = Angle of Incidence</strong> (theta<sub>r</sub> = theta<sub>i</sub>).</li>
+            <li><strong>Plane Mirror Images:</strong> Images formed by flat mirrors are virtual, upright, located exactly as far behind the mirror 
+                as the object is in front of it, and exhibit lateral inversion (left-right reversal).</li>
+        </ul>
+    </section>
+
+    <!-- 03 REFRACTION & SNELL -->
+    <section class="phys-section" id="refraction">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Refraction and Snell's Law</h2>
+        </div>
+        <p>
+            When light travels from one transparent medium into another with a different optical density, its speed changes, 
+            causing the light ray to bend at the boundary. This phenomenon is known as <strong>refraction</strong>.
+        </p>
+        <ul>
+            <li><strong>Index of Refraction (n):</strong> Defined as the ratio of the speed of light in a vacuum (c) to the speed of light in the medium (v):
+                <br><strong>Refractive Index = Speed of Light in Vacuum / Speed of Light in Medium</strong> (n = c / v). (For vacuum, n = 1.00; for water, n approximately equal to 1.33; for glass, n approximately equal to 1.50).</li>
+            <li><strong>Snell's Law of Refraction:</strong> Relates the angles of incidence and refraction to the refractive indices of the two media:
+                <br><strong>Refractive Index 1 &times; sine(Angle of Incidence) = Refractive Index 2 &times; sine(Angle of Refraction)</strong><br>
+                (n<sub>1</sub> &times; sin(theta<sub>1</sub>) = n<sub>2</sub> &times; sin(theta<sub>2</sub>)).</li>
+        </ul>
+    </section>
+
+    <!-- 04 TOTAL INTERNAL REFLECTION -->
+    <section class="phys-section" id="tir">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Total Internal Reflection (TIR)</h2>
+        </div>
+        <p>
+            When light travels from a denser medium (higher refractive index n<sub>1</sub>) to a less dense medium (lower refractive index n<sub>2</sub>), 
+            the refracted ray bends away from the normal. As the angle of incidence increases, the angle of refraction reaches 90 degrees.
+        </p>
+        <ul>
+            <li><strong>Critical Angle (theta<sub>c</sub>):</strong> The specific angle of incidence that produces an angle of refraction of exactly 90 degrees:
+                <br><strong>Critical Angle = inverse sine of (Refractive Index of Outer Medium / Refractive Index of Inner Medium)</strong><br>
+                (theta<sub>c</sub> = arcsin(n<sub>2</sub> / n<sub>1</sub>)).</li>
+            <li><strong>Total Internal Reflection:</strong> If the angle of incidence exceeds the critical angle, no light refracts out into the second medium; 
+            instead, 100 percent of the light reflects internally. This principle powers fiber optic communication cables and diamond brilliance.</li>
+        </ul>
+    </section>
+
+    <!-- 05 SPHERICAL MIRRORS -->
+    <section class="phys-section" id="mirrors">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Spherical Mirrors</h2>
+        </div>
+        <p>
+            Spherical mirrors are polished reflective surfaces shaped like a section of a sphere. They are categorized into concave (converging) and convex (diverging) mirrors.
+        </p>
+        <ul>
+            <li><strong>Focal Length (f):</strong> For spherical mirrors of radius of curvature R, the focal length is equal to half the radius: 
+                <br><strong>Focal Length = Radius of Curvature / 2</strong> (f = R / 2).</li>
+            <li><strong>Mirror Equation:</strong> Relates object distance (d<sub>o</sub>), image distance (d<sub>i</sub>), and focal length (f):
+                <br><strong>(1 / Object Distance) + (1 / Image Distance) = (1 / Focal Length)</strong> ((1 / d<sub>o</sub>) + (1 / d<sub>i</sub>) = (1 / f)).</li>
+            <li><strong>Magnification (m):</strong> Defines the relative size and orientation of the formed image:
+                <br><strong>Magnification = Image Height / Object Height = - (Image Distance / Object Distance)</strong> (m = h<sub>i</sub> / h<sub>o</sub> = - (d<sub>i</sub> / d<sub>o</sub>)).</li>
+        </ul>
+    </section>
+
+    <!-- 06 THIN LENSES -->
+    <section class="phys-section" id="lenses">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Thin Lenses and Refraction</h2>
+        </div>
+        <p>
+            A thin lens is a transparent optical medium bounded by two spherical surfaces (or one flat and one spherical surface). 
+            Convex lenses converge incoming parallel light rays to a focal point, whereas concave lenses diverge them.
+        </p>
+        <ul>
+            <li><strong>Thin Lens Equation:</strong> Identical in mathematical form to the mirror equation:
+                <br><strong>(1 / Object Distance) + (1 / Image Distance) = (1 / Focal Length)</strong>.</li>
+            <li><strong>Lensmaker's Equation:</strong> Relates the focal length of a lens to its refractive index (n) and the radii of curvature of its two surfaces (R<sub>1</sub> and R<sub>2</sub>):
+                <br><strong>(1 / Focal Length) = (Refractive Index - 1) &times; ((1 / Radius 1) - (1 / Radius 2))</strong></li>
+            <li><strong>Lens Power (P):</strong> Measured in diopters (D) where focal length must be in meters: 
+                <br><strong>Power = 1 / Focal Length</strong> (P = 1 / f).</li>
+        </ul>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Interactive Optics Test</h2>
+        </div>
+        <p>Test your conceptual understanding of Snell's Law, critical angles, and lens equations.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Snell's Law Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    A light ray passes from air (refractive index n = 1.00) into water (refractive index n = 1.33) at an angle of incidence of 30 degrees. 
+                    What happens to the angle of refraction relative to the angle of incidence?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">The angle of refraction is smaller than the angle of incidence (light bends toward the normal)</option>
+                    <option value="wrong1">The angle of refraction is larger than the angle of incidence (light bends away from the normal)</option>
+                    <option value="wrong2">The angle of refraction is exactly equal to 30 degrees</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Snell's Law Calculation):</strong>
+            <p>A light ray traveling in air (n<sub>1</sub> = 1.00) strikes a flat glass block (n<sub>2</sub> = 1.50) at an angle of incidence of 45.0 degrees. 
+            Calculate the angle of refraction (theta<sub>2</sub>) inside the glass.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Snell's Law: n<sub>1</sub> * sin(theta<sub>1</sub>) = n<sub>2</sub> * sin(theta<sub>2</sub>).<br>
+                - Rearrange for sin(theta<sub>2</sub>): sin(theta<sub>2</sub>) = (n<sub>1</sub> / n<sub>2</sub>) * sin(theta<sub>1</sub>).<br>
+                - sin(theta<sub>2</sub>) = (1.00 / 1.50) &times; sin(45.0 degrees) = 0.6667 &times; 0.7071 = 0.4714.<br>
+                - Take inverse sine: theta<sub>2</sub> = arcsin(0.4714) approximately equal to <strong>28.1 degrees</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Thin Lens Image Formation):</strong>
+            <p>An object of height 4.0 cm is placed 30.0 cm in front of a converging thin convex lens having a focal length of f = 10.0 cm. 
+            Calculate: (a) the image distance (d<sub>i</sub>), and (b) the height of the formed image.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Image Distance (d<sub>i</sub>):</strong><br>
+                - Thin Lens Equation: (1 / d<sub>o</sub>) + (1 / d<sub>i</sub>) = (1 / f) implies (1 / d<sub>i</sub>) = (1 / f) - (1 / d<sub>o</sub>).<br>
+                - (1 / d<sub>i</sub>) = (1 / 10.0) - (1 / 30.0) = (3 / 30.0) - (1 / 30.0) = 2 / 30.0 = 1 / 15.0.<br>
+                - d<sub>i</sub> = <strong>+15.0 cm</strong> (real, inverted image formed on the opposite side of the lens).<br><br>
+                <strong>(b) Image Height (h<sub>i</sub>):</strong><br>
+                - Magnification m = - (d<sub>i</sub> / d<sub>o</sub>) = - (15.0 cm / 30.0 cm) = -0.50.<br>
+                - h<sub>i</sub> = m &times; h<sub>o</sub> = (-0.50) &times; (4.0 cm) = <strong>-2.0 cm</strong> (inverted image of height 2.0 cm).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Critical Angle Calculation):</span></strong>
+            <p>Calculate the critical angle for total internal reflection when light travels from crown glass (refractive index n<sub>1</sub> = 1.52) 
+            into surrounding air (refractive index n<sub>2</sub> = 1.00).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Critical Angle formula: theta<sub>c</sub> = arcsin(n<sub>2</sub> / n<sub>1</sub>).<br>
+                - Substitute values: theta<sub>c</sub> = arcsin(1.00 / 1.52) = arcsin(0.6579).<br>
+                - theta<sub>c</sub> approximately equal to <strong>41.1 degrees</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with ray tracing or lens aberrations?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down multi-lens optical systems, spherical aberration corrections, or chromatic dispersion formulas.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>When light travels from a less dense medium (air) into a denser medium (water), it bends toward the normal line, making the angle of refraction smaller than the angle of incidence.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>According to Snell's Law, when passing from air into water, light bends toward the normal, meaning the <strong>angle of refraction is smaller</strong> than the angle of incidence.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

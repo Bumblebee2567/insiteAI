@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nouns & Pronouns | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar { display: none; }
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 { margin: 0; font-size: 1.5rem; color: #f8fafc; }
+.eng-section h3 { color: #4aafe3; margin-top: 30px; font-size: 1.2rem; border-bottom: 1px solid var(--eng-border); padding-bottom: 6px; }
+.eng-section p, .eng-section li { color: #cbd5e1; line-height: 1.8; }
+.eng-section li { margin-bottom: 8px; }
+
+.eng-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.eng-info strong { color: #55b6e9; }
+
+.eng-table-wrapper { overflow-x: auto; margin-top: 20px; }
+.eng-table { width: 100%; border-collapse: collapse; min-width: 650px; }
+.eng-table th, .eng-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--eng-border); }
+.eng-table th { background: #081321; color: #4aafe3; font-size: .88rem; }
+.eng-table td { color: #cbd5e1; }
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top { padding: 18px 20px; border-bottom: 1px solid var(--eng-border); }
+.test-top h3 { margin: 0; color: white; font-size: 1.1rem; }
+.test-body { padding: 22px; }
+.test-question { color: #cbd5e1; margin-bottom: 15px; line-height: 1.7; }
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+.test-result-title { font-weight: 700; margin-bottom: 5px; }
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+}
+
+.exam-question strong { color: #4aafe3; font-size: 1.08rem; display: block; margin-bottom: 10px; }
+.exam-answer { margin-top: 12px; padding: 15px 18px; background: #060e18; border-left: 3px solid #2196d2; border-radius: 6px; color: #cbd5e1; line-height: 1.8; }
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+</style>
+
+<div class="eng-page">
+    <a href="{{ url_for('english_page') }}" class="eng-back"><i class="fa-solid fa-arrow-left"></i> Back to English Hub</a>
+
+    <header class="eng-header">
+        <h1><i class="fa-solid fa-font"></i> Nouns & Pronouns</h1>
+        <p>An exhaustive masterclass covering countable and uncountable nouns, irregular plurals, abstract categories, pronoun cases, and agreement rules for JAMB and WAEC.</p>
+    </header>
+
+    <nav class="eng-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#countable">Countable & Uncountable</a>
+        <a href="#abstract">Abstract & Collective</a>
+        <a href="#pronouns">Pronoun Case</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Introduction to Nouns & Pronouns</h2>
+        </div>
+        <p>Nouns serve as the foundational building blocks of English sentences, functioning as subjects, direct objects, indirect objects, and objects of prepositions. Pronouns act as vital substitutes for nouns to streamline communication and prevent redundant phrasing.</p>
+        <p>In standardized examinations like JAMB and WAEC, questions rigorously test exceptions in pluralization, uncountable noun constraints, and pronoun case selection.</p>
+        <div class="eng-info"><strong>Core Grammatical Principle:</strong> Every pronoun must correctly match its antecedent in gender, person, and number, while maintaining the correct syntactic case based on its function in the sentence.</div>
+    </section>
+
+    <section class="eng-section" id="countable">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Countable & Uncountable Nouns</h2>
+        </div>
+        <p>Distinguishing between countable and uncountable nouns is essential for determining correct quantifiers (such as much, many, few, little) and verb agreements.</p>
+        <ul>
+            <li><strong>Countable Nouns:</strong> Nouns that can be counted individually and possess distinct singular and plural forms (e.g., book/books, child/children).</li>
+            <li><strong>Uncountable Nouns:</strong> Nouns that cannot be counted individually. They do not take plural forms with "-s" and cannot be preceded by indefinite articles like "a" or "an". Common exam traps include words like <em>furniture, equipment, luggage, advice, information, stationery,</em> and <em>news</em>.</li>
+        </ul>
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <tr><th>Singular Noun</th><th>Plural Form</th><th>JAMB / WAEC Exam Note</th></tr>
+                <tr><td>Datum</td><td><strong>Data</strong></td><td>"Data" is strictly plural; "datum" is singular. (e.g., *The data <strong>are</strong> accurate*).</td></tr>
+                <tr><td>Formula</td><td><strong>Formulae</strong> / Formulas</td><td>Both are accepted, but *formulae* is frequently preferred in formal academic tests.</td></tr>
+                <tr><td>Phenomenon</td><td><strong>Phenomena</strong></td><td>Avoid adding an 's' (*phenomenons* is grammatically incorrect).</td></tr>
+                <tr><td>Criterion</td><td><strong>Criteria</strong></td><td>*Criteria* is plural; *criterion* is singular.</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <section class="eng-section" id="abstract">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Abstract & Collective Nouns</h2>
+        </div>
+        <p>Nouns also encompass intangible qualities and grouped entities that require careful grammatical handling:</p>
+        <ul>
+            <li><strong>Abstract Nouns:</strong> Represent ideas, qualities, or states that cannot be perceived by the five physical senses (e.g., bravery, wisdom, childhood, honesty).</li>
+            <li><strong>Collective Nouns:</strong> Represent a group of individuals or things acting as a single unit (e.g., team, committee, family, audience, herd). In exam questions, they take singular verbs when acting collectively, but plural verbs if members act individually.</li>
+        </ul>
+    </section>
+
+    <section class="eng-section" id="pronouns">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Pronoun Case & Usage</h2>
+        </div>
+        <p>Examiners love testing whether you know when to use subjective or objective pronoun cases:</p>
+        <ul>
+            <li><strong>Subjective (Nominative) Case:</strong> Used when the pronoun is the doer (subject) of the verb: I, he, she, we, they, who. (e.g., *<strong>She</strong> and I went to the library.*)</li>
+            <li><strong>Objective Case:</strong> Used when the pronoun is the receiver of the action or follows a preposition: me, him, her, us, them, whom. (e.g., *The book was given to <strong>me</strong>.*)</li>
+        </ul>
+        <div class="eng-info"><strong>The Preposition Rule:</strong> Always use objective pronouns after prepositions like between, among, to, with, for.<br>❌ *Incorrect:* The secret is strictly between you and <strong>I</strong>.<br>✔️ *Correct:* The secret is strictly between you and <strong>me</strong>.</div>
+    </section>
+
+    <section class="eng-section" id="test">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Interactive Grammar Test</h2>
+        </div>
+        <p>Test your understanding of pronoun case and noun rules tested in past questions.</p>
+        <div class="test-box">
+            <div class="test-top"><h3>JAMB Objective Test Item</h3></div>
+            <div class="test-body">
+                <div class="test-question">Choose the correct option to complete the sentence:<br><em>"The secret of the project was shared strictly between you and _________."</em></div>
+                <select class="test-select" id="engAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">I</option>
+                    <option value="wrong2">we</option>
+                    <option value="correct">me</option>
+                    <option value="wrong3">he</option>
+                </select><br>
+                <button class="test-button" id="checkEng"><i class="fa-solid fa-check"></i> Check Answer</button>
+                <div class="test-result" id="engResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+        <div class="exam-question">
+            <strong>Problem 1 (Uncountable Nouns & Quantifiers):</strong>
+            <p>Identify the grammatical error in the following sentence and provide the correct version: *"The manager gave us many valuable advices regarding our office stationery."*</p>
+            <div class="exam-answer"><strong>Detailed Step-by-Step Solution:</strong><br>- <strong>Identify Errors:</strong> 1. The word <em>"advices"</em> is incorrect because "advice" is an uncountable noun and can never take a plural "-s". 2. The quantifier <em>"many"</em> is used with countable nouns. Uncountable nouns must take <em>"much"</em> or <em>"a lot of"</em>.<br>- <strong>Correct Version:</strong> *"The manager gave us <strong>much valuable advice</strong> regarding our office stationery."*</div>
+        </div>
+        <div class="exam-question">
+            <strong>Problem 2 (Pronoun Case after Prepositions):</strong>
+            <p>Explain why the sentence *"The principal commended Chinedu and I for our brilliant performance"* is grammatically flawed in formal exams.</p>
+            <div class="exam-answer"><strong>Detailed Step-by-Step Explanation:</strong><br>- <strong>Syntactic Role:</strong> The compound object follows the verb "commended". Transitive verbs require the <strong>objective case</strong>.<br>- <strong>Correction:</strong> While "Chinedu" remains unchanged, the subjective pronoun "I" must change to its objective counterpart, <strong>"me"</strong>.<br>- <strong>Correct Version:</strong> *"The principal commended Chinedu and <strong>me</strong> for our brilliant performance."*</div>
+        </div>
+    </section>
+
+    <div class="ask-ai">
+        <h3>Need further assistance with English grammar or exam prep?</h3>
+        <p style="color:var(--eng-muted); margin:0 0 16px;">Ask Insite AI to explain complex clause structures, concord rules, or provide more JAMB practice questions.</p>
+        <a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments"></i> Ask Insite AI</a>
+    </div>
+</div>
+
+<script>
+document.getElementById("checkEng").addEventListener("click", function () {
+    const val = document.getElementById("engAnswer").value;
+    const res = document.getElementById("engResult");
+    res.style.display = "block";
+    if (val === "correct") {
+        res.className = "test-result correct";
+        res.innerHTML = '<div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>Prepositions like "between" must be followed by objective case pronouns ("me"), never subjective pronouns ("I").';
+    } else if (val === "") {
+        res.className = "test-result wrong";
+        res.innerHTML = '<div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>Please choose one of the options provided before checking.';
+    } else {
+        res.className = "test-result wrong";
+        res.innerHTML = '<div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>Remember that prepositions require the objective pronoun case. The correct option is <strong>me</strong>.';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chemistry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.container-chemistry{
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.header h1{
+    color:white;
+    font-weight:700;
+}
+
+.header p{
+    color:#9ca3af;
+}
+
+.topic-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.topic-card{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:15px;
+    padding:22px;
+    text-decoration:none;
+    color:white;
+    transition:.25s;
+}
+
+.topic-card:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+    color:white;
+}
+
+.topic-card i{
+    font-size:28px;
+    color:#3b82f6;
+    margin-bottom:12px;
+}
+
+.topic-card h4{
+    margin-bottom:8px;
+}
+
+.topic-card p{
+    color:#9ca3af;
+    font-size:.9rem;
+}
+
+@media(max-width:768px){
+
+    .topic-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+<div class="container-chemistry">
+    <div class="header">
+        <h1>Chemistry</h1>
+        <p>Select a topic to begin learning.</p>
+    </div>
+
+    <div class="topic-grid">
+
+    
+    <a href="{{ url_for('atomic') }}" class="topic-card">
+        <i class="fa-solid fa-atom"></i>
+        <h4>Atomic Structure</h4>
+        <p>Atoms, subatomic particles, isotopes and electronic structure.</p>
+    </a>
+
+    <a href="{{ url_for('periodic') }}" class="topic-card">
+        <i class="fa-solid fa-table-cells"></i>
+        <h4>Periodic Table</h4>
+        <p>Elements, groups, periods and periodic trends.</p>
+    </a>
+
+    <a href="{{ url_for('bonding') }}" class="topic-card">
+        <i class="fa-solid fa-link"></i>
+        <h4>Chemical Bonding</h4>
+        <p>Ionic, covalent and metallic bonding.</p>
+    </a>
+
+    <a href="{{ url_for('formulae') }}" class="topic-card">
+        <i class="fa-solid fa-flask"></i>
+        <h4>Chemical Formulae</h4>
+        <p>Symbols, formulae, valency and chemical equations.</p>
+    </a>
+
+    <a href="{{ url_for('mole') }}" class="topic-card">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <h4>Mole Concept</h4>
+        <p>Moles, molar mass, Avogadro's constant and calculations.</p>
+    </a>
+
+    <a href="{{ url_for('stoichiometry') }}" class="topic-card">
+        <i class="fa-solid fa-calculator"></i>
+        <h4>Stoichiometry</h4>
+        <p>Mole ratios, reacting masses, yields and chemical calculations.</p>
+    </a>
+
+    <a href="{{ url_for('matter') }}" class="topic-card">
+        <i class="fa-solid fa-cubes"></i>
+        <h4>States of Matter</h4>
+        <p>Solids, liquids, gases and changes of state.</p>
+    </a>
+
+    <a href="{{ url_for('gas') }}" class="topic-card">
+        <i class="fa-solid fa-wind"></i>
+        <h4>Gas Laws</h4>
+        <p>Pressure, volume, temperature and gas calculations.</p>
+    </a>
+
+    <a href="{{ url_for('solutions') }}" class="topic-card">
+        <i class="fa-solid fa-droplet"></i>
+        <h4>Solutions</h4>
+        <p>Solubility, concentration, dilution and solution preparation.</p>
+    </a>
+
+    <a href="{{ url_for('abs') }}" class="topic-card">
+        <i class="fa-solid fa-vial"></i>
+        <h4>Acids, Bases & Salts</h4>
+        <p>Properties, reactions, neutralisation and salt preparation.</p>
+    </a>
+
+    <a href="{{ url_for('ph') }}" class="topic-card">
+        <i class="fa-solid fa-chart-simple"></i>
+        <h4>pH & Indicators</h4>
+        <p>pH scale, indicators, strong and weak acids and bases.</p>
+    </a>
+
+    <a href="{{ url_for('electro') }}" class="topic-card">
+        <i class="fa-solid fa-bolt"></i>
+        <h4>Electrochemistry</h4>
+        <p>Electrolysis, electrodes, cells and electricalchemistry.</p>
+    </a>
+
+    <a href="{{ url_for('redox') }}" class="topic-card">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        <h4>Redox Reactions</h4>
+        <p>Oxidation, reduction, oxidation numbers and electron transfer.</p>
+    </a>
+
+    <a href="{{ url_for('energy') }}" class="topic-card">
+        <i class="fa-solid fa-fire"></i>
+        <h4>Energy Changes</h4>
+        <p>Exothermic and endothermic reactions and energy profiles.</p>
+    </a>
+
+    <a href="{{ url_for('rr') }}" class="topic-card">
+        <i class="fa-solid fa-gauge-high"></i>
+        <h4>Reaction Rates</h4>
+        <p>Factors affecting reaction rates, catalysts and collision theory.</p>
+    </a>
+
+    <a href="{{ url_for('equal') }}" class="topic-card">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <h4>Chemical Equilibrium</h4>
+        <p>Reversible reactions, equilibrium and Le Chatelier's principle.</p>
+    </a>
+
+    <a href="{{ url_for('organic') }}" class="topic-card">
+        <i class="fa-solid fa-leaf"></i>
+        <h4>Organic Chemistry</h4>
+        <p>Carbon compounds, homologous series and organic reactions.</p>
+    </a>
+
+    <a href="{{ url_for('hc') }}" class="topic-card">
+        <i class="fa-solid fa-hexagon-nodes"></i>
+        <h4>Hydrocarbons</h4>
+        <p>Alkanes, alkenes, alkynes and their reactions.</p>
+    </a>
+
+    <a href="{{ url_for('fc') }}" class="topic-card">
+        <i class="fa-solid fa-flask-vial"></i>
+        <h4>Functional Groups</h4>
+        <p>Alcohols, acids, esters, aldehydes, ketones and amines.</p>
+    </a>
+
+    <a href="{{ url_for('polymers') }}" class="topic-card">
+        <i class="fa-solid fa-diagram-project"></i>
+        <h4>Polymers</h4>
+        <p>Monomers, polymerisation and common synthetic polymers.</p>
+    </a>
+
+    <a href="{{ url_for('metals') }}" class="topic-card">
+        <i class="fa-solid fa-gear"></i>
+        <h4>Metals</h4>
+        <p>Properties, reactivity, extraction, alloys and corrosion.</p>
+    </a>
+
+    <a href="{{ url_for('ec') }}" class="topic-card">
+        <i class="fa-solid fa-cloud"></i>
+        <h4>Environmentalchemistry</h4>
+        <p>Air pollution, water pollution, greenhouse gases and ozone.</p>
+    </a>
+
+    <a href="{{ url_for('cp') }}" class="topic-card">
+        <i class="fa-solid fa-microscope"></i>
+        <h4>Chemistry Practical</h4>
+        <p>Laboratory techniques, observations, tests and experiments.</p>
+    </a>
+
+    <a href="{{ url_for('calc') }}" class="topic-card">
+        <i class="fa-solid fa-brain"></i>
+        <h4>Chemistry Problem Solving</h4>
+        <p>Calculations, equations, word problems and exam questions.</p>
+    </a>
+    
+
+    </div>
+</div>
+
+{% endblock %}

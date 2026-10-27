@@ -1,0 +1,2093 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+Algebra | Mathematics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================================
+   PAGE
+================================ */
+
+.algebra-page {
+    min-height: 100vh;
+    background: #0b0f19;
+    color: #f1f5f9;
+    padding-bottom: 80px;
+}
+
+
+/* ================================
+   BACK BUTTON
+================================ */
+
+.lesson-back {
+    padding: 25px 0 10px;
+}
+
+.lesson-back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    padding: 9px 15px;
+    border-radius: 10px;
+
+    transition: .25s ease;
+}
+
+.lesson-back a:hover {
+    background: rgba(255,255,255,.08);
+    color: white;
+    transform: translateX(-3px);
+}
+
+
+/* ================================
+   HERO
+================================ */
+
+.algebra-hero {
+    padding: 45px 20px;
+    text-align: center;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(13,110,253,.22),
+            rgba(111,66,193,.18)
+        );
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    margin-bottom: 35px;
+}
+
+.algebra-hero .icon {
+    width: 75px;
+    height: 75px;
+
+    margin: auto;
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #111827;
+
+    font-size: 32px;
+    color: #60a5fa;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.algebra-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.algebra-hero p {
+    max-width: 750px;
+    margin: auto;
+
+    color: #aeb8c8;
+    font-size: 1.05rem;
+}
+
+
+/* ================================
+   CONTENT NAVIGATION
+================================ */
+
+.lesson-nav {
+    position: sticky;
+    top: 90px;
+
+    background: #111827;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 16px;
+
+    padding: 20px;
+}
+
+.lesson-nav h5 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.lesson-nav a {
+    display: block;
+
+    text-decoration: none;
+
+    color: #aeb8c8;
+
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    margin-bottom: 5px;
+
+    transition: .2s;
+}
+
+.lesson-nav a:hover {
+    background: rgba(59,130,246,.15);
+    color: #60a5fa;
+}
+
+
+/* ================================
+   LESSON SECTION
+================================ */
+
+.lesson-section {
+    background: #111827;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    border-radius: 18px;
+
+    padding: clamp(22px, 4vw, 35px);
+
+    margin-bottom: 28px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.section-number {
+    min-width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    font-weight: 800;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-weight: 750;
+}
+
+
+/* ================================
+   TOPIC
+================================ */
+
+.topic {
+    padding: 20px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.topic:last-child {
+    border-bottom: none;
+}
+
+.topic h3 {
+    color: #60a5fa;
+
+    font-size: 1.3rem;
+
+    margin-bottom: 12px;
+}
+
+.topic h4 {
+    margin-top: 20px;
+    color: #e2e8f0;
+}
+
+.topic p,
+.topic li {
+    color: #c1cad8;
+    line-height: 1.75;
+}
+
+.topic ul {
+    padding-left: 25px;
+}
+
+
+/* ================================
+   EXAMPLES
+================================ */
+
+.example-box {
+    background: #0b1220;
+
+    border-left: 4px solid #3b82f6;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    border-radius: 10px;
+}
+
+.example-box strong {
+    color: #60a5fa;
+}
+
+
+/* ================================
+   TIP
+================================ */
+
+.tip-box {
+    background: rgba(245,158,11,.08);
+
+    border-left: 4px solid #f59e0b;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    border-radius: 10px;
+}
+
+.tip-box strong {
+    color: #fbbf24;
+}
+
+
+/* ================================
+   WARNING
+================================ */
+
+.warning-box {
+    background: rgba(239,68,68,.08);
+
+    border-left: 4px solid #ef4444;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    border-radius: 10px;
+}
+
+
+/* ================================
+   FORMULA
+================================ */
+
+.formula {
+    background: #020617;
+
+    padding: 18px;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    font-size: 1.15rem;
+
+    color: #93c5fd;
+
+    margin: 18px 0;
+
+    overflow-x: auto;
+}
+
+
+/* ================================
+   TABLE
+================================ */
+
+.math-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin: 20px 0;
+}
+
+.math-table th,
+.math-table td {
+    padding: 12px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    text-align: left;
+}
+
+.math-table th {
+    background: #1e293b;
+    color: #93c5fd;
+}
+
+.math-table td {
+    color: #cbd5e1;
+}
+
+
+/* ================================
+   PRACTICE
+================================ */
+
+.practice-card {
+    background: #0b1220;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 991px) {
+
+    .lesson-nav {
+        position: static;
+        margin-bottom: 25px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .algebra-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .algebra-hero {
+        padding: 35px 15px;
+    }
+
+    .lesson-section {
+        padding: 20px 16px;
+    }
+
+    .topic h3 {
+        font-size: 1.15rem;
+    }
+
+}
+
+</style>
+
+
+<div class="algebra-page">
+
+<div class="container">
+
+
+<!-- ================================
+     BACK BUTTON
+================================ -->
+
+<div class="lesson-back">
+
+    <a href="{{ url_for('math_page') }}">
+
+        <i class="fas fa-arrow-left"></i>
+
+        Back to Mathematics
+
+    </a>
+
+</div>
+
+
+<!-- ================================
+     HERO
+================================ -->
+
+<section class="algebra-hero">
+
+    <div class="icon">
+
+        <i class="fas fa-square-root-variable"></i>
+
+    </div>
+
+    <h1>Algebra</h1>
+
+    <p>
+        Learn how letters, numbers and mathematical rules work together
+        to represent unknown quantities and solve problems.
+    </p>
+
+</section>
+
+
+<div class="row">
+
+
+<!-- ================================
+     CONTENT NAV
+================================ -->
+
+<div class="col-lg-3">
+
+<div class="lesson-nav">
+
+    <h5>
+        <i class="fas fa-list"></i>
+        Contents
+    </h5>
+
+    <a href="#expressions">
+        1. Expressions & Terms
+    </a>
+
+    <a href="#equations">
+        2. Equations & Inequalities
+    </a>
+
+    <a href="#formulae">
+        3. Formulae & Manipulation
+    </a>
+
+    <a href="#advanced-equations">
+        4. Simultaneous & Quadratic Equations
+    </a>
+
+    <a href="#sequences">
+        5. Sequences, Functions & Graphs
+    </a>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     MAIN CONTENT
+================================ -->
+
+<div class="col-lg-9">
+
+
+<!-- =========================================
+     SECTION 1
+========================================= -->
+
+<section class="lesson-section" id="expressions">
+
+<div class="section-heading">
+
+    <div class="section-number">
+        1
+    </div>
+
+    <h2>Algebraic Expressions & Terms</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>What Is Algebra?</h3>
+
+<p>
+Algebra is a branch of Mathematics that uses letters and symbols to
+represent numbers and quantities.
+</p>
+
+<p>
+Instead of always working with known numbers, algebra allows us to
+work with unknown values.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+If you do not know a number, you can represent it with <strong>x</strong>.
+</p>
+
+<p>
+If you add 5 to that number, the expression becomes:
+</p>
+
+<strong>x + 5</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Variables</h3>
+
+<p>
+A variable is a letter or symbol used to represent an unknown or changing
+quantity.
+</p>
+
+<p>
+Common variables include:
+</p>
+
+<p>
+x, y, a, b, n and t.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+If x represents the number of books a student has, then:
+</p>
+
+<strong>x + 3</strong>
+
+<p>
+represents three more books than the student originally had.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Constants</h3>
+
+<p>
+A constant is a value that does not change.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+In:
+</p>
+
+<strong>3x + 7</strong>
+
+<p>
+7 is the constant.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Coefficients</h3>
+
+<p>
+A coefficient is the number multiplying a variable.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+In:
+</p>
+
+<strong>5x</strong>
+
+<p>
+5 is the coefficient of x.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Terms</h3>
+
+<p>
+Terms are parts of an algebraic expression separated by addition or
+subtraction signs.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Consider:
+</p>
+
+<strong>4x + 7y - 3</strong>
+
+<p>
+The terms are:
+</p>
+
+<ul>
+
+<li>4x</li>
+
+<li>7y</li>
+
+<li>-3</li>
+
+</ul>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Like Terms</h3>
+
+<p>
+Like terms contain the same variables raised to the same powers.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+3x and 7x are like terms.
+</p>
+
+<p>
+4y² and 9y² are like terms.
+</p>
+
+<p>
+But x and x² are not like terms.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Collecting Like Terms</h3>
+
+<p>
+Like terms can be combined by adding or subtracting their coefficients.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+3x + 5x
+</p>
+
+<p>
+Add the coefficients:
+</p>
+
+<strong>
+8x
+</strong>
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+7x + 3y - 2x + 5y
+</p>
+
+<p>
+Collect the x terms:
+</p>
+
+<strong>
+7x - 2x = 5x
+</strong>
+
+<p>
+Collect the y terms:
+</p>
+
+<strong>
+3y + 5y = 8y
+</strong>
+
+<p>
+Therefore:
+</p>
+
+<strong>
+5x + 8y
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Expanding Brackets</h3>
+
+<p>
+To expand a bracket, multiply the term outside the bracket by every
+term inside it.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+3(x + 4)
+</p>
+
+<p>
+Multiply 3 by both terms:
+</p>
+
+<p>
+3 × x = 3x
+</p>
+
+<p>
+3 × 4 = 12
+</p>
+
+<strong>
+3x + 12
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Factorising</h3>
+
+<p>
+Factorising is the reverse of expanding brackets.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+6x + 12
+</p>
+
+<p>
+The highest common factor is 6.
+</p>
+
+<strong>
+6(x + 2)
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 2
+========================================= -->
+
+<section class="lesson-section" id="equations">
+
+<div class="section-heading">
+
+<div class="section-number">
+2
+</div>
+
+<h2>Linear Equations & Inequalities</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>What Is an Equation?</h3>
+
+<p>
+An equation states that two mathematical expressions are equal.
+</p>
+
+<div class="formula">
+
+Left side = Right side
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+x + 5 = 12
+</p>
+
+<p>
+The equation tells us that x plus 5 equals 12.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Solving Simple Equations</h3>
+
+<p>
+The goal is to find the value of the unknown variable.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+x + 7 = 15
+</p>
+
+<p>
+Subtract 7 from both sides:
+</p>
+
+<p>
+x = 15 - 7
+</p>
+
+<strong>
+x = 8
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Equations Involving Multiplication</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+4x = 20
+</p>
+
+<p>
+Divide both sides by 4:
+</p>
+
+<strong>
+x = 5
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Equations with Brackets</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+3(x + 2) = 15
+</p>
+
+<p>
+Divide by 3:
+</p>
+
+<p>
+x + 2 = 5
+</p>
+
+<p>
+Subtract 2:
+</p>
+
+<strong>
+x = 3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Equations with Fractions</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+x/3 = 5
+</p>
+
+<p>
+Multiply both sides by 3:
+</p>
+
+<strong>
+x = 15
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Changing the Subject of a Formula</h3>
+
+<p>
+Changing the subject means rearranging a formula so that a different
+variable appears alone.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Make x the subject:
+</p>
+
+<strong>
+y = x + 5
+</strong>
+
+<p>
+Subtract 5 from both sides:
+</p>
+
+<strong>
+x = y - 5
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Inequalities</h3>
+
+<p>
+Inequalities compare quantities that are not necessarily equal.
+</p>
+
+<table class="math-table">
+
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+
+<tr>
+<td>&gt;</td>
+<td>Greater than</td>
+</tr>
+
+<tr>
+<td>&lt;</td>
+<td>Less than</td>
+</tr>
+
+<tr>
+<td>≥</td>
+<td>Greater than or equal to</td>
+</tr>
+
+<tr>
+<td>≤</td>
+<td>Less than or equal to</td>
+</tr>
+
+</table>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+x + 3 &gt; 7
+</p>
+
+<p>
+Subtract 3:
+</p>
+
+<strong>
+x &gt; 4
+</strong>
+
+</div>
+
+<div class="warning-box">
+
+<strong>Important:</strong>
+
+<p>
+When multiplying or dividing an inequality by a negative number,
+the inequality sign reverses.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 3
+========================================= -->
+
+<section class="lesson-section" id="formulae">
+
+<div class="section-heading">
+
+<div class="section-number">
+3
+</div>
+
+<h2>Formulae & Algebraic Manipulation</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Substitution</h3>
+
+<p>
+Substitution means replacing a variable with a known value.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+If:
+</p>
+
+<strong>
+y = 3x + 2
+</strong>
+
+<p>
+and x = 4:
+</p>
+
+<p>
+y = 3(4) + 2
+</p>
+
+<p>
+y = 12 + 2
+</p>
+
+<strong>
+y = 14
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Algebraic Formulae</h3>
+
+<p>
+A formula is a mathematical rule showing the relationship between
+different quantities.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Area of a rectangle:
+</p>
+
+<div class="formula">
+A = lw
+</div>
+
+<p>
+where l is length and w is width.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Changing the Subject</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Given:
+</p>
+
+<strong>
+A = lw
+</strong>
+
+<p>
+Make l the subject.
+</p>
+
+<p>
+Divide both sides by w:
+</p>
+
+<strong>
+l = A/w
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Indices in Algebra</h3>
+
+<p>
+Indices describe repeated multiplication.
+</p>
+
+<div class="formula">
+
+x² = x × x
+
+</div>
+
+<p>
+Important laws include:
+</p>
+
+<div class="formula">
+
+xᵃ × xᵇ = xᵃ⁺ᵇ
+
+<br><br>
+
+xᵃ ÷ xᵇ = xᵃ⁻ᵇ
+
+<br><br>
+
+(xᵃ)ᵇ = xᵃᵇ
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Algebraic Fractions</h3>
+
+<p>
+Algebraic fractions contain variables in the numerator or denominator.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Simplify:
+</p>
+
+<strong>
+6x / 9x
+</strong>
+
+<p>
+Cancel common factors:
+</p>
+
+<strong>
+2/3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Expanding Double Brackets</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+(x + 2)(x + 3)
+</p>
+
+<p>
+Multiply each term:
+</p>
+
+<p>
+x × x = x²
+</p>
+
+<p>
+x × 3 = 3x
+</p>
+
+<p>
+2 × x = 2x
+</p>
+
+<p>
+2 × 3 = 6
+</p>
+
+<p>
+Therefore:
+</p>
+
+<strong>
+x² + 5x + 6
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Difference of Two Squares</h3>
+
+<div class="formula">
+
+a² - b² = (a-b)(a+b)
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+x² - 25
+</p>
+
+<p>
+Since 25 = 5²:
+</p>
+
+<strong>
+(x - 5)(x + 5)
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 4
+========================================= -->
+
+<section class="lesson-section" id="advanced-equations">
+
+<div class="section-heading">
+
+<div class="section-number">
+4
+</div>
+
+<h2>Simultaneous & Quadratic Equations</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Simultaneous Equations</h3>
+
+<p>
+Simultaneous equations are two or more equations containing the same
+unknown variables.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+x + y = 10
+</p>
+
+<p>
+x - y = 2
+</p>
+
+<p>
+Add the equations:
+</p>
+
+<p>
+2x = 12
+</p>
+
+<strong>
+x = 6
+</strong>
+
+<p>
+Substitute into x + y = 10:
+</p>
+
+<p>
+6 + y = 10
+</p>
+
+<strong>
+y = 4
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Methods of Solving Simultaneous Equations</h3>
+
+<ul>
+
+<li>Substitution</li>
+
+<li>Elimination</li>
+
+<li>Graphical method</li>
+
+</ul>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Quadratic Expressions</h3>
+
+<p>
+A quadratic expression contains a variable raised to the power of 2.
+</p>
+
+<div class="example-box">
+
+<strong>Examples:</strong>
+
+<p>
+x² + 5x + 6
+</p>
+
+<p>
+2x² - 3x + 1
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Factorising Quadratics</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Factorise:
+</p>
+
+<strong>
+x² + 5x + 6
+</strong>
+
+<p>
+Find two numbers that multiply to 6 and add to 5.
+</p>
+
+<p>
+2 and 3.
+</p>
+
+<strong>
+(x + 2)(x + 3)
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Solving Quadratic Equations by Factorisation</h3>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Solve:
+</p>
+
+<strong>
+x² + 5x + 6 = 0
+</strong>
+
+<p>
+Factorise:
+</p>
+
+<strong>
+(x + 2)(x + 3) = 0
+</strong>
+
+<p>
+Therefore:
+</p>
+
+<p>
+x + 2 = 0
+</p>
+
+<p>
+or
+</p>
+
+<p>
+x + 3 = 0
+</p>
+
+<strong>
+x = -2 or x = -3
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Quadratic Formula</h3>
+
+<p>
+When factorisation is difficult, the quadratic formula can be used.
+</p>
+
+<div class="formula">
+
+x = (-b ± √(b² - 4ac)) / 2a
+
+</div>
+
+<p>
+For an equation in the form:
+</p>
+
+<div class="formula">
+
+ax² + bx + c = 0
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>The Discriminant</h3>
+
+<p>
+The discriminant is:
+</p>
+
+<div class="formula">
+
+b² - 4ac
+
+</div>
+
+<p>
+It helps determine the number of real solutions of a quadratic equation.
+</p>
+
+<table class="math-table">
+
+<tr>
+<th>Discriminant</th>
+<th>Solutions</th>
+</tr>
+
+<tr>
+<td>&gt; 0</td>
+<td>Two distinct real solutions</td>
+</tr>
+
+<tr>
+<td>= 0</td>
+<td>One repeated real solution</td>
+</tr>
+
+<tr>
+<td>&lt; 0</td>
+<td>No real solutions</td>
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     SECTION 5
+========================================= -->
+
+<section class="lesson-section" id="sequences">
+
+<div class="section-heading">
+
+<div class="section-number">
+5
+</div>
+
+<h2>Sequences, Functions & Graphs</h2>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Sequences</h3>
+
+<p>
+A sequence is an ordered list of numbers following a particular pattern.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+2, 4, 6, 8, 10, ...
+</p>
+
+<p>
+The pattern is adding 2 each time.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Arithmetic Sequences</h3>
+
+<p>
+An arithmetic sequence has a constant difference between consecutive terms.
+</p>
+
+<div class="formula">
+
+aₙ = a₁ + (n - 1)d
+
+</div>
+
+<p>
+where:
+</p>
+
+<ul>
+
+<li>aₙ = nth term</li>
+
+<li>a₁ = first term</li>
+
+<li>n = term number</li>
+
+<li>d = common difference</li>
+
+</ul>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+Find the 10th term of:
+</p>
+
+<strong>
+3, 6, 9, 12, ...
+</strong>
+
+<p>
+First term = 3
+</p>
+
+<p>
+Common difference = 3
+</p>
+
+<p>
+Therefore:
+</p>
+
+<p>
+a₁₀ = 3 + (10 - 1)(3)
+</p>
+
+<strong>
+a₁₀ = 30
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Functions</h3>
+
+<p>
+A function is a rule that connects an input to an output.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+f(x) = 2x + 1
+</p>
+
+<p>
+If x = 3:
+</p>
+
+<p>
+f(3) = 2(3) + 1
+</p>
+
+<strong>
+f(3) = 7
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Coordinates</h3>
+
+<p>
+A point on a coordinate plane is written as:
+</p>
+
+<div class="formula">
+
+(x, y)
+
+</div>
+
+<p>
+The first number represents the horizontal position.
+The second represents the vertical position.
+</p>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+The point (3, 5) means:
+</p>
+
+<p>
+Move 3 units along the x-axis and 5 units upward.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Linear Graphs</h3>
+
+<p>
+A straight-line graph can be written in the form:
+</p>
+
+<div class="formula">
+
+y = mx + c
+
+</div>
+
+<p>
+where m represents the gradient and c represents the y-intercept.
+</p>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Gradient</h3>
+
+<p>
+The gradient measures how steep a line is.
+</p>
+
+<div class="formula">
+
+m = (y₂ - y₁) / (x₂ - x₁)
+
+</div>
+
+<div class="example-box">
+
+<strong>Example:</strong>
+
+<p>
+For points (1,2) and (3,6):
+</p>
+
+<p>
+m = (6 - 2)/(3 - 1)
+</p>
+
+<p>
+m = 4/2
+</p>
+
+<strong>
+m = 2
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="topic">
+
+<h3>Quadratic Graphs</h3>
+
+<p>
+A quadratic function produces a curved graph called a parabola.
+</p>
+
+<div class="formula">
+
+y = ax² + bx + c
+
+</div>
+
+<p>
+The value of a determines whether the parabola opens upward or downward.
+</p>
+
+</div>
+
+
+</section>
+
+
+<!-- ================================
+     SUMMARY
+================================ -->
+
+<section class="lesson-section">
+
+<div class="section-heading">
+
+<div class="section-number">
+✓
+</div>
+
+<h2>Quick Summary</h2>
+
+</div>
+
+<ul>
+
+<li>Variables represent unknown or changing values.</li>
+
+<li>Constants remain fixed.</li>
+
+<li>Coefficients multiply variables.</li>
+
+<li>Like terms can be collected together.</li>
+
+<li>Brackets can be expanded using multiplication.</li>
+
+<li>Factorisation is the reverse of expansion.</li>
+
+<li>Equations can be solved by performing the same operation on both sides.</li>
+
+<li>Inequalities compare quantities.</li>
+
+<li>Formulae describe mathematical relationships.</li>
+
+<li>Simultaneous equations involve multiple equations.</li>
+
+<li>Quadratic equations contain a squared variable.</li>
+
+<li>Sequences follow mathematical patterns.</li>
+
+<li>Functions connect inputs and outputs.</li>
+
+<li>Graphs provide a visual representation of mathematical relationships.</li>
+
+</ul>
+
+</section>
+
+
+<!-- ================================
+     PRACTICE
+================================ -->
+
+<section class="lesson-section">
+
+<div class="section-heading">
+
+<div class="section-number">
+?
+</div>
+
+<h2>Practice Questions</h2>
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>1.</strong>
+
+Simplify:
+
+3x + 7x - 2x
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>2.</strong>
+
+Expand:
+
+4(x + 5)
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>3.</strong>
+
+Factorise:
+
+6x + 18
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>4.</strong>
+
+Solve:
+
+3x + 7 = 22
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>5.</strong>
+
+Solve:
+
+5x - 8 = 17
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>6.</strong>
+
+Solve simultaneously:
+
+x + y = 12
+
+<br>
+
+x - y = 4
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>7.</strong>
+
+Factorise:
+
+x² + 7x + 12
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>8.</strong>
+
+Find the 12th term of:
+
+5, 8, 11, 14, ...
+
+</div>
+
+
+<div class="practice-card">
+
+<strong>9.</strong>
+
+Find the gradient of the line joining:
+
+(2, 3) and (6, 11)
+
+</div>
+
+
+<div class="tip-box">
+
+<strong>Need help?</strong>
+
+<p>
+Don't understand one of the questions?
+Ask Insite AI to explain it step by step.
+</p>
+
+</div>
+
+</section>
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
+```

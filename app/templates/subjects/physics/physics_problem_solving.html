@@ -1,0 +1,612 @@
+{% extends "base.html" %}
+
+{% block title %}
+Physics Problem Solving & Advanced Derivations | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-calculator"></i>
+            Physics Problem Solving & Derivations
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering mathematical methods in physics, calculus-based derivations, 
+            analytical mechanics, and advanced problem-solving strategies for competitive examinations.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#math_methods">Mathematical Methods</a>
+        <a href="#lagrangian">Analytical Mechanics</a>
+        <a href="#strategies">Exam Strategies</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Advanced Physics Problem Solving</h2>
+        </div>
+        <p>
+            Solving advanced physics problems requires transitioning from basic algebraic formula substitution to deep 
+            mathematical analysis, calculus-based derivations, and structured analytical models. 
+            Competitive exams (such as AP Physics C, JEE Advanced, IPhO, and university graduate physics examinations) demand 
+            not only a conceptual grasp of physical laws but also the mathematical tools to model systems dynamically over time and space.
+        </p>
+        <div class="phys-info">
+            <strong>The Core Philosophy:</strong><br>
+            A physical system is modeled by expressing physical laws as differential equations. 
+            Problem solving then consists of establishing proper coordinate systems, writing down boundary conditions, 
+            and integrating equations of motion to find continuous paths of state variables.
+        </div>
+    </section>
+
+    <!-- 02 MATHEMATICAL METHODS -->
+    <section class="phys-section" id="math_methods">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Mathematical Methods & Calculus-Based Physics</h2>
+        </div>
+        <p>
+            At an advanced level, physical quantities are represented by continuously varying fields and vector equations rather than static scalars:
+        </p>
+        <ul>
+            <li><strong>Differential Calculus in Kinematics:</strong> Instantaneous velocity (v) and acceleration (a) are defined as time-derivatives of position (x): 
+                <br><strong>v(t) = dx / dt</strong> and <strong>a(t) = dv / dt = d<sup>2</sup>x / dt<sup>2</sup></strong>.</li>
+            <li><strong>Integral Calculus in Dynamics:</strong> Work (W) done by a variable force F(x), or change in momentum caused by a varying force, requires integrating:
+                <br><strong>W = &int; F(x) dx</strong> from x<sub>initial</sub> to x<sub>final</sub>.</li>
+            <li><strong>Vector Fields & Flux Integrals:</strong> Gauss's Law and Ampère's Law rely on integrating field vectors across surfaces or around closed paths:
+                <br><strong>Closed Surface Integral of (E &middot; dA) = Q<sub>enclosed</sub> / &epsilon;<sub>0</sub></strong>.</li>
+        </ul>
+    </section>
+
+    <!-- 03 ANALYTICAL MECHANICS -->
+    <section class="phys-section" id="lagrangian">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Analytical Mechanics: Lagrangian Formulation</h2>
+        </div>
+        <p>
+            For complex multi-degree-of-freedom systems, classical Newtonian vector mechanics becomes highly cumbersome due to constraint forces. 
+            The Lagrangian formulation simplifies these systems by using generalized coordinates and energy functions:
+        </p>
+        <ul>
+            <li><strong>The Lagrangian (L):</strong> Defined as the difference between kinetic energy (T) and potential energy (V) of a system:
+                <br><strong>L = T - V</strong>.</li>
+            <li><strong>The Euler-Lagrange Equations:</strong> Based on Hamilton's Principle of Least Action, the path taken by a physical system is a stationary point of the action integral, leading to the equations of motion:
+                <br><strong>(d / dt)(&part;L / &part;q&#775;<sub>i</sub>) - &part;L / &part;q<sub>i</sub> = 0</strong>,<br>
+                where q<sub>i</sub> represents the generalized coordinates and q&#775;<sub>i</sub> represents generalized velocities.</li>
+        </ul>
+    </section>
+
+    <!-- 04 EXAM STRATEGIES -->
+    <section class="phys-section" id="strategies">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Competitive Exam Strategies & Analysis</h2>
+        </div>
+        <p>
+            When tackling complex analytical word problems under timed conditions, professional physicists and top competitors use three key analytical checks:
+        </p>
+        <ul>
+            <li><strong>Dimensional Analysis:</strong> Every terms in a physical equation must share the identical dimensions. 
+            Before calculating numerical values, quickly check if your derived algebraic expression yields the correct units (e.g., matching length, time, or mass dimensions).</li>
+            <li><strong>Limiting/Asymptotic Cases:</strong> Test your algebraic solution at extreme values. 
+            For instance, what happens when a distance (r) approaches infinity, or when an angle (&theta;) approaches zero? 
+            If the equation does not match known, simple physical behaviors at these boundaries, an error exists in the derivation.</li>
+            <li><strong>Approximation Techniques (Taylor Series):</strong> For small displacements or fields, simplify non-linear functions:
+                <br><strong>sin(&theta;) &approx; &theta;</strong>, <strong>cos(&theta;) &approx; 1 - &theta;<sup>2</sup> / 2</strong>, and <strong>(1 + x)<sup>n</sup> &approx; 1 + nx</strong> when x &lt;&lt; 1.</li>
+        </ul>
+    </section>
+
+    <!-- 05 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Interactive Analytical Check Test</h2>
+        </div>
+        <p>Test your conceptual understanding of physical approximations and limiting cases.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Small-Angle Approximation Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Using the first-order Taylor series approximation for small angles (sin(&theta;) &approx; &theta;), the non-linear equation of motion for a simple pendulum, 
+                    <strong>d<sup>2</sup>&theta; / dt<sup>2</sup> + (g / L) sin(&theta;) = 0</strong>, simplifies to which linear differential equation?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">d<sup>2</sup>&theta; / dt<sup>2</sup> + (g / L) &theta; = 0 (representing Simple Harmonic Motion)</option>
+                    <option value="wrong1">d<sup>2</sup>&theta; / dt<sup>2</sup> - (g / L) &theta; = 0 (representing exponential runaway)</option>
+                    <option value="wrong2">d&theta; / dt + (g / L) &theta; = 0 (representing a first-order decay process)</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Calculus-Based Work-Energy Theorem):</strong>
+            <p>A particle of mass m moves along the x-axis under the influence of a variable force F(x) = ax<sup>2</sup> + bx, where a and b are constants. 
+            If the particle starts at rest from the origin (x = 0), derive the algebraic expression for: (a) the work done by the force to move the particle to position x = x<sub>1</sub>, 
+            and (b) the instantaneous speed of the particle at position x = x<sub>1</sub>.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Work Done (W):</strong><br>
+                - The force varies continuously with position x, so we integrate: W = &int; F(x) dx from 0 to x<sub>1</sub>.<br>
+                - W = &int; (ax<sup>2</sup> + bx) dx [from 0 to x<sub>1</sub>] = [ (a/3)x<sup>3</sup> + (b/2)x<sup>2</sup> ] evaluated from 0 to x<sub>1</sub>.<br>
+                - W = <strong>(a / 3)x<sub>1</sub><sup>3</sup> + (b / 2)x<sub>1</sub><sup>2</sup></strong>.<br><br>
+                <strong>(b) Speed (v) at x = x<sub>1</sub>:</strong><br>
+                - According to the Work-Energy Theorem: Change in Kinetic Energy = Net Work Done.<br>
+                - (1 / 2) &times; m &times; v<sup>2</sup> - 0 = W.<br>
+                - (1 / 2) &times; m &times; v<sup>2</sup> = (a / 3)x<sub>1</sub><sup>3</sup> + (b / 2)x<sub>1</sub><sup>2</sup>.<br>
+                - v<sup>2</sup> = (2 / m) &times; [ (a / 3)x<sub>1</sub><sup>3</sup> + (b / 2)x<sub>1</sub><sup>2</sup> ].<br>
+                - v = <strong>&radic;( (2 / m) &times; [ (a / 3)x<sub>1</sub><sup>3</sup> + (b / 2)x<sub>1</sub><sup>2</sup> ] )</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Lagrangian Derivation of Simple Pendulum):</strong>
+            <p>Derive the differential equation of motion for a simple pendulum consisting of a point mass m suspended from a rigid, massless string of length L 
+            using Lagrangian mechanics. Let &theta; represent the angular displacement from the vertical axis.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>1. Define Generalized Coordinate:</strong><br>
+                - The system has 1 degree of freedom, completely described by the angle &theta;.<br><br>
+                <strong>2. Formulate Kinetic Energy (T) and Potential Energy (V):</strong><br>
+                - Linear velocity of the mass is v = L &times; &theta;&#775; (where &theta;&#775; = d&theta; / dt).<br>
+                - Kinetic Energy: T = (1 / 2) &times; m &times; v<sup>2</sup> = (1 / 2) &times; m &times; L<sup>2</sup> &times; &theta;&#775;<sup>2</sup>.<br>
+                - Let vertical reference point y = 0 be the pivot. The vertical position of the mass is y = -L &times; cos(&theta;).<br>
+                - Potential Energy: V = m &times; g &times; h = m &times; g &times; L &times; (1 - cos(&theta;)) [using the bottom of the swing as reference V = 0].<br><br>
+                <strong>3. Write the Lagrangian (L = T - V):</strong><br>
+                - L = (1 / 2) &times; m &times; L<sup>2</sup> &times; &theta;&#775;<sup>2</sup> - m &times; g &times; L &times; (1 - cos(&theta;)).<br><br>
+                <strong>4. Apply the Euler-Lagrange Equation for &theta;:</strong><br>
+                - (d / dt)(&part;L / &part;&theta;&#775;) - &part;L / &part;&theta; = 0.<br>
+                - First term: &part;L / &part;&theta;&#775; = m &times; L<sup>2</sup> &times; &theta;&#775;. Therefore, (d / dt)(&part;L / &part;&theta;&#775;) = m &times; L<sup>2</sup> &times; &theta;&#775;&#775; (where &theta;&#775;&#775; = d<sup>2</sup>&theta; / dt<sup>2</sup>).<br>
+                - Second term: &part;L / &part;&theta; = - m &times; g &times; L &times; sin(&theta;) [since derivative of cos(&theta;) is -sin(&theta;)].<br>
+                - Substitute into Euler-Lagrange: (m &times; L<sup>2</sup> &times; &theta;&#775;&#775;) - (- m &times; g &times; L &times; sin(&theta;)) = 0.<br>
+                - m &times; L<sup>2</sup> &times; &theta;&#775;&#775; + m &times; g &times; L &times; sin(&theta;) = 0.<br>
+                - Divide by m &times; L<sup>2</sup> to obtain final equation of motion: <strong>&theta;&#775;&#775; + (g / L) sin(&theta;) = 0</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Gauss's Law Radial Integration):</strong>
+            <p>An insulating solid sphere of radius R carries a uniform volumetric charge density &rho;. 
+            Determine the magnitude of the electric field E(r) as a function of radial distance r from the sphere's center 
+            for: (a) inside the sphere (r &lt; R), and (b) outside the sphere (r &gt; R).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Apply Gauss's Law: &int; (E &middot; dA) = Q<sub>enclosed</sub> / &epsilon;<sub>0</sub>.<br>
+                - Due to spherical symmetry, the electric field is radial and constant in magnitude over a concentric spherical Gaussian surface of radius r:<br>
+                - &int; (E &middot; dA) = E(r) &times; (4 &times; pi &times; r<sup>2</sup>).<br><br>
+                <strong>(a) Inside the Sphere (r &lt; R):</strong><br>
+                - The volume of the Gaussian sphere is V<sub>g</sub> = (4 / 3) &times; pi &times; r<sup>3</sup>.<br>
+                - Enclosed charge: Q<sub>enclosed</sub> = &rho; &times; V<sub>g</sub> = &rho; &times; (4 / 3) &times; pi &times; r<sup>3</sup>.<br>
+                - Substitute into Gauss's Law: E(r) &times; (4 &times; pi &times; r<sup>2</sup>) = [ &rho; &times; (4 / 3) &times; pi &times; r<sup>3</sup> ] / &epsilon;<sub>0</sub>.<br>
+                - Simplify the pi and r terms: E(r) &times; r<sup>2</sup> = ( &rho; &times; r<sup>3</sup> ) / ( 3 &times; &epsilon;<sub>0</sub> ).<br>
+                - E(r) = <strong>( &rho; &times; r ) / ( 3 &times; &epsilon;<sub>0</sub> )</strong> (directed radially outward, increasing linearly with distance).<br><br>
+                <strong>(b) Outside the Sphere (r &gt; R):</strong><br>
+                - The Gaussian surface encloses the entire charged sphere of radius R.<br>
+                - Total enclosed charge: Q<sub>total</sub> = &rho; &times; V<sub>sphere</sub> = &rho; &times; (4 / 3) &times; pi &times; R<sup>3</sup>.<br>
+                - Substitute into Gauss's Law: E(r) &times; (4 &times; pi &times; r<sup>2</sup>) = [ &rho; &times; (4 / 3) &times; pi &times; R<sup>3</sup> ] / &epsilon;<sub>0</sub>.<br>
+                - Simplify: E(r) &times; r<sup>2</sup> = ( &rho; &times; R<sup>3</sup> ) / ( 3 &times; &epsilon;<sub>0</sub> ).<br>
+                - E(r) = <strong>( &rho; &times; R<sup>3</sup> ) / ( 3 &times; &epsilon;<sub>0</sub> &times; r<sup>2</sup> )</strong> (decreases as an inverse square field, equivalent to a point charge).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Stuck on a complex physics derivation or competitive exam question?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down multi-dimensional coordinate transformations, vector calculus curl/divergence theorems, or Hamiltonian energy states.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Substituting sin(&theta;) &approx; &theta; into the equation results in d<sup>2</sup>&theta; / dt<sup>2</sup> + (g / L)&theta; = 0. This is the classic linear differential equation for Simple Harmonic Motion, yielding a solution of the form &theta;(t) = &theta;<sub>max</sub> cos(&omega;t + &phi;) with angular frequency &omega; = &radic;(g / L).</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>The small-angle approximation states that sin(&theta;) can be replaced with &theta; for values close to zero. Making this substitution simplifies the non-linear equation to a second-order harmonic oscillator equation: <strong>d<sup>2</sup>&theta; / dt<sup>2</sup> + (g / L)&theta; = 0</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

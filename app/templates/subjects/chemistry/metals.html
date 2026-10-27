@@ -1,0 +1,2826 @@
+{% extends "base.html" %}
+
+{% block title %}
+Metals | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — METALS
+   DARK BOXED CHEMISTRY THEME
+   ========================================================= */
+
+:root {
+    --met-bg: #070b14;
+    --met-panel: #0d1422;
+    --met-panel-2: #111a2b;
+    --met-card: #0a101c;
+    --met-dark: #080e18;
+    --met-border: rgba(148,163,184,.16);
+
+    --met-text: #f8fafc;
+    --met-muted: #94a3b8;
+
+    --met-blue: #38bdf8;
+    --met-blue-dark: #0284c7;
+    --met-green: #34d399;
+    --met-red: #fb7185;
+    --met-yellow: #fbbf24;
+    --met-purple: #a78bfa;
+
+    --met-radius: 18px;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.metals-page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 35px auto 70px;
+    color: var(--met-text);
+    box-sizing: border-box;
+}
+
+.metals-page *,
+.metals-page *::before,
+.metals-page *::after {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 12px;
+
+    background: rgba(17,26,43,.85);
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    transition: .2s ease;
+}
+
+.back-chemistry:hover {
+    transform: translateX(-4px);
+    border-color: rgba(56,189,248,.55);
+    background: #142033;
+    color: white;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.metals-header {
+    text-align: center;
+    padding: 35px 15px 30px;
+}
+
+.metals-header h1 {
+    margin: 0;
+
+    font-size: clamp(2rem,5vw,3.2rem);
+    font-weight: 850;
+    letter-spacing: -1.5px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #7dd3fc
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.metals-header h1 i {
+    color: var(--met-blue);
+    margin-right: 8px;
+}
+
+.metals-header p {
+    max-width: 820px;
+    margin: 15px auto 0;
+
+    color: var(--met-muted);
+    line-height: 1.8;
+    font-size: .98rem;
+}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+
+.metals-nav-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+
+    margin-bottom: 25px;
+    padding: 8px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 16px;
+
+    background: rgba(7,11,20,.9);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.metals-nav {
+    display: flex;
+    gap: 8px;
+
+    overflow-x: auto;
+    padding: 2px;
+
+    scrollbar-width: none;
+}
+
+.metals-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.metals-nav a {
+    flex: 0 0 auto;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+    border: 1px solid transparent;
+
+    color: #94a3b8;
+    text-decoration: none;
+
+    font-size: .84rem;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.metals-nav a:hover {
+    color: white;
+    background: #111a2b;
+    border-color: var(--met-border);
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.metals-section {
+    position: relative;
+
+    padding: 30px;
+    margin-bottom: 22px;
+
+    border: 1px solid var(--met-border);
+    border-radius: var(--met-radius);
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(56,189,248,.055),
+            transparent 35%
+        ),
+        var(--met-panel);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
+
+    scroll-margin-top: 90px;
+}
+
+.metals-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.metals-section-number {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: rgba(56,189,248,.12);
+    border: 1px solid rgba(56,189,248,.25);
+
+    color: var(--met-blue);
+
+    font-weight: 800;
+    font-size: .95rem;
+}
+
+.metals-section h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.metals-section h3 {
+    margin-top: 28px;
+
+    color: #7dd3fc;
+    font-size: 1.15rem;
+}
+
+.metals-section p,
+.metals-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.metals-section li {
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   HIGHLIGHT
+   ========================================================= */
+
+.highlight {
+    margin: 20px 0;
+    padding: 17px 19px;
+
+    border: 1px solid rgba(56,189,248,.18);
+    border-left: 4px solid var(--met-blue);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(56,189,248,.08),
+            rgba(56,189,248,.025)
+        );
+
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.highlight strong {
+    color: #7dd3fc;
+}
+
+/* =========================================================
+   FORMULA
+   ========================================================= */
+
+.formula {
+    margin: 18px 0;
+    padding: 18px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 13px;
+
+    background: #080e19;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 1.12rem;
+    font-weight: 700;
+
+    overflow-x: auto;
+}
+
+.formula-note {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--met-muted);
+
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+/* =========================================================
+   CONCEPT CARDS
+   ========================================================= */
+
+.concept-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.concept-grid.three {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+}
+
+.concept-grid.two {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+}
+
+.concept-card {
+    padding: 21px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 15px;
+
+    background: var(--met-card);
+
+    transition: .2s ease;
+}
+
+.concept-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(56,189,248,.35);
+    background: #0e1726;
+}
+
+.concept-card i {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--met-blue);
+    font-size: 25px;
+}
+
+.concept-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+    font-size: 1.1rem;
+}
+
+.concept-card p {
+    margin: 0;
+
+    color: var(--met-muted);
+    font-size: .91rem;
+}
+
+/* =========================================================
+   REACTIVITY LAB
+   ========================================================= */
+
+.metal-lab {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 16px;
+
+    background: #080e18;
+}
+
+.metal-lab-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.metal-lab-head h3 {
+    margin: 0;
+
+    color: white;
+    font-size: 1.25rem;
+}
+
+.lab-status {
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(52,211,153,.15);
+    border: 1px solid var(--met-green);
+
+    color: var(--met-green);
+
+    font-size: .72rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.metal-canvas-wrap {
+    position: relative;
+
+    width: 100%;
+
+    border: 1px solid var(--met-border);
+    border-radius: 12px;
+
+    background: #050810;
+
+    overflow: hidden;
+}
+
+#metalCanvas {
+    display: block;
+
+    width: 100%;
+    height: 330px;
+}
+
+.canvas-label {
+    position: absolute;
+
+    right: 10px;
+    bottom: 10px;
+
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    background: rgba(7,11,20,.8);
+
+    color: var(--met-muted);
+
+    font-size: .7rem;
+}
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+.lab-metrics {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap: 12px;
+
+    margin: 18px 0;
+}
+
+.lab-metric {
+    padding: 13px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 12px;
+
+    background: #0c1220;
+
+    text-align: center;
+}
+
+.lab-metric span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--met-muted);
+
+    font-size: .7rem;
+
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.lab-metric strong {
+    color: white;
+    font-size: 1.15rem;
+}
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.lab-controls {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap: 16px;
+
+    padding: 16px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.lab-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lab-control label {
+    color: #cbd5e1;
+
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.lab-control input[type="range"] {
+    width: 100%;
+    height: 6px;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    border-radius: 3px;
+
+    background: #1e293b;
+    outline: none;
+}
+
+.lab-control input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: var(--met-blue);
+
+    cursor: pointer;
+}
+
+.lab-control output {
+    color: var(--met-blue);
+
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   REACTIVITY SERIES
+   ========================================================= */
+
+.reactivity-series {
+    display: grid;
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+.metal-row {
+    display: grid;
+
+    grid-template-columns:
+        45px 1fr 110px;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 15px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 10px;
+
+    background: #0a101c;
+
+    transition: .2s ease;
+}
+
+.metal-row:hover {
+    border-color: rgba(56,189,248,.3);
+    transform: translateX(3px);
+}
+
+.metal-rank {
+    color: var(--met-muted);
+    font-weight: 800;
+}
+
+.metal-name {
+    color: white;
+    font-weight: 700;
+}
+
+.metal-strength {
+    color: var(--met-blue);
+
+    font-size: .78rem;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+/* =========================================================
+   EXTRACTION CARDS
+   ========================================================= */
+
+.extraction-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.extraction-card {
+    padding: 20px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.extraction-card i {
+    color: var(--met-blue);
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.extraction-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+}
+
+.extraction-card p {
+    margin: 0;
+
+    color: var(--met-muted);
+    font-size: .9rem;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+
+    margin-top: 18px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 13px;
+}
+
+.compare-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.compare-table th,
+.compare-table td {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--met-border);
+
+    text-align: left;
+
+    color: #cbd5e1;
+}
+
+.compare-table th {
+    background: #0a101c;
+    color: #7dd3fc;
+    font-weight: 700;
+}
+
+.compare-table tr:last-child td {
+    border-bottom: none;
+}
+
+.compare-table tr:hover td {
+    background: rgba(56,189,248,.035);
+}
+
+/* =========================================================
+   WORKED EXAMPLE
+   ========================================================= */
+
+.example-box {
+    margin: 20px 0;
+    padding: 21px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.example-box h4 {
+    margin-top: 0;
+
+    color: #7dd3fc;
+    font-size: 1.1rem;
+}
+
+.step {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 15px 0;
+}
+
+.step-number {
+    flex: 0 0 32px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #38bdf8,
+        #0284c7
+    );
+
+    color: white;
+    font-weight: 800;
+}
+
+.step-text {
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.answer-box {
+    margin-top: 16px;
+    padding: 15px 17px;
+
+    border-left: 4px solid var(--met-green);
+    border-radius: 9px;
+
+    background: rgba(52,211,153,.055);
+
+    color: #cbd5e1;
+}
+
+/* =========================================================
+   CORROSION DIAGRAM
+   ========================================================= */
+
+.corrosion-box {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--met-border);
+    border-radius: 15px;
+
+    background: #080e18;
+}
+
+#corrosionCanvas {
+    display: block;
+
+    width: 100%;
+    height: 260px;
+
+    border-radius: 10px;
+    background: #050810;
+}
+
+/* =========================================================
+   ASK AI
+   ========================================================= */
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 32px;
+
+    border: 1px solid rgba(56,189,248,.18);
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(56,189,248,.12),
+            transparent 55%
+        ),
+        #0b1320;
+
+    text-align: center;
+}
+
+.ask-ai i {
+    margin-bottom: 12px;
+
+    color: #38bdf8;
+    font-size: 34px;
+}
+
+.ask-ai h3 {
+    margin: 0 0 10px;
+
+    color: white;
+    font-size: 1.5rem;
+}
+
+.ask-ai p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: #94a3b8;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 19px;
+
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #38bdf8,
+        #0284c7
+    );
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(14,165,233,.25);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:768px) {
+
+    .metals-page {
+        width: calc(100% - 20px);
+        margin: 15px auto 45px;
+    }
+
+    .metals-header {
+        padding: 25px 5px;
+    }
+
+    .metals-header h1 {
+        font-size: 2rem;
+    }
+
+    .metals-header p {
+        font-size: .9rem;
+    }
+
+    .back-chemistry {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .metals-section {
+        padding: 19px 16px;
+        border-radius: 15px;
+    }
+
+    .metals-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .concept-grid.three,
+    .concept-grid.two,
+    .extraction-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metals-nav-wrapper {
+        top: 0;
+
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .metals-nav a {
+        padding: 8px 12px;
+        font-size: .78rem;
+    }
+
+    .lab-metrics {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+
+    .lab-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .metal-row {
+        grid-template-columns: 35px 1fr 80px;
+    }
+
+    .compare-table {
+        min-width: 600px;
+    }
+
+    .metal-canvas-wrap {
+        width: 100%;
+    }
+
+    #metalCanvas {
+        height: 260px;
+    }
+
+    #corrosionCanvas {
+        height: 220px;
+    }
+
+    .ask-ai {
+        padding: 24px 17px;
+    }
+}
+
+@media (max-width:420px) {
+
+    .metals-page {
+        width: calc(100% - 14px);
+    }
+
+    .metals-section {
+        padding: 16px 13px;
+    }
+
+    .metals-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .concept-card,
+    .extraction-card,
+    .example-box {
+        padding: 17px;
+    }
+
+    .lab-metrics {
+        gap: 7px;
+    }
+
+    .lab-metric {
+        padding: 10px 6px;
+    }
+
+    #metalCanvas {
+        height: 220px;
+    }
+}
+</style>
+
+
+<div class="metals-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <header class="metals-header">
+
+        <h1>
+            <i class="fa-solid fa-cubes-stacked"></i>
+            Metals
+        </h1>
+
+        <p>
+            Properties, reactivity, extraction, alloys and corrosion —
+            with interactive particle simulations, reaction calculations
+            and exam-focused explanations.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="metals-nav-wrapper">
+
+        <nav class="metals-nav">
+
+            <a href="#properties">Properties</a>
+            <a href="#reactivity">Reactivity</a>
+            <a href="#lab">Reaction Lab</a>
+            <a href="#water">Water</a>
+            <a href="#acids">Acids</a>
+            <a href="#extraction">Extraction</a>
+            <a href="#electrolysis">Electrolysis</a>
+            <a href="#alloys">Alloys</a>
+            <a href="#corrosion">Corrosion</a>
+            <a href="#prevention">Prevention</a>
+            <a href="#practice">Exam Checklist</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         01 PROPERTIES
+         ===================================================== -->
+
+    <section class="metals-section" id="properties">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">01</div>
+
+            <h2>Properties of Metals</h2>
+
+        </div>
+
+        <p>
+            Metals are generally strong, shiny materials that conduct
+            heat and electricity because their outer electrons are
+            delocalised throughout the metallic structure.
+        </p>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                <h3>Electrical Conductivity</h3>
+
+                <p>
+                    Delocalised electrons can move through the metallic
+                    lattice and carry electrical charge.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-temperature-high"></i>
+
+                <h3>Thermal Conductivity</h3>
+
+                <p>
+                    Energy is transferred efficiently through the
+                    closely packed metallic structure.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-hammer"></i>
+
+                <h3>Malleability</h3>
+
+                <p>
+                    Layers of metal ions can slide while remaining
+                    attracted to the delocalised electrons.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Key idea:</strong>
+
+            Metallic bonding consists of positive metal ions surrounded
+            by a sea of delocalised electrons.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         02 REACTIVITY
+         ===================================================== -->
+
+    <section class="metals-section" id="reactivity">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">02</div>
+
+            <h2>Metal Reactivity Series</h2>
+
+        </div>
+
+        <p>
+            The reactivity series ranks metals according to how readily
+            they lose electrons and form positive ions.
+        </p>
+
+
+        <div class="reactivity-series">
+
+            <div class="metal-row">
+                <div class="metal-rank">01</div>
+                <div class="metal-name">Potassium — K</div>
+                <div class="metal-strength">Very high</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">02</div>
+                <div class="metal-name">Sodium — Na</div>
+                <div class="metal-strength">Very high</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">03</div>
+                <div class="metal-name">Calcium — Ca</div>
+                <div class="metal-strength">High</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">04</div>
+                <div class="metal-name">Magnesium — Mg</div>
+                <div class="metal-strength">High</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">05</div>
+                <div class="metal-name">Aluminium — Al</div>
+                <div class="metal-strength">High</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">06</div>
+                <div class="metal-name">Zinc — Zn</div>
+                <div class="metal-strength">Medium</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">07</div>
+                <div class="metal-name">Iron — Fe</div>
+                <div class="metal-strength">Medium</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">08</div>
+                <div class="metal-name">Lead — Pb</div>
+                <div class="metal-strength">Low</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">09</div>
+                <div class="metal-name">Copper — Cu</div>
+                <div class="metal-strength">Low</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">10</div>
+                <div class="metal-name">Silver — Ag</div>
+                <div class="metal-strength">Very low</div>
+            </div>
+
+            <div class="metal-row">
+                <div class="metal-rank">11</div>
+                <div class="metal-name">Gold — Au</div>
+                <div class="metal-strength">Very low</div>
+            </div>
+
+        </div>
+
+
+        <div class="formula">
+
+            More reactive metal
+            →
+            loses electrons more readily
+
+            <span class="formula-note">
+                Reactivity generally increases towards the top of the series.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         03 INTERACTIVE LAB
+         ===================================================== -->
+
+    <section class="metals-section" id="lab">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">03</div>
+
+            <h2>Interactive Metal Reaction Lab</h2>
+
+        </div>
+
+        <p>
+            Select the metal reactivity, acid concentration and
+            temperature. The simulation models collisions and estimates
+            hydrogen production.
+        </p>
+
+
+        <div class="metal-lab">
+
+            <div class="metal-lab-head">
+
+                <h3>
+                    Metal + Acid → Salt + Hydrogen
+                </h3>
+
+                <span class="lab-status">
+                    Simulation active
+                </span>
+
+            </div>
+
+
+            <div class="metal-canvas-wrap">
+
+                <canvas id="metalCanvas"></canvas>
+
+                <div class="canvas-label">
+                    Collision laboratory
+                </div>
+
+            </div>
+
+
+            <div class="lab-metrics">
+
+                <div class="lab-metric">
+                    <span>Collision rate</span>
+                    <strong id="collisionRate">0.0</strong>
+                </div>
+
+                <div class="lab-metric">
+                    <span>Successful collisions</span>
+                    <strong id="successfulCollisions">0</strong>
+                </div>
+
+                <div class="lab-metric">
+                    <span>H₂ produced</span>
+                    <strong id="hydrogenProduced">0.00 mol</strong>
+                </div>
+
+                <div class="lab-metric">
+                    <span>Reaction speed</span>
+                    <strong id="reactionSpeed">Medium</strong>
+                </div>
+
+            </div>
+
+
+            <div class="lab-controls">
+
+                <div class="lab-control">
+
+                    <label>
+                        Metal reactivity
+                    </label>
+
+                    <input
+                        id="metalControl"
+                        type="range"
+                        min="0.4"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                    >
+
+                    <output id="metalValue">
+                        1.0×
+                    </output>
+
+                </div>
+
+
+                <div class="lab-control">
+
+                    <label>
+                        Acid concentration
+                    </label>
+
+                    <input
+                        id="acidControl"
+                        type="range"
+                        min="0.2"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                    >
+
+                    <output id="acidValue">
+                        1.0×
+                    </output>
+
+                </div>
+
+
+                <div class="lab-control">
+
+                    <label>
+                        Temperature
+                    </label>
+
+                    <input
+                        id="metalTemperature"
+                        type="range"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                    >
+
+                    <output id="metalTemperatureValue">
+                        1.0×
+                    </output>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         04 WATER
+         ===================================================== -->
+
+    <section class="metals-section" id="water">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">04</div>
+
+            <h2>Reactions with Water</h2>
+
+        </div>
+
+        <p>
+            Different metals react with water at different rates,
+            depending on their position in the reactivity series.
+        </p>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <h3>Potassium</h3>
+
+                <p>
+                    Reacts extremely vigorously with cold water,
+                    producing potassium hydroxide and hydrogen.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-water"></i>
+
+                <h3>Calcium</h3>
+
+                <p>
+                    Reacts with cold water less violently and produces
+                    calcium hydroxide and hydrogen.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-temperature-high"></i>
+
+                <h3>Magnesium</h3>
+
+                <p>
+                    Reacts slowly with cold water but much more readily
+                    with steam.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="formula">
+            2Na + 2H₂O → 2NaOH + H₂
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         05 ACIDS
+         ===================================================== -->
+
+    <section class="metals-section" id="acids">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">05</div>
+
+            <h2>Reactions with Acids</h2>
+
+        </div>
+
+        <p>
+            Metals above hydrogen in the reactivity series can react
+            with dilute acids to produce a salt and hydrogen gas.
+        </p>
+
+
+        <div class="formula">
+
+            Metal + Acid → Salt + Hydrogen
+
+        </div>
+
+
+        <div class="example-box">
+
+            <h4>Worked Example — Magnesium + Hydrochloric Acid</h4>
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <div class="step-text">
+
+                    Write the balanced equation:
+
+                    <div class="formula">
+                        Mg + 2HCl → MgCl₂ + H₂
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <div class="step-text">
+
+                    One mole of magnesium produces one mole of
+                    hydrogen gas.
+
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <div class="step-text">
+
+                    Therefore, if 0.20 mol Mg reacts completely:
+
+                    <div class="formula">
+                        n(H₂) = 0.20 mol
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>Answer:</strong>
+                0.20 mol of hydrogen is produced.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         06 EXTRACTION
+         ===================================================== -->
+
+    <section class="metals-section" id="extraction">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">06</div>
+
+            <h2>Extraction of Metals</h2>
+
+        </div>
+
+        <p>
+            The method used to extract a metal depends largely on its
+            position in the reactivity series.
+        </p>
+
+
+        <div class="extraction-grid">
+
+            <div class="extraction-card">
+
+                <i class="fa-solid fa-fire"></i>
+
+                <h3>Reduction with Carbon</h3>
+
+                <p>
+                    Metals below carbon can often be extracted by
+                    heating their ores with carbon or carbon monoxide.
+                </p>
+
+            </div>
+
+
+            <div class="extraction-card">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                <h3>Electrolysis</h3>
+
+                <p>
+                    Very reactive metals such as aluminium are
+                    extracted from molten compounds using electrolysis.
+                </p>
+
+            </div>
+
+
+            <div class="extraction-card">
+
+                <i class="fa-solid fa-mountain"></i>
+
+                <h3>Ore Processing</h3>
+
+                <p>
+                    Ores are processed and concentrated before the
+                    metal is separated from its compounds.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Rule:</strong>
+
+            Metals more reactive than carbon generally cannot be
+            extracted by simple reduction with carbon.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         07 ELECTROLYSIS
+         ===================================================== -->
+
+    <section class="metals-section" id="electrolysis">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">07</div>
+
+            <h2>Electrolysis</h2>
+
+        </div>
+
+        <p>
+            Electrolysis uses electrical energy to drive a chemical
+            change that would not occur spontaneously.
+        </p>
+
+
+        <div class="concept-grid two">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-minus"></i>
+
+                <h3>Cathode</h3>
+
+                <p>
+                    Positive metal ions gain electrons at the cathode.
+                    This is reduction.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <h3>Anode</h3>
+
+                <p>
+                    Negative ions lose electrons at the anode.
+                    This is oxidation.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="formula">
+
+            Al³⁺ + 3e⁻ → Al
+
+            <span class="formula-note">
+                Aluminium ions are reduced at the cathode.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         08 ALLOYS
+         ===================================================== -->
+
+    <section class="metals-section" id="alloys">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">08</div>
+
+            <h2>Alloys</h2>
+
+        </div>
+
+        <p>
+            An alloy is a mixture containing a metal and one or more
+            other elements. Different-sized atoms can disrupt the
+            regular metallic layers.
+        </p>
+
+
+        <div class="table-wrap">
+
+            <table class="compare-table">
+
+                <tr>
+                    <th>Alloy</th>
+                    <th>Main components</th>
+                    <th>Common use</th>
+                </tr>
+
+                <tr>
+                    <td>Steel</td>
+                    <td>Iron + Carbon</td>
+                    <td>Construction and tools</td>
+                </tr>
+
+                <tr>
+                    <td>Stainless steel</td>
+                    <td>Iron + Chromium</td>
+                    <td>Kitchen equipment</td>
+                </tr>
+
+                <tr>
+                    <td>Brass</td>
+                    <td>Copper + Zinc</td>
+                    <td>Musical instruments and fittings</td>
+                </tr>
+
+                <tr>
+                    <td>Bronze</td>
+                    <td>Copper + Tin</td>
+                    <td>Statues and engineering</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         09 CORROSION
+         ===================================================== -->
+
+    <section class="metals-section" id="corrosion">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">09</div>
+
+            <h2>Corrosion</h2>
+
+        </div>
+
+        <p>
+            Corrosion is the gradual destruction of a metal through
+            chemical reactions with its environment.
+        </p>
+
+
+        <div class="corrosion-box">
+
+            <canvas id="corrosionCanvas"></canvas>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Rusting of iron requires:</strong>
+
+            <br>
+
+            Iron + Oxygen + Water → Rust
+
+            <br><br>
+
+            Rust is a hydrated form of iron(III) oxide.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10 PREVENTION
+         ===================================================== -->
+
+    <section class="metals-section" id="prevention">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">10</div>
+
+            <h2>Preventing Corrosion</h2>
+
+        </div>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-paint-roller"></i>
+
+                <h3>Painting</h3>
+
+                <p>
+                    Creates a barrier that prevents oxygen and water
+                    from reaching the metal.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <h3>Galvanising</h3>
+
+                <p>
+                    Zinc coating protects iron from corrosion and can
+                    provide sacrificial protection.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-layer-group"></i>
+
+                <h3>Alloying</h3>
+
+                <p>
+                    Metals can be combined with other elements to
+                    produce corrosion-resistant materials.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         11 EXAM CHECKLIST
+         ===================================================== -->
+
+    <section class="metals-section" id="practice">
+
+        <div class="metals-section-header">
+
+            <div class="metals-section-number">11</div>
+
+            <h2>Exam Checklist</h2>
+
+        </div>
+
+        <ul>
+
+            <li>
+                Know the order of the metal reactivity series.
+            </li>
+
+            <li>
+                Explain why reactive metals are difficult to extract.
+            </li>
+
+            <li>
+                Know the difference between oxidation and reduction.
+            </li>
+
+            <li>
+                Balance equations involving metals and acids.
+            </li>
+
+            <li>
+                Explain why alloys are often harder than pure metals.
+            </li>
+
+            <li>
+                Know that rusting requires both water and oxygen.
+            </li>
+
+            <li>
+                Explain how painting, galvanising and alloying prevent
+                corrosion.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>
+            Need help with Metals?
+        </h3>
+
+        <p>
+            Ask Insite AI to balance metal reactions, calculate
+            quantities, explain extraction methods or analyse corrosion.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   INSITE AI — METAL REACTION LAB
+   ========================================================= */
+
+const metalCanvas =
+    document.getElementById("metalCanvas");
+
+const metalCtx =
+    metalCanvas.getContext("2d");
+
+let metalReactivity = 1;
+let acidConcentration = 1;
+let metalTemperature = 1;
+
+let metalParticles = [];
+
+let successfulHits = 0;
+let collisionHits = 0;
+let hydrogenMoles = 0;
+
+let lastMetricUpdate =
+    performance.now();
+
+
+const METAL_TYPES = {
+
+    metal: {
+        color: "#38bdf8",
+        label: "M"
+    },
+
+    acid: {
+        color: "#a78bfa",
+        label: "H+"
+    },
+
+    hydrogen: {
+        color: "#34d399",
+        label: "H₂"
+    }
+
+};
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+function resizeMetalCanvas() {
+
+    const rect =
+        metalCanvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    metalCanvas.width =
+        Math.max(1, rect.width * ratio);
+
+    metalCanvas.height =
+        Math.max(1, rect.height * ratio);
+
+    metalCtx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+}
+
+
+/* =========================================================
+   RANDOM
+   ========================================================= */
+
+function metalRandom(min,max) {
+
+    return Math.random() *
+        (max - min) + min;
+
+}
+
+
+/* =========================================================
+   CREATE PARTICLE
+   ========================================================= */
+
+function createMetalParticle(type) {
+
+    const rect =
+        metalCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 330;
+
+    const radius =
+        type === "acid" ? 8 : 14;
+
+    return {
+
+        type,
+
+        x: metalRandom(
+            radius + 5,
+            width - radius - 5
+        ),
+
+        y: metalRandom(
+            radius + 5,
+            height - radius - 5
+        ),
+
+        vx: metalRandom(-1,1),
+
+        vy: metalRandom(-1,1),
+
+        radius,
+
+        cooldown: 0
+
+    };
+
+}
+
+
+/* =========================================================
+   CREATE PARTICLES
+   ========================================================= */
+
+function createMetalParticles() {
+
+    metalParticles = [];
+
+    for(let i=0;i<8;i++) {
+
+        metalParticles.push(
+            createMetalParticle("metal")
+        );
+
+    }
+
+    for(let i=0;i<24;i++) {
+
+        metalParticles.push(
+            createMetalParticle("acid")
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW PARTICLE
+   ========================================================= */
+
+function drawMetalParticle(p) {
+
+    const data =
+        METAL_TYPES[p.type];
+
+    metalCtx.beginPath();
+
+    metalCtx.arc(
+        p.x,
+        p.y,
+        p.radius,
+        0,
+        Math.PI * 2
+    );
+
+    const glow =
+        metalCtx.createRadialGradient(
+            p.x - p.radius*.35,
+            p.y - p.radius*.35,
+            1,
+            p.x,
+            p.y,
+            p.radius
+        );
+
+    glow.addColorStop(
+        0,
+        "#ffffff"
+    );
+
+    glow.addColorStop(
+        .22,
+        data.color
+    );
+
+    glow.addColorStop(
+        1,
+        data.color
+    );
+
+    metalCtx.fillStyle =
+        glow;
+
+    metalCtx.shadowBlur = 12;
+
+    metalCtx.shadowColor =
+        data.color;
+
+    metalCtx.fill();
+
+    metalCtx.shadowBlur = 0;
+
+    metalCtx.fillStyle =
+        "#07101e";
+
+    metalCtx.font =
+        p.type === "acid"
+            ? "800 7px Arial"
+            : "800 9px Arial";
+
+    metalCtx.textAlign =
+        "center";
+
+    metalCtx.textBaseline =
+        "middle";
+
+    metalCtx.fillText(
+        data.label,
+        p.x,
+        p.y
+    );
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+function drawMetalBackground(
+    width,
+    height
+) {
+
+    metalCtx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    metalCtx.strokeStyle =
+        "rgba(148,163,184,.045)";
+
+    metalCtx.lineWidth = 1;
+
+    for(
+        let x=0;
+        x<width;
+        x+=40
+    ) {
+
+        metalCtx.beginPath();
+
+        metalCtx.moveTo(
+            x,
+            0
+        );
+
+        metalCtx.lineTo(
+            x,
+            height
+        );
+
+        metalCtx.stroke();
+
+    }
+
+    for(
+        let y=0;
+        y<height;
+        y+=40
+    ) {
+
+        metalCtx.beginPath();
+
+        metalCtx.moveTo(
+            0,
+            y
+        );
+
+        metalCtx.lineTo(
+            width,
+            y
+        );
+
+        metalCtx.stroke();
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE
+   ========================================================= */
+
+function updateMetalParticles() {
+
+    const rect =
+        metalCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 330;
+
+
+    const speedMultiplier =
+        metalTemperature *
+        (.55 + metalReactivity*.25);
+
+
+    for(const p of metalParticles) {
+
+        if(p.cooldown > 0)
+            p.cooldown--;
+
+        p.x +=
+            p.vx *
+            speedMultiplier;
+
+        p.y +=
+            p.vy *
+            speedMultiplier;
+
+
+        if(
+            p.x-p.radius < 5 ||
+            p.x+p.radius > width-5
+        ) {
+
+            p.vx *= -1;
+
+            p.x =
+                Math.max(
+                    p.radius+5,
+                    Math.min(
+                        width-p.radius-5,
+                        p.x
+                    )
+                );
+
+        }
+
+
+        if(
+            p.y-p.radius < 5 ||
+            p.y+p.radius > height-5
+        ) {
+
+            p.vy *= -1;
+
+            p.y =
+                Math.max(
+                    p.radius+5,
+                    Math.min(
+                        height-p.radius-5,
+                        p.y
+                    )
+                );
+
+        }
+
+    }
+
+
+    for(
+        let i=0;
+        i<metalParticles.length;
+        i++
+    ) {
+
+        for(
+            let j=i+1;
+            j<metalParticles.length;
+            j++
+        ) {
+
+            const a =
+                metalParticles[i];
+
+            const b =
+                metalParticles[j];
+
+            const dx =
+                b.x-a.x;
+
+            const dy =
+                b.y-a.y;
+
+            const distance =
+                Math.sqrt(
+                    dx*dx+dy*dy
+                );
+
+            const minDistance =
+                a.radius+
+                b.radius;
+
+
+            if(
+                distance <=
+                minDistance+2
+            ) {
+
+                collisionHits++;
+
+
+                if(
+                    a.type !== b.type &&
+                    a.cooldown <= 0 &&
+                    b.cooldown <= 0
+                ) {
+
+                    const probability =
+                        .008 *
+                        metalReactivity *
+                        acidConcentration *
+                        metalTemperature;
+
+
+                    if(
+                        Math.random() <
+                        probability
+                    ) {
+
+                        successfulHits++;
+
+                        hydrogenMoles +=
+                            .002 *
+                            metalReactivity;
+
+                        a.cooldown = 35;
+                        b.cooldown = 35;
+
+                    }
+
+                }
+
+
+                const nx =
+                    dx/(distance||1);
+
+                const ny =
+                    dy/(distance||1);
+
+
+                const relative =
+                    (a.vx-b.vx)*nx+
+                    (a.vy-b.vy)*ny;
+
+
+                a.vx -=
+                    relative*nx*.7;
+
+                a.vy -=
+                    relative*ny*.7;
+
+                b.vx +=
+                    relative*nx*.7;
+
+                b.vy +=
+                    relative*ny*.7;
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW
+   ========================================================= */
+
+function drawMetalCanvas() {
+
+    const rect =
+        metalCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 330;
+
+
+    drawMetalBackground(
+        width,
+        height
+    );
+
+
+    metalParticles.forEach(
+        drawMetalParticle
+    );
+
+
+    metalCtx.fillStyle =
+        "#94a3b8";
+
+    metalCtx.font =
+        "12px Arial";
+
+    metalCtx.textAlign =
+        "center";
+
+    metalCtx.fillText(
+        "Metal + acid collision model",
+        width/2,
+        height-15
+    );
+
+}
+
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+function updateMetalMetrics() {
+
+    const now =
+        performance.now();
+
+    const elapsed =
+        (now-lastMetricUpdate)/1000;
+
+
+    if(elapsed >= 1) {
+
+        const rate =
+            collisionHits /
+            elapsed;
+
+        document.getElementById(
+            "collisionRate"
+        ).textContent =
+            rate.toFixed(1);
+
+
+        document.getElementById(
+            "successfulCollisions"
+        ).textContent =
+            successfulHits;
+
+
+        document.getElementById(
+            "hydrogenProduced"
+        ).textContent =
+            hydrogenMoles.toFixed(2)
+            + " mol";
+
+
+        const reaction =
+            metalReactivity *
+            acidConcentration *
+            metalTemperature;
+
+
+        let label =
+            "Slow";
+
+        if(reaction > 1.35)
+            label = "Fast";
+
+        else if(reaction > .75)
+            label = "Medium";
+
+
+        document.getElementById(
+            "reactionSpeed"
+        ).textContent =
+            label;
+
+
+        collisionHits = 0;
+
+        lastMetricUpdate =
+            now;
+
+    }
+
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+function animateMetalLab() {
+
+    updateMetalParticles();
+
+    drawMetalCanvas();
+
+    updateMetalMetrics();
+
+    requestAnimationFrame(
+        animateMetalLab
+    );
+
+}
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+document
+.getElementById("metalControl")
+.addEventListener(
+    "input",
+    function() {
+
+        metalReactivity =
+            Number(this.value);
+
+        document.getElementById(
+            "metalValue"
+        ).textContent =
+            metalReactivity.toFixed(1)
+            + "×";
+
+    }
+);
+
+
+document
+.getElementById("acidControl")
+.addEventListener(
+    "input",
+    function() {
+
+        acidConcentration =
+            Number(this.value);
+
+        document.getElementById(
+            "acidValue"
+        ).textContent =
+            acidConcentration.toFixed(1)
+            + "×";
+
+    }
+);
+
+
+document
+.getElementById("metalTemperature")
+.addEventListener(
+    "input",
+    function() {
+
+        metalTemperature =
+            Number(this.value);
+
+        document.getElementById(
+            "metalTemperatureValue"
+        ).textContent =
+            metalTemperature.toFixed(1)
+            + "×";
+
+    }
+);
+
+
+/* =========================================================
+   CORROSION CANVAS
+   ========================================================= */
+
+const corrosionCanvas =
+    document.getElementById(
+        "corrosionCanvas"
+    );
+
+const corrosionCtx =
+    corrosionCanvas.getContext("2d");
+
+
+function resizeCorrosionCanvas() {
+
+    const rect =
+        corrosionCanvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    corrosionCanvas.width =
+        Math.max(1,rect.width*ratio);
+
+    corrosionCanvas.height =
+        Math.max(1,rect.height*ratio);
+
+    corrosionCtx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+
+}
+
+
+function drawCorrosion() {
+
+    const rect =
+        corrosionCanvas.getBoundingClientRect();
+
+    const w =
+        rect.width || 600;
+
+    const h =
+        rect.height || 260;
+
+
+    corrosionCtx.clearRect(
+        0,
+        0,
+        w,
+        h
+    );
+
+
+    /* water */
+
+    corrosionCtx.fillStyle =
+        "rgba(56,189,248,.09)";
+
+    corrosionCtx.fillRect(
+        0,
+        h*.52,
+        w,
+        h*.48
+    );
+
+
+    /* iron bar */
+
+    corrosionCtx.fillStyle =
+        "#64748b";
+
+    corrosionCtx.fillRect(
+        w*.12,
+        h*.38,
+        w*.76,
+        48
+    );
+
+
+    /* rust patches */
+
+    const patches = [
+        [.25,.43,12],
+        [.37,.48,9],
+        [.52,.40,14],
+        [.65,.47,10],
+        [.76,.42,13]
+    ];
+
+
+    patches.forEach(
+        p => {
+
+            corrosionCtx.beginPath();
+
+            corrosionCtx.arc(
+                w*p[0],
+                h*p[1],
+                p[2],
+                0,
+                Math.PI*2
+            );
+
+            corrosionCtx.fillStyle =
+                "#a16207";
+
+            corrosionCtx.fill();
+
+        }
+    );
+
+
+    /* oxygen arrows */
+
+    corrosionCtx.fillStyle =
+        "#34d399";
+
+    corrosionCtx.font =
+        "bold 13px Arial";
+
+    corrosionCtx.textAlign =
+        "center";
+
+    corrosionCtx.fillText(
+        "O₂",
+        w*.25,
+        h*.18
+    );
+
+    corrosionCtx.fillText(
+        "O₂",
+        w*.50,
+        h*.12
+    );
+
+    corrosionCtx.fillText(
+        "O₂",
+        w*.75,
+        h*.20
+    );
+
+
+    /* water label */
+
+    corrosionCtx.fillStyle =
+        "#38bdf8";
+
+    corrosionCtx.fillText(
+        "H₂O",
+        w*.5,
+        h*.88
+    );
+
+
+    /* rust label */
+
+    corrosionCtx.fillStyle =
+        "#fbbf24";
+
+    corrosionCtx.fillText(
+        "Rust",
+        w*.88,
+        h*.46
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        resizeMetalCanvas();
+        resizeCorrosionCanvas();
+
+    }
+);
+
+
+resizeMetalCanvas();
+
+resizeCorrosionCanvas();
+
+createMetalParticles();
+
+animateMetalLab();
+
+drawCorrosion();
+
+</script>
+
+{% endblock %}

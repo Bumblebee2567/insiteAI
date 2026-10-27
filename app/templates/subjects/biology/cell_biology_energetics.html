@@ -1,0 +1,660 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cell Biology & Membrane Dynamics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --bio-bg: #050a12;
+    --bio-panel: #0a111d;
+    --bio-border: rgba(100, 116, 139, .18);
+    --bio-text: #f1f5f9;
+    --bio-muted: #94a3b8;
+
+    --bio-blue: #1677b8;
+    --bio-blue-light: #2196d2;
+    --bio-cyan: #38bdf8;
+
+    --bio-green: #34d399;
+    --bio-red: #ef4444;
+}
+
+.bio-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--bio-text);
+}
+
+.bio-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--bio-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.bio-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.bio-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.bio-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.bio-header h1 i {
+    color: var(--bio-blue-light);
+    margin-right: 8px;
+}
+
+.bio-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--bio-muted);
+    line-height: 1.75;
+}
+
+.bio-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--bio-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.bio-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.bio-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.bio-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.bio-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.bio-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bio-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.bio-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.bio-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--bio-border);
+    padding-bottom: 6px;
+}
+
+.bio-section h4 {
+    color: #38bdf8;
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.bio-section p,
+.bio-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.bio-section li {
+    margin-bottom: 8px;
+}
+
+.bio-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--bio-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.bio-info strong {
+    color: #55b6e9;
+}
+
+.bio-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.bio-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.bio-table th,
+.bio-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.bio-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.bio-table td {
+    color: #cbd5e1;
+}
+
+.bio-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--bio-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--bio-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--bio-green); }
+.test-result.wrong { border-left-color: var(--bio-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--bio-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .bio-section { padding: 20px; }
+    .bio-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="bio-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('biology_page') }}" class="bio-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Biology Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="bio-header">
+        <h1>
+            <i class="fa-solid fa-microscope"></i>
+            Cell Biology & Membrane Dynamics
+        </h1>
+        <p>
+            An exhaustive masterclass covering cell theory foundations, eukaryotic/prokaryotic organelle ultrastructure, 
+            the fluid mosaic phospholipid bilayer model, and advanced active/passive membrane transport mechanisms.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="bio-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#theory">Cell Theory</a>
+        <a href="#prokaryotes">Prokaryotes vs Eukaryotes</a>
+        <a href="#organelles">Organelles</a>
+        <a href="#membrane">Fluid Mosaic Model</a>
+        <a href="#transport">Transport Mechanisms</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="bio-section" id="intro">
+        <div class="bio-section-header">
+            <div class="bio-number">01</div>
+            <h2>Introduction to Cell Biology</h2>
+        </div>
+        <p>
+            Cell biology is the study of cellular structure, physiological functions, metabolic pathways, organelle organization, 
+            interactions with the extracellular environment, and the life cycle of cells. As the foundational unit of all known 
+            living organisms, the cell serves as the micro-laboratory where thousands of biochemical reactions occur simultaneously.
+        </p>
+        <p>
+            Understanding cellular architecture allows us to comprehend how complex multicellular organisms coordinate growth, 
+            immune defense, signal transduction, and energetic homeostasis.
+        </p>
+        <div class="bio-info">
+            <strong>Core Biological Principle:</strong><br>
+            Structure dictates function across all biological scales. From the folding of membrane transport proteins to the 
+            double-membrane compartmentalization of mitochondria, a cell's physical ultrastructure is perfectly tailored to its metabolic role.
+        </div>
+    </section>
+
+    <!-- 02 CELL THEORY -->
+    <section class="bio-section" id="theory">
+        <div class="bio-section-header">
+            <div class="bio-number">02</div>
+            <h2>Foundations of Classical Cell Theory</h2>
+        </div>
+        <p>
+            Formulated in the mid-19th century through the collective work of Matthias Schleiden, Theodor Schwann, and Rudolf Virchow, 
+            classical cell theory rests upon three fundamental tenets:
+        </p>
+        <ul>
+            <li><strong>Tenet 1:</strong> All known living organisms are composed of one or more cells (unicellular or multicellular).</li>
+            <li><strong>Tenet 2:</strong> The cell is the fundamental unit of structure, function, and organization in all living systems.</li>
+            <li><strong>Tenet 3:</strong> All cells arise exclusively from pre-existing cells through cellular division (omnis cellula e cellula).</li>
+        </ul>
+        <p>
+            Modern extensions of cell theory include the understanding that energy flow (metabolism and biochemistry) occurs within cells, 
+            that genetic information (DNA) is passed on during cell division, and that all cells share fundamentally similar chemical composition.
+        </p>
+    </section>
+
+    <!-- 03 PROKARYOTES VS EUKARYOTES -->
+    <section class="bio-section" id="prokaryotes">
+        <div class="bio-section-header">
+            <div class="bio-number">03</div>
+            <h2>Prokaryotic vs. Eukaryotic Architecture</h2>
+        </div>
+        <p>
+            All cellular life on Earth is broadly divided into two major structural categories based on internal compartmentalization:
+        </p>
+
+        <div class="bio-table-wrapper">
+            <table class="bio-table">
+                <thead>
+                    <tr>
+                        <th>Cellular Characteristic</th>
+                        <th>Prokaryotic Cells (Bacteria & Archaea)</th>
+                        <th>Eukaryotic Cells (Plants, Animals, Fungi, Protists)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Typical Size</strong></td>
+                        <td>0.1 to 5.0 micrometers (small)</td>
+                        <td>10 to 100 micrometers (larger)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Membrane-Bound Nucleus</strong></td>
+                        <td>Absent (nucleoid region containing naked DNA)</td>
+                        <td>Present (true nucleus bounded by a nuclear envelope)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Membrane-Bound Organelles</strong></td>
+                        <td>Absent (no mitochondria, ER, Golgi, etc.)</td>
+                        <td>Present (specialized compartmentalized organelles)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ribosomes</strong></td>
+                        <td>Smaller (70S ribosomes)</td>
+                        <td>Larger (80S in cytoplasm/RER; 70S in mitochondria/chloroplasts)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cell Division</strong></td>
+                        <td>Binary fission (asexual)</td>
+                        <td>Mitosis and meiosis</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 04 ORGANELLES -->
+    <section class="bio-section" id="organelles">
+        <div class="bio-section-header">
+            <div class="bio-number">04</div>
+            <h2>Eukaryotic Organelle Ultrastructure & Function</h2>
+        </div>
+        <p>
+            Eukaryotic cells achieve high metabolic efficiency by compartmentalizing biochemical processes into membrane-bound organelles:
+        </p>
+        <ul>
+            <li><strong>Nucleus:</strong> Surrounded by a double-membrane nuclear envelope perforated with nuclear pores. Houses chromatin (DNA complexed with histone proteins) and the nucleolus (site of ribosomal RNA synthesis).</li>
+            <li><strong>Mitochondria:</strong> The site of aerobic cellular respiration and ATP generation. Features a smooth outer membrane and a highly folded inner membrane (cristae) enclosing the mitochondrial matrix.</li>
+            <li><strong>Endoplasmic Reticulum (ER):</strong> A network of flattened sacs (cisternae). Rough ER is studded with ribosomes and synthesizes membrane/secreted proteins; Smooth ER lacks ribosomes and synthesizes lipids, phospholipids, and steroid hormones while detoxifying xenobiotics.</li>
+            <li><strong>Golgi Apparatus:</strong> A series of flattened membrane discs that modifies, glycosylates, sorts, and packages proteins and lipids received from the ER into transport vesicles.</li>
+            <li><strong>Lysosomes & Peroxisomes:</strong> Acidic vesicles containing hydrolytic enzymes (lysosomes) or oxidative enzymes like catalase to break down fatty acids and neutralize hydrogen peroxide (peroxisomes).</li>
+        </ul>
+    </section>
+
+    <!-- 05 FLUID MOSAIC MODEL -->
+    <section class="bio-section" id="membrane">
+        <div class="bio-section-header">
+            <div class="bio-number">05</div>
+            <h2>The Fluid Mosaic Phospholipid Bilayer Model</h2>
+        </div>
+        <p>
+            First proposed by S. Jonathan Singer and Garth L. Nicolson in 1972, the <strong>fluid mosaic model</strong> describes the structural architecture of biological membranes.
+        </p>
+        <ul>
+            <li><strong>Phospholipid Bilayer:</strong> Amphipathic phospholipid molecules spontaneously arrange into a bilayer. Their hydrophilic (polar) phosphate heads face outward toward the aqueous intra- and extracellular fluids, while their hydrophobic (nonpolar) fatty acid tails face inward, shielding themselves from water.</li>
+            <li><strong>Fluid Nature:</strong> Individual phospholipids and proteins drift laterally within the plane of the membrane due to weak hydrophobic interactions, giving the membrane fluidity and flexibility.</li>
+            <li><strong>Mosaic Nature:</strong> Diverse proteins (integral transmembrane proteins and peripheral surface proteins), cholesterol molecules, and glycoprotein/glycolipid carbohydrate chains are embedded throughout the lipid matrix like tiles in a mosaic.</li>
+        </ul>
+        <div class="bio-info">
+            <strong>The Role of Cholesterol:</strong><br>
+            At high temperatures, cholesterol molecules restrict phospholipid movement, preventing the membrane from becoming overly fluid. At low temperatures, cholesterol disrupts tight packing, preventing crystallization and maintaining membrane flexibility.
+        </div>
+    </section>
+
+    <!-- 06 TRANSPORT MECHANISMS -->
+    <section class="bio-section" id="transport">
+        <div class="bio-section-header">
+            <div class="bio-number">06</div>
+            <h2>Membrane Transport Mechanisms</h2>
+        </div>
+        <p>
+            Cell survival depends on the selective permeability of the plasma membrane, which regulates the inward and outward transit of solutes:
+        </p>
+        <ul>
+            <li><strong>Passive Transport:</strong> Movement of molecules down their concentration gradient requiring <strong>zero metabolic energy (ATP)</strong>. Includes simple diffusion (small nonpolar molecules like O<sub>2</sub> and CO<sub>2</sub>), osmosis (net movement of water across a semipermeable membrane), and facilitated diffusion (transport aided by specific channel or carrier proteins).</li>
+            <li><strong>Active Transport:</strong> Movement of ions or molecules <em>against</em> their electrochemical concentration gradient. Requires metabolic energy (ATP hydrolysis) and specialized carrier proteins or membrane pumps, such as the sodium-potassium pump ($Na^+/K^+$ ATPase).</li>
+            <li><strong>Bulk Transport (Vesicular Transport):</strong> Transport of large macromolecules or particles via membrane vesicles:
+                <ul>
+                    <li><em>Endocytosis:</em> Invagination of the plasma membrane to engulf extracellular material (includes phagocytosis for solids and pinocytosis for fluids).</li>
+                    <li><em>Exocytosis:</em> Fusion of intracellular vesicles with the plasma membrane to expel contents into the extracellular matrix.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="bio-section" id="test">
+        <div class="bio-section-header">
+            <div class="bio-number">07</div>
+            <h2>Interactive Cell Biology Test</h2>
+        </div>
+        <p>Test your understanding of cell organelles, membrane structure, and transport mechanisms.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Membrane Transport Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Which of the following transport processes moves a solute <strong>against</strong> its concentration gradient and requires direct metabolic energy (ATP)?
+                </div>
+
+                <select class="test-select" id="bioAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Simple diffusion</option>
+                    <option value="wrong2">Facilitated diffusion</option>
+                    <option value="correct">Primary active transport</option>
+                    <option value="wrong3">Osmosis</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkBio">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="bioResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="bio-section" id="problems">
+        <div class="bio-section-header">
+            <div class="bio-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Osmosis and Tonicity Analysis):</strong>
+            <p>A red blood cell with an internal solute concentration of approximately 0.9% NaCl is placed into a beaker containing a 5.0% NaCl hypertonic solution. Describe in detail what happens to the cell structurally and explain the underlying biophysical mechanism.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Tonicity Definition:</strong> A 5.0% NaCl solution is <em>hypertonic</em> relative to the red blood cell's cytoplasm (0.9% NaCl) because it contains a higher concentration of non-penetrating solute particles.<br>
+                - <strong>Osmotic Gradient:</strong> Water molecules always move from a region of higher water potential (lower solute concentration) to a region of lower water potential (higher solute concentration).<br>
+                - <strong>Direction of Water Flow:</strong> Free water molecules inside the red blood cell will experience a net outward osmotic flux into the surrounding 5.0% NaCl solution.<br>
+                - <strong>Structural Consequence:</strong> As water exits the cell, the cytoplasm decreases in volume, causing the plasma membrane to pucker and shrivel—a process known as <strong>crenation</strong> in animal cells.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Sodium-Potassium Pump Stoichiometry):</strong>
+            <p>During one complete catalytic cycle of the sodium-potassium pump ($Na^+/K^+$ ATPase), explain how active transport maintains resting electrochemical gradients across the animal cell membrane and state the exact stoichiometry of ion exchange.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>ATP Hydrolysis:</strong> The transport protein binds one molecule of ATP and intracellular sodium ions, transferring a phosphate group to induce a conformational change.<br>
+                - <strong>Ion Stoichiometry:</strong> For every single molecule of ATP hydrolyzed, exactly <strong>3 sodium ions ($Na^+$) are pumped out</strong> of the cell, and <strong>2 potassium ions ($K^+$) are pumped into</strong> the cell.<br>
+                - <strong>Electrogenic Effect:</strong> Because three positive charges leave the cell for every two positive charges entering, the pump creates an electrical gradient, keeping the interior of the cell negative relative to the exterior—critical for nerve impulse transmission and secondary active transport.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Endomembrane Protein Synthesis & Secretion):</strong>
+            <p>Trace the exact intracellular pathway taken by a secreted protein (such as insulin) from its initial genetic transcription to its final release outside the plasma cell membrane.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Pathway:</strong><br>
+                1. <strong>Nucleus:</strong> DNA containing the insulin gene is transcribed into mRNA.<br>
+                2. <strong>Ribosome (Rough ER):</strong> mRNA exits the nucleus through a nuclear pore and binds to an 80S ribosome on the Rough Endoplasmic Reticulum, where polypeptide translation occurs into the ER lumen.<br>
+                3. <strong>Vesicular Transport:</strong> The newly synthesized protein buds off the Rough ER packaged inside a transport vesicle.<br>
+                4. <strong>Golgi Apparatus:</strong> The transport vesicle fuses with the cis face of the Golgi apparatus. As the protein moves through the cisternae (medial to trans faces), it undergoes post-translational modification and proteolytic cleavage.<br>
+                5. <strong>Secretory Vesicle & Exocytosis:</strong> The mature protein buds off the trans-Golgi network as a secretory vesicle, travels to the plasma membrane, fuses with it, and expels its contents into the extracellular space via exocytosis.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--bio-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with cellular pathways or transport physics?</h3>
+        <p style="color:var(--bio-muted); margin:0;">
+            Ask Insite AI to break down complex metabolic cycles, organelle disease pathologies, or membrane potential calculations.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const bioAnswer = document.getElementById("bioAnswer");
+const checkBio = document.getElementById("checkBio");
+const bioResult = document.getElementById("bioResult");
+
+checkBio.addEventListener("click", function () {
+    const val = bioAnswer.value;
+    bioResult.style.display = "block";
+
+    if (val === "correct") {
+        bioResult.className = "test-result correct";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Primary active transport moves solutes against their concentration gradient and directly consumes metabolic energy in the form of ATP hydrolysis (such as the sodium-potassium pump).</div>
+        `;
+    } else if (val === "") {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Simple diffusion, facilitated diffusion, and osmosis are all forms of passive transport that do not require metabolic energy. <strong>Primary active transport</strong> is required to move substances against their gradient using ATP.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,671 @@
+{% extends "base.html" %}
+
+{% block title %}
+Laws of Thermodynamics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-fire-flame-curved"></i>
+            The Laws of Thermodynamics
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering the Zeroth, First, Second, and Third Laws of Thermodynamics, 
+            internal energy, thermodynamic processes, heat engines, refrigerators, entropy, and Carnot efficiency limits.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#zeroth_first">Zeroth & First Law</a>
+        <a href="#processes">Thermodynamic Processes</a>
+        <a href="#second">Second Law & Entropy</a>
+        <a href="#engines">Heat Engines</a>
+        <a href="#carnot">Carnot Efficiency</a>
+        <a href="#third">Third Law</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Thermodynamics</h2>
+        </div>
+        <p>
+            Thermodynamics is the branch of physics that studies the relationships between heat, work, temperature, and energy. 
+            While mechanics focuses on forces and motion, thermodynamics governs the macroscopic transformations of energy, 
+            explaining why perpetual motion machines are impossible and why natural physical processes have a definite arrow of time.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Thermodynamic systems are defined by macroscopic state variables (Pressure, Volume, Temperature, and Internal Energy) 
+            that depend only on the current state of the system, independent of the path taken to reach that state.
+        </div>
+    </section>
+
+    <!-- 02 ZEROTH & FIRST LAW -->
+    <section class="phys-section" id="zeroth_first">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>The Zeroth and First Laws of Thermodynamics</h2>
+        </div>
+        <p>
+            The foundations of thermal equilibrium and energy conservation are established by the first two foundational principles:
+        </p>
+        <ul>
+            <li><strong>Zeroth Law of Thermodynamics:</strong> Establishes temperature as a fundamental measurable property. If two bodies are each in thermal equilibrium with a third body, they are in thermal equilibrium with each other.</li>
+            <li><strong>First Law of Thermodynamics (Conservation of Energy):</strong> The change in internal energy of a closed thermodynamic system is equal to the heat added to the system minus the work done by the system:
+                <br><strong>Change in Internal Energy = Heat Added - Work Done</strong> (Delta U = Q - W).</li>
+            <li><strong>Sign Conventions:</strong><br>
+                &bull; Q is positive (+) if heat is added to the system, negative (-) if heat leaves.<br>
+                &bull; W is positive (+) if work is done <em>by</em> the system (expansion), negative (-) if work is done <em>on</em> the system (compression).</li>
+        </ul>
+    </section>
+
+    <!-- 03 THERMODYNAMIC PROCESSES -->
+    <section class="phys-section" id="processes">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Thermodynamic Processes & Work</h2>
+        </div>
+        <p>
+            Work in thermodynamics is performed when a gas expands or compresses against an external pressure. 
+            On a Pressure-Volume (P-V) diagram, the work done during any thermodynamic process is equal to the area under the process curve.
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Process Type</th>
+                        <th>Constant Variable</th>
+                        <th>Work Done (W)</th>
+                        <th>First Law Application</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Isothermal</strong></td>
+                        <td>Constant Temperature (Delta T = 0)</td>
+                        <td><strong>W = n * R * T * ln(V<sub>f</sub> / V<sub>i</sub>)</strong></td>
+                        <td>Delta U = 0, so <strong>Heat Added = Work Done (Q = W)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Adiabatic</strong></td>
+                        <td>No Heat Transfer (Q = 0)</td>
+                        <td><strong>W = - Delta U = - (n * C<sub>v</sub> * Delta T)</strong></td>
+                        <td>No heat exchange, so <strong>Delta U = -W</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isobaric</strong></td>
+                        <td>Constant Pressure (Delta P = 0)</td>
+                        <td><strong>W = Pressure &times; Change in Volume</strong> (P &times; Delta V)</td>
+                        <td>Heat changes both internal energy and does work: Q = Delta U + P &times; Delta V</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isochoric (Isovolumetric)</strong></td>
+                        <td>Constant Volume (Delta V = 0)</td>
+                        <td><strong>W = 0</strong> (No volume change)</td>
+                        <td>No work done, so <strong>Heat Added = Change in Internal Energy (Q = Delta U)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 04 SECOND LAW & ENTROPY -->
+    <section class="phys-section" id="second">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>The Second Law of Thermodynamics & Entropy</h2>
+        </div>
+        <p>
+            While the First Law permits any energy conversion as long as total energy is conserved, the <strong>Second Law of Thermodynamics</strong> 
+            dictates the natural direction of physical processes and establishes that certain energy transfers are strictly irreversible.
+        </p>
+        <ul>
+            <li><strong>Kelvin-Planck Statement:</strong> It is impossible to construct a heat engine operating in a cycle that extracts heat from a single thermal reservoir and converts it completely into mechanical work without rejecting some waste heat to a colder reservoir.</li>
+            <li><strong>Clausius Statement:</strong> Heat cannot spontaneously flow from a colder body to a warmer body without the input of external work (this is how refrigerators and heat pumps operate).</li>
+            <li><strong>Entropy (S):</strong> Entropy is a quantitative measure of microscopic disorder or the number of available microstates in a system. 
+            The Second Law states that the total entropy of an isolated system always increases or remains constant for reversible processes:
+                <br><strong>Change in Entropy = Heat Exchanged / Absolute Temperature</strong> (Delta S greater than or equal to 0 for isolated systems).</li>
+        </ul>
+    </section>
+
+    <!-- 05 HEAT ENGINES -->
+    <section class="phys-section" id="engines">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Heat Engines and Refrigerators</h2>
+        </div>
+        <p>
+            A heat engine is a cyclic device that absorbs thermal energy from a high-temperature reservoir, converts a portion of it into useful mechanical work, and exhausts the remaining waste heat into a low-temperature sink.
+        </p>
+        <ul>
+            <li><strong>Energy Conservation in an Engine:</strong> 
+                <strong>Heat Input from Hot Reservoir = Useful Work Output + Waste Heat Exhausted</strong> (Q<sub>H</sub> = W + Q<sub>C</sub>).</li>
+            <li><strong>Thermal Efficiency (eta):</strong> The ratio of net useful work output to the total heat input:
+                <br><strong>Efficiency = Useful Work Output / Heat Input = 1 - (Waste Heat / Heat Input)</strong> (eta = W / Q<sub>H</sub> = 1 - (Q<sub>C</sub> / Q<sub>H</sub>)).</li>
+            <li><strong>Refrigerators & Heat Pumps:</strong> Devices that consume mechanical work to transfer heat from a cold reservoir to a hot reservoir. 
+            Their performance is measured by the Coefficient of Performance (COP) rather than efficiency:
+                <br><strong>COP<sub>refrig</sub> = Heat Removed from Cold Reservoir / Work Input</strong> (COP = Q<sub>C</sub> / W).</li>
+        </ul>
+    </section>
+
+    <!-- 06 CARNOT EFFICIENCY -->
+    <section class="phys-section" id="carnot">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>The Carnot Cycle & Maximum Efficiency</h2>
+        </div>
+        <p>
+            Sadi Carnot established that the most efficient possible heat engine operating between two constant-temperature thermal reservoirs 
+            is an idealized reversible engine known as a <strong>Carnot Engine</strong>, consisting of two isothermal and two adiabatic processes.
+        </p>
+        <div class="phys-info">
+            <strong>Carnot Efficiency Formula:</strong><br>
+            <strong>Maximum Efficiency = 1 - (Temperature of Cold Reservoir / Temperature of Hot Reservoir)</strong><br>
+            (eta<sub>max</sub> = 1 - (T<sub>C</sub> / T<sub>H</sub>), where temperatures must be measured strictly in Kelvin).<br>
+            No real engine operating between two temperatures can ever exceed the Carnot efficiency limit.
+        </div>
+    </section>
+
+    <!-- 07 THIRD LAW -->
+    <section class="phys-section" id="third">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>The Third Law of Thermodynamics</h2>
+        </div>
+        <p>
+            The Third Law of Thermodynamics addresses the behavior of systems as temperature approaches absolute zero (T = 0 K).
+        </p>
+        <ul>
+            <li><strong>Statement:</strong> As the temperature of a pure crystalline substance approaches absolute zero, its entropy approaches a constant minimum value (typically zero). 
+            In mathematical terms: as T approaches 0 K, Delta S approaches 0.</li>
+            <li><strong>Physical Implication:</strong> It is fundamentally impossible for any experimental procedure or thermodynamic process to cool a system to absolute zero in a finite number of steps.</li>
+        </ul>
+    </section>
+
+    <!-- 08 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Interactive Thermodynamics Test</h2>
+        </div>
+        <p>Test your conceptual understanding of heat engines, efficiency limits, and the First Law.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Carnot Efficiency Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    A Carnot heat engine operates between a high-temperature steam reservoir at 600 K and a low-temperature river sink at 300 K. 
+                    What is the maximum theoretical thermal efficiency of this engine?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">50 percent (0.50)</option>
+                    <option value="wrong1">100 percent (1.00)</option>
+                    <option value="wrong2">25 percent (0.25)</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (First Law of Thermodynamics):</strong>
+            <p>During a thermodynamic expansion process, a gas absorbs 500 Joules of heat from its surroundings while performing 200 Joules of mechanical work on a piston. 
+            Calculate the exact change in internal energy (Delta U) of the gas system.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - First Law of Thermodynamics: Delta U = Q - W.<br>
+                - Heat added Q = +500 J (positive because heat enters the system).<br>
+                - Work done by system W = +200 J (positive because gas expands).<br>
+                - Substitute values: Delta U = 500 J - 200 J = <strong>+300 Joules</strong>.<br>
+                - Conclusion: The internal energy of the gas increases by 300 Joules.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Heat Engine Efficiency and Work Output):</strong>
+            <p>A coal-fired power plant heat engine absorbs 1.20 &times; 10<sup>9</sup> Joules of heat from its high-temperature boiler furnace each hour 
+            and exhausts 8.00 &times; 10<sup>8</sup> Joules of waste heat into a nearby river. 
+            Calculate: (a) the net mechanical work output per hour, and (b) the actual thermal efficiency of the power plant.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Net Work Output (W):</strong><br>
+                - Conservation of Energy: Q<sub>H</sub> = W + Q<sub>C</sub> implies W = Q<sub>H</sub> - Q<sub>C</sub>.<br>
+                - W = (1.20 &times; 10<sup>9</sup> J) - (8.00 &times; 10<sup>8</sup> J) = 1,200,000,000 - 800,000,000 = <strong>4.00 &times; 10<sup>8</sup> Joules</strong> (400 MJ).<br><br>
+                <strong>(b) Thermal Efficiency (eta):</strong><br>
+                - Efficiency = W / Q<sub>H</sub> = (4.00 &times; 10<sup>8</sup> J) / (1.20 &times; 10<sup>9</sup> J) = 4 / 12 = 1 / 3 approximately equal to <strong>33.3 percent</strong> (0.333).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Carnot Efficiency Limit):</strong>
+            <p>An engineer designs a futuristic heat engine to operate between a high-temperature geothermal source at 800 degrees Celsius 
+            and an ambient atmospheric sink at 20.0 degrees Celsius. Calculate the maximum theoretical efficiency this engine can achieve.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Convert Celsius temperatures to Kelvin:<br>
+                &nbsp;&nbsp;&bull; T<sub>H</sub> = 800 degrees Celsius + 273.15 = 1073.15 K.<br>
+                &nbsp;&nbsp;&bull; T<sub>C</sub> = 20.0 degrees Celsius + 273.15 = 293.15 K.<br>
+                - Carnot Efficiency formula: Efficiency<sub>max</sub> = 1 - (T<sub>C</sub> / T<sub>H</sub>).<br>
+                - Efficiency<sub>max</sub> = 1 - (293.15 / 1073.15) = 1 - 0.2732 = <strong>0.727</strong> or <strong>72.7 percent</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with thermodynamic cycles or entropy calculations?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down Otto and Diesel engine cycles, P-V diagram work integrals, or statistical entropy microstates.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Using the Carnot efficiency formula (Efficiency = 1 - T<sub>C</sub> / T<sub>H</sub>), with T<sub>C</sub> = 300 K and T<sub>H</sub> = 600 K, efficiency equals 1 - (300 / 600) = 1 - 0.5 = 0.50 or 50%.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Carnot efficiency is calculated as 1 - (T<sub>C</sub> / T<sub>H</sub>) using absolute Kelvin temperatures. Here, 1 - (300 / 600) equals <strong>50 percent</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

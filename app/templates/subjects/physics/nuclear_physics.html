@@ -1,0 +1,608 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nuclear Physics & Radioactivity | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-radiation"></i>
+            Nuclear Physics & Radioactivity
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering nuclear composition, mass defect, binding energy per nucleon, 
+            radioactive decay laws, half-life calculations, alpha, beta, and gamma decay, nuclear fission, and nuclear fusion reactions.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#binding">Binding Energy & Mass Defect</a>
+        <a href="#radioactivity">Radioactive Decay Laws</a>
+        <a href="#decay_types">Types of Decay</a>
+        <a href="#fission_fusion">Fission & Fusion</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Nuclear Physics</h2>
+        </div>
+        <p>
+            Nuclear physics is the branch of physics that studies the constituents, structure, and interactions of atomic nuclei. 
+            An atomic nucleus consists of protons (positively charged) and neutrons (electrically neutral), collectively referred to as <strong>nucleons</strong>. 
+            The nucleus is held together by the <strong>strong nuclear force</strong>, one of the four fundamental forces of nature, which overcomes the mutual electrostatic repulsion between protons at extremely short distances.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Mass and energy are interchangeable via Einstein's mass-energy equivalence equation (E = mc<sup>2</sup>). 
+            The mass of a stable atomic nucleus is always slightly less than the sum of the individual rest masses of its constituent unbound protons and neutrons.
+        </div>
+    </section>
+
+    <!-- 02 BINDING ENERGY & MASS DEFECT -->
+    <section class="phys-section" id="binding">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Mass Defect and Nuclear Binding Energy</h2>
+        </div>
+        <p>
+            The difference between the total mass of the separate constituent nucleons and the actual measured mass of the unified atomic nucleus is known as the <strong>mass defect</strong> (&Delta;m).
+        </p>
+        <ul>
+            <li><strong>Mass Defect Equation:</strong> 
+                <br><strong>Mass Defect = (Number of Protons &times; Proton Mass + Number of Neutrons &times; Neutron Mass) - Nucleus Mass</strong><br>
+                (&Delta;m = Z &times; m<sub>p</sub> + N &times; m<sub>n</sub> - m<sub>nucleus</sub>).</li>
+            <li><strong>Nuclear Binding Energy (E<sub>b</sub>):</strong> The total mechanical work or energy required to completely dismantle a nucleus into its constituent unbound protons and neutrons:
+                <br><strong>Binding Energy = Mass Defect &times; Speed of Light squared</strong> (E<sub>b</sub> = &Delta;m &times; c<sup>2</sup>).</li>
+            <li><strong>Binding Energy per Nucleon:</strong> The total binding energy divided by the mass number (A). 
+            Higher binding energy per nucleon indicates greater nuclear stability. Iron-56 (<sup>56</sup>Fe) possesses one of the highest binding energies per nucleon in nature.</li>
+        </ul>
+    </section>
+
+    <!-- 03 RADIOACTIVITY -->
+    <section class="phys-section" id="radioactivity">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Radioactive Decay Laws and Half-Life</h2>
+        </div>
+        <p>
+            Unstable atomic nuclei spontaneously transform into more stable configurations by emitting radiation, a statistical process known as <strong>radioactive decay</strong>.
+        </p>
+        <ul>
+            <li><strong>Exponential Decay Law:</strong> The number of undecayed radioactive nuclei (N) remaining at any time t decreases exponentially:
+                <br><strong>Remaining Nuclei = Initial Nuclei &times; e<sup>-(decay constant &times; time)</sup></strong> (N(t) = N<sub>0</sub> &times; e<sup>-&lambda;t</sup>),<br>
+                where &lambda; is the radioactive decay constant.</li>
+            <li><strong>Half-Life (T<sub>1/2</sub>):</strong> The time required for exactly half of a given quantity of radioactive nuclei to decay:
+                <br><strong>Half-Life = Natural Logarithm of 2 / Decay Constant</strong> (T<sub>1/2</sub> = ln(2) / &lambda; &approx; 0.693 / &lambda;).</li>
+            <li><strong>Activity (A):</strong> The rate of radioactive decay measured in Becquerels (Bq, decays per second): 
+                <br><strong>Activity = Decay Constant &times; Number of Undecayed Nuclei</strong> (A = &lambda; &times; N).</li>
+        </ul>
+    </section>
+
+    <!-- 04 TYPES OF DECAY -->
+    <section class="phys-section" id="decay_types">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Types of Radioactive Decay</h2>
+        </div>
+        <p>
+            Natural radioactivity primarily manifests in three distinct forms of radiation:
+        </p>
+        <ul>
+            <li><strong>Alpha (&alpha;) Decay:</strong> Emission of an alpha particle (a helium-4 nucleus, <sup>4</sup><sub>2</sub>He). 
+            The atomic number decreases by 2 and the mass number decreases by 4 (<sup>A</sup><sub>Z</sub>X &rarr; <sup>A-4</sup><sub>Z-2</sub>Y + <sup>4</sup><sub>2</sub>He).</li>
+            <li><strong>Beta (&beta;) Decay:</strong><br>
+                &bull; <strong>Beta-Minus (&beta;<sup>-</sup>):</strong> A neutron transforms into a proton, emitting an energetic electron and an electron antineutrino (<sup>A</sup><sub>Z</sub>X &rarr; <sup>A</sup><sub>Z+1</sub>Y + e<sup>-</sup> + v&#772;<sub>e</sub>).<br>
+                &bull; <strong>Beta-Plus (&beta;<sup>+</sup>):</strong> A proton transforms into a neutron, emitting a positron and an electron neutrino (<sup>A</sup><sub>Z</sub>X &rarr; <sup>A</sup><sub>Z-1</sub>Y + e<sup>+</sup> + v<sub>e</sub>).</li>
+            <li><strong>Gamma (&gamma;) Decay:</strong> Emission of high-frequency electromagnetic photons from an excited nucleus transitioning to a lower energy state, 
+            leaving atomic number (Z) and mass number (A) unchanged.</li>
+        </ul>
+    </section>
+
+    <!-- 05 FISSION & FUSION -->
+    <section class="phys-section" id="fission_fusion">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Nuclear Fission and Nuclear Fusion</h2>
+        </div>
+        <p>
+            Nuclear reactions release massive amounts of energy by transforming mass into energy:
+        </p>
+        <ul>
+            <li><strong>Nuclear Fission:</strong> The splitting of a heavy, unstable nucleus (such as Uranium-235) into two smaller, lighter nuclei upon absorbing a neutron, 
+            releasing several free neutrons and immense thermal energy. This powers nuclear power reactors and atomic weapons.</li>
+            <li><strong>Nuclear Fusion:</strong> The combining of two light atomic nuclei (such as hydrogen isotopes deuterium and tritium) to form a heavier nucleus (helium), 
+            releasing even greater energy per nucleon. Nuclear fusion is the primary energy source powering the Sun and stars.</li>
+        </ul>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Interactive Nuclear Physics Test</h2>
+        </div>
+        <p>Test your conceptual understanding of radioactive half-life, decay laws, and binding energy.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Radioactive Half-Life Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    A radioactive isotope has a half-life of 8 days. If you start with a sample containing 
+                    <strong>64 grams</strong> of this isotope, how many grams remain undecayed after 
+                    <strong>24 days</strong> have elapsed?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">8 grams</option>
+                    <option value="wrong1">16 grams</option>
+                    <option value="wrong2">4 grams</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Radioactive Decay and Half-Life):</strong>
+            <p>A radioactive sample contains 1.00 &times; 10<sup>12</sup> active nuclei of an isotope with a half-life of 5.00 hours. 
+            Calculate: (a) the decay constant (&lambda;) of the isotope in s<sup>-1</sup>, and (b) the number of undecayed nuclei remaining after 15.0 hours.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Decay Constant (&lambda;):</strong><br>
+                - Convert half-life to seconds: T<sub>1/2</sub> = 5.00 hours &times; 3600 s/hour = 18,000 seconds.<br>
+                - Formula: &lambda; = 0.693 / T<sub>1/2</sub> = 0.693 / 18,000 s &approx; <strong>3.85 &times; 10<sup>-5</sup> s<sup>-1</sup></strong>.<br><br>
+                <strong>(b) Remaining Nuclei after 15.0 Hours:</strong><br>
+                - 15.0 hours represents exactly 3 half-lives (15.0 / 5.00 = 3).<br>
+                - Formula: N(t) = N<sub>0</sub> &times; (1 / 2)<sup>n</sup>, where n = 3.<br>
+                - N = (1.00 &times; 10<sup>12</sup>) &times; (1 / 2)<sup>3</sup> = (1.00 &times; 10<sup>12</sup>) &times; 0.125 = <strong>1.25 &times; 10<sup>11</sup> nuclei</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Mass Defect and Binding Energy):</strong>
+            <p>Calculate the total nuclear binding energy of a Helium-4 nucleus (<sup>4</sup><sub>2</sub>He), 
+            given that its nuclear mass is 4.00150 u. 
+            (Mass of proton m<sub>p</sub> = 1.00728 u, mass of neutron m<sub>n</sub> = 1.00866 u, 1 u = 931.5 MeV/c<sup>2</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Helium-4 has 2 protons (Z = 2) and 2 neutrons (N = 2).<br>
+                - Total mass of unbonded nucleons: 
+                &Delta;m<sub>total</sub> = (2 &times; 1.00728 u) + (2 &times; 1.00866 u) = 2.01456 + 2.01732 = 4.03188 u.<br>
+                - Mass defect (&Delta;m): 
+                &Delta;m = 4.03188 u - 4.00150 u = 0.03038 u.<br>
+                - Convert mass defect to binding energy: 
+                E<sub>b</sub> = 0.03038 u &times; 931.5 MeV/u &approx; <strong>28.30 MeV</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Alpha Decay Reaction Balance):</span></strong>
+            <p>Uranium-238 (<sup>238</sup><sub>92</sub>U) undergoes alpha decay to form Thorium (Th). Write the complete nuclear decay equation 
+            and determine the atomic number (Z) and mass number (A) of the resulting daughter nucleus.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Alpha decay equation: <sup>238</sup><sub>92</sub>U &rarr; <sup>A</sup><sub>Z</sub>Th + <sup>4</sup><sub>2</sub>He.<br>
+                - Conservation of mass number (A): 238 = A + 4 &implies; A = 234.<br>
+                - Conservation of atomic number (Z): 92 = Z + 2 &implies; Z = 90.<br>
+                - Complete Balanced Equation:<br>
+                <strong><sup>238</sup><sub>92</sub>U &rarr; <sup>234</sup><sub>90</sub>Th + <sup>4</sup><sub>2</sub>He</strong> (Thorium-234 daughter nucleus formed).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with nuclear reactions or radioactive dating?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down carbon-14 radiometric dating calculations, nuclear reactor critical mass thresholds, or stellar nucleosynthesis fusion chains.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Over 24 days, exactly 3 half-lives elapse (24 / 8 = 3). The sample halves three consecutive times: 64 g &rarr; 32 g &rarr; 16 g &rarr; 8 grams.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Dividing 24 days by the 8-day half-life gives 3 half-lives. Halving 64 grams three times (64 &rarr; 32 &rarr; 16 &rarr; 8) leaves <strong>8 grams</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

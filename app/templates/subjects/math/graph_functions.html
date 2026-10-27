@@ -1,0 +1,1055 @@
+{% extends "base.html" %}
+
+{% block title %}
+Graph & Functions | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* ================================
+       GRAPH & FUNCTIONS PAGE
+       Insite AI Blue Theme
+    ================================= */
+
+    .gf-page {
+        min-height: 100vh;
+        padding: 35px 20px 70px;
+        background: #0b0f19;
+        color: #f5f7ff;
+    }
+
+    .gf-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    /* Back Button */
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #ffffff;
+        background: #151c2d;
+        border: 1px solid #263554;
+        padding: 10px 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+        margin-bottom: 28px;
+    }
+
+    .back-btn:hover {
+        border-color: #0d6efd;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    /* Hero */
+
+    .gf-hero {
+        text-align: center;
+        padding: 35px 20px;
+        border-radius: 20px;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(13, 110, 253, 0.18),
+                rgba(13, 110, 253, 0.04)
+            );
+        border: 1px solid rgba(13, 110, 253, 0.25);
+        margin-bottom: 30px;
+    }
+
+    .gf-icon {
+        width: 70px;
+        height: 70px;
+        margin: auto;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0d6efd;
+        box-shadow: 0 10px 30px rgba(13, 110, 253, 0.25);
+        font-size: 30px;
+    }
+
+    .gf-hero h1 {
+        margin-top: 20px;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+    }
+
+    .gf-hero h1 span {
+        color: #0d6efd;
+    }
+
+    .gf-hero p {
+        max-width: 720px;
+        margin: 12px auto 0;
+        color: #aeb8cc;
+        line-height: 1.7;
+    }
+
+    /* Topic Navigation */
+
+    .topic-nav {
+        position: sticky;
+        top: 10px;
+        z-index: 20;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 10px;
+        margin-bottom: 30px;
+        background: rgba(15, 20, 32, 0.95);
+        border: 1px solid #202b42;
+        border-radius: 14px;
+        backdrop-filter: blur(12px);
+    }
+
+    .topic-nav::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .topic-nav::-webkit-scrollbar-thumb {
+        background: #0d6efd;
+        border-radius: 10px;
+    }
+
+    .topic-nav a {
+        flex: 0 0 auto;
+        text-decoration: none;
+        color: #aeb8cc;
+        padding: 9px 14px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .topic-nav a:hover {
+        color: white;
+        background: #0d6efd;
+    }
+
+    /* Topic Sections */
+
+    .topic-section {
+        margin-bottom: 28px;
+        scroll-margin-top: 90px;
+    }
+
+    .topic-card {
+        background: #111827;
+        border: 1px solid #202b42;
+        border-radius: 18px;
+        overflow: hidden;
+        transition: 0.25s ease;
+    }
+
+    .topic-card:hover {
+        border-color: rgba(13, 110, 253, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .topic-header {
+        padding: 20px 22px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: #151d2e;
+        border-bottom: 1px solid #202b42;
+    }
+
+    .topic-number {
+        min-width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0d6efd;
+        font-weight: 800;
+    }
+
+    .topic-header h2 {
+        margin: 0;
+        font-size: 21px;
+        font-weight: 700;
+    }
+
+    .topic-header p {
+        margin: 4px 0 0;
+        color: #8f9bb0;
+        font-size: 14px;
+    }
+
+    .topic-body {
+        padding: 23px;
+    }
+
+    .topic-body h3 {
+        color: #4d9cff;
+        font-size: 17px;
+        margin-top: 22px;
+        margin-bottom: 10px;
+    }
+
+    .topic-body h3:first-child {
+        margin-top: 0;
+    }
+
+    .topic-body p,
+    .topic-body li {
+        color: #c4ccda;
+        line-height: 1.7;
+    }
+
+    .topic-body ul {
+        padding-left: 22px;
+        margin-bottom: 0;
+    }
+
+    /* Formula */
+
+    .formula {
+        margin: 15px 0;
+        padding: 15px;
+        border-radius: 10px;
+        background: #0b1220;
+        border-left: 4px solid #0d6efd;
+        color: #ffffff;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+    }
+
+    /* Example */
+
+    .example {
+        margin-top: 17px;
+        padding: 16px;
+        border-radius: 11px;
+        background: rgba(13, 110, 253, 0.07);
+        border: 1px solid rgba(13, 110, 253, 0.18);
+    }
+
+    .example strong {
+        color: #4d9cff;
+    }
+
+    /* AI Help */
+
+    .ai-help {
+        margin-top: 20px;
+        padding: 17px;
+        border-radius: 12px;
+        background: #101827;
+        border: 1px dashed #28518e;
+    }
+
+    .ai-help i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ai-help p {
+        margin: 6px 0 0;
+        font-size: 14px;
+    }
+
+    /* Bottom */
+
+    .gf-footer {
+        text-align: center;
+        margin-top: 45px;
+        color: #748096;
+    }
+
+    .gf-footer i {
+        color: #0d6efd;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 768px) {
+
+        .gf-page {
+            padding: 22px 12px 50px;
+        }
+
+        .gf-hero {
+            padding: 28px 16px;
+        }
+
+        .gf-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 25px;
+        }
+
+        .topic-header {
+            padding: 17px;
+        }
+
+        .topic-body {
+            padding: 18px;
+        }
+
+        .topic-header h2 {
+            font-size: 18px;
+        }
+
+        .topic-number {
+            min-width: 37px;
+            height: 37px;
+        }
+
+        .topic-nav {
+            top: 5px;
+        }
+    }
+</style>
+
+<div class="gf-page">
+
+<div class="gf-container">
+
+    <!-- BACK TO MATHEMATICS -->
+
+    <a href="{{ url_for('math_page') }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Back to Mathematics
+    </a>
+
+
+    <!-- HERO -->
+
+    <section class="gf-hero">
+
+        <div class="gf-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+
+        <h1>
+            Graphs <span>&</span> Functions
+        </h1>
+
+        <p>
+            Learn how mathematical relationships are represented,
+            interpreted and solved using graphs, tables, equations
+            and functions.
+        </p>
+
+    </section>
+
+
+    <!-- TOPIC NAVIGATION -->
+
+    <nav class="topic-nav">
+
+        <a href="#coordinates">Coordinates</a>
+
+        <a href="#straight-lines">Straight Lines</a>
+
+        <a href="#gradient">Gradient</a>
+
+        <a href="#graphs">Graphs</a>
+
+        <a href="#functions">Functions</a>
+
+        <a href="#quadratic">Quadratic</a>
+
+        <a href="#simultaneous">Intersections</a>
+
+        <a href="#variation">Variation</a>
+
+        <a href="#transformations">Transformations</a>
+
+        <a href="#applications">Applications</a>
+
+    </nav>
+
+
+    <!-- 1. COORDINATE GEOMETRY -->
+
+    <section class="topic-section" id="coordinates">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">1</div>
+
+                <div>
+                    <h2>Coordinate Geometry</h2>
+                    <p>Understanding points and positions on a graph.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>The Cartesian Plane</h3>
+
+                <p>
+                    A Cartesian plane is formed by two perpendicular
+                    number lines: the horizontal x-axis and the vertical
+                    y-axis.
+                </p>
+
+                <ul>
+                    <li>x-axis — horizontal axis</li>
+                    <li>y-axis — vertical axis</li>
+                    <li>origin — point (0, 0)</li>
+                    <li>coordinates are written as (x, y)</li>
+                </ul>
+
+                <h3>Quadrants</h3>
+
+                <ul>
+                    <li>Quadrant I: (+, +)</li>
+                    <li>Quadrant II: (-, +)</li>
+                    <li>Quadrant III: (-, -)</li>
+                    <li>Quadrant IV: (+, -)</li>
+                </ul>
+
+                <h3>Distance Between Two Points</h3>
+
+                <div class="formula">
+                    d = √[(x₂ − x₁)² + (y₂ − y₁)²]
+                </div>
+
+                <h3>Midpoint</h3>
+
+                <div class="formula">
+                    M = ((x₁ + x₂)/2, (y₁ + y₂)/2)
+                </div>
+
+                <div class="example">
+
+                    <strong>Example:</strong>
+
+                    <p>
+                        Find the midpoint of A(2, 4) and B(8, 10).
+                    </p>
+
+                    <p>
+                        M = ((2 + 8)/2, (4 + 10)/2)
+                    </p>
+
+                    <p>
+                        M = (5, 7)
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 2. STRAIGHT LINES -->
+
+    <section class="topic-section" id="straight-lines">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">2</div>
+
+                <div>
+                    <h2>Straight-Line Graphs</h2>
+                    <p>Equations and properties of straight lines.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>General Form</h3>
+
+                <div class="formula">
+                    y = mx + c
+                </div>
+
+                <p>
+                    Here, <strong>m</strong> represents the gradient
+                    and <strong>c</strong> represents the y-intercept.
+                </p>
+
+                <h3>Examples of Straight Lines</h3>
+
+                <ul>
+                    <li>y = 2x + 3</li>
+                    <li>y = -x + 5</li>
+                    <li>y = 4x</li>
+                    <li>y = 7</li>
+                </ul>
+
+                <h3>Intercepts</h3>
+
+                <p>
+                    The y-intercept is where a line crosses the y-axis.
+                    The x-intercept is where it crosses the x-axis.
+                </p>
+
+                <div class="ai-help">
+                    <i class="fas fa-sparkles"></i>
+                    <strong>Need help?</strong>
+                    <p>
+                        Ask Insite AI to explain how to draw a straight
+                        line from its equation.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 3. GRADIENT -->
+
+    <section class="topic-section" id="gradient">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">3</div>
+
+                <div>
+                    <h2>Gradient and Slope</h2>
+                    <p>Measuring how steep a line is.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Gradient Formula</h3>
+
+                <div class="formula">
+                    m = (y₂ − y₁) / (x₂ − x₁)
+                </div>
+
+                <h3>Types of Gradient</h3>
+
+                <ul>
+                    <li>Positive gradient — line rises from left to right.</li>
+                    <li>Negative gradient — line falls from left to right.</li>
+                    <li>Zero gradient — horizontal line.</li>
+                    <li>Undefined gradient — vertical line.</li>
+                </ul>
+
+                <h3>Parallel Lines</h3>
+
+                <p>
+                    Parallel straight lines have equal gradients.
+                </p>
+
+                <div class="formula">
+                    m₁ = m₂
+                </div>
+
+                <h3>Perpendicular Lines</h3>
+
+                <p>
+                    For two non-vertical perpendicular lines, their
+                    gradients have a product of -1.
+                </p>
+
+                <div class="formula">
+                    m₁ × m₂ = -1
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 4. GRAPH PLOTTING -->
+
+    <section class="topic-section" id="graphs">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">4</div>
+
+                <div>
+                    <h2>Plotting and Interpreting Graphs</h2>
+                    <p>Turning data and equations into graphs.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Plotting Points</h3>
+
+                <p>
+                    A point is plotted using its x-coordinate first
+                    and its y-coordinate second.
+                </p>
+
+                <div class="formula">
+                    (x, y)
+                </div>
+
+                <h3>Tables of Values</h3>
+
+                <p>
+                    A table can be used to calculate corresponding
+                    x and y values before plotting them on a graph.
+                </p>
+
+                <h3>Reading Graphs</h3>
+
+                <ul>
+                    <li>Read coordinates.</li>
+                    <li>Identify maximum and minimum values.</li>
+                    <li>Find intercepts.</li>
+                    <li>Compare increasing and decreasing regions.</li>
+                    <li>Interpret real-world information.</li>
+                </ul>
+
+                <h3>Distance-Time Graphs</h3>
+
+                <p>
+                    The gradient of a distance-time graph represents
+                    speed.
+                </p>
+
+                <h3>Velocity-Time Graphs</h3>
+
+                <p>
+                    The gradient represents acceleration, while the
+                    area under the graph can represent displacement.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 5. FUNCTIONS -->
+
+    <section class="topic-section" id="functions">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">5</div>
+
+                <div>
+                    <h2>Functions</h2>
+                    <p>Understanding mathematical input-output relationships.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>What Is a Function?</h3>
+
+                <p>
+                    A function is a rule that assigns exactly one output
+                    to each allowed input.
+                </p>
+
+                <div class="formula">
+                    f(x) = y
+                </div>
+
+                <h3>Function Notation</h3>
+
+                <p>
+                    If
+                </p>
+
+                <div class="formula">
+                    f(x) = 2x + 3
+                </div>
+
+                <p>
+                    then:
+                </p>
+
+                <div class="formula">
+                    f(4) = 2(4) + 3 = 11
+                </div>
+
+                <h3>Domain</h3>
+
+                <p>
+                    The domain is the set of possible input values.
+                </p>
+
+                <h3>Range</h3>
+
+                <p>
+                    The range is the set of possible output values.
+                </p>
+
+                <h3>One-to-One Functions</h3>
+
+                <p>
+                    A one-to-one function gives different outputs for
+                    different inputs.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 6. QUADRATIC GRAPHS -->
+
+    <section class="topic-section" id="quadratic">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">6</div>
+
+                <div>
+                    <h2>Quadratic Graphs</h2>
+                    <p>Parabolas, roots and turning points.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Quadratic Function</h3>
+
+                <div class="formula">
+                    y = ax² + bx + c
+                </div>
+
+                <h3>Shape of a Parabola</h3>
+
+                <p>
+                    When a is positive, the parabola opens upward.
+                    When a is negative, it opens downward.
+                </p>
+
+                <h3>Roots</h3>
+
+                <p>
+                    The roots are the x-values where the graph crosses
+                    or touches the x-axis.
+                </p>
+
+                <h3>Quadratic Formula</h3>
+
+                <div class="formula">
+                    x = [-b ± √(b² − 4ac)] / 2a
+                </div>
+
+                <h3>Discriminant</h3>
+
+                <div class="formula">
+                    Δ = b² − 4ac
+                </div>
+
+                <ul>
+                    <li>Δ &gt; 0 — two real roots</li>
+                    <li>Δ = 0 — one repeated real root</li>
+                    <li>Δ &lt; 0 — no real roots</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 7. SIMULTANEOUS EQUATIONS -->
+
+    <section class="topic-section" id="simultaneous">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">7</div>
+
+                <div>
+                    <h2>Graphs and Simultaneous Equations</h2>
+                    <p>Finding solutions using intersections.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Two Straight Lines</h3>
+
+                <p>
+                    When two straight-line graphs intersect, the
+                    coordinates of their intersection give the
+                    solution to the simultaneous equations.
+                </p>
+
+                <div class="example">
+
+                    <strong>Example:</strong>
+
+                    <p>
+                        y = 2x + 1
+                    </p>
+
+                    <p>
+                        y = -x + 7
+                    </p>
+
+                    <p>
+                        Their intersection gives the common solution
+                        for x and y.
+                    </p>
+
+                </div>
+
+                <h3>Line and Curve</h3>
+
+                <p>
+                    A straight line can also intersect a quadratic
+                    curve. The intersection points represent the
+                    simultaneous solutions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 8. VARIATION -->
+
+    <section class="topic-section" id="variation">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">8</div>
+
+                <div>
+                    <h2>Variation</h2>
+                    <p>How one quantity changes with another.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Direct Variation</h3>
+
+                <div class="formula">
+                    y ∝ x
+                </div>
+
+                <p>
+                    This means y is directly proportional to x.
+                </p>
+
+                <div class="formula">
+                    y = kx
+                </div>
+
+                <h3>Inverse Variation</h3>
+
+                <div class="formula">
+                    y ∝ 1/x
+                </div>
+
+                <div class="formula">
+                    y = k/x
+                </div>
+
+                <h3>Power Variation</h3>
+
+                <div class="formula">
+                    y ∝ xⁿ
+                </div>
+
+                <p>
+                    Variation is widely used in physics, economics,
+                    engineering and science.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 9. TRANSFORMATIONS -->
+
+    <section class="topic-section" id="transformations">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">9</div>
+
+                <div>
+                    <h2>Graph Transformations</h2>
+                    <p>Moving and changing the shape of graphs.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Translation</h3>
+
+                <p>
+                    A graph can be shifted horizontally or vertically.
+                </p>
+
+                <h3>Reflection</h3>
+
+                <p>
+                    Graphs can be reflected across the x-axis or y-axis.
+                </p>
+
+                <h3>Stretching and Compression</h3>
+
+                <p>
+                    Multiplying a function by a constant can change
+                    its vertical scale.
+                </p>
+
+                <div class="formula">
+                    y = af(x)
+                </div>
+
+                <p>
+                    Changing the input can affect the horizontal
+                    scale.
+                </p>
+
+                <div class="formula">
+                    y = f(bx)
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 10. APPLICATIONS -->
+
+    <section class="topic-section" id="applications">
+
+        <div class="topic-card">
+
+            <div class="topic-header">
+
+                <div class="topic-number">10</div>
+
+                <div>
+                    <h2>Real-Life Applications</h2>
+                    <p>Using graphs and functions to solve problems.</p>
+                </div>
+
+            </div>
+
+            <div class="topic-body">
+
+                <h3>Physics</h3>
+
+                <ul>
+                    <li>Distance-time graphs</li>
+                    <li>Velocity-time graphs</li>
+                    <li>Acceleration</li>
+                    <li>Projectile motion</li>
+                </ul>
+
+                <h3>Business</h3>
+
+                <ul>
+                    <li>Cost graphs</li>
+                    <li>Revenue</li>
+                    <li>Profit</li>
+                    <li>Break-even points</li>
+                </ul>
+
+                <h3>Statistics</h3>
+
+                <ul>
+                    <li>Data interpretation</li>
+                    <li>Scatter diagrams</li>
+                    <li>Trend lines</li>
+                    <li>Correlation</li>
+                </ul>
+
+                <h3>Problem Solving</h3>
+
+                <p>
+                    Graphs allow complicated relationships to be
+                    represented visually, making patterns,
+                    intersections and changes easier to understand.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AI HELP -->
+
+    <div class="ai-help">
+
+        <i class="fas fa-sparkles"></i>
+
+        <strong>Stuck on a graph or function?</strong>
+
+        <p>
+            You can open Insite AI Chat and ask for a step-by-step
+            explanation of any topic you are learning here.
+        </p>
+
+    </div>
+
+
+    <div class="gf-footer">
+
+        <i class="fas fa-chart-line"></i>
+
+        Keep learning. Keep solving. Keep improving.
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

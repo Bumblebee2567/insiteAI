@@ -1,0 +1,682 @@
+{% extends "base.html" %}
+
+{% block title %}
+Properties of Matter & Fluid Dynamics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-water"></i>
+            Properties of Matter & Fluid Dynamics
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering the microscopic and macroscopic mechanical properties of solids and fluids, 
+            elasticity moduli, stress-strain behavior, surface tension, fluid statics, viscosity, and fluid flow dynamics.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#elasticity">Elasticity & Moduli</a>
+        <a href="#stress_strain">Stress-Strain Curves</a>
+        <a href="#fluids_stat">Fluid Statics</a>
+        <a href="#surface_tension">Surface Tension</a>
+        <a href="#viscosity">Viscosity & Stokes</a>
+        <a href="#fluid_dyn">Fluid Dynamics</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to States and Properties of Matter</h2>
+        </div>
+        <p>
+            The physical behavior of bulk matter depends heavily on intermolecular forces and atomic arrangement. 
+            Matter is fundamentally categorized into solids, liquids, gases, and plasmas. 
+            Solids maintain a fixed shape and volume due to rigid intermolecular crystal lattices; 
+            liquids possess a fixed volume but adapt to the shape of their container; and gases expand to fill any available volume completely.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            When external forces are applied to bulk matter, solids deform elastically or plastically, whereas fluids (liquids and gases) 
+            flow and transmit pressure uniformly in all directions.
+        </div>
+    </section>
+
+    <!-- 02 ELASTICITY & MODULI -->
+    <section class="phys-section" id="elasticity">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Elasticity, Stress, Strain & Moduli</h2>
+        </div>
+        <p>
+            Elasticity is the property of a body by virtue of which it tends to regain its original shape and size after the removal of deforming forces.
+        </p>
+        <ul>
+            <li><strong>Stress:</strong> The restoring internal force per unit area acting within a deformed material. Measured in Pascals (Pa or N/m<sup>2</sup>): 
+                <br><strong>Stress = Force / Area</strong></li>
+            <li><strong>Strain:</strong> The dimensionless measure of relative deformation representing the fractional change in dimension: 
+                <br><strong>Strain = Change in Length / Original Length</strong></li>
+            <li><strong>Hooke's Law for Elasticity:</strong> Within the elastic limit, stress is directly proportional to strain, governed by an elastic modulus:
+                <br><strong>Stress = Elastic Modulus &times; Strain</strong></li>
+        </ul>
+
+        <h3>Types of Elastic Moduli</h3>
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Modulus Type</th>
+                        <th>Deformation Type</th>
+                        <th>Defining Formula</th>
+                        <th>Physical Significance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Young's Modulus (Y)</strong></td>
+                        <td>Tensile or Compressive</td>
+                        <td><strong>Y = (Force / Area) / (Change in Length / Original Length)</strong></td>
+                        <td>Resistance to elongation or compression in solid wires/rods.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shear Modulus (S)</strong></td>
+                        <td>Shear (angular distortion)</td>
+                        <td><strong>S = (Force / Area) / (Displacement / Height)</strong></td>
+                        <td>Resistance to shape change under parallel tangential forces.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bulk Modulus (B)</strong></td>
+                        <td>Volume compression</td>
+                        <td><strong>B = - (Change in Pressure) / (Change in Volume / Original Volume)</strong></td>
+                        <td>Resistance to uniform hydrostatic compression from all sides.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 03 STRESS-STRAIN CURVES -->
+    <section class="phys-section" id="stress_strain">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Stress-Strain Behavior & Material Limits</h2>
+        </div>
+        <p>
+            When a ductile metal wire is subjected to gradually increasing tensile stress until it fractures, 
+            the resulting stress-strain curve exhibits distinct mechanical regions:
+        </p>
+        <ul>
+            <li><strong>Proportional Limit:</strong> The region where stress is strictly proportional to strain (Hooke's Law holds true, and the curve is a straight line).</li>
+            <li><strong>Elastic Limit (Yield Point):</strong> The maximum stress a material can withstand without undergoing permanent plastic deformation. Upon unloading past this point, the material retains a permanent set.</li>
+            <li><strong>Plastic Flow Region:</strong> Beyond the yield point, atomic planes slip past one another, causing permanent stretching with relatively small increases in applied stress.</li>
+            <li><strong>Ultimate Tensile Strength (UTS):</strong> The maximum stress point on the curve corresponding to the greatest load the material can handle before necking begins.</li>
+            <li><strong>Fracture Point:</strong> The final stress level at which the material specimen physically snaps or ruptures.</li>
+        </ul>
+    </section>
+
+    <!-- 04 FLUID STATICS -->
+    <section class="phys-section" id="fluids_stat">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Fluid Statics, Pressure & Pascal's Principle</h2>
+        </div>
+        <p>
+            Fluid statics studies fluids at rest. Pressure is defined as the normal force exerted per unit area: 
+            <strong>Pressure = Force / Area</strong>, measured in Pascals (Pa).
+        </p>
+        <ul>
+            <li><strong>Hydrostatic Pressure Variation:</strong> The pressure at a depth below the surface of an incompressible fluid of density is:
+                <br><strong>Pressure = Atmospheric Pressure + (Density &times; Acceleration due to Gravity &times; Depth)</strong></li>
+            <li><strong>Pascal's Principle:</strong> A pressure change applied to an enclosed fluid is transmitted undiminished to every portion of the fluid and to the walls of its container. This forms the foundational operating principle of hydraulic lifts and braking systems.</li>
+            <li><strong>Archimedes' Principle:</strong> Any object wholly or partially immersed in a fluid is buoyed up by a force equal to the weight of the fluid displaced by the object:
+                <br><strong>Buoyant Force = Fluid Density &times; Submerged Volume &times; Acceleration due to Gravity</strong></li>
+        </ul>
+    </section>
+
+    <!-- 05 SURFACE TENSION -->
+    <section class="phys-section" id="surface_tension">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Surface Tension and Capillarity</h2>
+        </div>
+        <p>
+            Molecules in the interior of a liquid experience balanced intermolecular attractive forces from all neighboring molecules. 
+            However, molecules at the liquid surface experience a net inward cohesive pull, creating a taut elastic skin effect known as 
+            <strong>surface tension</strong>.
+        </p>
+        <ul>
+            <li><strong>Definition:</strong> Surface tension is defined as the force acting perpendicularly per unit length along an imaginary line drawn on the liquid surface:
+                <br><strong>Surface Tension = Force / Length</strong><br>
+                measured in Newtons per meter (N/m) or Joules per square meter (J/m<sup>2</sup>).</li>
+            <li><strong>Capillary Action:</strong> The rise or fall of a liquid inside a narrow vertical tube (capillary tube) caused by the competition between cohesive forces (liquid-liquid) and adhesive forces (liquid-wall):
+                <br><strong>Height = (2 &times; Surface Tension &times; cosine of Contact Angle) / (Density &times; Gravity &times; Radius)</strong></li>
+        </ul>
+    </section>
+
+    <!-- 06 VISCOSITY -->
+    <section class="phys-section" id="viscosity">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Viscosity & Stokes' Law</h2>
+        </div>
+        <p>
+            Viscosity is the quantitative measure of a fluid's internal resistance to flow or shear deformation (essentially fluid friction).
+        </p>
+        <ul>
+            <li><strong>Dynamic Viscosity:</strong> Defined by Newton's law of viscosity for laminar flow between parallel plates, measured in Pascal-seconds (Pa&middot;s).</li>
+            <li><strong>Stokes' Law:</strong> The viscous drag force experienced by a small spherical particle of radius moving at a slow speed through a viscous fluid is:
+                <br><strong>Drag Force = 6 &times; pi &times; Dynamic Viscosity &times; Radius &times; Speed</strong></li>
+            <li><strong>Terminal Velocity:</strong> When a small sphere falls through a viscous fluid, gravity, buoyancy, and the Stokes drag force balance out, causing the sphere to fall at a constant terminal velocity:
+                <br><strong>Terminal Velocity = (2 &times; Radius squared &times; (Sphere Density - Fluid Density) &times; Gravity) / (9 &times; Dynamic Viscosity)</strong></li>
+        </ul>
+    </section>
+
+    <!-- 07 FLUID DYNAMICS -->
+    <section class="phys-section" id="fluid_dyn">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Fluid Dynamics & Bernoulli's Principle</h2>
+        </div>
+        <p>
+            Fluid dynamics analyzes fluids in motion. We assume ideal fluid flow characterized by being incompressible, non-viscous, steady (laminar), and irrotational.
+        </p>
+        <ul>
+            <li><strong>Equation of Continuity:</strong> For an incompressible fluid flowing through a pipe of varying cross-sectional area, the volume flow rate remains constant:
+                <br><strong>Area 1 &times; Velocity 1 = Area 2 &times; Velocity 2 = Constant</strong><br>
+                meaning fluid speeds up where the pipe narrows and slows down where the pipe widens.</li>
+            <li><strong>Bernoulli's Equation:</strong> Derived from the work-energy theorem applied to fluid flow, stating that the sum of pressure energy, kinetic energy per unit volume, and potential energy per unit volume remains constant along any streamline:
+                <br><strong>Pressure 1 + (1/2) &times; Density &times; Velocity 1 squared + Density &times; Gravity &times; Height 1 = Pressure 2 + (1/2) &times; Density &times; Velocity 2 squared + Density &times; Gravity &times; Height 2</strong></li>
+            <li><strong>Torricelli's Law:</strong> The efflux speed of a liquid flowing out of a small puncture hole located at a depth below the open top surface of a tank is:
+                <br><strong>Speed = square root of (2 &times; Gravity &times; Depth)</strong></li>
+        </ul>
+    </section>
+
+    <!-- 08 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Interactive Properties of Matter Test</h2>
+        </div>
+        <p>Test your conceptual understanding of elasticity, Young's modulus, and fluid dynamics.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Fluid Velocity Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    If an ideal water pipe narrows to <strong>half of its original cross-sectional area</strong>, 
+                    what happens to the flow velocity of the water in the narrowed section?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">It doubles (increases by a factor of 2)</option>
+                    <option value="wrong1">It is halved (decreases by a factor of 2)</option>
+                    <option value="wrong2">It remains exactly the same</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Young's Modulus & Wire Elongation):</strong>
+            <p>A steel wire of length 2.00 m and cross-sectional area 1.00 &times; 10<sup>-6</sup> m<sup>2</sup> is suspended vertically. 
+            A heavy load of mass 50.0 kg is attached to the bottom end. Given that Young's modulus for steel is 2.00 &times; 10<sup>11</sup> Pa, 
+            calculate: (a) the tensile stress in the wire, and (b) the total elongation of the wire. (Assume g = 9.81 m/s<sup>2</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Tensile Stress:</strong><br>
+                - Applied force = Mass &times; Gravity = (50.0 kg)(9.81 m/s<sup>2</sup>) = 490.5 N.<br>
+                - Stress = Force / Area = (490.5 N) / (1.00 &times; 10<sup>-6</sup> m<sup>2</sup>) = <strong>4.905 &times; 10<sup>7</sup> Pa</strong> (49.05 MPa).<br><br>
+                <strong>(b) Elongation:</strong><br>
+                - Using Young's modulus formula: Elongation = (Force &times; Original Length) / (Young's Modulus &times; Area).<br>
+                - Elongation = (490.5 N &times; 2.00 m) / ((2.00 &times; 10<sup>11</sup> Pa) &times; (1.00 &times; 10<sup>-6</sup> m<sup>2</sup>)) = 981 / (2.00 &times; 10<sup>5</sup>) = 4.905 &times; 10<sup>-3</sup> m = <strong>4.91 mm</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Archimedes' Principle & Buoyancy):</strong>
+            <p>An ice cube of uniform density 917 kg/m<sup>3</sup> floats in a glass of fresh water (1000 kg/m<sup>3</sup>). 
+            Calculate the exact percentage of the ice cube's total volume that remains submerged beneath the water surface.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - For a floating object, the upward buoyant force equals the total weight of the object.<br>
+                - Fluid Density &times; Submerged Volume &times; Gravity = Object Density &times; Total Volume &times; Gravity.<br>
+                - Cancel gravity: Submerged Volume / Total Volume = Object Density / Fluid Density.<br>
+                - Substitute values: Submerged Volume / Total Volume = 917 / 1000 = 0.917 = <strong>91.7% submerged</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Bernoulli's Equation & Fluid Flow):</strong>
+            <p>Water flows through a horizontal pipe with a cross-sectional area of 0.040 m<sup>2</sup> at a speed of 2.0 m/s under a pressure of 3.0 &times; 10<sup>5</sup> Pa. 
+            The pipe narrows to a cross-sectional area of 0.010 m<sup>2</sup>. (a) What is the new flow speed in the narrow section? 
+            (b) What is the fluid pressure in the narrow section? (Density of water = 1000 kg/m<sup>3</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Flow Speed in Narrow Section:</strong><br>
+                - Continuity Equation: Area 1 &times; Speed 1 = Area 2 &times; Speed 2.<br>
+                - Speed 2 = Speed 1 &times; (Area 1 / Area 2) = (2.0 m/s) &times; (0.040 / 0.010) = (2.0)(4.0) = <strong>8.0 m/s</strong>.<br><br>
+                <strong>(b) Pressure in Narrow Section:</strong><br>
+                - Bernoulli's Equation (horizontal pipe so height terms cancel):<br>
+                Pressure 2 = Pressure 1 + (1/2) &times; Density &times; (Speed 1 squared - Speed 2 squared).<br>
+                - Pressure 2 = (3.0 &times; 10<sup>5</sup>) + (1/2)(1000)(2.0<sup>2</sup> - 8.0<sup>2</sup>) = 300,000 + 500(4 - 64).<br>
+                - Pressure 2 = 300,000 + 500(-60) = 300,000 - 30,000 = 270,000 Pa = <strong>2.70 &times; 10<sup>5</sup> Pa</strong> (270 kPa).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with elastic moduli or fluid dynamics?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down complex stress-strain tensor calculations, Navier-Stokes equations, or Venturi tube pressure drops.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>According to the Equation of Continuity, if the cross-sectional area is halved, the flow velocity must double to maintain a constant volume flow rate.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>The Equation of Continuity states that area and velocity are inversely proportional. When the pipe narrows to half its area, the fluid velocity <strong>doubles</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,873 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+Geometry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .geometry-page {
+        min-height: 100vh;
+        padding: 30px 20px 60px;
+        background: #0b0f14;
+    }
+
+    .geometry-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #ffffff;
+        background: #151c2d;
+        border: 1px solid #263554;
+        padding: 10px 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+        margin-bottom: 28px;
+    }
+
+    .back-button:hover {
+        background: #0b5ed7;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    .geometry-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .geometry-header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .geometry-header p {
+        color: #adb5bd;
+        font-size: 17px;
+        max-width: 750px;
+        margin: auto;
+        line-height: 1.7;
+    }
+
+    .topic-navigation {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 35px;
+        padding: 15px;
+        background: #111820;
+        border-radius: 15px;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+    }
+
+    .topic-navigation a {
+        color: #ffffff;
+        text-decoration: none;
+        background: #1b2633;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .topic-navigation a:hover {
+        background: #0d6efd;
+    }
+
+    .topic-section {
+        background: #111820;
+        border: 1px solid #202b36;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        scroll-margin-top: 90px;
+    }
+
+    .topic-section h2 {
+        color: #4d9cff;
+        font-size: 28px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+    .topic-section h3 {
+        color: #ffffff;
+        font-size: 20px;
+        margin-top: 22px;
+        margin-bottom: 8px;
+    }
+
+    .topic-section p {
+        color: #c5cbd1;
+        line-height: 1.75;
+        margin-bottom: 10px;
+    }
+
+    .topic-section ul {
+        color: #c5cbd1;
+        line-height: 1.8;
+    }
+
+    .formula {
+        background: #0b1118;
+        border-left: 4px solid #0d6efd;
+        padding: 14px 18px;
+        margin: 15px 0;
+        border-radius: 8px;
+        color: #ffffff;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+    }
+
+    .example {
+        background: #172230;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-top: 15px;
+        color: #d9e0e7;
+    }
+
+    .example strong {
+        color: #4d9cff;
+    }
+
+    .definition {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    /* AI Help */
+
+    .ai-help {
+        margin-top: 20px;
+        padding: 17px;
+        border-radius: 12px;
+        background: #101827;
+        border: 1px dashed #28518e;
+    }
+
+    .ai-help i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ai-help p {
+        margin: 6px 0 0;
+        font-size: 14px;
+    }
+
+    /* Bottom */
+
+    .gf-footer {
+        text-align: center;
+        margin-top: 45px;
+        color: #748096;
+    }
+
+    .gf-footer i {
+        color: #0d6efd;
+    }
+
+
+    @media (max-width: 768px) {
+        .geometry-page {
+            padding: 20px 12px 45px;
+        }
+
+        .geometry-header h1 {
+            font-size: 32px;
+        }
+
+        .topic-section {
+            padding: 20px;
+        }
+
+        .topic-section h2 {
+            font-size: 24px;
+        }
+
+        .topic-navigation {
+            justify-content: flex-start;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .topic-navigation a {
+            white-space: nowrap;
+        }
+    }
+</style>
+
+<div class="geometry-page">
+
+    <div class="geometry-container">
+
+        <!-- Back Button -->
+        <a href="{{ url_for('math_page') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Mathematics
+        </a>
+
+        <!-- Header -->
+        <header class="geometry-header">
+            <h1>
+                <i class="fas fa-shapes text-primary"></i>
+                Geometry
+            </h1>
+
+            <p>
+                Learn the basic ideas of shapes, lines, angles, measurements,
+                areas, volumes, transformations and other important geometry
+                concepts used in secondary school mathematics.
+            </p>
+        </header>
+
+        <!-- Topic Navigation -->
+        <nav class="topic-navigation">
+
+            <a href="#basics">Basics</a>
+            <a href="#lines">Lines</a>
+            <a href="#angles">Angles</a>
+            <a href="#triangles">Triangles</a>
+            <a href="#quadrilaterals">Quadrilaterals</a>
+            <a href="#polygons">Polygons</a>
+            <a href="#circles">Circles</a>
+            <a href="#perimeter-area">Perimeter & Area</a>
+            <a href="#volume">Volume</a>
+            <a href="#pythagoras">Pythagoras</a>
+            <a href="#similarity">Similarity</a>
+            <a href="#transformations">Transformations</a>
+            <a href="#coordinate">Coordinate Geometry</a>
+
+        </nav>
+
+        <!-- 1. BASICS -->
+        <section class="topic-section" id="basics">
+
+            <h2>1. Geometry Basics</h2>
+
+            <p>
+                Geometry is the branch of mathematics that deals with shapes,
+                sizes, positions, distances and properties of objects.
+            </p>
+
+            <h3>Point</h3>
+
+            <p>
+                A point represents an exact position. It has no length,
+                width or thickness.
+            </p>
+
+            <h3>Line</h3>
+
+            <p>
+                A line is a straight path that extends infinitely in both
+                directions.
+            </p>
+
+            <h3>Line Segment</h3>
+
+            <p>
+                A line segment is part of a line with two definite endpoints.
+            </p>
+
+            <h3>Ray</h3>
+
+            <p>
+                A ray has one endpoint and extends infinitely in one direction.
+            </p>
+
+        </section>
+
+        <!-- 2. LINES -->
+        <section class="topic-section" id="lines">
+
+            <h2>2. Lines and Their Relationships</h2>
+
+            <h3>Parallel Lines</h3>
+
+            <p>
+                Parallel lines are lines that remain the same distance apart
+                and never meet.
+            </p>
+
+            <h3>Perpendicular Lines</h3>
+
+            <p>
+                Perpendicular lines intersect at a right angle of 90°.
+            </p>
+
+            <h3>Intersecting Lines</h3>
+
+            <p>
+                Intersecting lines are lines that cross at a point.
+            </p>
+
+            <h3>Transversal</h3>
+
+            <p>
+                A transversal is a line that crosses two or more other lines.
+                When parallel lines are crossed by a transversal, several
+                useful angle relationships are formed.
+            </p>
+
+        </section>
+
+        <!-- 3. ANGLES -->
+        <section class="topic-section" id="angles">
+
+            <h2>3. Angles</h2>
+
+            <p>
+                An angle is formed when two rays meet at a common endpoint.
+                The common endpoint is called the vertex.
+            </p>
+
+            <h3>Types of Angles</h3>
+
+            <ul>
+                <li><strong>Acute angle:</strong> less than 90°</li>
+                <li><strong>Right angle:</strong> exactly 90°</li>
+                <li><strong>Obtuse angle:</strong> greater than 90° but less than 180°</li>
+                <li><strong>Straight angle:</strong> exactly 180°</li>
+                <li><strong>Reflex angle:</strong> greater than 180° but less than 360°</li>
+                <li><strong>Full angle:</strong> exactly 360°</li>
+            </ul>
+
+            <h3>Complementary Angles</h3>
+
+            <p>
+                Two angles are complementary when their sum is 90°.
+            </p>
+
+            <div class="formula">
+                A + B = 90°
+            </div>
+
+            <h3>Supplementary Angles</h3>
+
+            <p>
+                Two angles are supplementary when their sum is 180°.
+            </p>
+
+            <div class="formula">
+                A + B = 180°
+            </div>
+
+            <h3>Angles on a Straight Line</h3>
+
+            <p>
+                Angles on a straight line add up to 180°.
+            </p>
+
+            <h3>Angles Around a Point</h3>
+
+            <p>
+                Angles around a point add up to 360°.
+            </p>
+
+        </section>
+
+        <!-- 4. TRIANGLES -->
+        <section class="topic-section" id="triangles">
+
+            <h2>4. Triangles</h2>
+
+            <p>
+                A triangle is a polygon with three sides, three vertices
+                and three interior angles.
+            </p>
+
+            <h3>Triangle Angle Sum</h3>
+
+            <p>
+                The interior angles of every triangle add up to 180°.
+            </p>
+
+            <div class="formula">
+                A + B + C = 180°
+            </div>
+
+            <h3>Types by Sides</h3>
+
+            <ul>
+                <li><strong>Equilateral:</strong> three equal sides.</li>
+                <li><strong>Isosceles:</strong> two equal sides.</li>
+                <li><strong>Scalene:</strong> all sides are different.</li>
+            </ul>
+
+            <h3>Types by Angles</h3>
+
+            <ul>
+                <li><strong>Acute triangle:</strong> all angles are less than 90°.</li>
+                <li><strong>Right triangle:</strong> one angle is 90°.</li>
+                <li><strong>Obtuse triangle:</strong> one angle is greater than 90°.</li>
+            </ul>
+
+            <h3>Area of a Triangle</h3>
+
+            <div class="formula">
+                Area = ½ × base × height
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong><br>
+                If the base is 10 cm and the height is 6 cm:
+                <br><br>
+                Area = ½ × 10 × 6 = 30 cm²
+            </div>
+
+        </section>
+
+        <!-- 5. QUADRILATERALS -->
+        <section class="topic-section" id="quadrilaterals">
+
+            <h2>5. Quadrilaterals</h2>
+
+            <p>
+                A quadrilateral is a polygon with four sides.
+            </p>
+
+            <p>
+                The interior angles of a quadrilateral add up to 360°.
+            </p>
+
+            <div class="formula">
+                A + B + C + D = 360°
+            </div>
+
+            <h3>Square</h3>
+
+            <p>
+                A square has four equal sides and four right angles.
+            </p>
+
+            <h3>Rectangle</h3>
+
+            <p>
+                A rectangle has four right angles. Opposite sides are equal
+                and parallel.
+            </p>
+
+            <h3>Parallelogram</h3>
+
+            <p>
+                A parallelogram has two pairs of parallel opposite sides.
+            </p>
+
+            <h3>Rhombus</h3>
+
+            <p>
+                A rhombus has four equal sides.
+            </p>
+
+            <h3>Trapezium</h3>
+
+            <p>
+                A trapezium has at least one pair of parallel sides.
+            </p>
+
+            <h3>Kite</h3>
+
+            <p>
+                A kite has two pairs of adjacent equal sides.
+            </p>
+
+        </section>
+
+        <!-- 6. POLYGONS -->
+        <section class="topic-section" id="polygons">
+
+            <h2>6. Polygons</h2>
+
+            <p>
+                A polygon is a closed two-dimensional shape made from straight
+                line segments.
+            </p>
+
+            <h3>Common Polygons</h3>
+
+            <ul>
+                <li>3 sides — Triangle</li>
+                <li>4 sides — Quadrilateral</li>
+                <li>5 sides — Pentagon</li>
+                <li>6 sides — Hexagon</li>
+                <li>7 sides — Heptagon</li>
+                <li>8 sides — Octagon</li>
+                <li>9 sides — Nonagon</li>
+                <li>10 sides — Decagon</li>
+            </ul>
+
+            <h3>Interior Angle Sum</h3>
+
+            <p>
+                The sum of the interior angles of an n-sided polygon is:
+            </p>
+
+            <div class="formula">
+                (n - 2) × 180°
+            </div>
+
+            <h3>Regular Polygons</h3>
+
+            <p>
+                A regular polygon has equal sides and equal interior angles.
+            </p>
+
+            <p>
+                The size of each interior angle of a regular polygon is:
+            </p>
+
+            <div class="formula">
+                [(n - 2) × 180°] ÷ n
+            </div>
+
+        </section>
+
+        <!-- 7. CIRCLES -->
+        <section class="topic-section" id="circles">
+
+            <h2>7. Circles</h2>
+
+            <p>
+                A circle is a two-dimensional shape in which every point on
+                the circumference is the same distance from the centre.
+            </p>
+
+            <h3>Radius</h3>
+
+            <p>
+                The radius is the distance from the centre of a circle to
+                its circumference.
+            </p>
+
+            <h3>Diameter</h3>
+
+            <p>
+                The diameter passes through the centre and connects two points
+                on the circumference.
+            </p>
+
+            <div class="formula">
+                Diameter = 2 × Radius
+            </div>
+
+            <h3>Circumference</h3>
+
+            <div class="formula">
+                C = 2πr
+            </div>
+
+            <h3>Area</h3>
+
+            <div class="formula">
+                A = πr²
+            </div>
+
+            <h3>Chord</h3>
+
+            <p>
+                A chord is a line segment connecting two points on a circle.
+            </p>
+
+            <h3>Arc</h3>
+
+            <p>
+                An arc is part of the circumference of a circle.
+            </p>
+
+        </section>
+
+        <!-- 8. PERIMETER AND AREA -->
+        <section class="topic-section" id="perimeter-area">
+
+            <h2>8. Perimeter and Area</h2>
+
+            <p>
+                <span class="definition">Perimeter</span> is the total distance
+                around a two-dimensional shape.
+            </p>
+
+            <p>
+                <span class="definition">Area</span> is the amount of space
+                covered inside a two-dimensional shape.
+            </p>
+
+            <h3>Square</h3>
+
+            <div class="formula">
+                Perimeter = 4s
+                <br>
+                Area = s²
+            </div>
+
+            <h3>Rectangle</h3>
+
+            <div class="formula">
+                Perimeter = 2(l + w)
+                <br>
+                Area = l × w
+            </div>
+
+            <h3>Parallelogram</h3>
+
+            <div class="formula">
+                Area = base × height
+            </div>
+
+            <h3>Triangle</h3>
+
+            <div class="formula">
+                Area = ½ × base × height
+            </div>
+
+            <h3>Trapezium</h3>
+
+            <div class="formula">
+                Area = ½(a + b)h
+            </div>
+
+            <h3>Circle</h3>
+
+            <div class="formula">
+                Area = πr²
+                <br>
+                Circumference = 2πr
+            </div>
+
+        </section>
+
+        <!-- 9. VOLUME -->
+        <section class="topic-section" id="volume">
+
+            <h2>9. Volume and Surface Area</h2>
+
+            <p>
+                Volume measures the amount of three-dimensional space occupied
+                by an object.
+            </p>
+
+            <h3>Cube</h3>
+
+            <div class="formula">
+                Volume = s³
+            </div>
+
+            <h3>Cuboid</h3>
+
+            <div class="formula">
+                Volume = l × w × h
+            </div>
+
+            <h3>Cylinder</h3>
+
+            <div class="formula">
+                Volume = πr²h
+            </div>
+
+            <h3>Prism</h3>
+
+            <div class="formula">
+                Volume = Cross-sectional Area × Length
+            </div>
+
+            <h3>Surface Area</h3>
+
+            <p>
+                Surface area is the total area of all the external surfaces
+                of a three-dimensional object.
+            </p>
+
+        </section>
+
+        <!-- 10. PYTHAGORAS -->
+        <section class="topic-section" id="pythagoras">
+
+            <h2>10. Pythagoras' Theorem</h2>
+
+            <p>
+                Pythagoras' theorem applies to right-angled triangles.
+                The longest side is called the hypotenuse.
+            </p>
+
+            <div class="formula">
+                a² + b² = c²
+            </div>
+
+            <p>
+                Here, <strong>c</strong> represents the hypotenuse.
+            </p>
+
+            <div class="example">
+                <strong>Example:</strong><br>
+                If the two shorter sides are 3 cm and 4 cm:
+                <br><br>
+                c² = 3² + 4²
+                <br>
+                c² = 9 + 16
+                <br>
+                c² = 25
+                <br>
+                c = 5 cm
+            </div>
+
+        </section>
+
+        <!-- 11. SIMILARITY -->
+        <section class="topic-section" id="similarity">
+
+            <h2>11. Similarity and Congruence</h2>
+
+            <h3>Congruent Shapes</h3>
+
+            <p>
+                Two shapes are congruent when they have exactly the same
+                shape and size.
+            </p>
+
+            <h3>Similar Shapes</h3>
+
+            <p>
+                Similar shapes have the same shape but may have different
+                sizes. Corresponding sides have the same scale factor.
+            </p>
+
+            <h3>Scale Factor</h3>
+
+            <p>
+                The scale factor tells us how much a shape has been enlarged
+                or reduced.
+            </p>
+
+            <div class="formula">
+                Scale Factor = New Length ÷ Original Length
+            </div>
+
+        </section>
+
+        <!-- 12. TRANSFORMATIONS -->
+        <section class="topic-section" id="transformations">
+
+            <h2>12. Transformations</h2>
+
+            <p>
+                A transformation changes the position, orientation or size
+                of a shape.
+            </p>
+
+            <h3>Translation</h3>
+
+            <p>
+                A translation moves a shape from one position to another
+                without rotating or changing its size.
+            </p>
+
+            <h3>Reflection</h3>
+
+            <p>
+                A reflection produces a mirror image of a shape across a
+                line of reflection.
+            </p>
+
+            <h3>Rotation</h3>
+
+            <p>
+                A rotation turns a shape around a fixed point called the
+                centre of rotation.
+            </p>
+
+            <h3>Enlargement</h3>
+
+            <p>
+                An enlargement changes the size of a shape according to
+                a scale factor.
+            </p>
+
+        </section>
+
+        <!-- 13. COORDINATE GEOMETRY -->
+        <section class="topic-section" id="coordinate">
+
+            <h2>13. Coordinate Geometry</h2>
+
+            <p>
+                Coordinate geometry uses numbers to describe the position
+                of points and shapes on a coordinate plane.
+            </p>
+
+            <h3>Coordinates</h3>
+
+            <p>
+                A point is written as:
+            </p>
+
+            <div class="formula">
+                (x, y)
+            </div>
+
+            <p>
+                The first value represents the horizontal position and the
+                second value represents the vertical position.
+            </p>
+
+            <h3>Distance Between Two Points</h3>
+
+            <div class="formula">
+                d = √[(x₂ - x₁)² + (y₂ - y₁)²]
+            </div>
+
+            <h3>Midpoint</h3>
+
+            <div class="formula">
+                M = ((x₁ + x₂)/2, (y₁ + y₂)/2)
+            </div>
+
+            <h3>Gradient</h3>
+
+            <div class="formula">
+                m = (y₂ - y₁) / (x₂ - x₁)
+            </div>
+
+        </section>
+
+
+<div class="ai-help">
+
+        <i class="fas fa-sparkles"></i>
+
+        <strong>Stuck on a graph or function?</strong>
+
+        <p>
+            You can open Insite AI Chat and ask for a step-by-step
+            explanation of any topic you are learning here.
+        </p>
+
+    </div>
+
+
+    <div class="gf-footer">
+
+        <i class="fas fa-chart-line"></i>
+
+        Keep learning. Keep solving. Keep improving.
+
+    </div>
+    </div>
+
+</div>
+
+{% endblock %}
+

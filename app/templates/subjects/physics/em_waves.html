@@ -1,0 +1,652 @@
+{% extends "base.html" %}
+
+{% block title %}
+Electromagnetic Waves | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-tower-broadcast"></i>
+            Electromagnetic Waves
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering James Clerk Maxwell's foundational field equations, 
+            the self-propagating nature of electromagnetic waves, the electromagnetic spectrum, energy density, and radiation pressure.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#maxwell">Maxwell's Equations</a>
+        <a href="#propagation">Wave Propagation</a>
+        <a href="#spectrum">The EM Spectrum</a>
+        <a href="#energy">Energy & Momentum</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Electromagnetic Waves</h2>
+        </div>
+        <p>
+            Electromagnetic (EM) waves are transverse waves consisting of oscillating electric and magnetic fields that propagate through space 
+            at the speed of light. Unlike mechanical waves, electromagnetic waves require no physical medium to travel; 
+            they can propagate perfectly through a complete vacuum (such as the empty space between the Sun and Earth).
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            A changing electric field creates a magnetic field, and a changing magnetic field creates an electric field. 
+            This mutual induction allows electromagnetic fields to sustain themselves and travel infinitely through empty space.
+        </div>
+    </section>
+
+    <!-- 02 MAXWELL'S EQUATIONS -->
+    <section class="phys-section" id="maxwell">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Overview of Maxwell's Equations</h2>
+        </div>
+        <p>
+            Formulated by James Clerk Maxwell in the 19th century, Maxwell's four equations form the complete theoretical foundation of classical electromagnetism:
+        </p>
+        <ul>
+            <li><strong>Gauss's Law for Electricity:</strong> Electric field lines originate on positive charges and terminate on negative charges 
+            (Net electric flux through a closed surface is proportional to enclosed electric charge).</li>
+            <li><strong>Gauss's Law for Magnetism:</strong> Magnetic monopoles do not exist; magnetic field lines are always continuous closed loops 
+            (Net magnetic flux through any closed surface is always zero).</li>
+            <li><strong>Faraday's Law of Induction:</strong> A time-varying magnetic field induces a circulating electric field.</li>
+            <li><strong>Ampère-Maxwell Law:</strong> Magnetic fields are generated both by conduction electric currents and by time-varying electric displacement fields.</li>
+        </ul>
+    </section>
+
+    <!-- 03 PROPAGATION -->
+    <section class="phys-section" id="propagation">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Properties and Propagation of EM Waves</h2>
+        </div>
+        <p>
+            In an electromagnetic wave traveling through a vacuum, the electric field vector (E) and magnetic field vector (B) 
+            are perpendicular to each other and both are perpendicular to the direction of wave propagation (transverse wave).
+        </p>
+        <ul>
+            <li><strong>Speed of Light in Vacuum (c):</strong> Derived directly from Maxwell's equations using the permittivity (epsilon<sub>0</sub>) and permeability (mu<sub>0</sub>) of free space:
+                <br><strong>Speed of Light = 1 / square root of (Permittivity of Free Space &times; Permeability of Free Space)</strong><br>
+                (c = 1 / sqrt(epsilon<sub>0</sub> * mu<sub>0</sub>) &approx; 3.00 &times; 10<sup>8</sup> m/s).</li>
+            <li><strong>Field Magnitude Ratio:</strong> At any point along the wave, the ratio of the electric field magnitude to the magnetic field magnitude equals the speed of light:
+                <br><strong>Electric Field Magnitude / Magnetic Field Magnitude = Speed of Light</strong> (E / B = c).</li>
+        </ul>
+    </section>
+
+    <!-- 04 THE EM SPECTRUM -->
+    <section class="phys-section" id="spectrum">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>The Electromagnetic Spectrum</h2>
+        </div>
+        <p>
+            Electromagnetic waves span an enormous continuum of frequencies and wavelengths, known as the electromagnetic spectrum. 
+            All EM waves travel at the exact same speed in a vacuum (c), obeying the wave equation: <strong>Speed of Light = Frequency &times; Wavelength</strong> (c = f * lambda).
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Radiation Type</th>
+                        <th>Wavelength Range (approximate)</th>
+                        <th>Frequency Range (Hz)</th>
+                        <th>Common Applications</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Radio Waves</strong></td>
+                        <td>Greater than 0.1 meters</td>
+                        <td>Less than 3 &times; 10<sup>9</sup></td>
+                        <td>Broadcasting, television, radar, Wi-Fi</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microwaves</strong></td>
+                        <td>1 mm to 0.1 meters</td>
+                        <td>3 &times; 10<sup>9</sup> to 3 &times; 10<sup>11</sup></td>
+                        <td>Satellite communications, microwave cooking</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Infrared (IR)</strong></td>
+                        <td>700 nm to 1 mm</td>
+                        <td>3 &times; 10<sup>11</sup> to 4.3 &times; 10<sup>14</sup></td>
+                        <td>Thermal imaging, remote controls, fiber optics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visible Light</strong></td>
+                        <td>400 nm (violet) to 700 nm (red)</td>
+                        <td>4.3 &times; 10<sup>14</sup> to 7.5 &times; 10<sup>14</sup></td>
+                        <td>Human vision, photography, lasers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ultraviolet (UV)</strong></td>
+                        <td>10 nm to 400 nm</td>
+                        <td>7.5 &times; 10<sup>14</sup> to 3 &times; 10<sup>16</sup></td>
+                        <td>Sterilization, fluorescence, sun tanning</td>
+                    </tr>
+                    <tr>
+                        <td><strong>X-Rays</strong></td>
+                        <td>0.01 nm to 10 nm</td>
+                        <td>3 &times; 10<sup>16</sup> to 3 &times; 10<sup>19</sup></td>
+                        <td>Medical radiography, airport security scanners</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gamma Rays</strong></td>
+                        <td>Less than 0.01 nm</td>
+                        <td>Greater than 3 &times; 10<sup>19</sup></td>
+                        <td>Cancer radiotherapy, astronomical gamma bursts</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 05 ENERGY & MOMENTUM -->
+    <section class="phys-section" id="energy">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Energy Density, Intensity, and Radiation Pressure</h2>
+        </div>
+        <p>
+            Electromagnetic waves transport both energy and momentum through space. The energy in an EM wave is shared equally between its electric and magnetic fields.
+        </p>
+        <ul>
+            <li><strong>Total Electromagnetic Energy Density (u):</strong> 
+                <br><strong>Energy Density = Permittivity of Free Space &times; Electric Field squared</strong> (u = epsilon<sub>0</sub> * E<sup>2</sup>), measured in Joules per cubic meter (J/m<sup>3</sup>).</li>
+            <li><strong>Intensity (I):</strong> The rate of energy flow per unit area (Poynting vector magnitude averaged over time):
+                <br><strong>Intensity = (Speed of Light &times; Permittivity of Free Space &times; Peak Electric Field squared) / 2</strong> (I = (c * epsilon<sub>0</sub> * E<sub>max</sub><sup>2</sup>) / 2).</li>
+            <li><strong>Radiation Pressure:</strong> When EM waves strike an absorbing surface, they exert a microscopic mechanical force known as radiation pressure:
+                <br><strong>Pressure = Intensity / Speed of Light</strong> (P<sub>rad</sub> = I / c).</li>
+        </ul>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Interactive Electromagnetic Waves Test</h2>
+        </div>
+        <p>Test your conceptual understanding of wave propagation, frequencies, and the electromagnetic spectrum.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> EM Spectrum Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Which type of electromagnetic radiation possesses the 
+                    <strong>highest frequency and shortest wavelength</strong> among the choices below?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">Gamma Rays</option>
+                    <option value="wrong1">Infrared Radiation</option>
+                    <option value="wrong2">Radio Waves</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Frequency and Wavelength Calculation):</span></strong>
+            <p>A microwave oven operates at a frequency of f = 2.45 GHz (2.45 &times; 10<sup>9</sup> Hz). 
+            Given that the speed of light in a vacuum is c = 3.00 &times; 10<sup>8</sup> m/s, 
+            calculate the wavelength of this microwave radiation in meters and centimeters.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Wave Equation: c = f * lambda implies lambda = c / f.<br>
+                - Substitute values:<br>
+                lambda = (3.00 &times; 10<sup>8</sup> m/s) / (2.45 &times; 10<sup>9</sup> Hz).<br>
+                - Division: 3.00 / 2.45 = 1.2244.<br>
+                - Exponent: 10<sup>8</sup> / 10<sup>9</sup> = 10<sup>-1</sup>.<br>
+                - lambda = 0.1224 meters = <strong>12.2 centimeters</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Magnetic Field Amplitude from Electric Field):</span></strong>
+            <p>An electromagnetic plane wave traveling through empty space has a peak electric field magnitude of E<sub>max</sub> = 150 V/m. 
+            Calculate the peak magnetic field magnitude (B<sub>max</sub>) of the wave.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Relationship between field peaks: E<sub>max</sub> / B<sub>max</sub> = c implies B<sub>max</sub> = E<sub>max</sub> / c.<br>
+                - Substitute values:<br>
+                B<sub>max</sub> = (150 V/m) / (3.00 &times; 10<sup>8</sup> m/s).<br>
+                - Division: 150 / 3.00 &times; 10<sup>8</sup> = 50 &times; 10<sup>-8</sup> = 5.00 &times; 10<sup>-7</sup> Tesla = <strong>0.500 microteslas</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Energy Density Calculation):</span></strong>
+            <p>Calculate the total electromagnetic energy density (u) stored in a region of space where the peak electric field strength of a light wave is E = 300 V/m. 
+            (Given permittivity of free space epsilon<sub>0</sub> = 8.854 &times; 10<sup>-12</sup> C<sup>2</sup>/(N&middot;m<sup>2</sup>)).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Energy Density Formula: u = epsilon<sub>0</sub> * E<sup>2</sup>.<br>
+                - Substitute values:<br>
+                u = (8.854 &times; 10<sup>-12</sup> C<sup>2</sup>/(N&middot;m<sup>2</sup>)) &times; (300 V/m)<sup>2</sup>.<br>
+                - Square the electric field: (300)<sup>2</sup> = 9.00 &times; 10<sup>4</sup> V<sup>2</sup>/m<sup>2</sup>.<br>
+                - Multiplication: (8.854 &times; 10<sup>-12</sup>) &times; (9.00 &times; 10<sup>4</sup>) = 79.686 &times; 10<sup>-8</sup> = 7.97 &times; 10<sup>-7</sup> Joules/m<sup>3</sup> = <strong>0.797 microjoules per cubic meter</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with electromagnetic radiation or Poynting vectors?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down Poynting vector flux integrals, synchrotron radiation, or relativistic Doppler shifts in astronomy.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Gamma rays occupy the extreme high-frequency and short-wavelength end of the electromagnetic spectrum, carrying the highest photon energy among all types of radiation.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Among the choices provided, <strong>Gamma Rays</strong> have the highest frequency and shortest wavelength in the electromagnetic spectrum.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,1347 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sequences and Series | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .sequence-page {
+        min-height: 100vh;
+        padding: 30px 20px 60px;
+        background: #0b0f14;
+    }
+
+    .sequence-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #ffffff;
+        background: #151c2d;
+        border: 1px solid #263554;
+        padding: 10px 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+        margin-bottom: 28px;
+    }
+
+    .back-button:hover {
+        background: #0d6efd;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    .sequence-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sequence-header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    .sequence-header h1 i {
+        color: #0d6efd;
+    }
+
+    .sequence-header p {
+        color: #adb5bd;
+        font-size: 17px;
+        max-width: 800px;
+        margin: auto;
+        line-height: 1.7;
+    }
+
+    .topic-navigation {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 35px;
+        padding: 15px;
+        background: #111820;
+        border-radius: 15px;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #0d6efd #111820;
+    }
+
+    .topic-navigation::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .topic-navigation::-webkit-scrollbar-track {
+        background: #111820;
+    }
+
+    .topic-navigation::-webkit-scrollbar-thumb {
+        background: #0d6efd;
+        border-radius: 10px;
+    }
+
+    .topic-navigation a {
+        color: #ffffff;
+        text-decoration: none;
+        background: #1b2633;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: 0.2s ease;
+    }
+
+    .topic-navigation a:hover {
+        background: #0d6efd;
+    }
+
+    .topic-section {
+        background: #111820;
+        border: 1px solid #202b36;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        scroll-margin-top: 90px;
+    }
+
+    .topic-section h2 {
+        color: #4d9cff;
+        font-size: 28px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+    .topic-section h3 {
+        color: #ffffff;
+        font-size: 20px;
+        margin-top: 22px;
+        margin-bottom: 9px;
+    }
+
+    .topic-section p {
+        color: #c5cbd1;
+        line-height: 1.75;
+        margin-bottom: 10px;
+    }
+
+    .topic-section ul {
+        color: #c5cbd1;
+        line-height: 1.8;
+    }
+
+    .topic-section li {
+        margin-bottom: 5px;
+    }
+
+    .formula {
+        background: #0b1118;
+        border-left: 4px solid #0d6efd;
+        padding: 14px 18px;
+        margin: 15px 0;
+        border-radius: 8px;
+        color: #ffffff;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+        line-height: 1.8;
+    }
+
+    .example {
+        background: #172230;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-top: 15px;
+        color: #d9e0e7;
+        line-height: 1.75;
+    }
+
+    .example strong {
+        color: #4d9cff;
+    }
+
+    .definition {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .ai-help {
+        margin-top: 20px;
+        padding: 17px;
+        border-radius: 12px;
+        background: #101827;
+        border: 1px dashed #28518e;
+    }
+
+    .ai-help i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ai-help p {
+        margin: 6px 0 0;
+        font-size: 14px;
+    }
+
+    .ai-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #151c2d;
+        border: 1px solid #263554;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .ai-button:hover {
+        background: #0d6efd;
+        color: #ffffff;
+    }
+
+    .sequence-footer {
+        text-align: center;
+        margin-top: 45px;
+        color: #748096;
+    }
+
+    .sequence-footer i {
+        color: #0d6efd;
+    }
+
+    @media (max-width: 768px) {
+
+        .sequence-page {
+            padding: 20px 12px 45px;
+        }
+
+        .sequence-header h1 {
+            font-size: 32px;
+        }
+
+        .sequence-header p {
+            font-size: 15px;
+        }
+
+        .topic-section {
+            padding: 20px;
+        }
+
+        .topic-section h2 {
+            font-size: 24px;
+        }
+
+        .topic-section h3 {
+            font-size: 18px;
+        }
+
+        .formula {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="sequence-page">
+
+<div class="sequence-container">
+
+    <a href="{{ url_for('math_page') }}" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back to Mathematics
+    </a>
+
+
+    <header class="sequence-header">
+
+        <h1>
+            <i class="fas fa-list-ol"></i>
+            Sequences and Series
+        </h1>
+
+        <p>
+            Learn how numbers can follow patterns, how sequences are
+            formed, how arithmetic and geometric progressions work,
+            and how series are used to find the sum of terms.
+        </p>
+
+    </header>
+
+
+    <nav class="topic-navigation">
+
+        <a href="#sequence-basics">Sequences</a>
+        <a href="#terms">Terms & Notation</a>
+        <a href="#nth-term">Nth Term</a>
+        <a href="#arithmetic">Arithmetic Sequence</a>
+        <a href="#ap-nth">AP Nth Term</a>
+        <a href="#ap-sum">AP Sum</a>
+        <a href="#ap-word">AP Problems</a>
+        <a href="#geometric">Geometric Sequence</a>
+        <a href="#gp-nth">GP Nth Term</a>
+        <a href="#gp-sum">GP Sum</a>
+        <a href="#gp-word">GP Problems</a>
+        <a href="#series">Series</a>
+        <a href="#infinite">Infinite Series</a>
+        <a href="#mixed">Mixed Problems</a>
+
+    </nav>
+
+
+    <section class="topic-section" id="sequence-basics">
+
+        <h2>1. What is a Sequence?</h2>
+
+        <p>
+            A sequence is an ordered list of numbers that follows
+            a particular rule or pattern.
+        </p>
+
+        <div class="formula">
+            2, 4, 6, 8, 10, ...
+        </div>
+
+        <p>
+            The numbers in a sequence are called its
+            <span class="definition">terms</span>.
+        </p>
+
+        <p>
+            A sequence may continue forever or may contain a fixed
+            number of terms.
+        </p>
+
+        <h3>Examples of Sequences</h3>
+
+        <div class="formula">
+            3, 6, 9, 12, 15, ...
+            <br><br>
+            1, 4, 9, 16, 25, ...
+            <br><br>
+            2, 6, 18, 54, 162, ...
+        </div>
+
+        <p>
+            The first sequence increases by 3 each time. The second
+            consists of square numbers. The third is multiplied by 3
+            each time.
+        </p>
+
+        <div class="ai-help">
+
+            <i class="fas fa-sparkles"></i>
+            <strong>Ask Insite AI</strong>
+
+            <p>
+                If you are given a sequence and cannot identify its
+                pattern, ask Insite AI to help you find the rule.
+            </p>
+
+            <a href="{{ url_for('chat') }}" class="ai-button">
+                <i class="fas fa-comments"></i>
+                Ask Insite AI
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="terms">
+
+        <h2>2. Terms and Sequence Notation</h2>
+
+        <p>
+            The position of a term in a sequence is important.
+            We usually use n to represent the position.
+        </p>
+
+        <div class="formula">
+            a₁ = first term
+            <br>
+            a₂ = second term
+            <br>
+            a₃ = third term
+            <br>
+            aₙ = nth term
+        </div>
+
+        <p>
+            The symbol aₙ means "the term at position n".
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Sequence:</strong>
+
+            <div class="formula">
+                5, 8, 11, 14, 17, ...
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                a₁ = 5
+                <br>
+                a₂ = 8
+                <br>
+                a₃ = 11
+                <br>
+                a₄ = 14
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="nth-term">
+
+        <h2>3. Finding the Nth Term</h2>
+
+        <p>
+            The nth term is a formula that allows us to calculate
+            any term in a sequence without writing out all the
+            previous terms.
+        </p>
+
+        <p>
+            For example, instead of listing the first 100 terms,
+            a formula can give us the 100th term directly.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Sequence:</strong>
+
+            <div class="formula">
+                4, 7, 10, 13, 16, ...
+            </div>
+
+            <p>
+                The difference is 3.
+            </p>
+
+            <p>
+                Since this is arithmetic:
+            </p>
+
+            <div class="formula">
+                aₙ = a₁ + (n - 1)d
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                aₙ = 4 + 3(n - 1)
+                <br>
+                aₙ = 3n + 1
+            </div>
+
+        </div>
+
+        <h3>Finding a Specific Term</h3>
+
+        <div class="example">
+
+            <strong>Find the 20th term.</strong>
+
+            <div class="formula">
+                a₂₀ = 3(20) + 1
+                <br>
+                = 61
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="arithmetic">
+
+        <h2>4. Arithmetic Sequence</h2>
+
+        <p>
+            An arithmetic sequence is a sequence in which the
+            difference between consecutive terms is constant.
+        </p>
+
+        <p>
+            This constant difference is called the
+            <span class="definition">common difference</span>,
+            represented by d.
+        </p>
+
+        <div class="formula">
+            d = a₂ - a₁
+            <br>
+            d = a₃ - a₂
+            <br>
+            d = a₄ - a₃
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="formula">
+            7, 11, 15, 19, 23, ...
+        </div>
+
+        <p>
+            Each term increases by 4.
+        </p>
+
+        <div class="formula">
+            d = 4
+        </div>
+
+        <h3>Arithmetic Sequences Can Decrease</h3>
+
+        <div class="formula">
+            30, 25, 20, 15, 10, ...
+        </div>
+
+        <div class="formula">
+            d = -5
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="ap-nth">
+
+        <h2>5. Nth Term of an Arithmetic Progression</h2>
+
+        <p>
+            The nth-term formula for an arithmetic progression is:
+        </p>
+
+        <div class="formula">
+            aₙ = a + (n - 1)d
+        </div>
+
+        <p>
+            where:
+        </p>
+
+        <ul>
+            <li>a = first term</li>
+            <li>n = position of the required term</li>
+            <li>d = common difference</li>
+            <li>aₙ = nth term</li>
+        </ul>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the 15th term of:</strong>
+
+            <div class="formula">
+                6, 10, 14, 18, ...
+            </div>
+
+            <p>
+                First term:
+            </p>
+
+            <div class="formula">
+                a = 6
+            </div>
+
+            <p>
+                Common difference:
+            </p>
+
+            <div class="formula">
+                d = 4
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                a₁₅ = 6 + (15 - 1)(4)
+                <br>
+                = 6 + 56
+                <br>
+                = 62
+            </div>
+
+        </div>
+
+        <h3>Finding the Position of a Term</h3>
+
+        <div class="example">
+
+            <strong>Which term of 5, 9, 13, 17, ... is 81?</strong>
+
+            <div class="formula">
+                81 = 5 + (n - 1)4
+                <br>
+                81 = 5 + 4n - 4
+                <br>
+                81 = 4n + 1
+                <br>
+                80 = 4n
+                <br>
+                n = 20
+            </div>
+
+            <p>
+                Therefore, 81 is the 20th term.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="ap-sum">
+
+        <h2>6. Arithmetic Series and Sum of an AP</h2>
+
+        <p>
+            When the terms of a sequence are added together, the
+            resulting expression is called a series.
+        </p>
+
+        <div class="formula">
+            3 + 6 + 9 + 12 + 15 + ...
+        </div>
+
+        <p>
+            If the sequence is arithmetic, the resulting series is
+            an arithmetic series.
+        </p>
+
+        <h3>Sum of the First n Terms</h3>
+
+        <div class="formula">
+            Sₙ = n/2 [2a + (n - 1)d]
+        </div>
+
+        <p>
+            Another useful form is:
+        </p>
+
+        <div class="formula">
+            Sₙ = n/2 (a + l)
+        </div>
+
+        <p>
+            where l is the last term.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the sum of the first 20 terms:</strong>
+
+            <div class="formula">
+                2 + 5 + 8 + 11 + ...
+            </div>
+
+            <p>
+                Here:
+            </p>
+
+            <div class="formula">
+                a = 2
+                <br>
+                d = 3
+                <br>
+                n = 20
+            </div>
+
+            <p>
+                Use:
+            </p>
+
+            <div class="formula">
+                Sₙ = n/2 [2a + (n - 1)d]
+            </div>
+
+            <div class="formula">
+                S₂₀
+                = 20/2 [2(2) + 19(3)]
+                <br>
+                = 10[4 + 57]
+                <br>
+                = 10(61)
+                <br>
+                = 610
+            </div>
+
+        </div>
+
+        <h3>Sum Using the Last Term</h3>
+
+        <div class="formula">
+            Sₙ = n/2(a + l)
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Find the sum:
+            </p>
+
+            <div class="formula">
+                4 + 8 + 12 + ... + 100
+            </div>
+
+            <p>
+                First find the number of terms:
+            </p>
+
+            <div class="formula">
+                100 = 4 + (n - 1)4
+                <br>
+                100 = 4n
+                <br>
+                n = 25
+            </div>
+
+            <p>
+                Then:
+            </p>
+
+            <div class="formula">
+                S₂₅ = 25/2(4 + 100)
+                <br>
+                = 25/2 × 104
+                <br>
+                = 1300
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="ap-word">
+
+        <h2>7. Arithmetic Progression Word Problems</h2>
+
+        <p>
+            Arithmetic progressions are commonly used in situations
+            where a quantity increases or decreases by the same
+            amount each time.
+        </p>
+
+        <div class="example">
+
+            <strong>Word Problem:</strong>
+
+            <p>
+                A student saves ₦500 in the first week and increases
+                the amount saved by ₦200 every week. How much will
+                the student save in the 12th week?
+            </p>
+
+            <p>
+                This is an arithmetic progression because the weekly
+                increase is constant.
+            </p>
+
+            <div class="formula">
+                a = 500
+                <br>
+                d = 200
+                <br>
+                n = 12
+            </div>
+
+            <div class="formula">
+                a₁₂ = 500 + (12 - 1)(200)
+                <br>
+                = 500 + 2200
+                <br>
+                = ₦2700
+            </div>
+
+            <p>
+                Therefore, the student saves ₦2,700 in the 12th week.
+            </p>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Word Problem:</strong>
+
+            <p>
+                A theatre has 20 seats in the first row. Each
+                successive row has 3 more seats than the previous row.
+                How many seats are in the 15th row?
+            </p>
+
+            <div class="formula">
+                a = 20
+                <br>
+                d = 3
+                <br>
+                n = 15
+            </div>
+
+            <div class="formula">
+                a₁₅ = 20 + (15 - 1)(3)
+                <br>
+                = 62
+            </div>
+
+            <p>
+                The 15th row contains 62 seats.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="geometric">
+
+        <h2>8. Geometric Sequence</h2>
+
+        <p>
+            A geometric sequence is a sequence in which each term is
+            obtained by multiplying the previous term by the same
+            constant number.
+        </p>
+
+        <p>
+            This constant number is called the
+            <span class="definition">common ratio</span>, represented
+            by r.
+        </p>
+
+        <div class="formula">
+            r = a₂/a₁
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="formula">
+            3, 6, 12, 24, 48, ...
+        </div>
+
+        <div class="formula">
+            r = 2
+        </div>
+
+        <h3>Geometric Sequence with Fractions</h3>
+
+        <div class="formula">
+            81, 27, 9, 3, 1, ...
+        </div>
+
+        <div class="formula">
+            r = 1/3
+        </div>
+
+        <h3>Negative Common Ratio</h3>
+
+        <div class="formula">
+            2, -6, 18, -54, 162, ...
+        </div>
+
+        <div class="formula">
+            r = -3
+        </div>
+
+        <p>
+            A negative ratio causes the signs of the terms to
+            alternate.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="gp-nth">
+
+        <h2>9. Nth Term of a Geometric Progression</h2>
+
+        <p>
+            The nth term of a geometric progression is:
+        </p>
+
+        <div class="formula">
+            aₙ = arⁿ⁻¹
+        </div>
+
+        <p>
+            where:
+        </p>
+
+        <ul>
+            <li>a = first term</li>
+            <li>r = common ratio</li>
+            <li>n = term position</li>
+            <li>aₙ = nth term</li>
+        </ul>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the 8th term of:</strong>
+
+            <div class="formula">
+                2, 6, 18, 54, ...
+            </div>
+
+            <div class="formula">
+                a = 2
+                <br>
+                r = 3
+                <br>
+                n = 8
+            </div>
+
+            <div class="formula">
+                a₈ = 2(3)⁷
+                <br>
+                = 2(2187)
+                <br>
+                = 4374
+            </div>
+
+        </div>
+
+        <h3>Finding the Common Ratio</h3>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                5, 15, 45, 135, ...
+            </div>
+
+            <div class="formula">
+                r = 15/5
+                <br>
+                r = 3
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="gp-sum">
+
+        <h2>10. Geometric Series</h2>
+
+        <p>
+            A geometric series is formed when the terms of a
+            geometric sequence are added.
+        </p>
+
+        <div class="formula">
+            a + ar + ar² + ar³ + ...
+        </div>
+
+        <h3>Sum of the First n Terms</h3>
+
+        <div class="formula">
+            Sₙ = a(rⁿ - 1)/(r - 1)
+        </div>
+
+        <p>
+            An equivalent form is:
+        </p>
+
+        <div class="formula">
+            Sₙ = a(1 - rⁿ)/(1 - r)
+        </div>
+
+        <p>
+            Both formulas give the same result. Choose the form that
+            makes the calculation easier.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the sum of the first 6 terms:</strong>
+
+            <div class="formula">
+                2 + 6 + 18 + 54 + ...
+            </div>
+
+            <div class="formula">
+                a = 2
+                <br>
+                r = 3
+                <br>
+                n = 6
+            </div>
+
+            <div class="formula">
+                S₆ = 2(3⁶ - 1)/(3 - 1)
+                <br>
+                = 2(729 - 1)/2
+                <br>
+                = 728
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="gp-word">
+
+        <h2>11. Geometric Progression Word Problems</h2>
+
+        <p>
+            Geometric progressions are useful when a quantity changes
+            by a constant percentage or multiplier.
+        </p>
+
+        <div class="example">
+
+            <strong>Word Problem:</strong>
+
+            <p>
+                A bacteria culture contains 500 bacteria initially.
+                The population triples every hour. How many bacteria
+                will there be after 6 hours?
+            </p>
+
+            <div class="formula">
+                a = 500
+                <br>
+                r = 3
+                <br>
+                n = 7
+            </div>
+
+            <p>
+                The initial population represents the first term,
+                so after 6 growth periods we use the seventh term.
+            </p>
+
+            <div class="formula">
+                a₇ = 500(3)⁶
+                <br>
+                = 500(729)
+                <br>
+                = 364,500
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Word Problem:</strong>
+
+            <p>
+                A machine loses 10% of its value every year. If it
+                is initially worth ₦2,000,000, what will its value
+                be after 4 years?
+            </p>
+
+            <p>
+                Losing 10% means 90% remains each year.
+            </p>
+
+            <div class="formula">
+                r = 0.90
+            </div>
+
+            <div class="formula">
+                Value = 2,000,000(0.9)⁴
+            </div>
+
+            <div class="formula">
+                ≈ ₦1,312,200
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="series">
+
+        <h2>12. Sequences vs Series</h2>
+
+        <p>
+            A sequence is a list of terms, while a series is the sum
+            of those terms.
+        </p>
+
+        <h3>Sequence</h3>
+
+        <div class="formula">
+            2, 4, 6, 8, 10, ...
+        </div>
+
+        <h3>Series</h3>
+
+        <div class="formula">
+            2 + 4 + 6 + 8 + 10 + ...
+        </div>
+
+        <p>
+            This distinction is important because sequence questions
+            usually ask about individual terms, while series questions
+            often ask for totals.
+        </p>
+
+        <h3>Sigma Notation</h3>
+
+        <p>
+            Large sums can be written using the Greek letter sigma,
+            Σ.
+        </p>
+
+        <div class="formula">
+            Σ aₙ
+        </div>
+
+        <p>
+            Sigma notation provides a compact way to represent the
+            addition of many terms.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                Σ from n=1 to 5 of n
+                <br>
+                = 1 + 2 + 3 + 4 + 5
+                <br>
+                = 15
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="infinite">
+
+        <h2>13. Infinite Sequences and Infinite Series</h2>
+
+        <p>
+            An infinite sequence continues indefinitely.
+        </p>
+
+        <div class="formula">
+            1, 1/2, 1/3, 1/4, 1/5, ...
+        </div>
+
+        <p>
+            An infinite series is an infinite sum.
+        </p>
+
+        <div class="formula">
+            1 + 1/2 + 1/3 + 1/4 + ...
+        </div>
+
+        <h3>Infinite Geometric Series</h3>
+
+        <p>
+            An infinite geometric series has a finite sum only when
+            the absolute value of the common ratio is less than 1.
+        </p>
+
+        <div class="formula">
+            |r| < 1
+        </div>
+
+        <p>
+            When this condition is satisfied:
+        </p>
+
+        <div class="formula">
+            S∞ = a/(1-r)
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the sum:</strong>
+
+            <div class="formula">
+                8 + 4 + 2 + 1 + ...
+            </div>
+
+            <div class="formula">
+                a = 8
+                <br>
+                r = 1/2
+            </div>
+
+            <p>
+                Since:
+            </p>
+
+            <div class="formula">
+                |1/2| < 1
+            </div>
+
+            <p>
+                The series converges.
+            </p>
+
+            <div class="formula">
+                S∞ = 8/(1 - 1/2)
+                <br>
+                = 8/(1/2)
+                <br>
+                = 16
+            </div>
+
+        </div>
+
+        <h3>When the Ratio Is Not Less Than 1 in Magnitude</h3>
+
+        <p>
+            If |r| is greater than or equal to 1, the infinite
+            geometric series does not have a finite sum.
+        </p>
+
+        <div class="formula">
+            |r| ≥ 1
+            → divergent
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="mixed">
+
+        <h2>14. Mixed Sequence and Series Problems</h2>
+
+        <p>
+            Examination questions often combine several ideas.
+            You may need to identify whether a sequence is arithmetic
+            or geometric, find an unknown term, determine the number
+            of terms and then calculate a sum.
+        </p>
+
+        <div class="example">
+
+            <strong>Word Problem:</strong>
+
+            <p>
+                The first term of an arithmetic progression is 7 and
+                the common difference is 5. Find the 25th term and
+                the sum of the first 25 terms.
+            </p>
+
+            <p>
+                First find the 25th term.
+            </p>
+
+            <div class="formula">
+                a₂₅ = 7 + (25 - 1)(5)
+                <br>
+                = 127
+            </div>
+
+            <p>
+                Now use the sum formula.
+            </p>
+
+            <div class="formula">
+                S₂₅ = 25/2(7 + 127)
+                <br>
+                = 25/2 × 134
+                <br>
+                = 1675
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Word Problem:</strong>
+
+            <p>
+                An amount of ₦10,000 is invested at a growth factor
+                of 1.08 each year. Find the amount after 5 years.
+            </p>
+
+            <p>
+                This is geometric growth.
+            </p>
+
+            <div class="formula">
+                A = 10,000(1.08)⁵
+            </div>
+
+            <div class="formula">
+                A ≈ ₦14,693.28
+            </div>
+
+        </div>
+
+        <div class="ai-help">
+
+            <i class="fas fa-sparkles"></i>
+            <strong>Ask Insite AI</strong>
+
+            <p>
+                Sequence and series questions can combine several
+                formulas. If you get stuck, send the question to
+                Insite AI and ask for a step-by-step explanation.
+            </p>
+
+            <a href="{{ url_for('chat') }}" class="ai-button">
+                <i class="fas fa-comments"></i>
+                Ask Insite AI
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <div class="sequence-footer">
+
+        <i class="fas fa-sparkles"></i>
+
+        Keep practising — the key is knowing whether you are dealing
+        with a sequence, an arithmetic progression, a geometric
+        progression, or a series.
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

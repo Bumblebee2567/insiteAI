@@ -1,0 +1,667 @@
+{% extends "base.html" %}
+
+{% block title %}
+Simple Harmonic Motion & Oscillations | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-wave-square"></i>
+            Simple Harmonic Motion & Oscillations
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering the kinematics and dynamics of periodic motion, restoring forces, 
+            mass-spring oscillators, simple and physical pendulums, energy conservation in oscillations, and damped/driven resonance systems.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#kinematics">SHM Kinematics</a>
+        <a href="#dynamics">Restoring Forces</a>
+        <a href="#systems">Oscillatory Systems</a>
+        <a href="#energy">Energy Conservation</a>
+        <a href="#damped">Damped & Driven</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Periodic and Oscillatory Motion</h2>
+        </div>
+        <p>
+            Oscillatory motion is motion that repeats itself regularly over a fixed time interval. 
+            Examples span across all domains of physics: the swinging of a grandfather clock pendulum, vibrating guitar strings, 
+            alternating electrical currents, and atomic vibrations in crystal lattices. 
+            <strong>Simple Harmonic Motion (SHM)</strong> is the most fundamental and mathematically tractable type of oscillation, 
+            characterized by a linear restoring force directed toward a stable equilibrium position.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            For any system undergoing simple harmonic motion, the net restoring force acting on the object is directly proportional to its displacement 
+            from equilibrium and is always directed opposite to that displacement (Hooke's Law form).
+        </div>
+    </section>
+
+    <!-- 02 SHM KINEMATICS -->
+    <section class="phys-section" id="kinematics">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Kinematics of Simple Harmonic Motion</h2>
+        </div>
+        <p>
+            The position x of an object undergoing simple harmonic motion as a function of time t can be modeled using sinusoidal functions:
+        </p>
+        <ul>
+            <li><strong>Displacement Equation:</strong> 
+                <br><strong>Position = Amplitude &times; cosine(Angular Frequency &times; Time + Phase Constant)</strong><br>
+                x(t) = A &times; cos(omega * t + phi), where A is the maximum displacement (amplitude).</li>
+            <li><strong>Velocity Equation:</strong> Obtained by taking the first time derivative of displacement:
+                <br><strong>Velocity = - Amplitude &times; Angular Frequency &times; sine(Angular Frequency &times; Time + Phase Constant)</strong><br>
+                v(t) = -A * omega * sin(omega * t + phi). Maximum speed occurs as the object passes through equilibrium (v<sub>max</sub> = A * omega).</li>
+            <li><strong>Acceleration Equation:</strong> Obtained by taking the second time derivative of displacement:
+                <br><strong>Acceleration = - Amplitude &times; (Angular Frequency squared) &times; cosine(Angular Frequency &times; Time + Phase Constant)</strong><br>
+                a(t) = -A * omega<sup>2</sup> * cos(omega * t + phi) = -omega<sup>2</sup> * x(t). Maximum acceleration occurs at maximum displacement (a<sub>max</sub> = A * omega<sup>2</sup>).</li>
+            <li><strong>Frequency and Period:</strong><br>
+                &bull; Angular frequency: omega = 2 &times; pi &times; frequency (measured in rad/s).<br>
+                &bull; Period (T): The duration of one complete oscillation cycle, T = 1 / frequency = (2 &times; pi) / omega.</li>
+        </ul>
+    </section>
+
+    <!-- 03 DYNAMICS -->
+    <section class="phys-section" id="dynamics">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Restoring Forces and Differential Equations of SHM</h2>
+        </div>
+        <p>
+            Applying Newton's Second Law to a system experiencing a linear restoring force (F = -k * x) yields the defining differential equation of simple harmonic motion:
+        </p>
+        <div class="phys-info">
+            <strong>Defining Differential Equation:</strong><br>
+            <strong>Mass &times; (Second Time Derivative of Position) + Stiffness Constant &times; Position = 0</strong><br>
+            m * (d<sup>2</sup>x / dt<sup>2</sup>) + kx = 0 &rarr; Rewrite as (d<sup>2</sup>x / dt<sup>2</sup>) + (k / m) * x = 0.<br>
+            This proves that angular frequency for any linear harmonic oscillator is fundamentally determined by the ratio of the restoring stiffness to the inertia: 
+            <strong>omega = square root of (Stiffness / Inertia)</strong>.
+        </div>
+    </section>
+
+    <!-- 04 SYSTEMS -->
+    <section class="phys-section" id="systems">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Common Oscillatory Systems</h2>
+        </div>
+        <p>
+            Different physical systems achieve simple harmonic motion through different restoring mechanisms. 
+            Below are the primary configurations studied in classical mechanics:
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>System Type</th>
+                        <th>Restoring Mechanism</th>
+                        <th>Angular Frequency (omega)</th>
+                        <th>Period Formula (T)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mass-Spring System</strong></td>
+                        <td>Elastic spring force (F = -kx)</td>
+                        <td><strong>square root of (k / m)</strong></td>
+                        <td><strong>2 &times; pi &times; square root of (m / k)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Simple Pendulum</strong></td>
+                        <td>Component of gravity along arc (mg sin theta &approx; mg theta)</td>
+                        <td><strong>square root of (g / L)</strong></td>
+                        <td><strong>2 &times; pi &times; square root of (L / g)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Physical Pendulum</strong></td>
+                        <td>Gravitational torque about pivot axis</td>
+                        <td><strong>square root of (m &times; g &times; d / I)</strong></td>
+                        <td><strong>2 &times; pi &times; square root of (I / (m &times; g &times; d))</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Torsion Pendulum</strong></td>
+                        <td>Restoring torque from twisted wire or fiber (tau = -kappa * theta)</td>
+                        <td><strong>square root of (kappa / I)</strong></td>
+                        <td><strong>2 &times; pi &times; square root of (I / kappa)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 05 ENERGY -->
+    <section class="phys-section" id="energy">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Energy Conservation in Simple Harmonic Motion</h2>
+        </div>
+        <p>
+            In an ideal conservative harmonic oscillator without friction or air resistance, mechanical energy is continuously and seamlessly converted 
+            back and forth between kinetic energy and potential energy, while the total mechanical energy remains strictly constant.
+        </p>
+        <ul>
+            <li><strong>Kinetic Energy (K):</strong> Energy associated with the moving mass: 
+                <br><strong>Kinetic Energy = (1/2) &times; Mass &times; Velocity squared</strong> = (1/2) * m * v<sub>max</sub><sup>2</sup> * sin<sup>2</sup>(omega * t + phi).</li>
+            <li><strong>Potential Energy (U):</strong> Energy stored in the elastic spring or gravitational field: 
+                <br><strong>Potential Energy = (1/2) &times; Spring Constant &times; Position squared</strong> = (1/2) * k * A<sup>2</sup> * cos<sup>2</sup>(omega * t + phi).</li>
+            <li><strong>Total Mechanical Energy (E):</strong> At any arbitrary point in the oscillation cycle, total energy equals the sum of kinetic and potential energy, 
+            which is also equal to the maximum potential energy at the turning points (Amplitude A):
+                <br><strong>Total Mechanical Energy = (1/2) &times; Spring Constant &times; Amplitude squared</strong> = (1/2) * k * A<sup>2</sup>.</li>
+        </ul>
+    </section>
+
+    <!-- 06 DAMPED & DRIVEN -->
+    <section class="phys-section" id="damped">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Damped, Driven Oscillations & Resonance</h2>
+        </div>
+        <p>
+            Real-world oscillators experience dissipative non-conservative forces (such as friction or air resistance) that remove mechanical energy over time.
+        </p>
+        <ul>
+            <li><strong>Damped Oscillations:</strong> When a damping force proportional to velocity (F<sub>damp</sub> = -b * v) acts on a system, 
+            its mechanical energy and oscillation amplitude decay exponentially over time: 
+            <strong>x(t) = A &times; e<sup>-(b / 2m)t</sup> &times; cos(omega' * t + phi)</strong>, where omega' is the reduced damped angular frequency.</li>
+            <li><strong>Driven Oscillations & Resonance:</strong> If a periodic external driving force (F<sub>0</sub> &times; cos(omega<sub>d</sub> * t)) is applied to an oscillator, 
+            the system eventually oscillates at the driving frequency omega<sub>d</sub>. 
+            When the driving frequency matches the natural resonant frequency of the system (omega<sub>d</sub> = omega<sub>0</sub>), 
+            the amplitude of oscillation reaches a dramatic maximum, a phenomenon known as <strong>resonance</strong>.</li>
+        </ul>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Interactive SHM Test</h2>
+        </div>
+        <p>Test your conceptual understanding of mass-spring systems, pendulums, and energy conservation.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Pendulum Period Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    If the length of a simple pendulum is 
+                    <strong>quadrupled</strong> (L becomes 4L), what happens to its oscillation period (T)?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">It doubles (increases by a factor of 2)</option>
+                    <option value="wrong1">It quadruples (increases by a factor of 4)</option>
+                    <option value="wrong2">It remains exactly the same</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Mass-Spring System Mechanics):</strong>
+            <p>A block of mass m = 0.500 kg is attached to a horizontal ideal spring with a spring constant k = 200 N/m. 
+            The block is pulled to a maximum displacement amplitude of A = 0.100 m from equilibrium and released from rest. 
+            Calculate: (a) the maximum speed of the block, (b) the maximum magnitude of acceleration, and (c) the total mechanical energy of the system.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Maximum Speed (v<sub>max</sub>):</strong><br>
+                - Angular frequency omega = square root of (k / m) = square root of (200 / 0.500) = square root of (400) = 20.0 rad/s.<br>
+                - v<sub>max</sub> = A &times; omega = (0.100 m) &times; (20.0 rad/s) = <strong>2.00 m/s</strong>.<br><br>
+                <strong>(b) Maximum Acceleration (a<sub>max</sub>):</strong><br>
+                - a<sub>max</sub> = A &times; omega<sup>2</sup> = (0.100 m) &times; (20.0 rad/s)<sup>2</sup> = (0.100)(400) = <strong>40.0 m/s<sup>2</sup></strong>.<br><br>
+                <strong>(c) Total Mechanical Energy (E):</strong><br>
+                - E = (1/2) &times; k &times; A<sup>2</sup> = (1/2) &times; (200 N/m) &times; (0.100 m)<sup>2</sup> = 100 &times; 0.0100 = <strong>1.00 Joule</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Simple Pendulum Frequency & Period):</span></strong>
+            <p>A simple pendulum has a length L = 1.50 m and is located in a laboratory where the gravitational field strength is g = 9.81 m/s<sup>2</sup>. 
+            Calculate: (a) the period of oscillation, and (b) the frequency of oscillation in Hertz.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Period (T):</strong><br>
+                - Formula: T = 2 * pi * square root of (L / g).<br>
+                - T = 2 * pi * square root of (1.50 / 9.81) = 2 &times; pi &times; square root of (0.1529) = 2 &times; pi &times; 0.3910 &approx; <strong>2.46 seconds</strong>.<br><br>
+                <strong>(b) Frequency (f):</strong><br>
+                - Frequency = 1 / T = 1 / 2.46 s &approx; <strong>0.407 Hz</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Energy Conservation in SHM):</strong>
+            <p>For the mass-spring system in Problem 1 (m = 0.500 kg, k = 200 N/m, A = 0.100 m), 
+            calculate the kinetic energy and potential energy of the system when the block is at a displacement of x = 0.060 m from equilibrium.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - <strong>Potential Energy (U) at x = 0.060 m:</strong><br>
+                U = (1/2) &times; k &times; x<sup>2</sup> = (1/2) &times; (200 N/m) &times; (0.060 m)<sup>2</sup> = 100 &times; 0.0036 = <strong>0.360 Joules</strong>.<br><br>
+                - <strong>Kinetic Energy (K) at x = 0.060 m:</strong><br>
+                - By conservation of mechanical energy: E = K + U implies K = E - U.<br>
+                - Total mechanical energy E was calculated as 1.00 Joule.<br>
+                - K = 1.00 J - 0.360 J = <strong>0.640 Joules</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with harmonic motion or damped oscillations?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down complex phase angle calculations, forced resonance curves, or coupled pendulum differential equations.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>According to the simple pendulum period formula (T = 2 * pi * square root of (L / g)), period is proportional to the square root of length. Quadrupling the length (4L) multiplies the period by the square root of 4, which equals 2.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Pendulum period scales with the square root of length, so quadrupling the length causes the period to <strong>double</strong> (increase by a factor of 2).</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

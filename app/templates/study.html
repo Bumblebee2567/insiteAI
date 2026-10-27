@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}
+Study | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body{
+        background:#0d1117;
+    }
+
+    .study-container{
+        max-width:1100px;
+        margin:40px auto;
+        padding:20px;
+    }
+
+    .study-header{
+        text-align:center;
+        margin-bottom:40px;
+    }
+
+    .study-header h1{
+        font-weight:700;
+        color:white;
+    }
+
+    .study-header p{
+        color:#9ca3af;
+        margin-top:10px;
+    }
+
+    .study-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    }
+
+    .english-card{
+        grid-column:1 / -1;
+        max-width:420px;
+        justify-self:center;
+    }
+
+    @media(max-width:768px){
+
+        .study-grid{
+            grid-template-columns:1fr;
+        }
+
+        .english-card{
+            grid-column:auto;
+            max-width:100%;
+        }
+
+    }
+
+    .study-card{
+        background:#161b22;
+        border:1px solid #30363d;
+        border-radius:18px;
+        padding:30px 20px;
+        text-align:center;
+        cursor:pointer;
+        transition:.25s;
+        text-decoration:none;
+        color:white;
+    }
+
+    .study-card:hover{
+        transform:translateY(-8px);
+        border-color:#3b82f6;
+        box-shadow:0 15px 35px rgba(0,0,0,.35);
+        color:white;
+    }
+
+    .study-card i{
+        font-size:48px;
+        margin-bottom:18px;
+        color:#3b82f6;
+        display: inline-block;
+    }
+
+    .study-card h4{
+        font-weight:600;
+        margin-bottom:8px;
+    }
+
+    .study-card p{
+        color:#9ca3af;
+        font-size:.95rem;
+        margin:0;
+    }
+
+    @media(max-width:768px){
+
+        .study-header h1{
+            font-size:2rem;
+        }
+
+    }
+
+</style>
+
+<div class="study-container">
+
+    <div class="study-header">
+
+        <h1>
+            📚 Study Hub
+        </h1>
+
+        <p>
+            Select a subject and start learning with Insite AI.
+        </p>
+
+    </div>
+
+    <div class="study-grid">
+
+        <a href="{{ url_for('math_page') }}" class="study-card">
+
+            <i class="fa-solid fa-square-root-variable"></i>
+
+            <h4>Mathematics</h4>
+
+            <p>
+                Learn concepts and solve problems.
+            </p>
+
+        </a>
+
+        <a href="{{ url_for('physics_page') }}" class="study-card">
+
+            <i class="fa-solid fa-atom"></i>
+
+            <h4>Physics</h4>
+
+            <p>
+                Master formulas and numerical questions.
+            </p>
+
+        </a>
+
+        <a href="{{ url_for('chemistry_page') }}" class="study-card">
+
+            <i class="fa-solid fa-flask"></i>
+
+            <h4>Chemistry</h4>
+
+            <p>
+                Study reactions and chemical principles.
+            </p>
+
+        </a>
+
+        <a href="{{ url_for('biology_page') }}" class="study-card">
+
+            <i class="fa-solid fa-dna"></i>
+
+            <h4>Biology</h4>
+
+            <p>
+                Explore living organisms and life sciences.
+            </p>
+
+        </a>
+
+        <a href="{{ url_for('english_page') }}" class="study-card english-card">
+
+            <i class="fa-solid fa-language"></i>
+
+            <h4>English</h4>
+
+            <p>
+                Improve grammar, vocabulary and writing.
+            </p>
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,1391 @@
+{% extends "base.html" %}
+
+{% block title %}
+Solutions | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.solution-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.solution-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.solution-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.solution-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-button:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+.solution-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.solution-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.solution-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.solution-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.solution-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.solution-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.solution-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+.solution-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.solution-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.solution-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.solution-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.solution-section p,
+.solution-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.solution-section li {
+    margin-bottom: 8px;
+}
+
+/* HIGHLIGHT */
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* CONCEPT GRID */
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.concept-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* EXAMPLES */
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 14px 17px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+/* TABLE */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+.solution-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+.solution-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.solution-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+    vertical-align: top;
+}
+
+/* ASK AI */
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .solution-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .solution-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .solution-section {
+        padding: 18px;
+    }
+
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .solution-nav-wrapper {
+        top: 0;
+    }
+}
+</style>
+
+<div class="solution-page">
+
+
+<a href="{{ url_for('chemistry_page') }}" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+    Back
+</a>
+
+
+<div class="solution-header">
+
+    <h1>Solutions</h1>
+
+    <p>
+        Solutions are homogeneous mixtures in which one substance is
+        uniformly distributed throughout another. This guide explains
+        solubility, solute and solvent, concentration, molarity,
+        dilution, solution preparation, saturation, solubility curves,
+        calculations, practical applications and common mistakes.
+    </p>
+
+</div>
+
+
+<div class="solution-nav-wrapper">
+
+    <nav class="solution-nav">
+
+        <a href="#introduction">Introduction</a>
+        <a href="#solute-solvent">Solute & Solvent</a>
+        <a href="#types">Types of Solutions</a>
+        <a href="#solubility">Solubility</a>
+        <a href="#factors">Factors Affecting Solubility</a>
+        <a href="#saturation">Saturation</a>
+        <a href="#concentration">Concentration</a>
+        <a href="#molarity">Molarity</a>
+        <a href="#mass-concentration">Mass Concentration</a>
+        <a href="#dilution">Dilution</a>
+        <a href="#preparation">Solution Preparation</a>
+        <a href="#solubility-curves">Solubility Curves</a>
+        <a href="#examples">Examples</a>
+        <a href="#word-problems">Word Problems</a>
+        <a href="#mistakes">Common Mistakes</a>
+
+    </nav>
+
+</div>
+
+
+<section class="solution-section" id="introduction">
+
+    <h2>1. Introduction to Solutions</h2>
+
+    <p>
+        A solution is a homogeneous mixture. This means that its
+        composition is uniform throughout the mixture.
+    </p>
+
+    <p>
+        For example, when sodium chloride dissolves completely in water,
+        the salt particles become distributed throughout the water.
+        The resulting mixture is a salt solution.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Key idea:</strong>
+
+        A solution contains a substance being dissolved and a substance
+        that does the dissolving.
+
+    </div>
+
+    <div class="concept-grid">
+
+        <div class="concept-card">
+
+            <i class="fas fa-vial"></i>
+
+            <h4>Solute</h4>
+
+            <p>
+                The substance that is dissolved in a solution.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-flask"></i>
+
+            <h4>Solvent</h4>
+
+            <p>
+                The substance that dissolves the solute.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-water"></i>
+
+            <h4>Solution</h4>
+
+            <p>
+                The homogeneous mixture formed when the solute
+                dissolves in the solvent.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-scale-balanced"></i>
+
+            <h4>Concentration</h4>
+
+            <p>
+                A measure of how much solute is present in a given
+                amount of solution.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="solute-solvent">
+
+    <h2>2. Solute and Solvent</h2>
+
+    <h3>Solute</h3>
+
+    <p>
+        The solute is the substance that gets dissolved. It is often
+        present in a smaller amount than the solvent.
+    </p>
+
+    <p>
+        In salt water, sodium chloride is the solute.
+    </p>
+
+    <h3>Solvent</h3>
+
+    <p>
+        The solvent is the substance that dissolves the solute.
+        Water is one of the most common solvents in chemistry.
+    </p>
+
+    <h3>Example</h3>
+
+    <div class="example-box">
+
+        <h4>Identify the solute and solvent.</h4>
+
+        <p>
+            A student dissolves 10 g of sugar in 200 mL of water.
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Solute:</strong> Sugar
+
+            <br>
+
+            <strong>Solvent:</strong> Water
+
+            <br>
+
+            <strong>Solution:</strong> Sugar solution
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="types">
+
+    <h2>3. Types of Solutions</h2>
+
+    <p>
+        Solutions can exist in different physical states depending on
+        the physical states of their solute and solvent.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="solution-table">
+
+            <tr>
+                <th>Solution</th>
+                <th>Example</th>
+            </tr>
+
+            <tr>
+                <td>Solid in liquid</td>
+                <td>Salt dissolved in water</td>
+            </tr>
+
+            <tr>
+                <td>Liquid in liquid</td>
+                <td>Ethanol mixed with water</td>
+            </tr>
+
+            <tr>
+                <td>Gas in liquid</td>
+                <td>Carbon dioxide dissolved in soft drinks</td>
+            </tr>
+
+            <tr>
+                <td>Gas in gas</td>
+                <td>Air</td>
+            </tr>
+
+            <tr>
+                <td>Solid in solid</td>
+                <td>Alloys such as brass</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="solubility">
+
+    <h2>4. Solubility</h2>
+
+    <p>
+        Solubility is the maximum amount of a substance that can
+        dissolve in a particular amount of solvent under specified
+        conditions of temperature and pressure.
+    </p>
+
+    <p>
+        A substance that dissolves easily is described as soluble,
+        while a substance that does not dissolve significantly is
+        described as insoluble or sparingly soluble.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Important distinction:</strong>
+
+        Solubility describes how much can dissolve, while concentration
+        describes how much is actually present in a particular solution.
+
+    </div>
+
+    <h3>Example</h3>
+
+    <p>
+        If 35 g of a salt can dissolve in 100 g of water at a certain
+        temperature, that value represents the solubility of the salt
+        under those conditions.
+    </p>
+
+</section>
+
+
+<section class="solution-section" id="factors">
+
+    <h2>5. Factors Affecting Solubility</h2>
+
+    <h3>Temperature</h3>
+
+    <p>
+        For many solid solutes, increasing temperature increases
+        solubility, although the exact behaviour depends on the
+        substance.
+    </p>
+
+    <p>
+        Gases generally become less soluble in liquids as temperature
+        increases.
+    </p>
+
+    <h3>Pressure</h3>
+
+    <p>
+        Pressure has a major effect on gases dissolved in liquids.
+        Increasing pressure generally increases the solubility of a gas
+        in a liquid.
+    </p>
+
+    <h3>Nature of the Solute and Solvent</h3>
+
+    <p>
+        Substances with similar intermolecular characteristics tend to
+        dissolve more readily in one another.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Remember:</strong>
+
+        "Like dissolves like" is a useful general rule for understanding
+        why some substances dissolve better than others.
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="saturation">
+
+    <h2>6. Unsaturated, Saturated and Supersaturated Solutions</h2>
+
+    <h3>Unsaturated Solution</h3>
+
+    <p>
+        An unsaturated solution contains less dissolved solute than the
+        maximum amount that can dissolve under the given conditions.
+    </p>
+
+    <h3>Saturated Solution</h3>
+
+    <p>
+        A saturated solution contains the maximum amount of dissolved
+        solute possible under the specified conditions.
+    </p>
+
+    <h3>Supersaturated Solution</h3>
+
+    <p>
+        A supersaturated solution contains more dissolved solute than
+        would normally be stable under those conditions. Such solutions
+        can be unstable and may crystallize when disturbed.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="solution-table">
+
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td>Unsaturated</td>
+                <td>More solute can still dissolve.</td>
+            </tr>
+
+            <tr>
+                <td>Saturated</td>
+                <td>No more significant solute can dissolve under the conditions.</td>
+            </tr>
+
+            <tr>
+                <td>Supersaturated</td>
+                <td>Contains an unusually large amount of dissolved solute and may be unstable.</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="concentration">
+
+    <h2>7. Concentration</h2>
+
+    <p>
+        Concentration tells us how much solute is present relative to
+        a specified amount of solution or solvent.
+    </p>
+
+    <p>
+        There are several ways of expressing concentration in chemistry.
+        At high-school level, common forms include molarity, mass
+        concentration and percentage concentration.
+    </p>
+
+    <h3>Why Concentration Matters</h3>
+
+    <p>
+        Two solutions can contain the same solute but have very
+        different concentrations.
+    </p>
+
+    <p>
+        A solution containing 1 mole of sodium chloride in 1 litre of
+        solution is more concentrated than one containing 0.1 mole in
+        the same volume.
+    </p>
+
+</section>
+
+
+<section class="solution-section" id="molarity">
+
+    <h2>8. Molarity</h2>
+
+    <p>
+        Molarity is one of the most important concentration units used
+        in chemistry.
+    </p>
+
+    <p>
+        It is defined as the number of moles of solute present per
+        litre of solution.
+    </p>
+
+    <div class="formula-box">
+        C = n / V
+    </div>
+
+    <p>
+        Where:
+    </p>
+
+    <ul>
+
+        <li><strong>C</strong> = concentration in mol/L</li>
+
+        <li><strong>n</strong> = number of moles of solute</li>
+
+        <li><strong>V</strong> = volume of solution in litres</li>
+
+    </ul>
+
+    <h3>Finding Moles</h3>
+
+    <div class="formula-box">
+        n = C × V
+    </div>
+
+    <h3>Finding Volume</h3>
+
+    <div class="formula-box">
+        V = n / C
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            Calculate the concentration of a solution containing
+            0.50 mol of sodium chloride in 2.0 L of solution.
+        </h4>
+
+        <div class="answer-box">
+
+            C = n / V
+
+            <br><br>
+
+            C = 0.50 / 2.0
+
+            <br><br>
+
+            <strong>C = 0.25 mol/L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="mass-concentration">
+
+    <h2>9. Mass Concentration</h2>
+
+    <p>
+        Mass concentration expresses the mass of solute present per
+        unit volume of solution.
+    </p>
+
+    <div class="formula-box">
+        Mass concentration = mass of solute / volume of solution
+    </div>
+
+    <p>
+        A common unit is g/L.
+    </p>
+
+    <h3>Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A solution contains 20 g of glucose in 2 L of solution.
+            Calculate its mass concentration.
+        </h4>
+
+        <div class="answer-box">
+
+            Mass concentration = 20 / 2
+
+            <br><br>
+
+            <strong>= 10 g/L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="dilution">
+
+    <h2>10. Dilution</h2>
+
+    <p>
+        Dilution is the process of reducing the concentration of a
+        solution by adding more solvent.
+    </p>
+
+    <p>
+        During an ideal dilution, the amount of solute remains constant.
+        What changes is the total volume of the solution.
+    </p>
+
+    <div class="formula-box">
+        C₁V₁ = C₂V₂
+    </div>
+
+    <p>
+        Where:
+    </p>
+
+    <ul>
+
+        <li><strong>C₁</strong> = initial concentration</li>
+
+        <li><strong>V₁</strong> = initial volume</li>
+
+        <li><strong>C₂</strong> = final concentration</li>
+
+        <li><strong>V₂</strong> = final volume</li>
+
+    </ul>
+
+    <div class="highlight">
+
+        <strong>Key idea:</strong>
+
+        Dilution does not destroy the solute. The same amount of solute
+        is simply spread throughout a larger volume.
+
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            100 mL of a 2.0 mol/L solution is diluted to 500 mL.
+            Find the new concentration.
+        </h4>
+
+        <div class="answer-box">
+
+            C₁V₁ = C₂V₂
+
+            <br><br>
+
+            (2.0)(100) = C₂(500)
+
+            <br><br>
+
+            C₂ = 200 / 500
+
+            <br><br>
+
+            <strong>C₂ = 0.40 mol/L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="preparation">
+
+    <h2>11. Solution Preparation</h2>
+
+    <p>
+        Preparing a solution of known concentration is an important
+        laboratory skill.
+    </p>
+
+    <h3>Preparing a Solution from a Solid</h3>
+
+    <p>
+        To prepare a solution with a known concentration, the required
+        amount of solute is first calculated and accurately measured.
+    </p>
+
+    <h4>General Procedure</h4>
+
+    <ol>
+
+        <li>
+            Calculate the required number of moles.
+        </li>
+
+        <li>
+            Convert the number of moles into mass using the molar mass.
+        </li>
+
+        <li>
+            Accurately weigh the required solute.
+        </li>
+
+        <li>
+            Dissolve the solute in a suitable amount of distilled water.
+        </li>
+
+        <li>
+            Transfer the solution into a volumetric flask.
+        </li>
+
+        <li>
+            Add distilled water until the solution reaches the required
+            volume mark.
+        </li>
+
+        <li>
+            Stopper the flask and mix thoroughly.
+        </li>
+
+    </ol>
+
+    <h3>Mass Required for a Molar Solution</h3>
+
+    <div class="formula-box">
+        n = C × V
+    </div>
+
+    <div class="formula-box">
+        mass = n × molar mass
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            Calculate the mass of NaCl required to prepare 500 mL
+            of a 0.20 mol/L NaCl solution.
+        </h4>
+
+        <p>
+            Molar mass of NaCl ≈ 58.5 g/mol.
+        </p>
+
+        <div class="answer-box">
+
+            Convert volume:
+
+            <br><br>
+
+            500 mL = 0.500 L
+
+            <br><br>
+
+            n = C × V
+
+            <br><br>
+
+            n = 0.20 × 0.500
+
+            <br><br>
+
+            n = 0.100 mol
+
+            <br><br>
+
+            mass = n × molar mass
+
+            <br><br>
+
+            mass = 0.100 × 58.5
+
+            <br><br>
+
+            <strong>mass = 5.85 g</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="solubility-curves">
+
+    <h2>12. Solubility Curves</h2>
+
+    <p>
+        A solubility curve shows how the solubility of a substance
+        changes with temperature.
+    </p>
+
+    <p>
+        The horizontal axis commonly represents temperature, while
+        the vertical axis represents the amount of solute that can
+        dissolve in a specified amount of solvent.
+    </p>
+
+    <h3>Reading a Solubility Curve</h3>
+
+    <p>
+        To determine the solubility at a particular temperature, locate
+        the temperature on the horizontal axis and move vertically
+        until you reach the substance's curve. Then read the
+        corresponding solubility value.
+    </p>
+
+    <h3>Comparing Substances</h3>
+
+    <p>
+        A curve that lies higher at a particular temperature represents
+        a substance with greater solubility at that temperature.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        Solubility curves describe maximum dissolving capacity under
+        specified conditions. They are not automatically the same thing
+        as concentration.
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="examples">
+
+    <h2>13. Worked Examples</h2>
+
+
+    <div class="example-box">
+
+        <h4>Example 1 — Molarity</h4>
+
+        <p>
+            Find the concentration of a solution containing 0.75 mol
+            of solute in 1.5 L of solution.
+        </p>
+
+        <div class="answer-box">
+
+            C = n / V
+
+            <br><br>
+
+            C = 0.75 / 1.5
+
+            <br><br>
+
+            <strong>C = 0.50 mol/L</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 2 — Finding Moles</h4>
+
+        <p>
+            How many moles are present in 250 mL of a 0.40 mol/L
+            solution?
+        </p>
+
+        <div class="answer-box">
+
+            V = 250 mL = 0.250 L
+
+            <br><br>
+
+            n = C × V
+
+            <br><br>
+
+            n = 0.40 × 0.250
+
+            <br><br>
+
+            <strong>n = 0.100 mol</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 3 — Dilution</h4>
+
+        <p>
+            What volume of a 5.0 mol/L stock solution is required to
+            prepare 250 mL of a 1.0 mol/L solution?
+        </p>
+
+        <div class="answer-box">
+
+            C₁V₁ = C₂V₂
+
+            <br><br>
+
+            (5.0)V₁ = (1.0)(250)
+
+            <br><br>
+
+            V₁ = 250 / 5.0
+
+            <br><br>
+
+            <strong>V₁ = 50 mL</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 4 — Mass Concentration</h4>
+
+        <p>
+            A solution contains 15 g of solute in 500 mL of solution.
+            Find its concentration in g/L.
+        </p>
+
+        <div class="answer-box">
+
+            500 mL = 0.500 L
+
+            <br><br>
+
+            Concentration = 15 / 0.500
+
+            <br><br>
+
+            <strong>= 30 g/L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="word-problems">
+
+    <h2>14. Solution Word Problems</h2>
+
+
+    <div class="example-box">
+
+        <h4>Problem 1</h4>
+
+        <p>
+            A student dissolves 5.0 g of potassium chloride in enough
+            water to make 250 mL of solution. Calculate the mass
+            concentration in g/L.
+        </p>
+
+        <div class="answer-box">
+
+            250 mL = 0.250 L
+
+            <br><br>
+
+            Mass concentration = 5.0 / 0.250
+
+            <br><br>
+
+            <strong>= 20 g/L</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 2</h4>
+
+        <p>
+            A laboratory has 100 mL of a 4.0 mol/L stock solution.
+            It is diluted until its concentration becomes 1.0 mol/L.
+            What is the final volume?
+        </p>
+
+        <div class="answer-box">
+
+            C₁V₁ = C₂V₂
+
+            <br><br>
+
+            (4.0)(100) = (1.0)V₂
+
+            <br><br>
+
+            <strong>V₂ = 400 mL</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 3</h4>
+
+        <p>
+            A student needs 500 mL of a 0.10 mol/L solution.
+            How many moles of solute are required?
+        </p>
+
+        <div class="answer-box">
+
+            V = 500 mL = 0.500 L
+
+            <br><br>
+
+            n = C × V
+
+            <br><br>
+
+            n = 0.10 × 0.500
+
+            <br><br>
+
+            <strong>n = 0.050 mol</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 4 — Conceptual</h4>
+
+        <p>
+            Why does adding water to a salt solution decrease its
+            concentration?
+        </p>
+
+        <div class="answer-box">
+
+            The amount of dissolved salt remains essentially the same,
+            but the total volume of the solution increases. Therefore,
+            the same amount of solute is distributed through a larger
+            volume, reducing the concentration.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="solution-section" id="mistakes">
+
+    <h2>15. Common Mistakes</h2>
+
+    <h3>1. Confusing Solubility and Concentration</h3>
+
+    <p>
+        Solubility is the maximum amount that can dissolve under
+        specified conditions, while concentration describes the amount
+        actually present relative to a specified quantity of solution.
+    </p>
+
+    <h3>2. Forgetting to Convert Millilitres to Litres</h3>
+
+    <p>
+        When using molarity in mol/L, the volume must be expressed in
+        litres.
+    </p>
+
+    <div class="formula-box">
+        1000 mL = 1 L
+    </div>
+
+    <h3>3. Using the Wrong Volume in Molarity</h3>
+
+    <p>
+        Molarity uses the volume of the entire solution, not simply the
+        volume of solvent added.
+    </p>
+
+    <h3>4. Forgetting Dilution Principles</h3>
+
+    <p>
+        During dilution, the amount of solute remains constant even
+        though the concentration decreases.
+    </p>
+
+    <h3>5. Incorrectly Calculating Moles</h3>
+
+    <p>
+        When mass is given, calculate moles using the molar mass before
+        using the molarity equation.
+    </p>
+
+    <div class="formula-box">
+        n = mass / molar mass
+    </div>
+
+    <div class="highlight">
+
+        <strong>Best approach:</strong>
+
+        Write down what you know, convert all units, identify the
+        quantity being asked for, choose the appropriate formula, then
+        substitute carefully.
+
+    </div>
+
+</section>
+
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With Solutions?</h3>
+
+    <p>
+        Confused about solubility, concentration, molarity, dilution,
+        solution preparation or solubility curves? Ask Insite AI to
+        explain the concept step by step, identify the correct formula,
+        or solve a solution problem with you.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

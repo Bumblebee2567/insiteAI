@@ -1,0 +1,2323 @@
+{% extends "base.html" %}
+
+{% block title %}
+Atomic Structure | Chemistry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.atomic-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* BACK BUTTON */
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    transition: .25s;
+    margin-bottom: 25px;
+}
+
+.back-button:hover {
+    color: #ffffff;
+    border-color: #3b82f6;
+    transform: translateX(-3px);
+}
+
+/* HEADER */
+
+.atomic-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.atomic-header h1 {
+    color: #ffffff;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.atomic-header p {
+    color: #9ca3af;
+    max-width: 750px;
+    margin: auto;
+    line-height: 1.7;
+}
+
+/* TOPIC NAVIGATION */
+
+.topic-navigation {
+    position: sticky;
+    top: 70px;
+    z-index: 20;
+    background: #0b0f19;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    padding: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: #397fcf transparent;
+}
+
+.topic-navigation::-webkit-scrollbar {
+    height: 5px;
+}
+
+.topic-navigation::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.topic-navigation a {
+    display: inline-block;
+    color: #c9d1d9;
+    text-decoration: none;
+    padding: 9px 14px;
+    margin-right: 5px;
+    border-radius: 9px;
+    font-size: .9rem;
+    transition: .2s;
+}
+
+.topic-navigation a:hover {
+    background: #0b0f19;
+    color: #ffffff;
+    border: 1px solid #202b42;
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+}
+
+/* GENERAL SECTIONS */
+
+.atomic-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 140px;
+}
+
+.atomic-section h2 {
+    color: #ffffff;
+    font-size: 1.55rem;
+    margin-bottom: 16px;
+}
+
+.atomic-section h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 24px;
+    margin-bottom: 10px;
+}
+
+.atomic-section p {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.atomic-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+    margin-bottom: 5px;
+}
+
+.atomic-section strong {
+    color: #ffffff;
+}
+
+/* INTRO CARD */
+
+.intro-box {
+    background: #111827;
+    border-left: 4px solid #3b82f6;
+    padding: 18px;
+    border-radius: 10px;
+    margin: 18px 0;
+}
+
+.intro-box p {
+    margin: 0;
+}
+
+/* FORMULAS */
+
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 18px;
+    margin: 15px 0;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.15rem;
+    overflow-x: auto;
+}
+
+.formula-label {
+    display: block;
+    color: #9ca3af;
+    font-size: .85rem;
+    margin-bottom: 8px;
+}
+
+/* EXAMPLES */
+
+.example-box {
+    background: #111827;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #60a5fa;
+    margin-bottom: 12px;
+}
+
+.example-box p {
+    margin-bottom: 8px;
+}
+
+/* WARNING / KEY IDEA */
+
+.key-box {
+    background: rgba(59, 130, 246, .08);
+    border: 1px solid rgba(59, 130, 246, .35);
+    border-radius: 10px;
+    padding: 17px;
+    margin: 18px 0;
+}
+
+.key-box h4 {
+    color: #60a5fa;
+    margin-bottom: 8px;
+}
+
+/* TABLE */
+
+.atomic-table-wrapper {
+    overflow-x: auto;
+    margin: 18px 0;
+}
+
+.atomic-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.atomic-table th,
+.atomic-table td {
+    border: 1px solid #30363d;
+    padding: 12px;
+    text-align: left;
+}
+
+.atomic-table th {
+    background: #0d1117;
+    color: #ffffff;
+}
+
+.atomic-table td {
+    color: #c9d1d9;
+}
+
+/* TIMELINE */
+
+.timeline {
+    border-left: 2px solid #3b82f6;
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+.timeline-item {
+    margin-bottom: 25px;
+}
+
+.timeline-item h4 {
+    color: #60a5fa;
+    margin-bottom: 5px;
+}
+
+.timeline-item p {
+    margin: 0;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    background: #111827;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 25px 0;
+    text-align: center;
+}
+
+.ask-ai i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+    margin: 5px 0 8px;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    margin-bottom: 15px;
+}
+
+.ask-ai a {
+    display: inline-block;
+    background: #3b82f6;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 9px;
+    transition: .2s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+/* QUICK SUMMARY */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.summary-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 11px;
+    padding: 16px;
+}
+
+.summary-card h4 {
+    color: #60a5fa;
+    margin-bottom: 7px;
+}
+
+.summary-card p {
+    font-size: .9rem;
+    margin: 0;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .atomic-page {
+        margin: 20px auto;
+        padding: 12px;
+    }
+
+    .atomic-header h1 {
+        font-size: 2rem;
+    }
+
+    .atomic-section {
+        padding: 19px;
+    }
+
+    .topic-navigation {
+        top: 60px;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+<div class="atomic-page">
+
+
+<!-- BACK -->
+
+<a href="{{ url_for('chemistry_page') }}" class="back-button">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Chemistry
+</a>
+
+
+<!-- HEADER -->
+
+<div class="atomic-header">
+
+    <h1>Atomic Structure</h1>
+
+    <p>
+        Understand what atoms are made of, how scientists discovered
+        their structure, how electrons are arranged, why elements have
+        different properties, and how atomic structure connects to the
+        periodic table and chemical reactions.
+    </p>
+
+</div>
+
+
+<!-- SCROLLABLE TOPIC NAVIGATION -->
+
+<nav class="topic-navigation">
+
+    <a href="#introduction">Introduction</a>
+    <a href="#history">History</a>
+    <a href="#atom">The Atom</a>
+    <a href="#particles">Particles</a>
+    <a href="#nucleus">Nucleus</a>
+    <a href="#atomic-number">Atomic Number</a>
+    <a href="#mass-number">Mass Number</a>
+    <a href="#isotopes">Isotopes</a>
+    <a href="#ions">Ions</a>
+    <a href="#mass">Atomic Mass</a>
+    <a href="#bohr">Bohr Model</a>
+    <a href="#shells">Electron Shells</a>
+    <a href="#orbitals">Orbitals</a>
+    <a href="#configuration">Configuration</a>
+    <a href="#quantum">Quantum Numbers</a>
+    <a href="#valence">Valence Electrons</a>
+    <a href="#spectra">Spectra</a>
+    <a href="#periodic">Periodic Table</a>
+    <a href="#trends">Periodic Trends</a>
+    <a href="#photoelectron">Photoelectron Evidence</a>
+    <a href="#applications">Applications</a>
+    <a href="#exam">Exam Questions</a>
+    <a href="#summary">Summary</a>
+    <a href="#references">References</a>
+
+</nav>
+
+
+<!-- INTRODUCTION -->
+
+<section class="atomic-section" id="introduction">
+
+    <h2>1. What Is Atomic Structure?</h2>
+
+    <p>
+        Everything around you is made from matter. Your body, the air,
+        water, your phone, the screen you are looking at, and even the
+        stars are made from matter.
+    </p>
+
+    <p>
+        Matter is made from particles called <strong>atoms</strong>.
+        An atom is the smallest particle that still represents a
+        particular chemical element.
+    </p>
+
+    <div class="intro-box">
+
+        <p>
+            Think of an atom as an extremely tiny system. At its centre
+            is a dense nucleus containing protons and neutrons. Around
+            that nucleus is an electron cloud containing electrons.
+        </p>
+
+    </div>
+
+    <p>
+        Modern atomic theory is much more sophisticated than the simple
+        picture of electrons moving around a nucleus like planets around
+        the Sun. Electrons are described using probability, energy levels,
+        orbitals and quantum mechanics.
+    </p>
+
+    <div class="key-box">
+
+        <h4>The most important idea</h4>
+
+        <p>
+            The number of protons determines what element an atom is.
+            Changing the number of protons changes the element itself.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section class="atomic-section" id="history">
+
+    <h2>2. The Story of the Atom</h2>
+
+    <p>
+        Atomic structure was not discovered in one experiment. It was
+        built gradually as scientists found evidence that forced them
+        to improve their models.
+    </p>
+
+    <div class="timeline">
+
+        <div class="timeline-item">
+
+            <h4>Democritus</h4>
+
+            <p>
+                Around the fifth century BCE, the Greek philosopher
+                Democritus suggested that matter could be divided into
+                extremely small particles that could not be divided
+                forever. He called these hypothetical particles
+                <em>atomos</em>, meaning indivisible.
+            </p>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <h4>John Dalton</h4>
+
+            <p>
+                In the early nineteenth century, Dalton developed a
+                scientific atomic theory. He proposed that matter was
+                composed of atoms and that atoms of different elements
+                had different properties.
+            </p>
+
+            <p>
+                Dalton's original idea that all atoms of one element
+                were identical in mass was later modified because
+                scientists discovered isotopes.
+            </p>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <h4>J. J. Thomson</h4>
+
+            <p>
+                Thomson's cathode-ray experiments provided evidence for
+                negatively charged particles later called electrons.
+                This showed that atoms were not indivisible.
+            </p>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <h4>Ernest Rutherford</h4>
+
+            <p>
+                Rutherford's famous gold-foil experiment showed that the
+                positive charge and most of an atom's mass are concentrated
+                in a tiny nucleus. Most of the atom is empty space.
+            </p>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <h4>Niels Bohr</h4>
+
+            <p>
+                Bohr proposed that electrons could occupy specific
+                allowed energy levels. His model helped explain the
+                line spectrum of hydrogen.
+            </p>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <h4>James Chadwick</h4>
+
+            <p>
+                Chadwick discovered the neutron, explaining why nuclei
+                could contain substantial mass without all of that mass
+                coming from positively charged particles.
+            </p>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <h4>The Quantum Mechanical Model</h4>
+
+            <p>
+                Later work by scientists including de Broglie,
+                Heisenberg and Schrödinger led to the modern quantum
+                description of electrons. Electrons are not assigned
+                simple circular paths. Instead, orbitals describe regions
+                of high probability for finding electrons.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ATOM -->
+
+<section class="atomic-section" id="atom">
+
+    <h2>3. Inside an Atom</h2>
+
+    <p>
+        An atom contains three major subatomic particles:
+        <strong>protons, neutrons and electrons</strong>.
+    </p>
+
+    <div class="atomic-table-wrapper">
+
+        <table class="atomic-table">
+
+            <thead>
+
+                <tr>
+                    <th>Particle</th>
+                    <th>Charge</th>
+                    <th>Location</th>
+                    <th>Relative Mass</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Proton</td>
+                    <td>+1</td>
+                    <td>Nucleus</td>
+                    <td>About 1</td>
+                </tr>
+
+                <tr>
+                    <td>Neutron</td>
+                    <td>0</td>
+                    <td>Nucleus</td>
+                    <td>About 1</td>
+                </tr>
+
+                <tr>
+                    <td>Electron</td>
+                    <td>-1</td>
+                    <td>Electron cloud</td>
+                    <td>Much smaller</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <p>
+        The nucleus is extremely small compared with the whole atom,
+        but it contains almost all of the atom's mass. The electrons
+        occupy most of the atom's volume.
+    </p>
+
+    <p>
+        This distinction is important: <strong>mass</strong> is
+        concentrated mainly in the nucleus, while the electron cloud
+        largely determines the size and chemical behaviour of the atom.
+    </p>
+
+</section>
+
+
+<!-- PARTICLES -->
+
+<section class="atomic-section" id="particles">
+
+    <h2>4. The Three Fundamental Particles in Basic Chemistry</h2>
+
+    <h3>Protons</h3>
+
+    <p>
+        A proton has a positive electrical charge. Protons are found
+        inside the nucleus.
+    </p>
+
+    <p>
+        The number of protons is called the atomic number. This number
+        identifies the element.
+    </p>
+
+    <h3>Neutrons</h3>
+
+    <p>
+        Neutrons have no net electrical charge. They are also found in
+        the nucleus.
+    </p>
+
+    <p>
+        Changing the number of neutrons does not change the element.
+        Instead, it creates a different isotope of the same element.
+    </p>
+
+    <h3>Electrons</h3>
+
+    <p>
+        Electrons have a negative electrical charge and occupy regions
+        around the nucleus.
+    </p>
+
+    <p>
+        Electrons are extremely important in chemistry because chemical
+        bonding and many chemical reactions involve changes in electron
+        arrangement.
+    </p>
+
+</section>
+
+
+<!-- NUCLEUS -->
+
+<section class="atomic-section" id="nucleus">
+
+    <h2>5. The Nucleus</h2>
+
+    <p>
+        The nucleus is the compact central region of an atom. It contains
+        protons and neutrons, collectively called <strong>nucleons</strong>.
+    </p>
+
+    <p>
+        Because protons are positively charged, they repel one another
+        electrically. Yet nuclei can remain together because of the
+        strong nuclear interaction acting over extremely short distances.
+    </p>
+
+    <div class="key-box">
+
+        <h4>Remember</h4>
+
+        <p>
+            Nucleus = protons + neutrons.
+            Electrons are outside the nucleus.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ATOMIC NUMBER -->
+
+<section class="atomic-section" id="atomic-number">
+
+    <h2>6. Atomic Number</h2>
+
+    <p>
+        The <strong>atomic number</strong>, represented by
+        <strong>Z</strong>, is the number of protons in the nucleus.
+    </p>
+
+    <div class="formula-box">
+
+        <span class="formula-label">Atomic number</span>
+
+        Z = number of protons
+
+    </div>
+
+    <p>
+        This is one of the most important facts in atomic structure.
+        Every element has its own atomic number.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example: Sodium</h4>
+
+        <p>
+            Sodium has atomic number 11.
+        </p>
+
+        <p>
+            Therefore, every sodium atom contains 11 protons.
+        </p>
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example: Oxygen</h4>
+
+        <p>
+            Oxygen has atomic number 8.
+        </p>
+
+        <p>
+            Therefore, every oxygen atom contains 8 protons.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- MASS NUMBER -->
+
+<section class="atomic-section" id="mass-number">
+
+    <h2>7. Mass Number</h2>
+
+    <p>
+        The <strong>mass number</strong>, represented by
+        <strong>A</strong>, is the total number of protons and neutrons
+        in the nucleus.
+    </p>
+
+    <div class="formula-box">
+
+        <span class="formula-label">Mass number</span>
+
+        A = protons + neutrons
+
+    </div>
+
+    <p>
+        Therefore:
+    </p>
+
+    <div class="formula-box">
+
+        <span class="formula-label">Finding neutrons</span>
+
+        neutrons = A - Z
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            An atom has mass number 23 and atomic number 11.
+            How many neutrons does it have?
+        </p>
+
+        <p>
+            Neutrons = 23 - 11
+        </p>
+
+        <p>
+            <strong>Neutrons = 12</strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ISOTOPES -->
+
+<section class="atomic-section" id="isotopes">
+
+    <h2>8. Isotopes</h2>
+
+    <p>
+        Isotopes are atoms of the same element that have the same number
+        of protons but different numbers of neutrons.
+    </p>
+
+    <div class="key-box">
+
+        <h4>How to recognise isotopes</h4>
+
+        <p>
+            Same atomic number → same element.
+            Different mass number → different isotope.
+        </p>
+
+    </div>
+
+    <h3>Example: Carbon</h3>
+
+    <p>
+        Carbon-12 has 6 protons and 6 neutrons.
+    </p>
+
+    <p>
+        Carbon-14 has 6 protons and 8 neutrons.
+    </p>
+
+    <p>
+        Both are carbon because both contain 6 protons.
+    </p>
+
+    <h3>Isotopic notation</h3>
+
+    <div class="formula-box">
+
+        <sup>A</sup><sub>Z</sub>X
+
+    </div>
+
+    <p>
+        X represents the element symbol, A is the mass number and Z is
+        the atomic number.
+    </p>
+
+    <h3>Why isotopes matter</h3>
+
+    <ul>
+
+        <li>Some isotopes are stable.</li>
+        <li>Some isotopes are radioactive.</li>
+        <li>Isotopes are used in medicine.</li>
+        <li>They can be used as tracers.</li>
+        <li>They are important in archaeology and geology.</li>
+        <li>They are used in scientific measurements and research.</li>
+
+    </ul>
+
+</section>
+
+
+<!-- IONS -->
+
+<section class="atomic-section" id="ions">
+
+    <h2>9. Ions</h2>
+
+    <p>
+        An ion is an atom or group of atoms with a net electrical charge.
+        The charge occurs when the number of electrons is different from
+        the number of protons.
+    </p>
+
+    <h3>Cations</h3>
+
+    <p>
+        A positively charged ion is called a <strong>cation</strong>.
+        It forms when an atom loses electrons.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example: Sodium ion</h4>
+
+        <p>
+            Neutral sodium has 11 protons and 11 electrons.
+        </p>
+
+        <p>
+            If sodium loses one electron, it has 11 protons and
+            10 electrons.
+        </p>
+
+        <p>
+            Its charge becomes +1, giving Na<sup>+</sup>.
+        </p>
+
+    </div>
+
+    <h3>Anions</h3>
+
+    <p>
+        A negatively charged ion is called an <strong>anion</strong>.
+        It forms when an atom gains electrons.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example: Chloride ion</h4>
+
+        <p>
+            Neutral chlorine has 17 protons and 17 electrons.
+        </p>
+
+        <p>
+            If chlorine gains one electron, it has 17 protons and
+            18 electrons.
+        </p>
+
+        <p>
+            Its charge becomes -1, giving Cl<sup>-</sup>.
+        </p>
+
+    </div>
+
+    <div class="formula-box">
+
+        Charge = protons - electrons
+
+    </div>
+
+</section>
+
+
+<!-- ATOMIC MASS -->
+
+<section class="atomic-section" id="mass">
+
+    <h2>10. Relative Atomic Mass</h2>
+
+    <p>
+        The mass of an individual atom is extremely small, so chemists
+        use the atomic mass unit, written as <strong>u</strong> or
+        commonly <strong>amu</strong>.
+    </p>
+
+    <p>
+        The atomic mass unit is defined relative to carbon-12.
+    </p>
+
+    <p>
+        The value shown on the periodic table is usually an
+        <strong>average atomic mass</strong>, reflecting the naturally
+        occurring isotopes and their abundances.
+    </p>
+
+    <div class="formula-box">
+
+        Average atomic mass =
+        Σ(isotope mass × fractional abundance)
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Worked idea</h4>
+
+        <p>
+            Suppose an imaginary element has two isotopes:
+        </p>
+
+        <p>
+            Isotope A = 10 u and abundance = 70%
+        </p>
+
+        <p>
+            Isotope B = 11 u and abundance = 30%
+        </p>
+
+        <p>
+            Convert the percentages into fractions:
+        </p>
+
+        <p>
+            70% = 0.70
+        </p>
+
+        <p>
+            30% = 0.30
+        </p>
+
+        <p>
+            Average mass =
+            (10 × 0.70) + (11 × 0.30)
+        </p>
+
+        <p>
+            Average mass = 7.0 + 3.3
+        </p>
+
+        <p>
+            <strong>Average mass = 10.3 u</strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- BOHR -->
+
+<section class="atomic-section" id="bohr">
+
+    <h2>11. The Bohr Model</h2>
+
+    <p>
+        Bohr proposed that electrons could occupy specific allowed
+        energy levels around the nucleus.
+    </p>
+
+    <p>
+        The model is not the complete modern description of the atom,
+        but it is extremely useful for introducing energy levels and
+        explaining the hydrogen spectrum.
+    </p>
+
+    <h3>Ground state</h3>
+
+    <p>
+        The ground state is the lowest-energy state available to an atom.
+    </p>
+
+    <h3>Excited state</h3>
+
+    <p>
+        When an electron absorbs energy, it can move to a higher allowed
+        energy state. This is called an excited state.
+    </p>
+
+    <h3>Returning to a lower level</h3>
+
+    <p>
+        When an electron falls from a higher energy level to a lower one,
+        energy can be released as electromagnetic radiation.
+    </p>
+
+    <div class="key-box">
+
+        <h4>The big idea</h4>
+
+        <p>
+            Electrons do not possess arbitrary energies in bound atoms.
+            They occupy allowed energy states.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- SHELLS -->
+
+<section class="atomic-section" id="shells">
+
+    <h2>12. Electron Shells and Energy Levels</h2>
+
+    <p>
+        Electron shells represent principal energy levels. They are
+        commonly labelled using numbers:
+    </p>
+
+    <ul>
+
+        <li>n = 1</li>
+        <li>n = 2</li>
+        <li>n = 3</li>
+        <li>n = 4</li>
+        <li>and so on.</li>
+
+    </ul>
+
+    <p>
+        In the simplified shell model, electrons farther from the nucleus
+        generally occupy higher-energy levels.
+    </p>
+
+    <h3>Maximum electrons in a shell</h3>
+
+    <p>
+        A commonly taught rule gives the maximum number of electrons in
+        principal shell n as:
+    </p>
+
+    <div class="formula-box">
+
+        Maximum electrons = 2n²
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            For the second shell:
+        </p>
+
+        <p>
+            2(2²) = 8
+        </p>
+
+        <p>
+            So the second principal shell can contain up to 8 electrons.
+        </p>
+
+    </div>
+
+    <div class="key-box">
+
+        <h4>Important qualification</h4>
+
+        <p>
+            The 2n² rule gives the maximum capacity of a principal shell.
+            It should not be confused with the actual order in which
+            orbitals fill in multi-electron atoms.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ORBITALS -->
+
+<section class="atomic-section" id="orbitals">
+
+    <h2>13. Orbitals</h2>
+
+    <p>
+        The modern atomic model does not describe an electron as travelling
+        around the nucleus on a fixed circular track.
+    </p>
+
+    <p>
+        Instead, an <strong>orbital</strong> is a mathematical description
+        of a region of space in which there is a high probability of
+        finding an electron with particular quantum numbers.
+    </p>
+
+    <h3>s orbitals</h3>
+
+    <p>
+        An s orbital is approximately spherical in shape.
+    </p>
+
+    <h3>p orbitals</h3>
+
+    <p>
+        p orbitals have two-lobed shapes. There are three p orbitals in
+        a p subshell.
+    </p>
+
+    <h3>d orbitals</h3>
+
+    <p>
+        d orbitals have more complicated shapes and orientations.
+        A d subshell contains five orbitals.
+    </p>
+
+    <h3>f orbitals</h3>
+
+    <p>
+        f orbitals are even more complex. An f subshell contains seven
+        orbitals.
+    </p>
+
+    <div class="atomic-table-wrapper">
+
+        <table class="atomic-table">
+
+            <thead>
+
+                <tr>
+                    <th>Subshell</th>
+                    <th>Number of Orbitals</th>
+                    <th>Maximum Electrons</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>s</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+
+                <tr>
+                    <td>p</td>
+                    <td>3</td>
+                    <td>6</td>
+                </tr>
+
+                <tr>
+                    <td>d</td>
+                    <td>5</td>
+                    <td>10</td>
+                </tr>
+
+                <tr>
+                    <td>f</td>
+                    <td>7</td>
+                    <td>14</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ELECTRON CONFIGURATION -->
+
+<section class="atomic-section" id="configuration">
+
+    <h2>14. Electron Configuration</h2>
+
+    <p>
+        Electron configuration describes how the electrons of an atom
+        are distributed among its orbitals.
+    </p>
+
+    <h3>The Aufbau principle</h3>
+
+    <p>
+        The Aufbau principle states that electrons occupy available
+        orbitals in an order associated with increasing energy.
+    </p>
+
+    <h3>Pauli exclusion principle</h3>
+
+    <p>
+        No two electrons in the same atom can have exactly the same set
+        of four quantum numbers.
+    </p>
+
+    <p>
+        Consequently, an orbital can contain a maximum of two electrons,
+        and those two electrons must have opposite spins.
+    </p>
+
+    <h3>Hund's rule</h3>
+
+    <p>
+        When orbitals of equal energy are available, electrons occupy
+        them singly before pairing.
+    </p>
+
+    <h3>Common filling order</h3>
+
+    <div class="formula-box">
+
+        1s → 2s → 2p → 3s → 3p → 4s →
+        3d → 4p → 5s → 4d → 5p →
+        6s → 4f → 5d → 6p →
+        7s → 5f → 6d → 7p
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example: Oxygen</h4>
+
+        <p>
+            Oxygen has atomic number 8, so a neutral oxygen atom has
+            eight electrons.
+        </p>
+
+        <p>
+            Its electron configuration is:
+        </p>
+
+        <div class="formula-box">
+
+            1s² 2s² 2p⁴
+
+        </div>
+
+        <p>
+            The superscripts add to 8:
+        </p>
+
+        <p>
+            2 + 2 + 4 = 8
+        </p>
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example: Sodium</h4>
+
+        <p>
+            Sodium has atomic number 11.
+        </p>
+
+        <div class="formula-box">
+
+            1s² 2s² 2p⁶ 3s¹
+
+        </div>
+
+        <p>
+            Sodium therefore has one electron in its outermost occupied
+            s orbital.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- QUANTUM NUMBERS -->
+
+<section class="atomic-section" id="quantum">
+
+    <h2>15. Quantum Numbers</h2>
+
+    <p>
+        Quantum numbers provide a way of describing the state of an
+        electron in an atom.
+    </p>
+
+    <h3>Principal quantum number (n)</h3>
+
+    <p>
+        The principal quantum number identifies the main energy level
+        and is a positive integer such as 1, 2, 3 or 4.
+    </p>
+
+    <h3>Azimuthal quantum number (l)</h3>
+
+    <p>
+        This identifies the subshell type:
+    </p>
+
+    <ul>
+
+        <li>l = 0 → s</li>
+        <li>l = 1 → p</li>
+        <li>l = 2 → d</li>
+        <li>l = 3 → f</li>
+
+    </ul>
+
+    <h3>Magnetic quantum number (mₗ)</h3>
+
+    <p>
+        This describes the orientation of an orbital within a subshell.
+    </p>
+
+    <h3>Spin quantum number (mₛ)</h3>
+
+    <p>
+        Electron spin has two allowed projections, commonly represented
+        as +1/2 and -1/2.
+    </p>
+
+</section>
+
+
+<!-- VALENCE -->
+
+<section class="atomic-section" id="valence">
+
+    <h2>16. Valence Electrons</h2>
+
+    <p>
+        Valence electrons are the electrons involved most directly in
+        many chemical bonding and reaction processes.
+    </p>
+
+    <p>
+        For main-group elements, the number and arrangement of outer
+        electrons help explain patterns in chemical behaviour.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example: Sodium</h4>
+
+        <p>
+            Sodium has the simplified shell arrangement 2, 8, 1.
+        </p>
+
+        <p>
+            It has one electron in its outer shell and commonly forms
+            a +1 ion by losing that electron.
+        </p>
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example: Chlorine</h4>
+
+        <p>
+            Chlorine has the simplified shell arrangement 2, 8, 7.
+        </p>
+
+        <p>
+            It has seven outer-shell electrons and commonly gains one
+            electron to form Cl⁻.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- SPECTRA -->
+
+<section class="atomic-section" id="spectra">
+
+    <h2>17. Atomic Emission Spectra</h2>
+
+    <p>
+        When atoms absorb energy, their electrons can move to higher
+        energy states. When those electrons return to lower states,
+        electromagnetic radiation can be emitted.
+    </p>
+
+    <p>
+        Because the allowed energy differences are discrete, atoms can
+        produce characteristic spectral lines.
+    </p>
+
+    <div class="formula-box">
+
+        ΔE = hν
+
+    </div>
+
+    <p>
+        Here ΔE represents the energy difference, h is Planck's constant,
+        and ν is the frequency of the radiation.
+    </p>
+
+    <p>
+        Since electromagnetic radiation also obeys:
+    </p>
+
+    <div class="formula-box">
+
+        c = λν
+
+    </div>
+
+    <p>
+        the wavelength can be related to the energy of the emitted photon.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Why spectra are useful</h4>
+
+        <p>
+            Different atoms have different allowed energy structures.
+            Their spectral patterns can therefore act like fingerprints
+            that help identify elements.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- PERIODIC TABLE -->
+
+<section class="atomic-section" id="periodic">
+
+    <h2>18. Atomic Structure and the Periodic Table</h2>
+
+    <p>
+        The periodic table is closely connected to atomic structure.
+        Elements are arranged according to increasing atomic number.
+    </p>
+
+    <p>
+        The position of an element tells us useful information about
+        its electron arrangement and chemical behaviour.
+    </p>
+
+    <h3>Periods</h3>
+
+    <p>
+        A period is a horizontal row of the periodic table.
+        Elements in a period generally have electrons occupying the
+        same principal energy level as the highest occupied shell,
+        though the detailed orbital filling changes across the row.
+    </p>
+
+    <h3>Groups</h3>
+
+    <p>
+        A group is a vertical column. Elements in the same main-group
+        family often have similar valence-electron patterns and therefore
+        similar chemical properties.
+    </p>
+
+    <h3>Blocks</h3>
+
+    <ul>
+
+        <li>s-block</li>
+        <li>p-block</li>
+        <li>d-block</li>
+        <li>f-block</li>
+
+    </ul>
+
+    <p>
+        These blocks correspond to the type of subshell being filled
+        by the differentiating electrons.
+    </p>
+
+</section>
+
+
+<!-- PERIODIC TRENDS -->
+
+<section class="atomic-section" id="trends">
+
+    <h2>19. Atomic Structure and Periodic Trends</h2>
+
+    <h3>Atomic radius</h3>
+
+    <p>
+        Atomic radius generally decreases from left to right across
+        a period because the nuclear charge increases while electrons
+        are added to the same principal shell.
+    </p>
+
+    <p>
+        Atomic radius generally increases down a group because additional
+        electron shells are occupied.
+    </p>
+
+    <h3>Ionization energy</h3>
+
+    <p>
+        Ionization energy is the energy required to remove an electron
+        from an atom or ion in the appropriate gaseous state.
+    </p>
+
+    <p>
+        First ionization energy generally increases across a period and
+        generally decreases down a group, although there are important
+        exceptions.
+    </p>
+
+    <h3>Electronegativity</h3>
+
+    <p>
+        Electronegativity describes the tendency of an atom in a chemical
+        bond to attract electron density toward itself.
+    </p>
+
+    <p>
+        It generally increases toward the upper-right region of the
+        periodic table, with fluorine having the highest commonly cited
+        Pauling electronegativity.
+    </p>
+
+    <h3>Shielding</h3>
+
+    <p>
+        Inner electrons partially shield outer electrons from the full
+        attraction of the positively charged nucleus.
+    </p>
+
+    <h3>Effective nuclear charge</h3>
+
+    <p>
+        Effective nuclear charge describes the net attractive influence
+        experienced by an electron after accounting for shielding effects.
+    </p>
+
+    <div class="key-box">
+
+        <h4>Think of the periodic table as an electron map</h4>
+
+        <p>
+            Many periodic trends become easier when you stop memorising
+            arrows and instead ask: How strongly is the nucleus attracting
+            the electron, how much shielding exists, and which energy level
+            is occupied?
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- PHOTOELECTRON -->
+
+<section class="atomic-section" id="photoelectron">
+
+    <h2>20. Photoelectron Spectroscopy</h2>
+
+    <p>
+        Photoelectron spectroscopy provides experimental evidence about
+        the energies of electrons in atoms.
+    </p>
+
+    <p>
+        In a simplified description, photons are used to eject electrons
+        from an atom. Measuring the kinetic energy of the emitted
+        electrons provides information about their binding energies.
+    </p>
+
+    <div class="formula-box">
+
+        E<sub>binding</sub> = E<sub>photon</sub> - E<sub>kinetic</sub>
+
+    </div>
+
+    <p>
+        Different groups of electrons produce different signals, allowing
+        scientists to infer occupied subshells and distinguish core
+        electrons from more weakly bound electrons.
+    </p>
+
+    <p>
+        This is one example of how the modern atomic model is supported
+        by experimental evidence rather than simply being a picture
+        invented by scientists.
+    </p>
+
+</section>
+
+
+<!-- ATOMIC SYMBOLISM -->
+
+<section class="atomic-section">
+
+    <h2>21. Atomic Symbolism and Calculations</h2>
+
+    <p>
+        A chemical symbol can be written with the mass number and atomic
+        number around it.
+    </p>
+
+    <div class="formula-box">
+
+        <sup>A</sup><sub>Z</sub>X
+
+    </div>
+
+    <h3>Finding protons</h3>
+
+    <p>
+        Protons = atomic number.
+    </p>
+
+    <h3>Finding neutrons</h3>
+
+    <p>
+        Neutrons = mass number - atomic number.
+    </p>
+
+    <h3>Finding electrons in a neutral atom</h3>
+
+    <p>
+        Electrons = protons.
+    </p>
+
+    <h3>Finding electrons in an ion</h3>
+
+    <p>
+        For a positive ion, electrons have been lost.
+    </p>
+
+    <p>
+        For a negative ion, electrons have been gained.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example: ²⁷₁₃Al³⁺</h4>
+
+        <p>
+            Atomic number = 13
+        </p>
+
+        <p>
+            Therefore protons = 13.
+        </p>
+
+        <p>
+            Mass number = 27.
+        </p>
+
+        <p>
+            Neutrons = 27 - 13 = 14.
+        </p>
+
+        <p>
+            The 3+ charge means the atom has lost three electrons.
+        </p>
+
+        <p>
+            Electrons = 13 - 3 = 10.
+        </p>
+
+        <p>
+            <strong>Answer: 13 protons, 14 neutrons and 10 electrons.</strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- RUTHERFORD -->
+
+<section class="atomic-section">
+
+    <h2>22. Rutherford's Gold-Foil Experiment</h2>
+
+    <p>
+        Rutherford's experiment is one of the most important experiments
+        in the history of chemistry and physics.
+    </p>
+
+    <p>
+        Alpha particles were directed toward a very thin sheet of gold.
+        If positive charge were spread uniformly through the atom, the
+        particles should mostly pass through with only small deflections.
+    </p>
+
+    <p>
+        Most particles did pass through. However, some were deflected by
+        large angles, and a very small number were scattered backward.
+    </p>
+
+    <p>
+        Rutherford's interpretation was that the atom must contain a very
+        small, dense, positively charged nucleus.
+    </p>
+
+    <div class="key-box">
+
+        <h4>Conclusion</h4>
+
+        <p>
+            Most of an atom is empty space, while nearly all of its mass
+            and positive charge are concentrated in a tiny nucleus.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- CHEMICAL IMPORTANCE -->
+
+<section class="atomic-section" id="applications">
+
+    <h2>23. Why Atomic Structure Matters in Chemistry</h2>
+
+    <p>
+        Atomic structure is not just a chapter to memorise for an exam.
+        It explains why chemistry behaves the way it does.
+    </p>
+
+    <ul>
+
+        <li>
+            Electron arrangement helps explain chemical bonding.
+        </li>
+
+        <li>
+            Valence electrons help explain reactivity.
+        </li>
+
+        <li>
+            Atomic number identifies the element.
+        </li>
+
+        <li>
+            Isotopes explain differences in atomic mass.
+        </li>
+
+        <li>
+            Electron energy levels explain atomic spectra.
+        </li>
+
+        <li>
+            Nuclear structure explains radioactive isotopes.
+        </li>
+
+        <li>
+            Electron configurations help explain periodic trends.
+        </li>
+
+        <li>
+            Atomic structure provides the foundation for understanding
+            molecules, compounds and chemical reactions.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- WORD PROBLEMS -->
+
+<section class="atomic-section">
+
+    <h2>24. Atomic Structure Word Problems</h2>
+
+    <div class="example-box">
+
+        <h4>Question 1</h4>
+
+        <p>
+            An atom has 17 protons and 18 neutrons. Determine its atomic
+            number and mass number.
+        </p>
+
+        <p>
+            Atomic number = number of protons = 17.
+        </p>
+
+        <p>
+            Mass number = protons + neutrons.
+        </p>
+
+        <p>
+            Mass number = 17 + 18 = 35.
+        </p>
+
+        <p>
+            <strong>Answer: atomic number = 17, mass number = 35.</strong>
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Question 2</h4>
+
+        <p>
+            An ion contains 12 protons and 10 electrons. What is its
+            charge?
+        </p>
+
+        <p>
+            Charge = protons - electrons.
+        </p>
+
+        <p>
+            Charge = 12 - 10 = +2.
+        </p>
+
+        <p>
+            <strong>The ion is 2+.</strong>
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Question 3</h4>
+
+        <p>
+            An atom has atomic number 8 and mass number 18.
+            How many protons, neutrons and electrons does a neutral atom
+            contain?
+        </p>
+
+        <p>
+            Protons = 8.
+        </p>
+
+        <p>
+            Neutrons = 18 - 8 = 10.
+        </p>
+
+        <p>
+            Because the atom is neutral, electrons = 8.
+        </p>
+
+        <p>
+            <strong>
+                Answer: 8 protons, 10 neutrons and 8 electrons.
+            </strong>
+        </p>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Question 4</h4>
+
+        <p>
+            An element has two naturally occurring isotopes. Isotope A
+            has mass 10 u and abundance 20%. Isotope B has mass 11 u and
+            abundance 80%. Find the average atomic mass.
+        </p>
+
+        <p>
+            Average mass =
+            (10 × 0.20) + (11 × 0.80)
+        </p>
+
+        <p>
+            = 2.0 + 8.8
+        </p>
+
+        <p>
+            <strong>Average atomic mass = 10.8 u.</strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- COMMON MISTAKES -->
+
+<section class="atomic-section">
+
+    <h2>25. Common Mistakes</h2>
+
+    <ul>
+
+        <li>
+            Confusing atomic number with mass number.
+        </li>
+
+        <li>
+            Thinking neutrons determine the element.
+        </li>
+
+        <li>
+            Forgetting that ions have unequal numbers of protons and
+            electrons.
+        </li>
+
+        <li>
+            Saying that isotopes have different numbers of protons.
+        </li>
+
+        <li>
+            Treating an orbital as a literal circular path.
+        </li>
+
+        <li>
+            Assuming the Bohr model is the complete modern atomic model.
+        </li>
+
+        <li>
+            Forgetting that the periodic-table atomic mass is generally
+            an isotope-weighted average.
+        </li>
+
+        <li>
+            Mixing up ion charge and number of neutrons.
+        </li>
+
+        <li>
+            Forgetting that positive ions have lost electrons.
+        </li>
+
+        <li>
+            Forgetting that negative ions have gained electrons.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- EXAM SECTION -->
+
+<section class="atomic-section" id="exam">
+
+    <h2>26. Exam Practice</h2>
+
+    <h3>Question 1</h3>
+
+    <p>
+        Define atomic number.
+    </p>
+
+    <p>
+        <strong>Answer:</strong>
+        The number of protons in the nucleus of an atom.
+    </p>
+
+
+    <h3>Question 2</h3>
+
+    <p>
+        What are isotopes?
+    </p>
+
+    <p>
+        <strong>Answer:</strong>
+        Atoms of the same element having the same number of protons but
+        different numbers of neutrons.
+    </p>
+
+
+    <h3>Question 3</h3>
+
+    <p>
+        An atom contains 19 protons and 20 neutrons. Find its mass number.
+    </p>
+
+    <p>
+        <strong>Answer:</strong>
+        19 + 20 = 39.
+    </p>
+
+
+    <h3>Question 4</h3>
+
+    <p>
+        Explain why an Na⁺ ion has fewer electrons than a neutral sodium
+        atom.
+    </p>
+
+    <p>
+        <strong>Answer:</strong>
+        Sodium forms Na⁺ by losing one electron. Its number of protons
+        remains unchanged.
+    </p>
+
+
+    <h3>Question 5</h3>
+
+    <p>
+        Write the electron configuration of carbon.
+    </p>
+
+    <p>
+        Carbon has atomic number 6.
+    </p>
+
+    <div class="formula-box">
+
+        1s² 2s² 2p²
+
+    </div>
+
+
+    <h3>Question 6</h3>
+
+    <p>
+        Explain the main conclusion of Rutherford's gold-foil experiment.
+    </p>
+
+    <p>
+        <strong>Answer:</strong>
+        The atom contains a tiny, dense, positively charged nucleus and
+        most of the atom is empty space.
+    </p>
+
+</section>
+
+
+<!-- ASK AI -->
+
+<div class="ask-ai">
+
+    <i class="fa-solid fa-sparkles"></i>
+
+    <h3>Still confused?</h3>
+
+    <p>
+        Ask Insite AI about any part of atomic structure you do not
+        understand. You can ask for another explanation, examples,
+        calculations or exam-style questions.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+<!-- QUICK SUMMARY -->
+
+<section class="atomic-section" id="summary">
+
+    <h2>27. Atomic Structure in One View</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <h4>Proton</h4>
+
+            <p>
+                Positive particle in the nucleus.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Neutron</h4>
+
+            <p>
+                Neutral particle in the nucleus.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Electron</h4>
+
+            <p>
+                Negative particle occupying the electron cloud.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Atomic Number</h4>
+
+            <p>
+                Number of protons.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Mass Number</h4>
+
+            <p>
+                Protons + neutrons.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Isotope</h4>
+
+            <p>
+                Same element, different number of neutrons.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Cation</h4>
+
+            <p>
+                Positively charged ion formed by electron loss.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Anion</h4>
+
+            <p>
+                Negatively charged ion formed by electron gain.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Orbital</h4>
+
+            <p>
+                A region described by quantum mechanics where an electron
+                has a significant probability of being found.
+            </p>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Electron Configuration</h4>
+
+            <p>
+                The arrangement of electrons among atomic orbitals.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REFERENCES -->
+
+<section class="atomic-section" id="references">
+
+    <h2>28. References & Further Reading</h2>
+
+    <p>
+        The following authoritative resources were used to guide the
+        scientific explanations and terminology on this page.
+    </p>
+
+    <ul>
+
+        <li>
+            International Union of Pure and Applied Chemistry (IUPAC),
+            <strong>Compendium of Chemical Terminology (Gold Book)</strong>.
+        </li>
+
+        <li>
+            OpenStax,
+            <strong>Chemistry 2e — Chapter 2: Atoms, Molecules, and Ions</strong>.
+        </li>
+
+        <li>
+            OpenStax,
+            <strong>Chemistry: Atoms First 2e — Atomic Structure and Symbolism</strong>.
+        </li>
+
+        <li>
+            National Institute of Standards and Technology (NIST),
+            <strong>Atomic Spectra Database</strong>.
+        </li>
+
+        <li>
+            National Institute of Standards and Technology (NIST),
+            <strong>Handbook of Basic Atomic Spectroscopic Data</strong>.
+        </li>
+
+        <li>
+            NIST Chemistry WebBook,
+            <strong>Hydrogen, Atomic</strong>.
+        </li>
+
+    </ul>
+
+    <div class="key-box">
+
+        <h4>Study advice</h4>
+
+        <p>
+            Do not try to memorise atomic structure as a collection of
+            unrelated facts. Start with protons, neutrons and electrons.
+            Then understand atomic number, mass number, isotopes and ions.
+            After that, move into shells, orbitals and electron
+            configurations. Finally connect electron arrangement to the
+            periodic table, spectra and chemical behaviour.
+        </p>
+
+    </div>
+
+</section>
+
+
+</div>
+
+{% endblock %}

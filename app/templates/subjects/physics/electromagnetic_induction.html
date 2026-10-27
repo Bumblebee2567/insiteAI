@@ -1,0 +1,617 @@
+{% extends "base.html" %}
+
+{% block title %}
+Electromagnetic Induction & AC Circuits | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-bolt-lightning"></i>
+            Electromagnetic Induction & AC Circuits
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering Faraday's Law of Induction, Lenz's Law, motional electromotive force (EMF), 
+            self-inductance, transformers, alternating current (AC), phasor diagrams, and reactive circuit impedance.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#faraday">Faraday & Lenz</a>
+        <a href="#motional">Motional EMF</a>
+        <a href="#inductance">Inductance</a>
+        <a href="#transformers">Transformers</a>
+        <a href="#ac">Alternating Current</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Electromagnetic Induction</h2>
+        </div>
+        <p>
+            While Oersted discovered that electric currents produce magnetic fields, Michael Faraday and Joseph Henry independently discovered the inverse phenomenon: 
+            changing magnetic fields can generate electric currents in closed conducting loops. 
+            <strong>Electromagnetic induction</strong> is the foundational principle behind electric power generators, transformers, electric motors, and wireless power transfer.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            An electromotive force (EMF) is induced in a closed circuit whenever there is a time-rate of change of magnetic flux passing through the interior area of the loop.
+        </div>
+    </section>
+
+    <!-- 02 FARADAY & LENZ -->
+    <section class="phys-section" id="faraday">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Faraday's Law of Induction & Lenz's Law</h2>
+        </div>
+        <p>
+            Magnetic flux (Phi<sub>B</sub>) measures the total magnetic field passing through a given surface area: 
+            <strong>Magnetic Flux = Magnetic Field &times; Area &times; cosine of Angle</strong> (Phi<sub>B</sub> = B &times; A &times; cos(theta)), measured in Weber (Wb or T&middot;m<sup>2</sup>).
+        </p>
+        <ul>
+            <li><strong>Faraday's Law of Induction:</strong> The magnitude of the induced electromotive force (EMF) in a coil of N turns is directly proportional to the time rate of change of magnetic flux:
+                <br><strong>Induced EMF = Number of Turns &times; (Change in Magnetic Flux / Time Interval)</strong> (EMF = N &times; (Delta Phi<sub>B</sub> / Delta t)).</li>
+            <li><strong>Lenz's Law:</strong> The negative sign in Faraday's Law (EMF = - N &times; (Delta Phi<sub>B</sub> / Delta t)) represents Lenz's Law. 
+            It states that the direction of the induced current is always such that its own induced magnetic field opposes the original change in magnetic flux that produced it, 
+            ensuring strict conservation of energy.</li>
+        </ul>
+    </section>
+
+    <!-- 03 MOTIONAL EMF -->
+    <section class="phys-section" id="motional">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Motional Electromotive Force</h2>
+        </div>
+        <p>
+            When a solid conducting rod moves through a static magnetic field, the magnetic forces acting on the free charge carriers inside the metal cause charges to accumulate at opposite ends of the rod, 
+            inducing a potential difference known as <strong>motional EMF</strong>.
+        </p>
+        <ul>
+            <li><strong>Motional EMF Equation:</strong> For a straight conductor of length L moving at right angles with speed v through a uniform magnetic field B:
+                <br><strong>Induced EMF = Magnetic Field &times; Length &times; Speed</strong> (EMF = B * L * v).</li>
+        </ul>
+    </section>
+
+    <!-- 04 INDUCTANCE -->
+    <section class="phys-section" id="inductance">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Inductance and Inductors</h2>
+        </div>
+        <p>
+            An inductor is a passive circuit component (typically a coil of wire) that stores electrical energy in a magnetic field when electric current flows through it.
+        </p>
+        <ul>
+            <li><strong>Self-Inductance (L):</strong> Defined as the ratio of magnetic flux linkage to the current producing it:
+                <br><strong>Inductance = (Number of Turns &times; Magnetic Flux) / Current</strong> (L = (N * Phi<sub>B</sub>) / I), measured in Henrys (H).</li>
+            <li><strong>Self-Induced Back EMF:</strong> When current changes in an inductor, a back-EMF is induced that opposes the current change:
+                <br><strong>Induced EMF = - Inductance &times; (Rate of Change of Current)</strong> (EMF = - L * (Delta I / Delta t)).</li>
+            <li><strong>Energy Stored in an Inductor:</strong> 
+                <br><strong>Energy Stored = (1/2) &times; Inductance &times; Current squared</strong> (U = (1/2) &times; L &times; I<sup>2</sup>).</li>
+        </ul>
+    </section>
+
+    <!-- 05 TRANSFORMERS -->
+    <section class="phys-section" id="transformers">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Transformers and Alternating Voltage Transformation</h2>
+        </div>
+        <p>
+            A transformer is a static electromagnetic device that transfers electrical energy between two or more coil windings through electromagnetic induction, 
+            operating strictly on alternating current (AC).
+        </p>
+        <ul>
+            <li><strong>Transformer Turns Ratio Equation:</strong> 
+                <br><strong>Secondary Voltage / Primary Voltage = Secondary Turns / Primary Turns</strong> (V<sub>s</sub> / V<sub>p</sub> = N<sub>s</sub> / N<sub>p</sub>).</li>
+            <li><strong>Step-Up vs. Step-Down:</strong><br>
+                &bull; <strong>Step-Up Transformer:</strong> N<sub>s</sub> &gt; N<sub>p</sub>, increasing voltage while decreasing current.<br>
+                &bull; <strong>Step-Down Transformer:</strong> N<sub>s</sub> &lt; N<sub>p</sub>, decreasing voltage while increasing current.</li>
+        </ul>
+    </section>
+
+    <!-- 06 ALTERNATING CURRENT -->
+    <section class="phys-section" id="ac">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Alternating Current (AC) Circuits & Impedance</h2>
+        </div>
+        <p>
+            Alternating current (AC) circuits feature sinusoidal voltages and currents that reverse direction periodically.
+        </p>
+        <ul>
+            <li><strong>RMS (Root-Mean-Square) Values:</strong> Because AC voltage varies sinusoidally, we use RMS values as effective equivalents to DC values for power calculations:
+                <br><strong>RMS Voltage = Peak Voltage / square root of 2</strong> (V<sub>rms</sub> = V<sub>peak</sub> / sqrt(2)).</li>
+            <li><strong>Inductive and Capacitive Reactance (X<sub>L</sub> and X<sub>C</sub>):</strong><br>
+                &bull; Inductive reactance: X<sub>L</sub> = 2 * pi * frequency * Inductance.<br>
+                &bull; Capacitive reactance: X<sub>C</sub> = 1 / (2 * pi * frequency * Capacitance).</li>
+            <li><strong>Circuit Impedance (Z):</strong> Total opposition to AC current flow in an RLC series circuit:
+                <br><strong>Impedance = square root of (Resistance squared + (Inductive Reactance - Capacitive Reactance) squared)</strong> (Z = sqrt(R<sup>2</sup> + (X<sub>L</sub> - X<sub>C</sub>)<sup>2</sup>)).</li>
+        </ul>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Interactive Induction Test</h2>
+        </div>
+        <p>Test your conceptual understanding of Faraday's Law, Lenz's Law, and transformers.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Transformer Turns Ratio Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    An ideal step-down transformer has 200 turns on its primary coil and 50 turns on its secondary coil. 
+                    If the primary alternating voltage is 120 V RMS, what is the secondary output voltage?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">30 volts RMS</option>
+                    <option value="wrong1">480 volts RMS</option>
+                    <option value="wrong2">120 volts RMS</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Faraday's Law of Induction):</strong>
+            <p>A circular wire coil with 50 turns and a cross-sectional area of 0.0500 m<sup>2</sup> is placed inside a uniform magnetic field directed perpendicularly to the coil face. 
+            If the magnetic field strength increases uniformly from 0.100 T to 0.600 T over a time interval of 0.250 seconds, 
+            calculate the magnitude of the average induced EMF in the coil.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Initial magnetic flux: Phi<sub>B,i</sub> = B<sub>i</sub> * A = 0.100 T * 0.0500 m<sup>2</sup> = 0.0050 Wb.<br>
+                - Final magnetic flux: Phi<sub>B,f</sub> = B<sub>f</sub> * A = 0.600 T * 0.0500 m<sup>2</sup> = 0.0300 Wb.<br>
+                - Change in flux: Delta Phi<sub>B</sub> = 0.0300 - 0.0050 = 0.0250 Wb.<br>
+                - Faraday's Law formula: EMF = N * (Delta Phi<sub>B</sub> / Delta t).<br>
+                - EMF = 50 * (0.0250 Wb / 0.250 s) = 50 * 0.100 = <strong>5.00 Volts</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Motional EMF Calculation):</strong>
+            <p>A metal conducting rod of length L = 0.800 m moves at a constant speed of v = 5.00 m/s perpendicular to a uniform magnetic field of strength B = 1.20 Tesla. 
+            Calculate the magnitude of the motional EMF induced across the ends of the rod.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: EMF = B * L * v.<br>
+                - Substitute values:<br>
+                EMF = (1.20 T) &times; (0.800 m) &times; (5.00 m/s).<br>
+                - Multiplication: 1.20 &times; 0.800 = 0.960.<br>
+                - 0.960 &times; 5.00 = <strong>4.80 Volts</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (AC Circuit RMS Voltage):</span></strong>
+            <p>An alternating electrical wall outlet provides a sinusoidal AC voltage with a peak voltage of V<sub>peak</sub> = 170 Volts. 
+            Calculate the root-mean-square (RMS) voltage of this AC supply.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: V<sub>rms</sub> = V<sub>peak</sub> / sqrt(2).<br>
+                - sqrt(2) approximately equal to 1.414.<br>
+                - V<sub>rms</sub> = 170 V / 1.414 approximately equal to <strong>120 Volts</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with AC circuits or electromagnetic induction?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down RLC resonance frequency formulas, Maxwell's displacement current equations, or phasor impedance diagrams.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Using the transformer equation (V<sub>s</sub> / V<sub>p</sub> = N<sub>s</sub> / N<sub>p</sub>), with V<sub>p</sub> = 120 V, N<sub>s</sub> = 50, and N<sub>p</sub> = 200, secondary voltage equals 120 * (50 / 200) = 120 * 0.25 = 30 V.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = 'test-result wrong';
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Transformer voltage scales directly with the turns ratio (N<sub>s</sub> / N<sub>p</sub>). Here, 120 V multiplied by (50 / 200) equals <strong>30 volts RMS</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,744 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sentence Interpretation & Meaning | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENGLISH HUB: SENTENCE INTERPRETATION & MEANING
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE (NO LATEX)
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: var(--eng-blue-light);
+    margin-top: 22px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.eng-section li {
+    margin-bottom: 10px;
+}
+
+.eng-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--eng-border);
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: var(--eng-cyan-light);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 30px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--eng-border);
+    background: #0a111d;
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 25px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 600px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 13px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.exam-question {
+    margin-top: 25px;
+    padding: 24px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--eng-cyan-light);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.exam-answer {
+    margin-top: 15px;
+    padding: 18px 20px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.ask-ai {
+    margin-top: 35px;
+    padding: 35px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 22px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-brain"></i>
+            Sentence Interpretation & Meaning Masterclass
+        </h1>
+        <p>
+            An exhaustive academic masterclass covering logical deduction, closest-in-meaning sentence paraphrasing, 
+            implied statements, nuance decoding, and advanced examination strategies for JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">01. Overview</a>
+        <a href="#closest">02. Closest in Meaning</a>
+        <a href="#implied">03. Implied Statements</a>
+        <a href="#logic">04. Logical Deduction</a>
+        <a href="#confusing-traps">05. Exam Traps</a>
+        <a href="#tests">06. Practice Tests</a>
+        <a href="#problems">07. Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Comprehensive Introduction to Sentence Interpretation</h2>
+        </div>
+        <p>
+            In West African examinations like JAMB and WAEC, sentence interpretation questions test a candidate's ability to grasp 
+            the core essence, underlying logic, and precise semantic implications of statements without adding outside assumptions.
+        </p>
+        <p>
+            Candidates are frequently given a statement followed by four multiple-choice options. The objective is to select the option 
+            that retains the exact core message while rephrasing or decoding the implicit meaning.
+        </p>
+        <div class="eng-info">
+            <strong>Core Exam Principle:</strong><br>
+            Never select an option simply because it sounds sophisticated or mentions true facts. The correct option must be logically 
+            and semantically derived directly from the provided sentence.
+        </div>
+    </section>
+
+    <!-- 02 CLOSEST IN MEANING -->
+    <section class="eng-section" id="closest">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Closest in Meaning (Paraphrasing)</h2>
+        </div>
+        <p>
+            Paraphrasing questions test whether you can recognize when two sentences convey the exact same message using different vocabulary and syntax.
+        </p>
+        <ul>
+            <li><strong>Qualifying Modifiers:</strong> Pay close attention to words like <em>hardly</em>, <em>scarcely</em>, <em>seldom</em>, and <em>rarely</em>. They render a sentence negative in meaning.</li>
+            <li><strong>Active vs. Passive Voice:</strong> Ensure that changing the voice in the options does not alter the original actor or receiver of the action.</li>
+        </ul>
+    </section>
+
+    <!-- 03 IMPLIED STATEMENTS -->
+    <section class="eng-section" id="implied">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Decoding Implied Statements</h2>
+        </div>
+        <p>
+            An implied statement is a conclusion that can be drawn legitimately from a premise without being explicitly stated word-for-word.
+        </p>
+        <div class="eng-info">
+            <strong>Example Analysis:</strong><br>
+            Statement: <em>"Had the driver applied his brakes sooner, the collision would have been averted."</em><br>
+            Implied Fact: <em>The driver failed to apply his brakes in time, resulting in the collision.</em>
+        </div>
+    </section>
+
+    <!-- 04 LOGICAL DEDUCTION -->
+    <section class="eng-section" id="logic">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Logical Deduction & Conditional Truths</h2>
+        </div>
+        <p>
+            Candidates must evaluate conditional statements and negative premises carefully to avoid logical fallacies. 
+            Remember that proving the opposite of a condition does not automatically prove the converse unless explicitly stated.
+        </p>
+    </section>
+
+    <!-- 05 CONFUSING EXAM TRAPS -->
+    <section class="eng-section" id="confusing-traps">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Confusing Examination Traps & Distractors</h2>
+        </div>
+        <p>
+            Examiners use specific distractor patterns to mislead candidates.
+        </p>
+        <h3>Trap 1: Partial Truths</h3>
+        <p>
+            Options that capture one clause of a compound sentence while ignoring or contradicting the second clause.
+        </p>
+        <h3>Trap 2: Unsupported Generalizations</h3>
+        <p>
+            Options that expand a specific statement into a sweeping general rule not warranted by the text.
+        </p>
+    </section>
+
+    <!-- 06 INTERACTIVE TESTS -->
+    <section class="eng-section" id="tests">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Interactive Examination Practice Tests</h2>
+        </div>
+        <p>Test your absolute mastery of sentence interpretation with these three challenging past-question simulators.</p>
+
+        <!-- TEST 1 -->
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 1: Sentence Paraphrasing</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Choose the option that means the same as the sentence:<br>
+                    <em>"Hardly had the principal entered the hall when the students stood up in unison."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer14">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">The students stood up long before the principal entered the hall.</option>
+                    <option value="correct">Immediately the principal entered the hall, the students stood up.</option>
+                    <option value="wrong2">The principal entered the hall after the students had already stood up.</option>
+                    <option value="wrong3">The students refused to stand up when the principal entered.</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng14">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult14"></div>
+            </div>
+        </div>
+
+        <!-- TEST 2 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 2: Implied Meaning</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Interpret the statement:<br>
+                    <em>"If Ada had attended the tutorial, she would not have failed the aptitude test."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer15">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Ada attended the tutorial and passed the test.</option>
+                    <option value="correct">Ada did not attend the tutorial, so she failed the test.</option>
+                    <option value="wrong2">Ada attended the tutorial but still failed the test.</option>
+                    <option value="wrong3">Ada passed the test without attending the tutorial.</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng15">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult15"></div>
+            </div>
+        </div>
+
+        <!-- TEST 3 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 3: Logical Deduction</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Choose the correct interpretation:<br>
+                    <em>"No student who failed the mock examination is permitted to register for the external West African Senior School Certificate Examination."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer16">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Only students who failed the mock exam can register.</option>
+                    <option value="correct">Passing the mock examination is a mandatory requirement for registration.</option>
+                    <option value="wrong2">Registration is optional regardless of mock performance.</option>
+                    <option value="wrong3">All students are automatically registered for the external exam.</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng16">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult16"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Interpreting Negative Correlatives):</strong>
+            <p>What is the logical implication of: <br><em>"Scarcely had the match commenced when a heavy downpour disrupted proceedings."</em></p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                1. <strong>Analyze Structure:</strong> "Scarcely... when" indicates two events happening almost simultaneously.<br>
+                2. <strong>Logical Deduction:</strong> The rain started immediately after the match began, interrupting it almost at inception.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:32px; margin-bottom:12px;"></i>
+        <h3 style="margin:0 0 10px; color:white; font-size:1.4rem;">Need further assistance with sentence interpretation?</h3>
+        <p style="color:var(--eng-muted); margin:0 auto; max-width:650px; line-height:1.7;">
+            Ask Insite AI to clarify complex logical statements or provide targeted JAMB past questions.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — SENTENCE INTERPRETATION INTERACTIVE TEST SCRIPTS
+   ========================================================= */
+
+// Test 1
+const engAnswer14 = document.getElementById("engAnswer14");
+const checkEng14 = document.getElementById("checkEng14");
+const engResult14 = document.getElementById("engResult14");
+
+checkEng14.addEventListener("click", function () {
+    const val = engAnswer14.value;
+    engResult14.style.display = "block";
+
+    if (val === "correct") {
+        engResult14.className = "test-result correct";
+        engResult14.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Excellent Paraphrasing Analysis!</div>
+            <div>"Hardly had... when" expresses immediate sequence, meaning the students stood up right as the principal entered.</div>
+        `;
+    } else if (val === "") {
+        engResult14.className = "test-result wrong";
+        engResult14.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult14.className = "test-result wrong";
+        engResult14.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>The correct interpretation is <strong>Immediately the principal entered the hall, the students stood up</strong>.</div>
+        `;
+    }
+});
+
+// Test 2
+const engAnswer15 = document.getElementById("engAnswer15");
+const checkEng15 = document.getElementById("checkEng15");
+const engResult15 = document.getElementById("engResult15");
+
+checkEng15.addEventListener("click", function () {
+    const val = engAnswer15.value;
+    engResult15.style.display = "block";
+
+    if (val === "correct") {
+        engResult15.className = "test-result correct";
+        engResult15.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Flawless Third Conditional Deduction!</div>
+            <div>This third conditional statement implies the opposite of its clauses: Ada did not attend, so she failed.</div>
+        `;
+    } else if (val === "") {
+        engResult15.className = "test-result wrong";
+        engResult15.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult15.className = "test-result wrong";
+        engResult15.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>The implied fact is that <strong>Ada did not attend the tutorial, so she failed the test</strong>.</div>
+        `;
+    }
+});
+
+// Test 3
+const engAnswer16 = document.getElementById("engAnswer16");
+const checkEng16 = document.getElementById("checkEng16");
+const engResult16 = document.getElementById("engResult16");
+
+checkEng16.addEventListener("click", function () {
+    const val = engAnswer16.value;
+    engResult16.style.display = "block";
+
+    if (val === "correct") {
+        engResult16.className = "test-result correct";
+        engResult16.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Excellent Logical Deduction!</div>
+            <div>Excluding those who failed means passing is a mandatory prerequisite for registration.</div>
+        `;
+    } else if (val === "") {
+        engResult16.className = "test-result wrong";
+        engResult16.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult16.className = "test-result wrong";
+        engResult16.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>The correct logical deduction is that <strong>Passing the mock examination is a mandatory requirement for registration</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

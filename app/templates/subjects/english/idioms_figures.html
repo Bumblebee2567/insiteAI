@@ -1,0 +1,793 @@
+{% extends "base.html" %}
+
+{% block title %}
+Idioms & Figures of Speech | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENGLISH HUB: IDIOMS & FIGURES OF SPEECH
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE (NO LATEX)
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: var(--eng-blue-light);
+    margin-top: 22px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.eng-section li {
+    margin-bottom: 10px;
+}
+
+.eng-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--eng-border);
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: var(--eng-cyan-light);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 30px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--eng-border);
+    background: #0a111d;
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 25px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 600px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 13px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.exam-question {
+    margin-top: 25px;
+    padding: 24px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--eng-cyan-light);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.exam-answer {
+    margin-top: 15px;
+    padding: 18px 20px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.ask-ai {
+    margin-top: 35px;
+    padding: 35px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 22px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-feather-pointed"></i>
+            Idioms & Figures of Speech Masterclass
+        </h1>
+        <p>
+            An exhaustive, ultra-detailed academic masterclass covering idiomatic expressions, figurative language, 
+            similes, metaphors, personification, irony, oxymoron, hyperbole, rhetorical devices, and advanced examination parsing for JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">01. Overview</a>
+        <a href="#idioms">02. Idiomatic Expressions</a>
+        <a href="#figurative">03. Figures of Speech</a>
+        <a href="#advanced-figures">04. Advanced Rhetoric</a>
+        <a href="#confusing-traps">05. Exam Traps</a>
+        <a href="#tests">06. Practice Tests</a>
+        <a href="#problems">07. Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Comprehensive Introduction to Figurative Language</h2>
+        </div>
+        <p>
+            Language extends far beyond literal denotation. In standardized examinations such as JAMB and WAEC, candidates are regularly tested 
+            on their ability to interpret <strong>idiomatic expressions</strong> and identify <strong>figures of speech</strong> within literary 
+            passages and objective structure questions.
+        </p>
+        <p>
+            While literal language states facts directly, figurative language departs from conventional word order or literal meanings to create 
+            vivid imagery, emotional resonance, and deeper rhetorical impact. Mastering this domain requires understanding both traditional idioms 
+            and complex literary devices.
+        </p>
+        <div class="eng-info">
+            <strong>Core Semantic Principle:</strong><br>
+            • <em>Literal Language</em> means exactly what the words say.<br>
+            • <em>Figurative Language</em> uses figures of speech to suggest non-literal meanings that must be interpreted contextually.
+        </div>
+    </section>
+
+    <!-- 02 IDIOMATIC EXPRESSIONS -->
+    <section class="eng-section" id="idioms">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Mastering High-Yield Idiomatic Expressions</h2>
+        </div>
+        <p>
+            An idiom is an established expression whose meaning cannot be deduced from the combined literal meanings of its individual words. 
+            Examiners frequently test idioms that appear in literature texts and general English papers.
+        </p>
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <thead>
+                    <tr>
+                        <th>Idiomatic Expression</th>
+                        <th>Figurative Meaning</th>
+                        <th>Example Usage in Context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>To burn the midnight oil</td>
+                        <td>To study or work late into the night</td>
+                        <td><em>She had to burn the midnight oil to prepare for her JAMB examinations.</em></td>
+                    </tr>
+                    <tr>
+                        <td>A blessing in disguise</td>
+                        <td>Something good that initially appeared bad or unfortunate</td>
+                        <td><em>Missing the flight turned out to be a blessing in disguise as it saved him from an accident.</em></td>
+                    </tr>
+                    <tr>
+                        <td>Through the grapevine</td>
+                        <td>By means of informal rumor or gossip</td>
+                        <td><em>I heard about the promotion through the grapevine before the official announcement.</em></td>
+                    </tr>
+                    <tr>
+                        <td>To spill the beans</td>
+                        <td>To reveal a secret prematurely</td>
+                        <td><em>He accidentally spilled the beans about the surprise birthday party.</em></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 03 FIGURES OF SPEECH -->
+    <section class="eng-section" id="figurative">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Core Figures of Speech</h2>
+        </div>
+        <p>
+            Figures of speech are rhetorical devices used to embellish writing and evoke sensory experiences.
+        </p>
+        <ul>
+            <li><strong>Simile:</strong> An explicit comparison between two different things using words such as <em>like</em> or <em>as</em> (e.g., <em>Her courage was like a roaring lion</em>).</li>
+            <li><strong>Metaphor:</strong> An implicit comparison stating that one thing is another, without using <em>like</em> or <em>as</em> (e.g., <em>Education is the key to success</em>).</li>
+            <li><strong>Personification:</strong> Giving human qualities, emotions, or actions to inanimate objects or abstract ideas (e.g., <em>The angry wind howled through the dark night</em>).</li>
+            <li><strong>Hyperbole:</strong> Extreme exaggeration used for emphasis or dramatic effect, not meant to be taken literally (e.g., <em>I have told you a million times to submit your assignment</em>).</li>
+        </ul>
+    </section>
+
+    <!-- 04 ADVANCED RHETORIC -->
+    <section class="eng-section" id="advanced-figures">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Advanced Rhetorical Devices</h2>
+        </div>
+        <p>
+            Examiners often test sophisticated rhetorical devices in literature-based objective questions.
+        </p>
+        <ul>
+            <li><strong>Oxymoron:</strong> Placing two contradictory terms side by side for rhetorical impact (e.g., <em>deafening silence</em>, <em>bittersweet</em>, <em>original copy</em>).</li>
+            <li><strong>Irony:</strong> A contrast between expectation and reality. Verbal irony involves saying one thing while meaning the exact opposite.</li>
+            <li><strong>Onomatopoeia:</strong> Words whose phonetic pronunciations imitate the natural sounds associated with the objects or actions they describe (e.g., <em>buzz</em>, <em>hiss</em>, <em>murmur</em>).</li>
+            <li><strong>Alliteration:</strong> The repetition of consonant sounds at the beginning of adjacent or closely connected words (e.g., <em>Peter Piper picked a peck of pickled peppers</em>).</li>
+        </ul>
+    </section>
+
+    <!-- 05 CONFUSING EXAM TRAPS -->
+    <section class="eng-section" id="confusing-traps">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Confusing Examination Traps & Distractors</h2>
+        </div>
+        <p>
+            Candidates often confuse similar figures of speech. Mastering these distinctions will give you an edge in exams.
+        </p>
+        <h3>Trap 1: Simile vs. Metaphor</h3>
+        <p>
+            Remember that a simile explicitly uses connector words (<em>like</em> or <em>as</em>), whereas a metaphor asserts a direct identity comparison without connectors.
+        </p>
+        <h3>Trap 2: Oxymoron vs. Paradox</h3>
+        <p>
+            An oxymoron places two contradictory words immediately adjacent to each other (e.g., <em>open secret</em>), whereas a paradox is a self-contradictory statement that reveals a deeper truth.
+        </p>
+    </section>
+
+    <!-- 06 INTERACTIVE TESTS -->
+    <section class="eng-section" id="tests">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Interactive Examination Practice Tests</h2>
+        </div>
+        <p>Test your absolute mastery of idioms and figures of speech with these three challenging past-question simulators.</p>
+
+        <!-- TEST 1 -->
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 1: Idiom Interpretation</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Choose the correct meaning of the italicized idiom:<br>
+                    <em>"When the manager announced budget cuts, the staff realized they had to tighten their belts."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer11">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">To exercise more frequently</option>
+                    <option value="correct">To spend less money and economize</option>
+                    <option value="wrong2">To work longer hours</option>
+                    <option value="wrong3">To prepare for a fight</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng11">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult11"></div>
+            </div>
+        </div>
+
+        <!-- TEST 2 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 2: Figure of Speech Identification</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Identify the figure of speech in the sentence:<br>
+                    <em>"The flowers nodded politely in the gentle morning breeze."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer12">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Simile</option>
+                    <option value="correct">Personification</option>
+                    <option value="wrong2">Hyperbole</option>
+                    <option value="wrong3">Oxymoron</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng12">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult12"></div>
+            </div>
+        </div>
+
+        <!-- TEST 3 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 3: Advanced Rhetoric</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Identify the figure of speech in the phrase:<br>
+                    <em>"An open secret."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer13">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Metaphor</option>
+                    <option value="correct">Oxymoron</option>
+                    <option value="wrong2">Onomatopoeia</option>
+                    <option value="wrong3">Irony</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng13">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult13"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Interpreting Complex Idioms):</strong>
+            <p>Explain the figurative meaning of the idiom: <br><em>"To miss the boat."</em></p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                1. <strong>Literal Meaning:</strong> Arriving too late at the dock to board a boat.<br>
+                2. <strong>Figurative Meaning:</strong> Missing an advantageous opportunity due to slowness or hesitation.<br>
+                3. <strong>Exam Application:</strong> Idioms must always be translated into their established figurative equivalents.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Distinguishing Metaphor from Simile):</strong>
+            <p>Analyze why the statement *"Time is a thief"* is classified as a metaphor rather than a simile.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                1. <strong>Comparison Analysis:</strong> The statement compares time to a thief stealing moments.<br>
+                2. <strong>Absence of Connectors:</strong> Because it directly equates time with a thief without using connector words like <em>like</em> or <em>as</em>, it is a direct <strong>metaphor</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:32px; margin-bottom:12px;"></i>
+        <h3 style="margin:0 0 10px; color:white; font-size:1.4rem;">Need further assistance with idioms and figures of speech?</h3>
+        <p style="color:var(--eng-muted); margin:0 auto; max-width:650px; line-height:1.7;">
+            Ask Insite AI to clarify literary devices, interpret complex poetic idioms, or provide targeted JAMB past questions.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — IDIOMS & FIGURES OF SPEECH INTERACTIVE TEST SCRIPTS
+   ========================================================= */
+
+// Test 1
+const engAnswer11 = document.getElementById("engAnswer11");
+const checkEng11 = document.getElementById("checkEng11");
+const engResult11 = document.getElementById("engResult11");
+
+checkEng11.addEventListener("click", function () {
+    const val = engAnswer11.value;
+    engResult11.style.display = "block";
+
+    if (val === "correct") {
+        engResult11.className = "test-result correct";
+        engResult11.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Excellent Idiom Interpretation!</div>
+            <div>"To tighten one's belt" is a standard idiom meaning to economize and spend less money during financial hardship.</div>
+        `;
+    } else if (val === "") {
+        engResult11.className = "test-result wrong";
+        engResult11.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult11.className = "test-result wrong";
+        engResult11.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>The correct figurative meaning is <strong>To spend less money and economize</strong>.</div>
+        `;
+    }
+});
+
+// Test 2
+const engAnswer12 = document.getElementById("engAnswer12");
+const checkEng12 = document.getElementById("checkEng12");
+const engResult12 = document.getElementById("engResult12");
+
+checkEng12.addEventListener("click", function () {
+    const val = engAnswer12.value;
+    engResult12.style.display = "block";
+
+    if (val === "correct") {
+        engResult12.className = "test-result correct";
+        engResult12.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Flawless Figure of Speech Identification!</div>
+            <div>Giving flowers the human action of nodding politely is a classic example of personification.</div>
+        `;
+    } else if (val === "") {
+        engResult12.className = "test-result wrong";
+        engResult12.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult12.className = "test-result wrong";
+        engResult12.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>Giving human traits to non-human objects is <strong>Personification</strong>.</div>
+        `;
+    }
+});
+
+// Test 3
+const engAnswer13 = document.getElementById("engAnswer13");
+const checkEng13 = document.getElementById("checkEng13");
+const engResult13 = document.getElementById("engResult13");
+
+checkEng13.addEventListener("click", function () {
+    const val = engAnswer13.value;
+    engResult13.style.display = "block";
+
+    if (val === "correct") {
+        engResult13.className = "test-result correct";
+        engResult13.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Excellent Rhetorical Analysis!</div>
+            <div>Placing the contradictory terms "open" and "secret" side by side creates an oxymoron.</div>
+        `;
+    } else if (val === "") {
+        engResult13.className = "test-result wrong";
+        engResult13.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult13.className = "test-result wrong";
+        engResult13.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>Contradictory terms placed side by side form an <strong>Oxymoron</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

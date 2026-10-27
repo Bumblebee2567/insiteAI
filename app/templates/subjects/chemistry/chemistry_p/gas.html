@@ -1,0 +1,1683 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gas Evolution Tests | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --gas-bg: #050a12;
+    --gas-panel: #0a111d;
+    --gas-border: rgba(100, 116, 139, .18);
+    --gas-text: #f1f5f9;
+    --gas-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --gas-blue: #1677b8;
+    --gas-blue-light: #2196d2;
+
+    --gas-green: #34d399;
+    --gas-red: #ef4444;
+}
+
+.gas-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--gas-text);
+}
+
+/* BACK BUTTON */
+
+.gas-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--gas-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.gas-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.gas-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.gas-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.gas-header h1 i {
+    color: var(--gas-blue-light);
+    margin-right: 8px;
+}
+
+.gas-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--gas-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.gas-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--gas-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.gas-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.gas-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.gas-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.gas-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--gas-panel);
+    border: 1px solid var(--gas-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.gas-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.gas-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.gas-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.gas-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.gas-section p,
+.gas-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.gas-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.gas-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--gas-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.gas-info strong {
+    color: #55b6e9;
+}
+
+/* GAS TABLE */
+
+.gas-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.gas-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+.gas-table th,
+.gas-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--gas-border);
+    vertical-align: top;
+}
+
+.gas-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.gas-table td {
+    color: #cbd5e1;
+}
+
+.gas-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.positive {
+    color: #34d399 !important;
+}
+
+/* GAS TAGS */
+
+.gas-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.25);
+    color: #65bced;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--gas-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* TEST BOX */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--gas-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--gas-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--gas-panel);
+    border: 1px solid var(--gas-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--gas-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct {
+    border-left-color: var(--gas-green);
+}
+
+.test-result.wrong {
+    border-left-color: var(--gas-red);
+}
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* EQUATIONS */
+
+.equation-box {
+    margin-top: 15px;
+    padding: 17px;
+    background: #070e18;
+    border: 1px solid var(--gas-border);
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.equation-box code {
+    color: #8fd3f5;
+    font-size: .95rem;
+    white-space: nowrap;
+}
+
+/* SPLINT / TEST CARDS */
+
+.test-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.test-card {
+    padding: 18px;
+    background: #081321;
+    border: 1px solid var(--gas-border);
+    border-radius: 11px;
+}
+
+.test-card h4 {
+    margin: 0 0 8px;
+    color: #eaf6ff;
+}
+
+.test-card p {
+    margin: 0;
+    color: #94a3b8;
+    line-height: 1.7;
+}
+
+.test-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.25);
+    color: #4aafe3;
+}
+
+/* QUESTIONS */
+
+.exam-question {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #081321;
+    border: 1px solid var(--gas-border);
+    border-radius: 9px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+}
+
+.exam-answer {
+    margin-top: 7px;
+    color: #94a3b8;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--gas-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    background: #1677b8;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+
+    .gas-section {
+        padding: 20px;
+    }
+
+    .gas-header {
+        padding-top: 28px;
+    }
+
+    .gas-header h1 {
+        font-size: 2rem;
+    }
+
+    .gas-section-header {
+        align-items: flex-start;
+    }
+
+    .gas-section h2 {
+        font-size: 1.25rem;
+    }
+
+    .test-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+
+<div class="gas-page">
+
+    <!-- BACK -->
+
+    <a href="{{ url_for('chemistry_page') }}" class="gas-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="gas-header">
+
+        <h1>
+            <i class="fa-solid fa-wind"></i>
+            Gas Evolution Tests
+        </h1>
+
+        <p>
+            Identify common gases produced during chemical reactions
+            using characteristic tests with limewater, test papers,
+            glowing splints, lighted splints, and other simple laboratory
+            methods.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="gas-nav">
+
+        <a href="#aim">Aim</a>
+        <a href="#principle">Principle</a>
+        <a href="#apparatus">Apparatus</a>
+        <a href="#procedure">Procedure</a>
+        <a href="#tests">Gas Tests</a>
+        <a href="#observations">Observations</a>
+        <a href="#equations">Equations</a>
+        <a href="#identify">Identify</a>
+        <a href="#precautions">Precautions</a>
+        <a href="#questions">Questions</a>
+
+    </nav>
+
+
+    <!-- 01 AIM -->
+
+    <section class="gas-section" id="aim">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                01
+            </div>
+
+            <h2>
+                Aim of the Experiment
+            </h2>
+
+        </div>
+
+        <p>
+            To identify common gases produced during chemical reactions
+            by observing their characteristic physical and chemical
+            reactions with suitable test reagents.
+        </p>
+
+        <div class="gas-info">
+
+            <strong>Key idea:</strong><br>
+
+            Different gases have different chemical properties. These
+            properties allow them to be identified using simple tests
+            such as limewater, damp indicator paper, and splints.
+
+        </div>
+
+    </section>
+
+
+    <!-- 02 PRINCIPLE -->
+
+    <section class="gas-section" id="principle">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                02
+            </div>
+
+            <h2>
+                Principle of Gas Testing
+            </h2>
+
+        </div>
+
+        <p>
+            A gas produced in a chemical reaction can often be identified
+            by a characteristic reaction. The gas may cause a colour
+            change in a test paper, relight a glowing splint, extinguish
+            a flame, or produce a distinctive precipitate.
+        </p>
+
+        <p>
+            The test chosen depends on the chemical properties of the
+            gas being investigated.
+        </p>
+
+        <div class="gas-info">
+
+            <strong>Why are gas tests useful?</strong><br>
+
+            Many gases are colourless and may look identical. A chemical
+            test provides observable evidence that can help distinguish
+            one gas from another.
+
+        </div>
+
+
+        <h3>
+            Main Identification Methods
+        </h3>
+
+        <div class="test-card-grid">
+
+            <div class="test-card">
+
+                <div class="test-icon">
+                    <i class="fa-solid fa-flask"></i>
+                </div>
+
+                <h4>
+                    Limewater Test
+                </h4>
+
+                <p>
+                    Carbon dioxide turns limewater milky because calcium
+                    carbonate is formed.
+                </p>
+
+            </div>
+
+
+            <div class="test-card">
+
+                <div class="test-icon">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <h4>
+                    Splint Tests
+                </h4>
+
+                <p>
+                    Hydrogen, oxygen and other gases can be distinguished
+                    using carefully performed splint tests.
+                </p>
+
+            </div>
+
+
+            <div class="test-card">
+
+                <div class="test-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <h4>
+                    Test Papers
+                </h4>
+
+                <p>
+                    Ammonia changes damp red litmus paper blue, while
+                    chlorine bleaches damp coloured indicator paper.
+                </p>
+
+            </div>
+
+
+            <div class="test-card">
+
+                <div class="test-icon">
+                    <i class="fa-solid fa-eye"></i>
+                </div>
+
+                <h4>
+                    Observation
+                </h4>
+
+                <p>
+                    Always record visible changes such as colour changes,
+                    effervescence, precipitates and flame behaviour.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 03 APPARATUS -->
+
+    <section class="gas-section" id="apparatus">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                03
+            </div>
+
+            <h2>
+                Apparatus & Materials
+            </h2>
+
+        </div>
+
+        <ul>
+
+            <li>
+                Test tubes
+            </li>
+
+            <li>
+                Test-tube rack
+            </li>
+
+            <li>
+                Delivery tube where required
+            </li>
+
+            <li>
+                Rubber stopper
+            </li>
+
+            <li>
+                Limewater
+            </li>
+
+            <li>
+                Damp red and blue litmus paper
+            </li>
+
+            <li>
+                Suitable indicator paper
+            </li>
+
+            <li>
+                Wooden splints
+            </li>
+
+            <li>
+                Bunsen burner
+            </li>
+
+            <li>
+                Suitable gas-generating chemicals
+            </li>
+
+            <li>
+                Safety goggles
+            </li>
+
+        </ul>
+
+        <div class="gas-info">
+
+            <strong>Safety:</strong><br>
+
+            Gas tests involving flames or potentially harmful gases must
+            be performed carefully under appropriate laboratory supervision.
+            Do not deliberately inhale an unknown gas.
+
+        </div>
+
+    </section>
+
+
+    <!-- 04 PROCEDURE -->
+
+    <section class="gas-section" id="procedure">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                04
+            </div>
+
+            <h2>
+                General Experimental Procedure
+            </h2>
+
+        </div>
+
+        <ol class="step-list">
+
+            <li>
+                Place the appropriate reactants into a clean reaction
+                vessel.
+            </li>
+
+            <li>
+                Allow the reaction to produce the gas.
+            </li>
+
+            <li>
+                Collect or direct the gas safely toward the appropriate
+                test.
+            </li>
+
+            <li>
+                Select the test appropriate for the suspected gas.
+            </li>
+
+            <li>
+                Observe any colour change, flame behaviour, precipitate,
+                or other characteristic result.
+            </li>
+
+            <li>
+                Record the observation carefully.
+            </li>
+
+            <li>
+                Compare the observation with the expected result for
+                each gas.
+            </li>
+
+        </ol>
+
+        <div class="gas-info">
+
+            <strong>Important:</strong><br>
+
+            Never assume that a gas is identified from its appearance
+            alone. Most of the gases in this practical are colourless,
+            so a chemical test is required.
+
+        </div>
+
+    </section>
+
+
+    <!-- 05 GAS TESTS -->
+
+    <section class="gas-section" id="tests">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                05
+            </div>
+
+            <h2>
+                Tests for Common Gases
+            </h2>
+
+        </div>
+
+        <p>
+            The following tests are commonly used to identify carbon
+            dioxide, chlorine, oxygen, hydrogen and ammonia.
+        </p>
+
+
+        <div class="gas-table-wrapper">
+
+            <table class="gas-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Gas</th>
+                        <th>Test</th>
+                        <th>Observation</th>
+                        <th>Inference</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            <strong>Carbon dioxide</strong>
+                            <br>
+                            <span class="gas-tag">CO₂</span>
+                        </td>
+
+                        <td>
+                            Bubble the gas through limewater.
+                        </td>
+
+                        <td class="positive">
+                            Limewater turns milky/cloudy.
+                        </td>
+
+                        <td>
+                            Carbon dioxide is present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Chlorine</strong>
+                            <br>
+                            <span class="gas-tag">Cl₂</span>
+                        </td>
+
+                        <td>
+                            Expose damp litmus or suitable damp indicator
+                            paper to the gas.
+                        </td>
+
+                        <td class="positive">
+                            Damp indicator paper is bleached.
+                        </td>
+
+                        <td>
+                            Chlorine is present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Oxygen</strong>
+                            <br>
+                            <span class="gas-tag">O₂</span>
+                        </td>
+
+                        <td>
+                            Insert a glowing splint into the gas.
+                        </td>
+
+                        <td class="positive">
+                            The glowing splint relights.
+                        </td>
+
+                        <td>
+                            Oxygen is present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Hydrogen</strong>
+                            <br>
+                            <span class="gas-tag">H₂</span>
+                        </td>
+
+                        <td>
+                            Apply a lighted splint to a small sample of
+                            the gas.
+                        </td>
+
+                        <td class="positive">
+                            A characteristic squeaky pop is heard.
+                        </td>
+
+                        <td>
+                            Hydrogen is present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Ammonia</strong>
+                            <br>
+                            <span class="gas-tag">NH₃</span>
+                        </td>
+
+                        <td>
+                            Hold damp red litmus paper near the gas.
+                        </td>
+
+                        <td class="positive">
+                            Red litmus turns blue.
+                        </td>
+
+                        <td>
+                            Ammonia is present.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="gas-info">
+
+            <strong>Remember:</strong><br>
+
+            Oxygen supports combustion but is not itself a fuel.
+            Hydrogen is combustible, while carbon dioxide does not
+            support combustion.
+
+        </div>
+
+    </section>
+
+
+    <!-- 06 OBSERVATIONS -->
+
+    <section class="gas-section" id="observations">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                06
+            </div>
+
+            <h2>
+                Test Observations in Detail
+            </h2>
+
+        </div>
+
+
+        <h3>
+            Carbon Dioxide
+        </h3>
+
+        <p>
+            Carbon dioxide is passed through limewater. The limewater
+            becomes milky because insoluble calcium carbonate forms.
+        </p>
+
+
+        <h3>
+            Chlorine
+        </h3>
+
+        <p>
+            Chlorine reacts with moisture on damp indicator paper and
+            can bleach the paper. This bleaching property is a useful
+            identifying feature.
+        </p>
+
+
+        <h3>
+            Oxygen
+        </h3>
+
+        <p>
+            A glowing splint placed into oxygen relights because oxygen
+            supports combustion.
+        </p>
+
+
+        <h3>
+            Hydrogen
+        </h3>
+
+        <p>
+            A small sample of hydrogen tested with a lighted splint
+            produces a characteristic pop as the hydrogen reacts with
+            oxygen.
+        </p>
+
+
+        <h3>
+            Ammonia
+        </h3>
+
+        <p>
+            Ammonia is alkaline. It turns damp red litmus paper blue.
+        </p>
+
+
+        <div class="gas-info">
+
+            <strong>Exam tip:</strong><br>
+
+            Learn the <strong>test → observation → inference</strong>
+            pattern. Practical questions often provide the observation
+            and ask you to identify the gas.
+
+        </div>
+
+    </section>
+
+
+    <!-- 07 EQUATIONS -->
+
+    <section class="gas-section" id="equations">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                07
+            </div>
+
+            <h2>
+                Important Chemical Equations
+            </h2>
+
+        </div>
+
+
+        <h3>
+            Carbon Dioxide and Limewater
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                CO<sub>2</sub>(g)
+                + Ca(OH)<sub>2</sub>(aq)
+                →
+                CaCO<sub>3</sub>(s)
+                + H<sub>2</sub>O(l)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Hydrogen Combustion
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                2H<sub>2</sub>(g)
+                + O<sub>2</sub>(g)
+                →
+                2H<sub>2</sub>O(l)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Ammonia and Water
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                NH<sub>3</sub>(g)
+                + H<sub>2</sub>O(l)
+                ⇌
+                NH<sub>4</sub><sup>+</sup>(aq)
+                + OH<sup>−</sup>(aq)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Chlorine and Water
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                Cl<sub>2</sub>(g)
+                + H<sub>2</sub>O(l)
+                ⇌
+                HCl(aq)
+                + HClO(aq)
+            </code>
+
+        </div>
+
+        <div class="gas-info">
+
+            <strong>Note:</strong><br>
+
+            Chlorine's bleaching action is associated with the formation
+            of reactive chlorine-containing species in the presence of
+            water.
+
+        </div>
+
+    </section>
+
+
+    <!-- 08 INTERACTIVE TEST -->
+
+    <section class="gas-section" id="identify">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                08
+            </div>
+
+            <h2>
+                Interactive Gas Identification
+            </h2>
+
+        </div>
+
+        <p>
+            Use the observation below to identify the gas.
+        </p>
+
+
+        <div class="test-box">
+
+            <div class="test-top">
+
+                <h3>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Identify the Unknown Gas
+                </h3>
+
+            </div>
+
+
+            <div class="test-body">
+
+                <div class="test-question">
+
+                    A gas is passed through limewater and the limewater
+                    turns <strong>milky</strong>.
+
+                    Which gas is most likely present?
+
+                </div>
+
+
+                <select class="test-select" id="gasAnswer">
+
+                    <option value="">
+                        Select an answer...
+                    </option>
+
+                    <option value="carbon-dioxide">
+                        Carbon dioxide (CO₂)
+                    </option>
+
+                    <option value="chlorine">
+                        Chlorine (Cl₂)
+                    </option>
+
+                    <option value="oxygen">
+                        Oxygen (O₂)
+                    </option>
+
+                    <option value="hydrogen">
+                        Hydrogen (H₂)
+                    </option>
+
+                    <option value="ammonia">
+                        Ammonia (NH₃)
+                    </option>
+
+                </select>
+
+
+                <br>
+
+
+                <button
+                    class="test-button"
+                    id="checkGas"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+                    Check Answer
+
+                </button>
+
+
+                <div
+                    class="test-result"
+                    id="gasResult"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 09 PRECAUTIONS -->
+
+    <section class="gas-section" id="precautions">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                09
+            </div>
+
+            <h2>
+                Precautions & Sources of Error
+            </h2>
+
+        </div>
+
+
+        <h3>
+            Precautions
+        </h3>
+
+        <ul>
+
+            <li>
+                Wear appropriate eye protection.
+            </li>
+
+            <li>
+                Handle chemical reagents carefully.
+            </li>
+
+            <li>
+                Never deliberately inhale an unknown gas.
+            </li>
+
+            <li>
+                Use small quantities when performing flame-based gas tests.
+            </li>
+
+            <li>
+                Keep flammable gases away from unnecessary ignition sources.
+            </li>
+
+            <li>
+                Perform potentially hazardous gas tests under appropriate
+                laboratory supervision and ventilation.
+            </li>
+
+        </ul>
+
+
+        <h3>
+            Possible Sources of Error
+        </h3>
+
+        <ul>
+
+            <li>
+                Contamination of the gas sample.
+            </li>
+
+            <li>
+                Using a damp or contaminated test apparatus.
+            </li>
+
+            <li>
+                Misreading a colour change on indicator paper.
+            </li>
+
+            <li>
+                Using too much or too little reagent.
+            </li>
+
+            <li>
+                Testing an impure gas mixture rather than a single gas.
+            </li>
+
+        </ul>
+
+        <div class="gas-info">
+
+            <strong>Safety reminder:</strong><br>
+
+            Some gases used in qualitative analysis can be harmful,
+            corrosive, toxic, or flammable. Follow your laboratory's
+            safety procedures and teacher's instructions.
+
+        </div>
+
+    </section>
+
+
+    <!-- 10 QUESTIONS -->
+
+    <section class="gas-section" id="questions">
+
+        <div class="gas-section-header">
+
+            <div class="gas-number">
+                10
+            </div>
+
+            <h2>
+                Common Practical Questions
+            </h2>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                1. How is carbon dioxide tested?
+            </strong>
+
+            <div class="exam-answer">
+                Pass the gas through limewater. The limewater turns milky.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                2. What test identifies oxygen?
+            </strong>
+
+            <div class="exam-answer">
+                A glowing splint relights when placed in oxygen.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                3. What test identifies hydrogen?
+            </strong>
+
+            <div class="exam-answer">
+                A lighted splint produces a characteristic squeaky pop
+                with hydrogen.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                4. How can ammonia be identified?
+            </strong>
+
+            <div class="exam-answer">
+                Ammonia turns damp red litmus paper blue.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                5. What happens when chlorine contacts damp indicator paper?
+            </strong>
+
+            <div class="exam-answer">
+                Chlorine can bleach damp indicator paper.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                6. Why does carbon dioxide turn limewater milky?
+            </strong>
+
+            <div class="exam-answer">
+                Carbon dioxide reacts with calcium hydroxide in limewater
+                to form insoluble calcium carbonate.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                7. Which gas relights a glowing splint?
+            </strong>
+
+            <div class="exam-answer">
+                Oxygen.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                8. Which gas produces a squeaky pop with a lighted splint?
+            </strong>
+
+            <div class="exam-answer">
+                Hydrogen.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                9. Which gas turns damp red litmus paper blue?
+            </strong>
+
+            <div class="exam-answer">
+                Ammonia.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                10. Why should an unknown gas never be deliberately inhaled?
+            </strong>
+
+            <div class="exam-answer">
+                Some gases can be toxic, corrosive, or otherwise harmful.
+                Identification should be performed using the appropriate
+                chemical test instead.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i
+            class="fa-solid fa-wand-magic-sparkles"
+            style="
+                color:var(--gas-blue-light);
+                font-size:30px;
+                margin-bottom:10px;
+            "
+        ></i>
+
+
+        <h3
+            style="
+                margin:0 0 8px;
+                color:white;
+            "
+        >
+            Need help with a chemistry practical?
+        </h3>
+
+
+        <p
+            style="
+                color:var(--gas-muted);
+                margin:0;
+            "
+        >
+            Ask Insite AI to explain gas tests, observations, chemical
+            equations, practical procedures, or other chemistry questions.
+        </p>
+
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const gasAnswer =
+    document.getElementById("gasAnswer");
+
+const checkGas =
+    document.getElementById("checkGas");
+
+const gasResult =
+    document.getElementById("gasResult");
+
+
+checkGas.addEventListener("click", function () {
+
+    const answer = gasAnswer.value;
+
+    gasResult.style.display = "block";
+
+
+    if (answer === "carbon-dioxide") {
+
+        gasResult.className =
+            "test-result correct";
+
+        gasResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-check"></i>
+                Correct!
+
+            </div>
+
+            <div>
+
+                Carbon dioxide (CO<sub>2</sub>) turns limewater
+                <strong>milky</strong> because calcium carbonate
+                is formed.
+
+            </div>
+
+        `;
+
+    }
+
+    else if (answer === "") {
+
+        gasResult.className =
+            "test-result wrong";
+
+        gasResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+                Select an answer.
+
+            </div>
+
+            <div>
+
+                Choose the gas that turns limewater milky.
+
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+        gasResult.className =
+            "test-result wrong";
+
+        gasResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-xmark"></i>
+                Not quite.
+
+            </div>
+
+            <div>
+
+                The correct answer is
+                <strong>
+                    Carbon dioxide (CO<sub>2</sub>)
+                </strong>.
+
+                Carbon dioxide reacts with limewater to form
+                insoluble calcium carbonate.
+
+            </div>
+
+        `;
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

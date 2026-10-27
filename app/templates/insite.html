@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}
+    Insite AI
+{% endblock %}
+{% block content %}
+<!-- Chat Area -->
+
+<div class="container mt-3">
+
+    <div id="messages">
+
+        
+
+    {% for msg in messages %}
+
+        {% if msg.role == "user" %}
+
+            <div class="user_message">
+
+                {% if msg.image_path %}
+                    <img src="{{ url_for('static', filename=msg.image_path) }}" class="chat-image">
+                {% endif %}
+
+                {{ msg.content }}
+
+    </div>
+
+        {% else %}
+
+            <div class="ai-message">{{ msg.content | e }}</div>
+
+        {% endif %}
+
+    {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- WEBCAM PREVIEW MODAL FOR DESKTOP -->
+<div id="webcamModal" class="insite-html-preview-overlay" style="display: none;">
+    <div class="insite-html-preview-window" style="max-width: 550px; width: 90%;">
+        
+        <div class="insite-html-preview-header">
+            <div class="insite-preview-title">
+                <i class="fa-solid fa-camera"></i>
+                <span>Take a Photo</span>
+            </div>
+            <button type="button" class="insite-preview-close" id="closeWebcamModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="insite-html-preview-body" style="display: flex; flex-direction: column; align-items: center; padding: 20px; background: #070e18;">
+            <!-- Live video feed -->
+            <video id="webcamVideo" autoplay playsinline style="width: 100%; max-height: 380px; border-radius: 8px; background: #000; object-fit: cover;"></video>
+            
+            <!-- Hidden canvas to capture the frame -->
+            <canvas id="webcamCanvas" style="display: none;"></canvas>
+
+            <!-- Snap Button -->
+            <button type="button" id="captureWebcamBtn" class="btn btn-primary w-100 mt-3">
+                <i class="fa-solid fa-camera"></i> Snap Photo
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Bottom Input -->
+ <div id="attachment-menu">
+
+    <button id="takePhoto">
+        📷 Take Photo
+    </button>
+
+    <button id="uploadImage">
+        🖼️ Upload Image
+    </button>
+
+    <button id="browseFiles">
+        📄 Browse Files
+    </button>
+
+</div>
+<!-- Hidden Inputs -->
+<input
+    type="file"
+    id="cameraInput"
+    accept="image/*"
+    capture="environment"
+    hidden
+>
+
+<input
+    type="file"
+    id="imageInput"
+    accept="image/*"
+    hidden
+>
+
+<input
+    type="file"
+    id="fileInput"
+    hidden
+>
+
+
+<div class="fixed-bottom bg-black p-3">
+
+    <div class="input-group">
+
+        <button class="btn btn-outline-light" id="image">
+
+            <i class="fa-solid fa-plus"></i>
+
+        </button>
+        <div id="imagePreview"></div>
+        <textarea class="form-control"  id="messageInput" rows="1" placeholder="Ask anything..." value=""></textarea>
+
+        <button class="btn btn-outline-light" id="mic">
+
+            <i class="fa-solid fa-microphone"></i>
+
+        </button>
+
+        <button class="btn btn-primary" id="send">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+</div>
+<script defer>
+document.addEventListener("click", function (e) {
+    const link = e.target.closest(".ai-message a");
+
+    if (!link) return;
+
+    const url = link.href;
+
+    if (!url) return;
+
+    e.preventDefault();
+
+    window.open(url, "_blank", "noopener,noreferrer");
+});
+
+
+</script>
+{% endblock %}

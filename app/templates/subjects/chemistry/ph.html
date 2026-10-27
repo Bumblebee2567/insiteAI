@@ -1,0 +1,1802 @@
+{% extends "base.html" %}
+
+{% block title %}
+pH & Indicators | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.ph-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.ph-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.ph-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.ph-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-button:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+.ph-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.ph-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.ph-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.ph-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.ph-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.ph-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.ph-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+.ph-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.ph-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.ph-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.ph-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.ph-section p,
+.ph-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.ph-section li {
+    margin-bottom: 8px;
+}
+
+/* HIGHLIGHT */
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* CONCEPT GRID */
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.concept-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* EXAMPLES */
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 14px 17px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+/* TABLE */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+.ph-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+.ph-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.ph-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+    vertical-align: top;
+}
+
+/* PH SCALE */
+.ph-scale {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 4px;
+    margin: 20px 0;
+}
+
+.ph-value {
+    min-height: 65px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: .2s;
+}
+
+.ph-value:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.ph-value strong {
+    color: #58a6ff;
+    font-size: 1.1rem;
+}
+
+.ph-value span {
+    color: #9ca3af;
+    font-size: .65rem;
+    text-align: center;
+}
+
+/* ASK AI */
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+/* =========================================
+MOBILE RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 768px) {
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.ph-page {
+    width: 100%;
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    overflow-x: hidden;
+}
+
+/* HEADER */
+
+.ph-header {
+    padding: 8px 5px 15px;
+    margin-bottom: 15px;
+}
+
+.ph-header h1 {
+    font-size: 1.8rem;
+    line-height: 1.25;
+    margin-bottom: 10px;
+}
+
+.ph-header p {
+    font-size: .88rem;
+    line-height: 1.65;
+    width: 100%;
+}
+
+/* BACK BUTTON */
+
+.back-button {
+    width: fit-content;
+    max-width: 100%;
+    padding: 9px 13px;
+    margin-bottom: 12px;
+    font-size: .85rem;
+}
+
+/* TOPIC NAVIGATION */
+
+.ph-nav-wrapper {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 7px 0;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.ph-nav {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 2px 7px;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.ph-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: .78rem;
+    border-radius: 9px;
+}
+
+/* SECTIONS */
+
+.ph-section {
+    width: 100%;
+    padding: 17px 14px;
+    margin-bottom: 15px;
+    border-radius: 13px;
+    overflow: hidden;
+}
+
+.ph-section h2 {
+    font-size: 1.3rem;
+    line-height: 1.35;
+    margin-bottom: 12px;
+}
+
+.ph-section h3 {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin-top: 20px;
+}
+
+.ph-section h4 {
+    font-size: .95rem;
+}
+
+.ph-section p {
+    font-size: .88rem;
+    line-height: 1.75;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.ph-section ul {
+    padding-left: 20px;
+}
+
+.ph-section li {
+    font-size: .87rem;
+    line-height: 1.65;
+    overflow-wrap: break-word;
+}
+
+/* HIGHLIGHT */
+
+.highlight {
+    padding: 12px 13px;
+    margin: 14px 0;
+    font-size: .86rem;
+    line-height: 1.65;
+    overflow-wrap: break-word;
+}
+
+/* FORMULAS */
+
+.formula-box {
+    width: 100%;
+    max-width: 100%;
+    padding: 13px 10px;
+    margin: 13px 0;
+    font-size: .92rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    text-align: center;
+}
+
+/* CONCEPT CARDS */
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+}
+
+.concept-card {
+    width: 100%;
+    padding: 15px;
+    border-radius: 11px;
+}
+
+.concept-card i {
+    font-size: 23px;
+}
+
+.concept-card h4 {
+    font-size: .95rem;
+}
+
+.concept-card p {
+    font-size: .83rem;
+    line-height: 1.6;
+}
+
+/* EXAMPLES */
+
+.example-box {
+    width: 100%;
+    padding: 14px;
+    margin: 14px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.example-box h4 {
+    font-size: .92rem;
+    line-height: 1.55;
+}
+
+.example-box p {
+    font-size: .86rem;
+    line-height: 1.7;
+}
+
+.answer-box {
+    padding: 12px;
+    font-size: .85rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    overflow-y: hidden;
+    word-break: normal;
+}
+
+/* TABLES */
+
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+}
+
+.ph-table {
+    min-width: 600px;
+    width: 100%;
+    font-size: .78rem;
+}
+
+.ph-table th,
+.ph-table td {
+    padding: 9px 8px;
+    line-height: 1.5;
+}
+
+/* PH SCALE */
+
+.ph-scale {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin: 15px 0;
+}
+
+.ph-value {
+    min-height: 55px;
+    padding: 6px 3px;
+    border-radius: 7px;
+}
+
+.ph-value strong {
+    font-size: .9rem;
+}
+
+.ph-value span {
+    font-size: .55rem;
+    line-height: 1.25;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    width: 100%;
+    padding: 20px 14px;
+    margin-top: 20px;
+    border-radius: 13px;
+}
+
+.ask-ai i {
+    font-size: 27px;
+}
+
+.ask-ai h3 {
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+.ask-ai p {
+    font-size: .84rem;
+    line-height: 1.65;
+}
+
+.ask-ai a {
+    width: 100%;
+    max-width: 220px;
+    padding: 10px 15px;
+    font-size: .85rem;
+}
+}
+
+/* =========================================
+VERY SMALL PHONES
+========================================= */
+
+@media (max-width: 400px) {
+.ph-page {
+    padding: 8px;
+}
+
+.ph-header h1 {
+    font-size: 1.55rem;
+}
+
+.ph-header p {
+    font-size: .82rem;
+}
+
+.ph-section {
+    padding: 14px 11px;
+    border-radius: 11px;
+}
+
+.ph-section h2 {
+    font-size: 1.15rem;
+}
+
+.ph-section h3 {
+    font-size: 1rem;
+}
+
+.ph-section p,
+.ph-section li {
+    font-size: .83rem;
+}
+
+.ph-scale {
+    gap: 4px;
+}
+
+.ph-value {
+    min-height: 50px;
+}
+
+.ph-value strong {
+    font-size: .82rem;
+}
+
+.ph-value span {
+    font-size: .48rem;
+}
+
+.formula-box {
+    font-size: .84rem;
+    padding: 11px 8px;
+}
+
+.example-box {
+    padding: 12px;
+}
+
+.answer-box {
+    padding: 10px;
+    font-size: .8rem;
+}
+
+.ask-ai {
+    padding: 18px 11px;
+}
+
+}
+
+</style>
+
+<div class="ph-page">
+
+
+<a href="{{ url_for('chemistry_page') }}" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+    Back
+</a>
+
+
+<div class="ph-header">
+
+    <h1>pH & Indicators</h1>
+
+    <p>
+        A complete guide to the pH scale, hydrogen-ion concentration,
+        hydroxide-ion concentration, acids and bases, indicators,
+        universal indicator, strong and weak acids and bases,
+        pH calculations, pOH, neutralisation, practical tests,
+        worked examples and real-world applications.
+    </p>
+
+</div>
+
+
+<div class="ph-nav-wrapper">
+
+    <nav class="ph-nav">
+
+        <a href="#introduction">Introduction</a>
+        <a href="#ph-scale">pH Scale</a>
+        <a href="#hydrogen">H⁺ Concentration</a>
+        <a href="#hydroxide">OH⁻ & pOH</a>
+        <a href="#indicators">Indicators</a>
+        <a href="#universal">Universal Indicator</a>
+        <a href="#litmus">Litmus</a>
+        <a href="#methyl-orange">Methyl Orange</a>
+        <a href="#phenolphthalein">Phenolphthalein</a>
+        <a href="#strong-weak">Strong & Weak</a>
+        <a href="#acid-strength">Acid Strength</a>
+        <a href="#base-strength">Base Strength</a>
+        <a href="#calculations">Calculations</a>
+        <a href="#examples">Examples</a>
+        <a href="#word-problems">Word Problems</a>
+        <a href="#mistakes">Common Mistakes</a>
+
+    </nav>
+
+</div>
+
+
+<section class="ph-section" id="introduction">
+
+    <h2>1. Introduction to pH and Indicators</h2>
+
+    <p>
+        The pH of a solution tells us how acidic or alkaline the solution
+        is. It is closely related to the concentration of hydrogen ions
+        or, more accurately in aqueous chemistry, hydronium ions.
+    </p>
+
+    <p>
+        Indicators are substances that change colour depending on the
+        acidity of a solution. They allow us to estimate whether a
+        solution is acidic, neutral or alkaline.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Key idea:</strong>
+
+        The lower the pH, the greater the hydronium-ion concentration.
+        The higher the pH, the lower the hydronium-ion concentration,
+        under the usual aqueous conditions.
+
+    </div>
+
+
+    <div class="concept-grid">
+
+        <div class="concept-card">
+
+            <i class="fas fa-flask"></i>
+
+            <h4>pH</h4>
+
+            <p>
+                A logarithmic measure related to the activity of hydrogen
+                ions in solution.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-droplet"></i>
+
+            <h4>Indicator</h4>
+
+            <p>
+                A substance whose colour changes over a particular pH
+                range.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-arrow-down"></i>
+
+            <h4>Acidic</h4>
+
+            <p>
+                At 25°C, an aqueous solution with pH below 7 is generally
+                classified as acidic.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-arrow-up"></i>
+
+            <h4>Alkaline</h4>
+
+            <p>
+                At 25°C, an aqueous solution with pH above 7 is generally
+                classified as alkaline.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="ph-scale">
+
+    <h2>2. The pH Scale</h2>
+
+    <p>
+        The pH scale is logarithmic rather than linear. For dilute
+        aqueous solutions, school-level chemistry commonly uses a scale
+        from approximately 0 to 14 at 25°C.
+    </p>
+
+    <div class="ph-scale">
+
+        <div class="ph-value"><strong>0</strong><span>Very acidic</span></div>
+        <div class="ph-value"><strong>1</strong><span>Acidic</span></div>
+        <div class="ph-value"><strong>2</strong><span>Acidic</span></div>
+        <div class="ph-value"><strong>3</strong><span>Acidic</span></div>
+        <div class="ph-value"><strong>4</strong><span>Acidic</span></div>
+        <div class="ph-value"><strong>5</strong><span>Acidic</span></div>
+        <div class="ph-value"><strong>6</strong><span>Weakly acidic</span></div>
+        <div class="ph-value"><strong>7</strong><span>Neutral</span></div>
+        <div class="ph-value"><strong>8</strong><span>Weakly alkaline</span></div>
+        <div class="ph-value"><strong>9</strong><span>Alkaline</span></div>
+        <div class="ph-value"><strong>10</strong><span>Alkaline</span></div>
+        <div class="ph-value"><strong>11</strong><span>Alkaline</span></div>
+        <div class="ph-value"><strong>12</strong><span>Alkaline</span></div>
+        <div class="ph-value"><strong>13</strong><span>Strongly alkaline</span></div>
+        <div class="ph-value"><strong>14</strong><span>Very alkaline</span></div>
+
+    </div>
+
+
+    <h3>What Does pH 7 Mean?</h3>
+
+    <p>
+        At 25°C, pure water has approximately equal concentrations of
+        H₃O⁺ and OH⁻ and is considered neutral, giving a pH close to 7.
+    </p>
+
+    <div class="formula-box">
+        pH = 7 → Neutral at 25°C
+    </div>
+
+
+    <h3>Why Is the Scale Logarithmic?</h3>
+
+    <p>
+        A change of one pH unit corresponds to a tenfold change in
+        hydronium-ion concentration when the simple concentration form
+        of the pH relationship is being used.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Example:</strong>
+
+        A solution of pH 3 has approximately ten times the hydronium
+        concentration of a solution of pH 4, under the same assumptions.
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="hydrogen">
+
+    <h2>3. Hydrogen-Ion Concentration and pH</h2>
+
+    <p>
+        In introductory chemistry, pH can be calculated from the
+        concentration of hydronium ions using:
+    </p>
+
+    <div class="formula-box">
+        pH = -log₁₀[H₃O⁺]
+    </div>
+
+    <p>
+        The brackets indicate concentration in mol/L in this simplified
+        school-level treatment.
+    </p>
+
+
+    <h3>Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A solution has [H₃O⁺] = 1.0 × 10⁻³ mol/L.
+            Find its pH.
+        </h4>
+
+        <div class="answer-box">
+
+            pH = -log₁₀(1.0 × 10⁻³)
+
+            <br><br>
+
+            <strong>pH = 3</strong>
+
+        </div>
+
+    </div>
+
+
+    <h3>Finding Concentration from pH</h3>
+
+    <p>
+        The pH equation can be rearranged to obtain hydronium-ion
+        concentration:
+    </p>
+
+    <div class="formula-box">
+        [H₃O⁺] = 10⁻ᵖᴴ
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>
+            Find [H₃O⁺] when pH = 5.
+        </h4>
+
+        <div class="answer-box">
+
+            [H₃O⁺] = 10⁻⁵
+
+            <br><br>
+
+            <strong>
+                [H₃O⁺] = 1.0 × 10⁻⁵ mol/L
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="hydroxide">
+
+    <h2>4. Hydroxide Ions and pOH</h2>
+
+    <p>
+        Alkaline solutions contain hydroxide ions, OH⁻. Their
+        concentration can be expressed using pOH.
+    </p>
+
+    <div class="formula-box">
+        pOH = -log₁₀[OH⁻]
+    </div>
+
+    <p>
+        At 25°C, the ion-product constant for water leads to:
+    </p>
+
+    <div class="formula-box">
+        pH + pOH = 14
+    </div>
+
+    <h3>Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A solution has pH = 11. Find its pOH.
+        </h4>
+
+        <div class="answer-box">
+
+            pOH = 14 - pH
+
+            <br><br>
+
+            pOH = 14 - 11
+
+            <br><br>
+
+            <strong>pOH = 3</strong>
+
+        </div>
+
+    </div>
+
+
+    <h3>Finding Hydroxide Concentration</h3>
+
+    <div class="formula-box">
+        [OH⁻] = 10⁻ᵖᴼᴴ
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="indicators">
+
+    <h2>5. Acid-Base Indicators</h2>
+
+    <p>
+        An acid-base indicator is usually a weak acid or weak base whose
+        different forms have different colours.
+    </p>
+
+    <p>
+        The colour change occurs over a characteristic transition range,
+        rather than at one exact pH.
+    </p>
+
+    <div class="formula-box">
+        HIn ⇌ H⁺ + In⁻
+    </div>
+
+    <p>
+        The two forms, HIn and In⁻, can have different colours. As the
+        pH changes, the equilibrium shifts and the observed colour
+        changes.
+    </p>
+
+    <h3>Why Indicators Are Useful</h3>
+
+    <ul>
+
+        <li>They can show whether a solution is acidic or alkaline.</li>
+
+        <li>They can provide an approximate pH range.</li>
+
+        <li>They can be used to detect endpoints in titrations.</li>
+
+        <li>Different indicators are suitable for different pH ranges.</li>
+
+    </ul>
+
+</section>
+
+
+<section class="ph-section" id="universal">
+
+    <h2>6. Universal Indicator</h2>
+
+    <p>
+        Universal indicator is a mixture of several indicators designed
+        to show different colours across a broad range of pH values.
+    </p>
+
+    <p>
+        Because the colour changes across a range, universal indicator
+        can be compared with a colour chart to estimate the pH of a
+        solution.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="ph-table">
+
+            <tr>
+                <th>Approximate pH</th>
+                <th>General Classification</th>
+            </tr>
+
+            <tr>
+                <td>0–3</td>
+                <td>Strongly acidic</td>
+            </tr>
+
+            <tr>
+                <td>4–6</td>
+                <td>Weakly acidic</td>
+            </tr>
+
+            <tr>
+                <td>7</td>
+                <td>Neutral at 25°C</td>
+            </tr>
+
+            <tr>
+                <td>8–10</td>
+                <td>Weakly alkaline</td>
+            </tr>
+
+            <tr>
+                <td>11–14</td>
+                <td>Strongly alkaline</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        Universal indicator is useful for estimating pH, but a precise
+        pH measurement requires an appropriate instrument such as a
+        calibrated pH meter.
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="litmus">
+
+    <h2>7. Litmus</h2>
+
+    <p>
+        Litmus is an indicator commonly used to distinguish acids from
+        alkaline solutions.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="ph-table">
+
+            <tr>
+                <th>Solution</th>
+                <th>Blue Litmus</th>
+                <th>Red Litmus</th>
+            </tr>
+
+            <tr>
+                <td>Acidic</td>
+                <td>Turns red</td>
+                <td>Remains red</td>
+            </tr>
+
+            <tr>
+                <td>Neutral</td>
+                <td>Remains blue</td>
+                <td>Remains red</td>
+            </tr>
+
+            <tr>
+                <td>Alkaline</td>
+                <td>Remains blue</td>
+                <td>Turns blue</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="methyl-orange">
+
+    <h2>8. Methyl Orange</h2>
+
+    <p>
+        Methyl orange is an indicator that changes colour over an acidic
+        transition range.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="ph-table">
+
+            <tr>
+                <th>Medium</th>
+                <th>Observed Colour</th>
+            </tr>
+
+            <tr>
+                <td>Acidic</td>
+                <td>Red</td>
+            </tr>
+
+            <tr>
+                <td>Transition range</td>
+                <td>Orange</td>
+            </tr>
+
+            <tr>
+                <td>More alkaline</td>
+                <td>Yellow</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <p>
+        Methyl orange is particularly useful in titrations where the
+        equivalence-point pH falls within its transition range.
+    </p>
+
+</section>
+
+
+<section class="ph-section" id="phenolphthalein">
+
+    <h2>9. Phenolphthalein</h2>
+
+    <p>
+        Phenolphthalein is another common acid-base indicator.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="ph-table">
+
+            <tr>
+                <th>Medium</th>
+                <th>Observed Colour</th>
+            </tr>
+
+            <tr>
+                <td>Acidic</td>
+                <td>Colourless</td>
+            </tr>
+
+            <tr>
+                <td>Near transition region</td>
+                <td>Faint pink through pink</td>
+            </tr>
+
+            <tr>
+                <td>Alkaline</td>
+                <td>Pink</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <p>
+        Phenolphthalein is commonly useful in titrations involving a
+        strong base, particularly where the endpoint lies in its
+        transition range.
+    </p>
+
+</section>
+
+
+<section class="ph-section" id="strong-weak">
+
+    <h2>10. Strong and Weak Acids and Bases</h2>
+
+    <p>
+        Acid or base strength describes how extensively the substance
+        ionises or reacts with water. It is different from concentration.
+    </p>
+
+    <h3>Strong Acids</h3>
+
+    <p>
+        Strong acids ionise extensively in water.
+    </p>
+
+    <ul>
+
+        <li>Hydrochloric acid — HCl</li>
+        <li>Nitric acid — HNO₃</li>
+        <li>Perchloric acid — HClO₄</li>
+        <li>Sulfuric acid — H₂SO₄, with its first ionisation being strong</li>
+
+    </ul>
+
+    <h3>Weak Acids</h3>
+
+    <p>
+        Weak acids ionise only partially and establish equilibrium with
+        their ions.
+    </p>
+
+    <ul>
+
+        <li>Ethanoic acid — CH₃COOH</li>
+        <li>Carbonic acid — H₂CO₃</li>
+        <li>Hydrofluoric acid — HF</li>
+
+    </ul>
+
+    <h3>Strong Bases</h3>
+
+    <ul>
+
+        <li>Sodium hydroxide — NaOH</li>
+        <li>Potassium hydroxide — KOH</li>
+        <li>Barium hydroxide — Ba(OH)₂</li>
+
+    </ul>
+
+    <h3>Weak Bases</h3>
+
+    <ul>
+
+        <li>Ammonia — NH₃</li>
+        <li>Many amines</li>
+
+    </ul>
+
+    <div class="highlight">
+
+        <strong>Do not confuse:</strong>
+
+        Strength describes ionisation behaviour. Concentration describes
+        how much solute is present in a given volume.
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="acid-strength">
+
+    <h2>11. Acid Strength and pH</h2>
+
+    <p>
+        For solutions having the same concentration, a strong monoprotic
+        acid generally produces a greater hydronium concentration than a
+        weak acid.
+    </p>
+
+    <div class="formula-box">
+        Strong acid → extensive ionisation → greater [H₃O⁺] → lower pH
+    </div>
+
+    <p>
+        A weak acid establishes an equilibrium:
+    </p>
+
+    <div class="formula-box">
+        HA + H₂O ⇌ H₃O⁺ + A⁻
+    </div>
+
+    <p>
+        Only part of the acid molecules ionise at equilibrium.
+    </p>
+
+</section>
+
+
+<section class="ph-section" id="base-strength">
+
+    <h2>12. Base Strength and pH</h2>
+
+    <p>
+        Strong bases produce hydroxide ions extensively in aqueous
+        solution, while weak bases react with water only partially.
+    </p>
+
+    <div class="formula-box">
+        Strong base → greater [OH⁻] → lower pOH → higher pH
+    </div>
+
+    <h3>Weak Base Example</h3>
+
+    <div class="formula-box">
+        NH₃ + H₂O ⇌ NH₄⁺ + OH⁻
+    </div>
+
+    <p>
+        Ammonia does not simply dissociate like NaOH. It reacts with
+        water and establishes an equilibrium.
+    </p>
+
+</section>
+
+
+<section class="ph-section" id="calculations">
+
+    <h2>13. pH Calculations</h2>
+
+    <h3>Calculating pH from [H₃O⁺]</h3>
+
+    <div class="formula-box">
+        pH = -log₁₀[H₃O⁺]
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>
+            Calculate the pH of 0.001 mol/L HCl, assuming complete
+            ionisation.
+        </h4>
+
+        <div class="answer-box">
+
+            HCl is a strong monoprotic acid.
+
+            <br><br>
+
+            [H₃O⁺] ≈ 0.001 = 1.0 × 10⁻³ mol/L
+
+            <br><br>
+
+            pH = -log₁₀(1.0 × 10⁻³)
+
+            <br><br>
+
+            <strong>pH = 3</strong>
+
+        </div>
+
+    </div>
+
+
+    <h3>Calculating pH from pOH</h3>
+
+    <div class="formula-box">
+        pH = 14 - pOH
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>
+            A solution has pOH = 4. Calculate its pH at 25°C.
+        </h4>
+
+        <div class="answer-box">
+
+            pH = 14 - 4
+
+            <br><br>
+
+            <strong>pH = 10</strong>
+
+        </div>
+
+    </div>
+
+
+    <h3>Calculating pOH</h3>
+
+    <div class="formula-box">
+        pOH = -log₁₀[OH⁻]
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="examples">
+
+    <h2>14. Worked Examples</h2>
+
+
+    <div class="example-box">
+
+        <h4>Example 1 — Comparing pH</h4>
+
+        <p>
+            Which is more acidic: a solution with pH 2 or one with pH 4?
+        </p>
+
+        <div class="answer-box">
+
+            The pH 2 solution is more acidic.
+
+            <br><br>
+
+            Difference in pH = 2 units.
+
+            <br><br>
+
+            Hydronium concentration differs by:
+
+            <br><br>
+
+            10² = 100
+
+            <br><br>
+
+            Therefore, under the simple concentration interpretation,
+            the pH 2 solution has about <strong>100 times</strong> the
+            hydronium concentration of the pH 4 solution.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 2 — Finding [H₃O⁺]</h4>
+
+        <p>
+            Find the hydronium-ion concentration of a solution with
+            pH = 6.
+        </p>
+
+        <div class="answer-box">
+
+            [H₃O⁺] = 10⁻ᵖᴴ
+
+            <br><br>
+
+            [H₃O⁺] = 10⁻⁶
+
+            <br><br>
+
+            <strong>
+                [H₃O⁺] = 1.0 × 10⁻⁶ mol/L
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 3 — Finding pOH</h4>
+
+        <p>
+            A solution has [OH⁻] = 1.0 × 10⁻² mol/L.
+            Find its pOH and pH.
+        </p>
+
+        <div class="answer-box">
+
+            pOH = -log₁₀(1.0 × 10⁻²)
+
+            <br><br>
+
+            pOH = 2
+
+            <br><br>
+
+            pH = 14 - 2
+
+            <br><br>
+
+            <strong>pH = 12</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 4 — Choosing an Indicator</h4>
+
+        <p>
+            Why might an indicator be chosen based on the expected
+            equivalence-point pH of a titration?
+        </p>
+
+        <div class="answer-box">
+
+            The indicator should change colour over a pH range that
+            includes the steep region around the equivalence point.
+            This makes the observed endpoint a useful approximation
+            to the stoichiometric equivalence point.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="word-problems">
+
+    <h2>15. Word Problems</h2>
+
+
+    <div class="example-box">
+
+        <h4>Problem 1 — pH Comparison</h4>
+
+        <p>
+            Two laboratory solutions have pH values of 3 and 5.
+            How many times greater is the hydronium-ion concentration
+            of the pH 3 solution?
+        </p>
+
+        <div class="answer-box">
+
+            Difference:
+
+            <br><br>
+
+            5 - 3 = 2
+
+            <br><br>
+
+            Concentration ratio:
+
+            <br><br>
+
+            10² = 100
+
+            <br><br>
+
+            <strong>
+                The pH 3 solution has approximately 100 times the
+                hydronium concentration.
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 2 — Indicator Selection</h4>
+
+        <p>
+            A student wants to determine whether an unknown solution is
+            acidic or alkaline. Which type of indicator could provide
+            useful information over a broad pH range?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Universal indicator</strong> would be suitable for
+            estimating the pH over a broad range because it changes
+            through several colours across the pH scale.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 3 — Strong and Weak Acids</h4>
+
+        <p>
+            Two solutions contain acids at the same concentration.
+            Solution A contains a strong acid and Solution B contains
+            a weak acid. Which would normally have the lower pH?
+        </p>
+
+        <div class="answer-box">
+
+            Assuming comparable monoprotic acids and equal concentration,
+            the strong acid would normally produce more hydronium ions.
+
+            <br><br>
+
+            Therefore:
+
+            <br><br>
+
+            <strong>
+                Solution A would normally have the lower pH.
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 4 — Household Chemistry</h4>
+
+        <p>
+            A household cleaning product is strongly alkaline. Explain
+            why it is important to handle it carefully.
+        </p>
+
+        <div class="answer-box">
+
+            Strongly alkaline substances can be corrosive and can damage
+            skin, eyes and other materials. Appropriate safety procedures,
+            protective equipment and the product's instructions should
+            therefore be followed.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ph-section" id="mistakes">
+
+    <h2>16. Common Mistakes</h2>
+
+    <h3>1. Thinking pH 6 Is Twice as Acidic as pH 3</h3>
+
+    <p>
+        pH is logarithmic. A three-unit difference corresponds to a
+        factor of 10³ = 1000 in hydronium concentration under the
+        simple concentration interpretation.
+    </p>
+
+
+    <h3>2. Confusing Strong and Concentrated</h3>
+
+    <p>
+        A strong acid ionises extensively. A concentrated solution
+        contains a large amount of solute per unit volume.
+    </p>
+
+
+    <h3>3. Assuming Every Indicator Has the Same Colour Change</h3>
+
+    <p>
+        Different indicators have different transition ranges and
+        colour changes.
+    </p>
+
+
+    <h3>4. Assuming pH 7 Is Always Neutral</h3>
+
+    <p>
+        In school-level aqueous chemistry, pH 7 is treated as neutral
+        at 25°C. The neutral pH depends on temperature.
+    </p>
+
+
+    <h3>5. Forgetting the Negative Sign</h3>
+
+    <div class="formula-box">
+        pH = -log₁₀[H₃O⁺]
+    </div>
+
+
+    <h3>6. Using the Wrong Indicator in a Titration</h3>
+
+    <p>
+        An indicator should be selected according to the expected
+        equivalence-point region of the reaction.
+    </p>
+
+
+    <div class="highlight">
+
+        <strong>Best solving method:</strong>
+
+        Identify whether the solution is acidic or alkaline, determine
+        the relevant ion concentration, choose the correct pH or pOH
+        relationship, substitute carefully, and check whether the final
+        answer makes chemical sense.
+
+    </div>
+
+</section>
+
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With pH & Indicators?</h3>
+
+    <p>
+        Confused about the pH scale, indicator colours, strong and weak
+        acids, pOH or pH calculations? Ask Insite AI to explain the
+        concept step by step, work through a calculation, or help you
+        understand why an indicator changes colour.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

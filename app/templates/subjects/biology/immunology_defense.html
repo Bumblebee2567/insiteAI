@@ -1,0 +1,677 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mendelian & Chromosomal Inheritance | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --bio-bg: #050a12;
+    --bio-panel: #0a111d;
+    --bio-border: rgba(100, 116, 139, .18);
+    --bio-text: #f1f5f9;
+    --bio-muted: #94a3b8;
+
+    --bio-blue: #1677b8;
+    --bio-blue-light: #2196d2;
+    --bio-cyan: #38bdf8;
+
+    --bio-green: #34d399;
+    --bio-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 5px rgba(33, 150, 210, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(33, 150, 210, 0.3); }
+    100% { box-shadow: 0 0 5px rgba(33, 150, 210, 0.1); }
+}
+
+.bio-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--bio-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.bio-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--bio-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.bio-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.bio-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.bio-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.bio-header h1 i {
+    color: var(--bio-blue-light);
+    margin-right: 8px;
+    animation: pulseGlow 3s infinite;
+}
+
+.bio-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--bio-muted);
+    line-height: 1.75;
+}
+
+.bio-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--bio-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.bio-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.bio-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.bio-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.bio-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.bio-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.bio-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bio-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.bio-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.bio-section h3 {
+    color: var(--bio-blue-light);
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--bio-border);
+    padding-bottom: 6px;
+}
+
+.bio-section h4 {
+    color: var(--bio-cyan);
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.bio-section p,
+.bio-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.bio-section li {
+    margin-bottom: 8px;
+}
+
+.bio-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--bio-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.bio-info:hover {
+    transform: translateX(4px);
+}
+
+.bio-info strong {
+    color: var(--bio-blue-light);
+}
+
+.bio-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.bio-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.bio-table th,
+.bio-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.bio-table th {
+    background: #081321;
+    color: var(--bio-blue-light);
+    font-size: .88rem;
+}
+
+.bio-table td {
+    color: #cbd5e1;
+}
+
+.bio-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--bio-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--bio-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--bio-green); }
+.test-result.wrong { border-left-color: var(--bio-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--bio-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--bio-blue-light);
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid var(--bio-blue-light);
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .bio-section { padding: 20px; }
+    .bio-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="bio-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('biology_page') }}" class="bio-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Biology Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="bio-header">
+        <h1>
+            <i class="fa-solid fa-table"></i>
+            Mendelian & Chromosomal Inheritance
+        </h1>
+        <p>
+            An exhaustive masterclass covering Gregor Mendel's laws of segregation and independent assortment, 
+            monohybrid and dihybrid Punnett square calculations, pedigree chart analysis, and sex-linked inheritance patterns.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="bio-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#laws">Mendel's Laws</a>
+        <a href="#crosses">Punnett Crosses</a>
+        <a href="#pedigrees">Pedigree Analysis</a>
+        <a href="#sexlinked">Sex-Linked Traits</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="bio-section" id="intro">
+        <div class="bio-section-header">
+            <div class="bio-number">01</div>
+            <h2>Introduction to Classical Genetics</h2>
+        </div>
+        <p>
+            Classical genetics examines how heritable traits are transmitted across generations through discrete units of inheritance known as genes. 
+            Building upon Gregor Mendel's foundational pea plant hybridization experiments, modern genetics correlates inheritance patterns 
+            with the behavior of homologous chromosomes during meiosis.
+        </p>
+        <p>
+            Key terminology includes <strong>genotype</strong> (the specific genetic allele makeup) and <strong>phenotype</strong> 
+            (the observable physical or physiological expression of those genes).
+        </p>
+        <div class="bio-info">
+            <strong>Core Genetic Principle:</strong><br>
+            Alleles are alternative forms of a gene that account for variations in inherited characters, segregating independently during gamete formation.
+        </div>
+    </section>
+
+    <!-- 02 MENDEL'S LAWS -->
+    <section class="bio-section" id="laws">
+        <div class="bio-section-header">
+            <div class="bio-number">02</div>
+            <h2>Mendel's Laws of Heredity</h2>
+        </div>
+        <p>
+            Gregor Mendel established two fundamental principles of inheritance through statistical analysis of garden pea crosses:
+        </p>
+        <ul>
+            <li><strong>Law of Segregation (First Law):</strong> Allele pairs separate during gamete formation (anaphase I/II of meiosis), so that each gamete carries only one allele for each gene.</li>
+            <li><strong>Law of Independent Assortment (Second Law):</strong> Alleles of two or more different genes sort into gametes independently of one another, provided the genes are located on different non-homologous chromosomes or far apart on the same chromosome.</li>
+        </ul>
+
+        <div class="bio-table-wrapper">
+            <table class="bio-table">
+                <thead>
+                    <tr>
+                        <th>Cross Type</th>
+                        <th>Parental Genotypes</th>
+                        <th>Phenotypic Ratio (F2)</th>
+                        <th>Genotypic Ratio (F2)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Monohybrid Cross</strong></td>
+                        <td>Aa &times; Aa</td>
+                        <td>3 : 1 (Dominant : Recessive)</td>
+                        <td>1 : 2 : 1 (AA : Aa : aa)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dihybrid Cross</strong></td>
+                        <td>AaBb &times; AaBb</td>
+                        <td>9 : 3 : 3 : 1</td>
+                        <td>Complex 16-box matrix breakdown</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Incomplete Dominance</strong></td>
+                        <td>CRCW &times; CRCW</td>
+                        <td>1 : 2 : 1 (Blended intermediate)</td>
+                        <td>1 : 2 : 1 (CRCR : CRCW : CWCW)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 03 PUNNETT CROSSES -->
+    <section class="bio-section" id="crosses">
+        <div class="bio-section-header">
+            <div class="bio-number">03</div>
+            <h2>Monohybrid & Dihybrid Cross Calculations</h2>
+        </div>
+        <p>
+            Punnett squares are predictive grid diagrams used to determine the probability of offspring inheriting specific genotypes and phenotypes:
+        </p>
+        <ul>
+            <li><strong>Monohybrid Crosses:</strong> Track the inheritance of a single gene locus. For two heterozygous carrier parents (Aa &times; Aa), the probability of an affected homozygous recessive offspring (aa) is 25%.</li>
+            <li><strong>Dihybrid Crosses:</strong> Track two independent gene loci simultaneously (e.g., seed color and seed shape). Using the product rule, the probability of obtaining a double homozygous recessive offspring (yyrr) from heterozygous parents (YyRr &times; YyRr) is (1/4) &times; (1/4) = 1/16.</li>
+        </ul>
+    </section>
+
+    <!-- 04 PEDIGREE ANALYSIS -->
+    <section class="bio-section" id="pedigrees">
+        <div class="bio-section-header">
+            <div class="bio-number">04</div>
+            <h2>Pedigree Analysis in Human Genetics</h2>
+        </div>
+        <p>
+            A pedigree chart maps the inheritance of a particular trait across multiple generations of a family tree to determine 
+            whether the underlying gene is autosomal or sex-linked, dominant or recessive.
+        </p>
+        <ul>
+            <li><strong>Autosomal Recessive:</strong> Typically skips generations; affected individuals can have unaffected carrier parents. Equal frequency in males and females.</li>
+            <li><strong>Autosomal Dominant:</strong> Does not skip generations; every affected individual has at least one affected parent.</li>
+        </ul>
+    </section>
+
+    <!-- 05 SEX-LINKED TRAITS -->
+    <section class="bio-section" id="sexlinked">
+        <div class="bio-section-header">
+            <div class="bio-number">05</div>
+            <h2>Sex-Linked Inheritance Patterns</h2>
+        </div>
+        <p>
+            Genes located on the sex chromosomes (X and Y) exhibit unique inheritance patterns due to unequal chromosome distribution between sexes:
+        </p>
+        <ul>
+            <li><strong>X-Linked Recessive Traits:</strong> Because human males possess only one X chromosome (XY), a single recessive allele on the X chromosome is sufficient to express the trait (e.g., red-green color blindness, hemophilia, muscular dystrophy).</li>
+            <li><strong>Maternal Transmission:</strong> Affected fathers pass their X chromosome to all of their daughters but none of their sons, making X-linked recessive disorders appear much more frequently in males.</li>
+        </ul>
+        <div class="bio-info">
+            <strong>Key Genetic Distinction:</strong><br>
+            Autosomal traits affect males and females equally, whereas X-linked recessive traits show marked male bias because males lack a second protective X chromosome.
+        </div>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="bio-section" id="test">
+        <div class="bio-section-header">
+            <div class="bio-number">06</div>
+            <h2>Interactive Genetics Test</h2>
+        </div>
+        <p>Test your understanding of Punnett squares, monohybrid crosses, and inheritance probabilities.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Monohybrid Cross Probability Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    In a cross between two heterozygous carrier parents for an autosomal recessive disorder (Aa &times; Aa), 
+                    what is the probability that their next child will be born affected (aa)?
+                </div>
+
+                <select class="test-select" id="bioAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">0% (0 / 4)</option>
+                    <option value="wrong2">50% (2 / 4)</option>
+                    <option value="correct">25% (1 / 4)</option>
+                    <option value="wrong3">100% (4 / 4)</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkBio">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="bioResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="bio-section" id="problems">
+        <div class="bio-section-header">
+            <div class="bio-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Dihybrid Cross Probability Calculation):</strong>
+            <p>In pea plants, yellow seed color (Y) is dominant over green (y), and round seed shape (R) is dominant over wrinkled (r). 
+            If two plants heterozygous for both traits (YyRr) are crossed, calculate the probability of producing an offspring that is homozygous recessive for both traits (yyrr).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - <strong>Method 1: Probability Rule:</strong><br>
+                &nbsp;&nbsp;&bull; Probability of getting yy from Yy &times; Yy = 1/4.<br>
+                &nbsp;&nbsp;&bull; Probability of getting rr from Rr &times; Rr = 1/4.<br>
+                &nbsp;&nbsp;&bull; Multiply independent probabilities: (1/4) &times; (1/4) = <strong>1/16</strong>.<br>
+                - <strong>Conclusion:</strong> 1 out of 16 offspring in a standard dihybrid cross will display the homozygous recessive double trait (yyrr).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (X-Linked Recessive Inheritance):</strong>
+            <p>A color-blind man (X^h Y) marries a woman who is a carrier for red-green color blindness (X^H X^h). 
+            Determine the expected phenotypic ratios among their sons and daughters.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Cross:</strong> X^h Y &times; X^H X^h<br>
+                - <strong>Daughters:</strong> 
+                &nbsp;&nbsp;&bull; 50% chance of being carrier females (X^H X^h - normal vision).<br>
+                &nbsp;&nbsp;&bull; 50% chance of being affected females (X^h X^h - color blind).<br>
+                - <strong>Sons:</strong> 
+                &nbsp;&nbsp;&bull; 50% chance of having normal vision (X^H Y).<br>
+                &nbsp;&nbsp;&bull; 50% chance of being color blind (X^h Y).<br>
+                - <strong>Conclusion:</strong> Sons inherit their single X chromosome exclusively from their mother, explaining why X-linked disorders affect males more frequently.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Codominance in ABO Blood Groups):</strong>
+            <p>A man with blood type AB and a woman with blood type O have a child. What are the possible blood types of their offspring, and what genetic principle does this illustrate?</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Genotypes:</strong> Man is I^A I^B; Woman is i i.<br>
+                - <strong>Punnett Square Cross:</strong> Gametes from man are I^A and I^B; gametes from woman are all i.<br>
+                - <strong>Offspring Genotypes:</strong> 50% I^A i (Blood type A) and 50% I^B i (Blood type B).<br>
+                - <strong>Genetic Principle:</strong> This illustrates both <em>codominance</em> (when I^A and I^B are inherited together) and <em>multiple alleles</em> in the human population.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--bio-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with genetics calculations or pedigree analysis?</h3>
+        <p style="color:var(--bio-muted); margin:0;">
+            Ask Insite AI to explain chi-square goodness-of-fit tests, gene linkage mapping, or epistatic gene interactions.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const bioAnswer = document.getElementById("bioAnswer");
+const checkBio = document.getElementById("checkBio");
+const bioResult = document.getElementById("bioResult");
+
+checkBio.addEventListener("click", function () {
+    const val = bioAnswer.value;
+    bioResult.style.display = "block";
+
+    if (val === "correct") {
+        bioResult.className = "test-result correct";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>In a monohybrid cross between two heterozygotes (Aa &times; Aa), the expected phenotypic ratio is 3:1 and the probability of an affected homozygous recessive offspring (aa) is <strong>25% (1/4)</strong>.</div>
+        `;
+    } else if (val === "") {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Drawing a Punnett square for Aa &times; Aa yields AA, Aa, Aa, and aa. Only 1 out of 4 squares is homozygous recessive (aa), representing a <strong>25% probability</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

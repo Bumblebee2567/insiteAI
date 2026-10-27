@@ -1,0 +1,1624 @@
+{% extends "base.html" %}
+
+{% block title %}
+Energy Changes | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENERGY CHANGES
+   Dark, responsive chemistry learning page
+   ========================================================= */
+
+.energy-page {
+    max-width: 1120px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* ---------- HEADER ---------- */
+
+.energy-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.energy-header h1 {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 2.55rem;
+    margin-bottom: 10px;
+}
+
+.energy-header h1 i {
+    color: #3b82f6;
+}
+
+.energy-header p {
+    color: #9ca3af;
+    max-width: 850px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* ---------- BACK BUTTON ---------- */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 22px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* ---------- STICKY NAV ---------- */
+
+.energy-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.energy-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.energy-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.energy-nav::-webkit-scrollbar-track {
+    background: #161b22;
+}
+
+.energy-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.energy-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.energy-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* ---------- SECTIONS ---------- */
+
+.energy-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.energy-section h2 {
+    color: #ffffff;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.energy-section h3 {
+    color: #58a6ff;
+    margin-top: 27px;
+    margin-bottom: 11px;
+}
+
+.energy-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.energy-section p,
+.energy-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.energy-section li {
+    margin-bottom: 7px;
+}
+
+/* ---------- HIGHLIGHTS ---------- */
+
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 17px 19px;
+    margin: 18px 0;
+    border-radius: 9px;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* ---------- FORMULAS ---------- */
+
+.formula {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 16px 0;
+    border-radius: 11px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.08rem;
+    font-weight: 700;
+    overflow-x: auto;
+}
+
+.formula .unit {
+    display: block;
+    color: #8b949e;
+    font-size: .82rem;
+    font-weight: 400;
+    margin-top: 5px;
+}
+
+/* ---------- CARDS ---------- */
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.concept-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 11px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .92rem;
+    margin: 0;
+}
+
+/* =========================================================
+   ENERGY PROFILE DIAGRAMS
+   ========================================================= */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.profile-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.profile-card h4 {
+    margin-top: 0;
+    color: #ffffff;
+}
+
+.profile-card .profile-type {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #161b22;
+    color: #9ca3af;
+    font-size: .75rem;
+    margin-bottom: 15px;
+}
+
+/* Actual diagram */
+.energy-profile {
+    position: relative;
+    height: 330px;
+    margin-top: 10px;
+    border-left: 2px solid #8b949e;
+    border-bottom: 2px solid #8b949e;
+    overflow: hidden;
+}
+
+/* axis labels */
+.energy-axis-y {
+    position: absolute;
+    left: -5px;
+    top: 4px;
+    transform: translateX(-100%);
+    color: #8b949e;
+    font-size: .72rem;
+}
+
+.energy-axis-x {
+    position: absolute;
+    right: 2px;
+    bottom: -23px;
+    color: #8b949e;
+    font-size: .72rem;
+}
+
+/* Curve is built with borders */
+.profile-curve {
+    position: absolute;
+    left: 13%;
+    width: 74%;
+    height: 150px;
+    top: 65px;
+    border-top: 4px solid #58a6ff;
+    border-radius: 50% 50% 0 0;
+    transform: rotate(0deg);
+}
+
+.profile-curve::after {
+    content: "";
+    position: absolute;
+    right: -1%;
+    top: 30px;
+    width: 52%;
+    height: 105px;
+    border-right: 4px solid #58a6ff;
+    border-bottom: 4px solid #58a6ff;
+    border-radius: 0 0 70% 0;
+    transform: skewX(-24deg);
+}
+
+/* Endothermic curve */
+.endothermic .profile-curve {
+    top: 52px;
+}
+
+.endothermic .profile-curve::after {
+    top: 28px;
+    height: 90px;
+}
+
+/* energy level labels */
+.level {
+    position: absolute;
+    left: 4%;
+    width: 92%;
+    height: 0;
+    border-top: 2px dashed #30363d;
+}
+
+.level span {
+    position: absolute;
+    left: 4px;
+    top: -22px;
+    color: #c9d1d9;
+    font-size: .72rem;
+    background: #0d1117;
+    padding-right: 5px;
+}
+
+.reactants-level {
+    bottom: 72px;
+}
+
+.products-level {
+    bottom: 128px;
+}
+
+.endothermic .reactants-level {
+    bottom: 75px;
+}
+
+.endothermic .products-level {
+    bottom: 165px;
+}
+
+/* ΔH bracket */
+.delta-h {
+    position: absolute;
+    right: 10%;
+    width: 28px;
+    border-left: 2px solid #f59e0b;
+}
+
+.delta-h::before,
+.delta-h::after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    width: 10px;
+    border-top: 2px solid #f59e0b;
+}
+
+.delta-h::before {
+    top: 0;
+}
+
+.delta-h::after {
+    bottom: 0;
+}
+
+.delta-h span {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fbbf24;
+    font-size: .78rem;
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+/* Activation-energy bracket */
+.activation {
+    position: absolute;
+    left: 45%;
+    width: 28px;
+    border-left: 2px solid #ef4444;
+}
+
+.activation::before,
+.activation::after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    width: 10px;
+    border-top: 2px solid #ef4444;
+}
+
+.activation::before {
+    top: 0;
+}
+
+.activation::after {
+    bottom: 0;
+}
+
+.activation span {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #f87171;
+    font-size: .75rem;
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+/* ---------- COMPARISON TABLE ---------- */
+
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 17px;
+}
+
+.compare-table th,
+.compare-table td {
+    border: 1px solid #30363d;
+    padding: 12px;
+    text-align: left;
+    color: #c9d1d9;
+}
+
+.compare-table th {
+    background: #0d1117;
+    color: #58a6ff;
+}
+
+.compare-table tr:hover td {
+    background: #111827;
+}
+
+/* ---------- EXAMPLES ---------- */
+
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 21px;
+    margin: 18px 0;
+}
+
+.example-title {
+    color: #58a6ff;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.answer-box {
+    border-left: 4px solid #22c55e;
+    background: #0b1110;
+    padding: 15px 17px;
+    border-radius: 8px;
+    margin-top: 15px;
+    color: #c9d1d9;
+}
+
+.warning-box {
+    border-left: 4px solid #f59e0b;
+    background: #11100b;
+    padding: 15px 17px;
+    border-radius: 8px;
+    margin-top: 15px;
+    color: #c9d1d9;
+}
+
+/* ---------- STEP-BY-STEP ---------- */
+
+.step {
+    display: flex;
+    gap: 14px;
+    margin: 13px 0;
+}
+
+.step-number {
+    flex: 0 0 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    background: #3b82f6;
+    color: #ffffff;
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.step-text {
+    color: #c9d1d9;
+    line-height: 1.7;
+}
+
+/* ---------- HESS DIAGRAM ---------- */
+
+.hess-diagram {
+    position: relative;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    min-height: 280px;
+    padding: 25px;
+    margin-top: 18px;
+    overflow: hidden;
+}
+
+.hess-level {
+    position: absolute;
+    height: 2px;
+    background: #58a6ff;
+    left: 10%;
+    right: 10%;
+}
+
+.hess-level.one {
+    top: 55px;
+}
+
+.hess-level.two {
+    top: 145px;
+    left: 25%;
+    right: 25%;
+}
+
+.hess-level.three {
+    top: 225px;
+}
+
+.hess-label {
+    position: absolute;
+    color: #c9d1d9;
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+.hess-label.a {
+    left: 10%;
+    top: 32px;
+}
+
+.hess-label.b {
+    left: 25%;
+    top: 122px;
+}
+
+.hess-label.c {
+    left: 10%;
+    top: 202px;
+}
+
+.hess-arrow {
+    position: absolute;
+    color: #fbbf24;
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+.hess-arrow.one {
+    left: 48%;
+    top: 77px;
+}
+
+.hess-arrow.two {
+    left: 48%;
+    top: 167px;
+}
+
+/* ---------- CALORIMETRY ---------- */
+
+.calorimeter {
+    position: relative;
+    max-width: 560px;
+    height: 280px;
+    margin: 25px auto;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.calorimeter .cup {
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    bottom: 30px;
+    height: 150px;
+    border: 3px solid #58a6ff;
+    border-top: 0;
+    border-radius: 0 0 35px 35px;
+}
+
+.calorimeter .water {
+    position: absolute;
+    left: 27%;
+    right: 27%;
+    bottom: 48px;
+    height: 105px;
+    background: rgba(59, 130, 246, .18);
+    border-top: 3px solid #3b82f6;
+    border-radius: 0 0 30px 30px;
+}
+
+.calorimeter .thermometer {
+    position: absolute;
+    right: 21%;
+    top: 25px;
+    width: 7px;
+    height: 150px;
+    background: #c9d1d9;
+    border-radius: 10px;
+}
+
+.calorimeter .thermometer::after {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    border-radius: 50%;
+    left: -8px;
+    bottom: -8px;
+}
+
+.calorimeter-label {
+    position: absolute;
+    color: #c9d1d9;
+    font-size: .8rem;
+}
+
+.calorimeter-label.water-label {
+    left: 33%;
+    bottom: 83px;
+}
+
+.calorimeter-label.temp-label {
+    right: 8%;
+    top: 183px;
+}
+
+/* ---------- ASK AI ---------- */
+
+.ask-ai {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 33px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 11px 19px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 768px) {
+
+    .energy-page {
+        padding: 12px;
+        margin: 12px auto;
+    }
+
+    .energy-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .energy-header p {
+        font-size: .94rem;
+    }
+
+    .energy-section {
+        padding: 18px;
+        border-radius: 13px;
+    }
+
+    .concept-grid,
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .energy-nav-wrapper {
+        top: 0;
+    }
+
+    .energy-nav {
+        padding-bottom: 8px;
+    }
+
+    .compare-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .formula {
+        font-size: .96rem;
+        line-height: 1.7;
+        text-align: center;
+    }
+
+    .back-chemistry {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .energy-profile {
+        height: 285px;
+        margin-left: 12px;
+    }
+
+    .activation {
+        left: 42%;
+    }
+
+    .delta-h {
+        right: 6%;
+    }
+
+    .calorimeter {
+        height: 245px;
+    }
+}
+</style>
+
+
+<div class="energy-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <!-- HEADER -->
+    <div class="energy-header">
+
+        <h1>
+            <i class="fa-solid fa-fire-flame-curved"></i>
+            Energy Changes
+        </h1>
+
+        <p>
+            Understand how chemical reactions absorb, release and transfer energy.
+            From exothermic and endothermic reactions to enthalpy, bond energies,
+            calorimetry, activation energy and Hess's Law.
+        </p>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+    <div class="energy-nav-wrapper">
+
+        <nav class="energy-nav">
+
+            <a href="#overview">Overview</a>
+            <a href="#exo-endo">Exo & Endo</a>
+            <a href="#profiles">Energy Profiles</a>
+            <a href="#enthalpy">Enthalpy</a>
+            <a href="#bonds">Bond Energy</a>
+            <a href="#calorimetry">Calorimetry</a>
+            <a href="#activation">Activation Energy</a>
+            <a href="#hess">Hess's Law</a>
+            <a href="#standard">Standard Enthalpy</a>
+            <a href="#practice">Practice</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- OVERVIEW -->
+    <section class="energy-section" id="overview">
+
+        <h2>1. What Is an Energy Change?</h2>
+
+        <p>
+            Chemical reactions involve atoms being rearranged. During this
+            rearrangement, chemical bonds are broken and new bonds are formed.
+            Because energy is involved in both processes, the total energy of
+            the system can change.
+        </p>
+
+        <div class="highlight">
+            <strong>The key idea:</strong>
+            Breaking chemical bonds requires energy, while forming chemical
+            bonds releases energy.
+        </div>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-up"></i>
+                <h4>Energy Absorbed</h4>
+                <p>
+                    Energy is transferred into the reacting system. This is
+                    associated with an endothermic process.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-down"></i>
+                <h4>Energy Released</h4>
+                <p>
+                    Energy is transferred from the reacting system to its
+                    surroundings. This is associated with an exothermic process.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXO / ENDO -->
+    <section class="energy-section" id="exo-endo">
+
+        <h2>2. Exothermic vs Endothermic</h2>
+
+        <h3>Exothermic Reactions</h3>
+
+        <p>
+            An exothermic reaction releases energy from the system into the
+            surroundings. The surroundings therefore tend to become warmer.
+        </p>
+
+        <ul>
+            <li>Combustion of fuels</li>
+            <li>Respiration</li>
+            <li>Many neutralisation reactions</li>
+            <li>Many oxidation reactions</li>
+        </ul>
+
+        <div class="formula">
+            ΔH &lt; 0
+            <span class="unit">Negative enthalpy change</span>
+        </div>
+
+
+        <h3>Endothermic Reactions</h3>
+
+        <p>
+            An endothermic reaction absorbs energy from the surroundings into
+            the system. The surroundings may become cooler.
+        </p>
+
+        <ul>
+            <li>Thermal decomposition</li>
+            <li>Photosynthesis</li>
+            <li>Some dissolving processes</li>
+            <li>Some reactions involving salts and water</li>
+        </ul>
+
+        <div class="formula">
+            ΔH &gt; 0
+            <span class="unit">Positive enthalpy change</span>
+        </div>
+
+
+        <table class="compare-table">
+
+            <tr>
+                <th>Feature</th>
+                <th>Exothermic</th>
+                <th>Endothermic</th>
+            </tr>
+
+            <tr>
+                <td>Energy transfer</td>
+                <td>System → surroundings</td>
+                <td>Surroundings → system</td>
+            </tr>
+
+            <tr>
+                <td>Surroundings</td>
+                <td>Usually become warmer</td>
+                <td>Usually become cooler</td>
+            </tr>
+
+            <tr>
+                <td>ΔH</td>
+                <td>Negative</td>
+                <td>Positive</td>
+            </tr>
+
+            <tr>
+                <td>Product enthalpy</td>
+                <td>Lower than reactants</td>
+                <td>Higher than reactants</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+
+    <!-- ENERGY PROFILES -->
+    <section class="energy-section" id="profiles">
+
+        <h2>3. Energy Profile Diagrams</h2>
+
+        <p>
+            An energy profile shows how the energy of a reacting system changes
+            as the reaction progresses. The highest point represents the
+            transition state, sometimes called the activated complex.
+        </p>
+
+
+        <div class="profile-grid">
+
+
+            <!-- EXOTHERMIC -->
+            <div class="profile-card">
+
+                <span class="profile-type">
+                    Exothermic reaction
+                </span>
+
+                <h4>Products have lower energy</h4>
+
+                <div class="energy-profile">
+
+                    <span class="energy-axis-y">Energy</span>
+                    <span class="energy-axis-x">Reaction progress</span>
+
+                    <div class="level reactants-level">
+                        <span>Reactants</span>
+                    </div>
+
+                    <div class="level products-level">
+                        <span>Products</span>
+                    </div>
+
+                    <div class="profile-curve"></div>
+
+                    <div
+                        class="activation"
+                        style="top: 70px; height: 95px;"
+                    >
+                        <span>Eₐ</span>
+                    </div>
+
+                    <div
+                        class="delta-h"
+                        style="top: 145px; height: 55px;"
+                    >
+                        <span>ΔH</span>
+                    </div>
+
+                </div>
+
+                <div class="highlight">
+                    Energy is released, so the products have lower enthalpy
+                    than the reactants.
+                </div>
+
+            </div>
+
+
+            <!-- ENDOTHERMIC -->
+            <div class="profile-card">
+
+                <span class="profile-type">
+                    Endothermic reaction
+                </span>
+
+                <h4>Products have higher energy</h4>
+
+                <div class="energy-profile endothermic">
+
+                    <span class="energy-axis-y">Energy</span>
+                    <span class="energy-axis-x">Reaction progress</span>
+
+                    <div class="level reactants-level">
+                        <span>Reactants</span>
+                    </div>
+
+                    <div class="level products-level">
+                        <span>Products</span>
+                    </div>
+
+                    <div class="profile-curve"></div>
+
+                    <div
+                        class="activation"
+                        style="top: 55px; height: 110px;"
+                    >
+                        <span>Eₐ</span>
+                    </div>
+
+                    <div
+                        class="delta-h"
+                        style="top: 110px; height: 90px;"
+                    >
+                        <span>ΔH</span>
+                    </div>
+
+                </div>
+
+                <div class="highlight">
+                    Energy is absorbed, so the products have higher enthalpy
+                    than the reactants.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <h3>What Do the Symbols Mean?</h3>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h4>Eₐ — Activation Energy</h4>
+
+                <p>
+                    The minimum energy particles need for a successful reaction
+                    to occur.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h4>ΔH — Enthalpy Change</h4>
+
+                <p>
+                    The difference in enthalpy between the products and the
+                    reactants.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENTHALPY -->
+    <section class="energy-section" id="enthalpy">
+
+        <h2>4. Enthalpy Change</h2>
+
+        <p>
+            Enthalpy is a quantity used to describe the energy content of a
+            chemical system. For a reaction carried out at constant pressure,
+            the enthalpy change tells us how the system's enthalpy changes.
+        </p>
+
+        <div class="formula">
+
+            ΔH = H<sub>products</sub> − H<sub>reactants</sub>
+
+            <span class="unit">
+                Usually measured in kJ mol⁻¹
+            </span>
+
+        </div>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h4>ΔH is negative</h4>
+                <p>
+                    Products have less enthalpy than reactants.
+                    The reaction is exothermic.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h4>ΔH is positive</h4>
+                <p>
+                    Products have more enthalpy than reactants.
+                    The reaction is endothermic.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BOND ENERGY -->
+    <section class="energy-section" id="bonds">
+
+        <h2>5. Bond Breaking and Bond Formation</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-link-slash"></i>
+
+                <h4>Breaking Bonds</h4>
+
+                <p>
+                    Energy must be supplied to overcome the attraction holding
+                    bonded atoms together. Bond breaking is therefore
+                    endothermic.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-link"></i>
+
+                <h4>Forming Bonds</h4>
+
+                <p>
+                    When new bonds form, energy is released. Bond formation is
+                    therefore exothermic.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="formula">
+            ΔH ≈ Energy used to break bonds − Energy released forming bonds
+        </div>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Worked Example — Bond Energies
+            </div>
+
+            <p>
+                Suppose a reaction requires 620 kJ mol⁻¹ to break its reactant
+                bonds and releases 810 kJ mol⁻¹ when its product bonds form.
+            </p>
+
+            <div class="step">
+                <div class="step-number">1</div>
+
+                <div class="step-text">
+                    Write the energy change relationship.
+                </div>
+            </div>
+
+            <div class="formula">
+                ΔH ≈ 620 − 810
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+
+                <div class="step-text">
+                    Calculate the difference.
+                </div>
+            </div>
+
+            <div class="formula">
+                ΔH ≈ −190 kJ mol⁻¹
+            </div>
+
+            <div class="answer-box">
+                The reaction is <strong>exothermic</strong> because ΔH is negative.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CALORIMETRY -->
+    <section class="energy-section" id="calorimetry">
+
+        <h2>6. Calorimetry</h2>
+
+        <p>
+            Calorimetry is the measurement of heat transfer. In school chemistry,
+            temperature changes are often used to determine the energy transferred.
+        </p>
+
+
+        <div class="calorimeter">
+
+            <div class="cup"></div>
+
+            <div class="water"></div>
+
+            <div class="thermometer"></div>
+
+            <span class="calorimeter-label water-label">
+                Water / solution
+            </span>
+
+            <span class="calorimeter-label temp-label">
+                Thermometer
+            </span>
+
+        </div>
+
+
+        <div class="formula">
+            q = mcΔT
+
+            <span class="unit">
+                q = heat energy, m = mass, c = specific heat capacity,
+                ΔT = temperature change
+            </span>
+        </div>
+
+        <div class="formula">
+            ΔT = Final temperature − Initial temperature
+        </div>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Worked Example — Calorimetry
+            </div>
+
+            <p>
+                100 g of water is heated from 20 °C to 30 °C.
+                Its specific heat capacity is 4.18 J g⁻¹ °C⁻¹.
+                Calculate the energy absorbed.
+            </p>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-text">
+                    Calculate the temperature change:
+                    30 − 20 = 10 °C.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-text">
+                    Substitute into q = mcΔT.
+                </div>
+            </div>
+
+            <div class="formula">
+                q = 100 × 4.18 × 10
+            </div>
+
+            <div class="formula">
+                q = 4180 J
+            </div>
+
+            <div class="answer-box">
+                <strong>Answer:</strong>
+                4180 J of energy is absorbed by the water.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTIVATION ENERGY -->
+    <section class="energy-section" id="activation">
+
+        <h2>7. Activation Energy and Catalysts</h2>
+
+        <p>
+            Particles can collide without reacting. For a reaction to happen,
+            particles must collide with enough energy and with a suitable
+            orientation.
+        </p>
+
+        <div class="formula">
+            E<sub>a</sub> = Energy of transition state − Energy of reactants
+        </div>
+
+        <h3>What Does a Catalyst Do?</h3>
+
+        <p>
+            A catalyst provides an alternative reaction pathway with a lower
+            activation energy. This makes successful collisions more likely
+            and increases the reaction rate.
+        </p>
+
+        <div class="highlight">
+            <strong>Remember:</strong>
+            A catalyst lowers Eₐ, but it does not change the overall ΔH of the reaction.
+        </div>
+
+    </section>
+
+
+    <!-- HESS -->
+    <section class="energy-section" id="hess">
+
+        <h2>8. Hess's Law</h2>
+
+        <p>
+            Hess's Law states that the overall enthalpy change of a reaction
+            is independent of the route taken between the same starting and
+            ending states.
+        </p>
+
+        <div class="formula">
+            Overall ΔH = Sum of the ΔH values of the individual steps
+        </div>
+
+
+        <div class="hess-diagram">
+
+            <div class="hess-level one"></div>
+            <div class="hess-level two"></div>
+            <div class="hess-level three"></div>
+
+            <span class="hess-label a">
+                Reactants
+            </span>
+
+            <span class="hess-label b">
+                Intermediate
+            </span>
+
+            <span class="hess-label c">
+                Products
+            </span>
+
+            <span class="hess-arrow one">
+                ΔH₁ ↓
+            </span>
+
+            <span class="hess-arrow two">
+                ΔH₂ ↓
+            </span>
+
+        </div>
+
+
+        <h3>Three Rules You Must Remember</h3>
+
+        <ul>
+            <li>
+                Reverse an equation → reverse the sign of ΔH.
+            </li>
+
+            <li>
+                Multiply an equation → multiply ΔH by the same number.
+            </li>
+
+            <li>
+                Add equations → add their enthalpy changes.
+            </li>
+        </ul>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Worked Example
+            </div>
+
+            <p>
+                A → B has ΔH = +50 kJ mol⁻¹.
+                B → C has ΔH = −120 kJ mol⁻¹.
+                Find the enthalpy change for A → C.
+            </p>
+
+            <div class="formula">
+                ΔH = +50 + (−120)
+            </div>
+
+            <div class="formula">
+                ΔH = −70 kJ mol⁻¹
+            </div>
+
+            <div class="answer-box">
+                The overall reaction is exothermic.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STANDARD ENTHALPY -->
+    <section class="energy-section" id="standard">
+
+        <h2>9. Important Standard Enthalpy Changes</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h4>Standard Enthalpy of Formation</h4>
+
+                <p>
+                    The enthalpy change when one mole of a compound forms from
+                    its elements in their standard states.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h4>Standard Enthalpy of Combustion</h4>
+
+                <p>
+                    The enthalpy change when one mole of a substance undergoes
+                    complete combustion in oxygen under specified standard conditions.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h4>Standard Enthalpy of Neutralisation</h4>
+
+                <p>
+                    The enthalpy change when an acid and a base react to form
+                    one mole of water under standard conditions.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h4>Enthalpy of Solution</h4>
+
+                <p>
+                    The enthalpy change associated with dissolving a substance
+                    in a solvent under specified conditions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRACTICE -->
+    <section class="energy-section" id="practice">
+
+        <h2>10. Practice Questions</h2>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Question 1 — Classification
+            </div>
+
+            <p>
+                A reaction causes the temperature of the surrounding solution
+                to increase. Is the reaction likely to be exothermic or endothermic?
+            </p>
+
+            <div class="answer-box">
+                <strong>Answer:</strong>
+                Exothermic. Energy is being transferred from the reaction to
+                the surroundings.
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Question 2 — Calorimetry
+            </div>
+
+            <p>
+                A 200 g sample of water increases from 22 °C to 29 °C.
+                Take c = 4.18 J g⁻¹ °C⁻¹.
+                Calculate the energy absorbed.
+            </p>
+
+            <div class="answer-box">
+                ΔT = 29 − 22 = 7 °C.
+                <br><br>
+                q = 200 × 4.18 × 7
+                <br><br>
+                q = <strong>5852 J</strong>.
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Question 3 — Catalyst
+            </div>
+
+            <p>
+                A student says, "A catalyst makes an exothermic reaction more
+                exothermic." Is the statement correct?
+            </p>
+
+            <div class="answer-box">
+                <strong>No.</strong>
+                A catalyst lowers activation energy. It does not change the
+                overall ΔH of the reaction.
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Question 4 — Bond Energies
+            </div>
+
+            <p>
+                A reaction uses 500 kJ mol⁻¹ to break its bonds and releases
+                640 kJ mol⁻¹ when new bonds form. Calculate the approximate
+                enthalpy change.
+            </p>
+
+            <div class="formula">
+                ΔH ≈ 500 − 640 = −140 kJ mol⁻¹
+            </div>
+
+            <div class="answer-box">
+                The reaction is <strong>exothermic</strong>.
+            </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Exam checklist:</strong>
+
+            Know how to explain:
+            exothermic and endothermic reactions,
+            energy profiles,
+            Eₐ,
+            ΔH,
+            bond energies,
+            q = mcΔT,
+            catalysts,
+            Hess's Law,
+            and standard enthalpy changes.
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>Need help with Energy Changes?</h3>
+
+        <p>
+            Ask Inside AI to explain a difficult concept, solve an energy
+            calculation, create an exam-style question, or walk you through
+            an energy profile step by step.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i>
+            Ask Inside AI
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

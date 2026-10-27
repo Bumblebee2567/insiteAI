@@ -1,0 +1,1204 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chemical Equilibrium | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — CHEMISTRY
+   CHEMICAL EQUILIBRIUM UNIFIED STYLING
+   Fully responsive — no horizontal overflow
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #0d1117;
+    color: #c9d1d9;
+}
+
+/* =========================================================
+   MAIN LAYOUT & WRAPPER
+   ========================================================= */
+
+.eq-page {
+    width: 100%;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.eq-page * {
+    max-width: 100%;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.eq-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.eq-header h1 {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.eq-header h1 i {
+    color: #3b82f6;
+    margin-right: 8px;
+}
+
+.eq-header p {
+    width: 100%;
+    max-width: 780px;
+    margin: auto;
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.eq-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 22px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.eq-back:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* =========================================================
+   STICKY NAVIGATION
+   ========================================================= */
+
+.eq-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.eq-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.eq-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.eq-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.eq-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.eq-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    white-space: nowrap;
+    transition: .25s;
+}
+
+.eq-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* =========================================================
+   SECTIONS & INNER CARDS
+   ========================================================= */
+
+.eq-section {
+    width: 100%;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.eq-section h2 {
+    margin: 0;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.eq-section-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 12px;
+}
+
+.eq-section-number {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #3b82f6;
+    background: #0d1117;
+    padding: 4px 12px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+}
+
+.eq-section p,
+.eq-section li {
+    color: #c9d1d9;
+    line-height: 1.75;
+}
+
+.eq-section ul {
+    padding-left: 22px;
+}
+
+.eq-section li {
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   GRIDS & CONCEPT CARDS
+   ========================================================= */
+
+.eq-grid {
+    display: grid;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.eq-grid.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.eq-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.eq-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.eq-card-icon {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 11px;
+}
+
+.eq-card h3 {
+    color: #ffffff;
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+}
+
+.eq-card p {
+    color: #9ca3af;
+    font-size: .92rem;
+    margin: 0;
+}
+
+/* =========================================================
+   FORMULA & HIGHLIGHTS
+   ========================================================= */
+
+.eq-formula {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 16px 0;
+    border-radius: 11px;
+    text-align: center;
+}
+
+.eq-formula-main {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.eq-formula-note {
+    display: block;
+    color: #8b949e;
+    font-size: .85rem;
+    font-weight: 400;
+    margin-top: 6px;
+}
+
+.eq-highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.eq-highlight strong {
+    color: #58a6ff;
+}
+
+/* =========================================================
+   INTERACTIVE COLLISION LAB
+   ========================================================= */
+
+.eq-lab {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.eq-lab-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.eq-lab-head h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.15rem;
+}
+
+.eq-live {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.eq-canvas-wrap {
+    position: relative;
+    width: 100%;
+    background: #070b12;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+#equilibriumCanvas {
+    display: block;
+    width: 100%;
+    height: 280px;
+}
+
+.eq-canvas-label {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+
+.eq-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.eq-metric {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+}
+
+.eq-metric span {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.eq-metric strong {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.eq-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.eq-control {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.eq-control label {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+}
+
+.eq-control input[type="range"] {
+    width: 100%;
+    accent-color: #3b82f6;
+}
+
+.eq-control output {
+    text-align: right;
+    color: #3b82f6;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+/* =========================================================
+   ICE TABLES & STRUCTURAL CALCULATIONS
+   ========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 18px 0;
+    border-radius: 10px;
+    border: 1px solid #30363d;
+}
+
+.eq-table {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+}
+
+.eq-table th,
+.eq-table td {
+    border: 1px solid #30363d;
+    padding: 12px;
+    text-align: left;
+}
+
+.eq-table th {
+    background: #0d1117;
+    color: #58a6ff;
+}
+
+.eq-table td {
+    color: #c9d1d9;
+    background: #161b22;
+}
+
+.eq-table tr:hover td {
+    background: #111827;
+}
+
+.example-box {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.formula {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 16px;
+    margin: 15px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.08rem;
+    font-weight: 600;
+}
+
+/* =========================================================
+   CONCENTRATION VS TIME GRAPH
+   ========================================================= */
+
+.eq-chart {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+#equilibriumGraph {
+    display: block;
+    width: 100%;
+    height: 280px;
+}
+
+/* =========================================================
+   ASK AI BOX
+   ========================================================= */
+
+.eq-ai {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.eq-ai h2 {
+    color: #ffffff;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.eq-ai p {
+    color: #9ca3af;
+    margin-bottom: 15px;
+}
+
+.eq-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+    font-weight: 600;
+}
+
+.eq-ai a:hover {
+    background: #2563eb;
+}
+
+/* =========================================================
+   MEDIA QUERIES (MOBILE RESPONSIVENESS)
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .eq-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .eq-section {
+        padding: 18px;
+    }
+
+    .eq-grid.three {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .eq-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .eq-grid.three {
+        grid-template-columns: 1fr;
+    }
+
+    .eq-nav-wrapper {
+        top: 0;
+    }
+
+    .eq-nav a {
+        font-size: .82rem;
+        padding: 8px 12px;
+    }
+
+    .eq-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .eq-controls {
+        grid-template-columns: 1fr;
+    }
+
+    #equilibriumCanvas,
+    #equilibriumGraph {
+        height: 230px;
+    }
+}
+</style>
+
+<div class="eq-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="eq-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+    <!-- HEADER -->
+    <header class="eq-header">
+        <h1><i class="fa-solid fa-scale-balanced"></i> Chemical Equilibrium</h1>
+        <p>
+            A comprehensive study guide combining core equilibrium theory, Kc/Qc expressions, ICE table calculations, 
+            Le Chatelier's Principle, and live interactive particle collision and concentration-time animations.
+        </p>
+    </header>
+
+    <!-- NAV -->
+    <div class="eq-nav-wrapper">
+        <nav class="eq-nav">
+            <a href="#overview">Overview</a>
+            <a href="#dynamic">Dynamic Lab</a>
+            <a href="#kc">Constant Kc</a>
+            <a href="#qc">Quotient Qc</a>
+            <a href="#ice">ICE Tables</a>
+            <a href="#lechatelier">Le Chatelier</a>
+            <a href="#graphs">Concentration Graph</a>
+            <a href="#factors">Stress Factors</a>
+            <a href="#ksp">Solubility Ksp</a>
+            <a href="#practice">Exam Checklist</a>
+        </nav>
+    </div>
+
+    <!-- 1. OVERVIEW -->
+    <section class="eq-section" id="overview">
+        <div class="eq-section-header">
+            <div class="eq-section-number">01</div>
+            <div><h2>What Is Chemical Equilibrium?</h2></div>
+        </div>
+        <p>
+            Many chemical reactions are <strong>reversible</strong>, meaning reactants form products while 
+            products simultaneously react to reform reactants (↔). 
+            <strong>Chemical Equilibrium</strong> is the state in a closed system where the rate of the forward reaction 
+            equals the rate of the reverse reaction.
+        </p>
+        <div class="eq-formula">
+            <div class="eq-formula-main">A + B &rightleftharpoons; C + D</div>
+            <span class="eq-formula-note">Equilibrium is dynamic — macroscopic concentrations remain constant.</span>
+        </div>
+        <div class="eq-grid three">
+            <div class="eq-card">
+                <div class="eq-card-icon"><i class="fa-solid fa-forward"></i></div>
+                <h3>Forward Rate</h3>
+                <p>Starts high when reactants are concentrated, then decreases over time.</p>
+            </div>
+            <div class="eq-card">
+                <div class="eq-card-icon"><i class="fa-solid fa-backward"></i></div>
+                <h3>Reverse Rate</h3>
+                <p>Starts at zero, then increases as products accumulate.</p>
+            </div>
+            <div class="eq-card">
+                <div class="eq-card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                <h3>Equilibrium State</h3>
+                <p>Forward Rate = Reverse Rate. Concentrations stop changing.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. DYNAMIC LAB ANIMATION -->
+    <section class="eq-section" id="dynamic">
+        <div class="eq-section-header">
+            <div class="eq-section-number">02</div>
+            <div><h2>Interactive Dynamic Equilibrium Lab</h2></div>
+        </div>
+        <p>
+            Observe particle collision physics in real time. Watch reactants (A + B) collide and react into products (C + D), 
+            and vice-versa, demonstrating that equilibrium is an active balance of equal rates.
+        </p>
+
+        <div class="eq-lab">
+            <div class="eq-lab-head">
+                <h3>A + B &rightleftharpoons; C + D</h3>
+                <span class="eq-live">Simulation active</span>
+            </div>
+
+            <div class="eq-canvas-wrap">
+                <canvas id="equilibriumCanvas"></canvas>
+                <div class="eq-canvas-label">Particle collision laboratory</div>
+            </div>
+
+            <div class="eq-metrics">
+                <div class="eq-metric"><span>Forward rate</span><strong id="forwardRate">0.00</strong></div>
+                <div class="eq-metric"><span>Reverse rate</span><strong id="reverseRate">0.00</strong></div>
+                <div class="eq-metric"><span>A + B collisions</span><strong id="forwardCollisions">0</strong></div>
+                <div class="eq-metric"><span>C + D collisions</span><strong id="reverseCollisions">0</strong></div>
+            </div>
+
+            <div class="eq-controls">
+                <div class="eq-control">
+                    <label>Temperature / particle speed</label>
+                    <input id="temperatureControl" type="range" min="0.4" max="2" step="0.1" value="1">
+                    <output id="temperatureValue">1.0&times;</output>
+                </div>
+                <div class="eq-control">
+                    <label>Initial reactants</label>
+                    <input id="reactantControl" type="range" min="2" max="14" step="1" value="8">
+                    <output id="reactantValue">8</output>
+                </div>
+                <div class="eq-control">
+                    <label>Initial products</label>
+                    <input id="productControl" type="range" min="0" max="10" step="1" value="0">
+                    <output id="productValue">0</output>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. KC -->
+    <section class="eq-section" id="kc">
+        <div class="eq-section-header">
+            <div class="eq-section-number">03</div>
+            <div><h2>The Equilibrium Constant (K<sub>c</sub>)</h2></div>
+        </div>
+        <p>
+            The <strong>equilibrium constant (Kc)</strong> expresses the ratio of product concentrations 
+            to reactant concentrations at equilibrium, with each concentration raised to its stoichiometric coefficient.
+        </p>
+        <div class="eq-formula">
+            <div class="eq-formula-main">For: aA + bB &rightleftharpoons; cC + dD</div>
+            <div class="eq-formula-main" style="margin-top:8px;">K<sub>c</sub> = ([C]<sup>c</sup>[D]<sup>d</sup>) / ([A]<sup>a</sup>[B]<sup>b</sup>)</div>
+            <span class="eq-formula-note">Pure solids (s) and pure liquids (l) are omitted from K<sub>c</sub> expressions.</span>
+        </div>
+        <div class="eq-highlight">
+            <strong>Interpreting Kc:</strong><br>
+            • Kc &gt;&gt; 1: Products are heavily favored (equilibrium lies far right).<br>
+            • Kc &lt;&lt; 1: Reactants are heavily favored (equilibrium lies far left).
+        </div>
+    </section>
+
+    <!-- 4. QC -->
+    <section class="eq-section" id="qc">
+        <div class="eq-section-header">
+            <div class="eq-section-number">04</div>
+            <div><h2>The Reaction Quotient (Q<sub>c</sub>)</h2></div>
+        </div>
+        <p>
+            Qc uses the exact same formula as Kc, but evaluates concentrations at <strong>any arbitrary time</strong>. 
+            Comparing Qc to Kc predicts shift direction:
+        </p>
+        <ul>
+            <li><strong>Qc &lt; Kc:</strong> Shifts <strong>Right</strong> (too few products).</li>
+            <li><strong>Qc = Kc:</strong> At <strong>Equilibrium</strong>.</li>
+            <li><strong>Qc &gt; Kc:</strong> Shifts <strong>Left</strong> (too many products).</li>
+        </ul>
+    </section>
+
+    <!-- 5. ICE TABLES -->
+    <section class="eq-section" id="ice">
+        <div class="eq-section-header">
+            <div class="eq-section-number">05</div>
+            <div><h2>ICE Table Calculations</h2></div>
+        </div>
+        <p>
+            An <strong>ICE table</strong> (Initial, Change, Equilibrium) tracks concentration changes using stoichiometry.
+        </p>
+        <div class="example-box">
+            <h4>Worked Calculation — ICE Table Example</h4>
+            <p>
+                Reaction: <code>H₂ (g) + I₂ (g) &rightleftharpoons; 2HI (g)</code>.<br>
+                0.50 mol of H₂ and 0.50 mol of I₂ are mixed in a 1.0 dm³ container. 
+                At equilibrium, [HI] = 0.39 mol/dm³. Find Kc.
+            </p>
+            <div class="table-wrap">
+                <table class="eq-table">
+                    <tr><th>Step</th><th>[H₂]</th><th>[I₂]</th><th>[2HI]</th></tr>
+                    <tr><td><strong>Initial</strong></td><td>0.50</td><td>0.50</td><td>0.00</td></tr>
+                    <tr><td><strong>Change</strong></td><td>−x</td><td>−x</td><td>+2x</td></tr>
+                    <tr><td><strong>Equilibrium</strong></td><td>0.305</td><td>0.305</td><td>0.39</td></tr>
+                </table>
+            </div>
+            <p>Solving gives x = 0.195, leading to equilibrium concentrations [H₂] = [I₂] = 0.305 and [HI] = 0.39.</p>
+            <div class="formula">
+                K<sub>c</sub> = (0.39)<sup>2</sup> / (0.305 × 0.305) = <strong>1.635</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. LE CHATELIER -->
+    <section class="eq-section" id="lechatelier">
+        <div class="eq-section-header">
+            <div class="eq-section-number">06</div>
+            <div><h2>Le Chatelier's Principle</h2></div>
+        </div>
+        <p>
+            If a dynamic equilibrium is disturbed by changing conditions, the system shifts to <strong>counteract</strong> 
+            that disturbance and re-establish equilibrium.
+        </p>
+    </section>
+
+    <!-- 7. CONCENTRATION GRAPH -->
+    <section class="eq-section" id="graphs">
+        <div class="eq-section-header">
+            <div class="eq-section-number">07</div>
+            <div><h2>Concentration vs Time Graph Animation</h2></div>
+        </div>
+        <p>
+            The canvas animation below graphs how reactant and product concentrations evolve over time until 
+            they flatten out at the green equilibrium marker.
+        </p>
+        <div class="eq-chart">
+            <canvas id="equilibriumGraph"></canvas>
+        </div>
+    </section>
+
+    <!-- 8. FACTORS -->
+    <section class="eq-section" id="factors">
+        <div class="eq-section-header">
+            <div class="eq-section-number">08</div>
+            <div><h2>Stress Factors & Shifts</h2></div>
+        </div>
+        <div class="table-wrap">
+            <table class="eq-table">
+                <tr><th>Stress</th><th>Shift Direction</th></tr>
+                <tr><td>Add Reactant / Remove Product</td><td>Shift <strong>Right</strong></td></tr>
+                <tr><td>Remove Reactant / Add Product</td><td>Shift <strong>Left</strong></td></tr>
+                <tr><td>Increase Pressure</td><td>Side with <strong>fewer gas moles</strong></td></tr>
+                <tr><td>Decrease Pressure</td><td>Side with <strong>more gas moles</strong></td></tr>
+                <tr><td>Increase Temperature</td><td>Favors <strong>Endothermic</strong> (+ΔH)</td></tr>
+                <tr><td>Decrease Temperature</td><td>Favors <strong>Exothermic</strong> (−ΔH)</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- 9. KSP -->
+    <section class="eq-section" id="ksp">
+        <div class="eq-section-header">
+            <div class="eq-section-number">09</div>
+            <div><h2>Solubility Product Constant (K<sub>sp</sub>)</h2></div>
+        </div>
+        <p>
+            For sparingly soluble salts: <code>AgCl (s) &rightleftharpoons; Ag⁺ (aq) + Cl⁻ (aq)</code><br>
+            Expression: <strong>Ksp = [Ag⁺][Cl⁻]</strong> (excluding solids).
+        </p>
+    </section>
+
+    <!-- 10. PRACTICE -->
+    <section class="eq-section" id="practice">
+        <div class="eq-section-header">
+            <div class="eq-section-number">10</div>
+            <div><h2>Exam Checklist</h2></div>
+        </div>
+        <ul>
+            <li>Equilibrium means <strong>equal rates</strong>, not equal concentrations.</li>
+            <li>Omit pure solids and liquids from Kc and Ksp expressions.</li>
+            <li>Only changes in <strong>temperature</strong> alter the numerical value of Kc.</li>
+        </ul>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="eq-ai">
+        <h2>Need help with Equilibrium?</h2>
+        <p>Ask Insite AI to solve ICE table calculations, write Kc expressions, or explain Le Chatelier shifts.</p>
+        <a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments"></i> Ask Insite AI</a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   1. DYNAMIC PARTICLE SIMULATION PHYSICS
+   ========================================================= */
+
+const canvas = document.getElementById("equilibriumCanvas");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+let temperatureMultiplier = 1;
+let forwardCount = 0;
+let reverseCount = 0;
+let forwardRate = 0;
+let reverseRate = 0;
+let lastRateUpdate = performance.now();
+
+const TYPES = {
+    A: { color: "#38bdf8", label: "A" },
+    B: { color: "#67e8f9", label: "B" },
+    C: { color: "#a78bfa", label: "C" },
+    D: { color: "#c4b5fd", label: "D" }
+};
+
+function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function random(min, max) { return Math.random() * (max - min) + min; }
+
+function createParticle(type) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        type,
+        x: random(25, rect.width - 25),
+        y: random(35, rect.height - 35),
+        vx: random(-1.2, 1.2),
+        vy: random(-1.2, 1.2),
+        radius: 12,
+        cooldown: 0
+    };
+}
+
+function createParticles() {
+    particles = [];
+    const reactants = Number(document.getElementById("reactantControl").value);
+    const products = Number(document.getElementById("productControl").value);
+
+    for (let i = 0; i < reactants; i++) {
+        particles.push(createParticle(i % 2 === 0 ? "A" : "B"));
+    }
+    for (let i = 0; i < products; i++) {
+        particles.push(createParticle(i % 2 === 0 ? "C" : "D"));
+    }
+}
+
+function separateParticles(p1, p2, distance) {
+    const minDistance = p1.radius + p2.radius + 2;
+    if (distance >= minDistance || distance === 0) return;
+
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const nx = dx / distance;
+    const ny = dy / distance;
+    const overlap = minDistance - distance;
+
+    p1.x -= nx * overlap / 2;
+    p1.y -= ny * overlap / 2;
+    p2.x += nx * overlap / 2;
+    p2.y += ny * overlap / 2;
+}
+
+function reactionPair(t1, t2) {
+    if ((t1 === "A" && t2 === "B") || (t1 === "B" && t2 === "A")) return "forward";
+    if ((t1 === "C" && t2 === "D") || (t1 === "D" && t2 === "C")) return "reverse";
+    return null;
+}
+
+function reactParticles(p1, p2, direction) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+    const nx = dx / distance;
+    const ny = dy / distance;
+    const separation = p1.radius + p2.radius + 5;
+
+    p1.x -= nx * 3;
+    p1.y -= ny * 3;
+    p2.x += nx * 3;
+    p2.y += ny * 3;
+
+    const centerX = (p1.x + p2.x) / 2;
+    const centerY = (p1.y + p2.y) / 2;
+
+    p1.type = direction === "forward" ? "C" : "A";
+    p2.type = direction === "forward" ? "D" : "B";
+
+    p1.x = centerX - nx * separation / 2;
+    p1.y = centerY - ny * separation / 2;
+    p2.x = centerX + nx * separation / 2;
+    p2.y = centerY + ny * separation / 2;
+
+    const speed = 1.1 * temperatureMultiplier;
+    p1.vx = -nx * speed + random(-.35, .35);
+    p1.vy = -ny * speed + random(-.35, .35);
+    p2.vx = nx * speed + random(-.35, .35);
+    p2.vy = ny * speed + random(-.35, .35);
+
+    p1.cooldown = 30;
+    p2.cooldown = 30;
+
+    if (direction === "forward") forwardCount++;
+    else reverseCount++;
+}
+
+function updateParticles() {
+    const rect = canvas.getBoundingClientRect();
+    for (const p of particles) {
+        if (p.cooldown > 0) p.cooldown--;
+        p.x += p.vx * temperatureMultiplier;
+        p.y += p.vy * temperatureMultiplier;
+
+        if (p.x - p.radius < 5 || p.x + p.radius > rect.width - 5) {
+            p.vx *= -1;
+            p.x = Math.max(p.radius + 5, Math.min(rect.width - p.radius - 5, p.x));
+        }
+        if (p.y - p.radius < 5 || p.y + p.radius > rect.height - 5) {
+            p.vy *= -1;
+            p.y = Math.max(p.radius + 5, Math.min(rect.height - p.radius - 5, p.y));
+        }
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            const p1 = particles[i];
+            const p2 = particles[j];
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            separateParticles(p1, p2, distance);
+
+            const minDistance = p1.radius + p2.radius;
+            if (distance <= minDistance + 3 && p1.cooldown <= 0 && p2.cooldown <= 0) {
+                const reaction = reactionPair(p1.type, p2.type);
+                if (reaction) {
+                    if (Math.random() < 0.13 * temperatureMultiplier) {
+                        reactParticles(p1, p2, reaction);
+                    } else {
+                        const nx = dx / (distance || 1);
+                        const ny = dy / (distance || 1);
+                        const relVel = (p1.vx - p2.vx) * nx + (p1.vy - p2.vy) * ny;
+                        p1.vx -= relVel * nx;
+                        p1.vy -= relVel * ny;
+                        p2.vx += relVel * nx;
+                        p2.vy += relVel * ny;
+                    }
+                }
+            }
+        }
+    }
+}
+
+function drawParticle(p) {
+    const data = TYPES[p.type];
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    
+    const gradient = ctx.createRadialGradient(p.x - 4, p.y - 4, 2, p.x, p.y, p.radius);
+    gradient.addColorStop(0, "#ffffff");
+    gradient.addColorStop(0.2, data.color);
+    gradient.addColorStop(1, data.color);
+
+    ctx.fillStyle = gradient;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = data.color;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "#07101e";
+    ctx.font = "800 10px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(data.label, p.x, p.y);
+}
+
+function drawCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    
+    ctx.strokeStyle = "rgba(148,163,184,.04)";
+    ctx.lineWidth = 1;
+    for (let x = 0; x < rect.width; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, rect.height); ctx.stroke();
+    }
+    for (let y = 0; y < rect.height; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(rect.width, y); ctx.stroke();
+    }
+
+    particles.forEach(drawParticle);
+}
+
+function updateRates() {
+    const now = performance.now();
+    if ((now - lastRateUpdate) / 1000 >= 1) {
+        forwardRate = forwardCount;
+        reverseRate = reverseCount;
+        forwardCount = 0;
+        reverseCount = 0;
+        lastRateUpdate = now;
+
+        document.getElementById("forwardRate").textContent = forwardRate.toFixed(2);
+        document.getElementById("reverseRate").textContent = reverseRate.toFixed(2);
+        document.getElementById("forwardCollisions").textContent = forwardRate;
+        document.getElementById("reverseCollisions").textContent = reverseRate;
+    }
+}
+
+function animateEquilibrium() {
+    updateParticles();
+    drawCanvas();
+    updateRates();
+    requestAnimationFrame(animateEquilibrium);
+}
+
+document.getElementById("temperatureControl").addEventListener("input", function() {
+    temperatureMultiplier = Number(this.value);
+    document.getElementById("temperatureValue").textContent = temperatureMultiplier.toFixed(1) + "×";
+});
+document.getElementById("reactantControl").addEventListener("input", function() {
+    document.getElementById("reactantValue").textContent = this.value;
+    createParticles();
+});
+document.getElementById("productControl").addEventListener("input", function() {
+    document.getElementById("productValue").textContent = this.value;
+    createParticles();
+});
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+createParticles();
+animateEquilibrium();
+
+/* =========================================================
+   2. CONCENTRATION VS TIME GRAPH ANIMATION
+   ========================================================= */
+
+const graphCanvas = document.getElementById("equilibriumGraph");
+const graphCtx = graphCanvas.getContext("2d");
+
+function drawEquilibriumGraph() {
+    const rect = graphCanvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    graphCanvas.width = rect.width * ratio;
+    graphCanvas.height = rect.height * ratio;
+    graphCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    const w = rect.width;
+    const h = rect.height;
+    graphCtx.clearRect(0, 0, w, h);
+
+    const padLeft = 48, padRight = 20, padTop = 20, padBottom = 38;
+
+    graphCtx.strokeStyle = "rgba(148,163,184,.08)";
+    graphCtx.lineWidth = 1;
+    for (let i = 0; i <= 5; i++) {
+        const y = padTop + ((h - padTop - padBottom) / 5) * i;
+        graphCtx.beginPath(); graphCtx.moveTo(padLeft, y); graphCtx.lineTo(w - padRight, y); graphCtx.stroke();
+    }
+
+    graphCtx.strokeStyle = "rgba(203,213,225,.35)";
+    graphCtx.beginPath();
+    graphCtx.moveTo(padLeft, padTop);
+    graphCtx.lineTo(padLeft, h - padBottom);
+    graphCtx.lineTo(w - padRight, h - padBottom);
+    graphCtx.stroke();
+
+    const width = w - padLeft - padRight;
+    const height = h - padTop - padBottom;
+
+    graphCtx.beginPath();
+    for (let i = 0; i <= 100; i++) {
+        const x = i / 100;
+        const value = 0.75 - 0.43 * (1 - Math.exp(-5 * x));
+        const px = padLeft + x * width;
+        const py = padTop + (1 - value) * height;
+        if (i === 0) graphCtx.moveTo(px, py); else graphCtx.lineTo(px, py);
+    }
+    graphCtx.strokeStyle = "#60a5fa";
+    graphCtx.lineWidth = 3;
+    graphCtx.stroke();
+
+    graphCtx.beginPath();
+    for (let i = 0; i <= 100; i++) {
+        const x = i / 100;
+        const value = 0.12 + 0.42 * (1 - Math.exp(-4 * x));
+        const px = padLeft + x * width;
+        const py = padTop + (1 - value) * height;
+        if (i === 0) graphCtx.moveTo(px, py); else graphCtx.lineTo(px, py);
+    }
+    graphCtx.strokeStyle = "#a78bfa";
+    graphCtx.lineWidth = 3;
+    graphCtx.stroke();
+
+    const eqX = padLeft + width * 0.65;
+    graphCtx.setLineDash([6, 6]);
+    graphCtx.strokeStyle = "rgba(52,211,153,.45)";
+    graphCtx.beginPath(); graphCtx.moveTo(eqX, padTop); graphCtx.lineTo(eqX, h - padBottom); graphCtx.stroke();
+    graphCtx.setLineDash([]);
+
+    graphCtx.fillStyle = "#94a3b8";
+    graphCtx.font = "11px Arial";
+    graphCtx.fillText("Concentration", 5, 15);
+    graphCtx.fillText("Time", w - 45, h - 10);
+
+    graphCtx.fillStyle = "#60a5fa";
+    graphCtx.fillText("Reactant", padLeft + 10, padTop + 15);
+
+    graphCtx.fillStyle = "#a78bfa";
+    graphCtx.fillText("Product", padLeft + 10, padTop + 32);
+
+    graphCtx.fillStyle = "#34d399";
+    graphCtx.fillText("Equilibrium", eqX + 7, padTop + 15);
+}
+
+window.addEventListener("resize", drawEquilibriumGraph);
+drawEquilibriumGraph();
+</script>
+
+{% endblock %}

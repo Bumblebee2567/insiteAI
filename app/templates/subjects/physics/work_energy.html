@@ -1,0 +1,661 @@
+{% extends "base.html" %}
+
+{% block title %}
+Work, Energy & Power | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-bolt"></i>
+            Work, Energy & Power
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering the definition of mechanical work, the work-energy theorem, 
+            conservative versus non-conservative forces, potential and kinetic energy conservation, and power output.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#work">Work Mechanics</a>
+        <a href="#theorem">Work-Energy Theorem</a>
+        <a href="#kinetic">Kinetic Energy</a>
+        <a href="#potential">Potential Energy</a>
+        <a href="#conservative">Conservative Forces</a>
+        <a href="#conservation">Energy Conservation</a>
+        <a href="#power">Power Output</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Energy Concepts</h2>
+        </div>
+        <p>
+            While Newton's laws of motion provide a complete vector framework for analyzing physical systems, solving complex 
+            dynamics problems involving varying forces or curved paths can become mathematically cumbersome. 
+            The energy approach provides an alternative scalar formulation based on the principle of conservation of energy.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Energy is a scalar quantity representing the capacity of a physical system to perform work or transfer heat. 
+            The law of conservation of energy states that energy can neither be created nor destroyed; it can only be transformed from one form to another or transferred between systems.
+        </div>
+    </section>
+
+    <!-- 02 WORK -->
+    <section class="phys-section" id="work">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Work Done by a Constant and Variable Force</h2>
+        </div>
+        <p>
+            In physics, work (W) is done when a force acts upon an object and causes a displacement along the line of action of the force.
+        </p>
+        <ul>
+            <li><strong>Constant Force:</strong> For a constant force vector F acting on an object undergoing a displacement vector delta x, work is defined as the scalar dot product:
+                <br><strong>W = vector F dot vector delta x = F * delta x * cos(theta)</strong><br>
+                where theta is the angle between the force vector and the displacement vector. Measured in Joules (J), where 1 J = 1 N&middot;m = 1 kg&middot;m<sup>2</sup>/s<sup>2</sup>.</li>
+            <li><strong>Sign of Work:</strong><br>
+                - If 0 degrees &le; theta &lt; 90 degrees, cos(theta) &gt; 0, so work is <strong>positive</strong> (energy is transferred into the system).<br>
+                - If theta = 90 degrees, cos(90 degrees) = 0, so work is <strong>zero</strong> (e.g., centripetal force or carrying a bucket horizontally).<br>
+                - If 90 degrees &lt; theta &le; 180 degrees, cos(theta) &lt; 0, so work is <strong>negative</strong> (energy is removed from the system, e.g., kinetic friction).</li>
+            <li><strong>Variable Force (Calculus):</strong> When force varies with position along a 1D path from x<sub>i</sub> to x<sub>f</sub>, work is calculated via definite integration:
+                <br><strong>W = integral from x<sub>i</sub> to x<sub>f</sub> of F(x) dx</strong> (equal to the area under the Force vs. Position curve).</li>
+        </ul>
+    </section>
+
+    <!-- 03 WORK-ENERGY THEOREM -->
+    <section class="phys-section" id="theorem">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>The Work-Energy Theorem</h2>
+        </div>
+        <p>
+            The work-energy theorem establishes the direct bridge between mechanical work and changes in an object's speed:
+        </p>
+        <div class="phys-info">
+            <strong>Statement:</strong><br>
+            The net work (W<sub>net</sub>) done by all external forces acting on a particle is equal to the exact change 
+            in the particle's kinetic energy (delta K):<br>
+            <strong>W<sub>net</sub> = K<sub>f</sub> - K<sub>i</sub> = delta K</strong>
+        </div>
+        <p>
+            This powerful theorem implies that if positive net work is done on an object, its kinetic energy increases (it speeds up). 
+            If negative net work is done, its kinetic energy decreases (it slows down).
+        </p>
+    </section>
+
+    <!-- 04 KINETIC ENERGY -->
+    <section class="phys-section" id="kinetic">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Kinetic Energy</h2>
+        </div>
+        <p>
+            Kinetic energy (K) is the energy associated with an object's state of motion:
+        </p>
+        <ul>
+            <li><strong>Translational Kinetic Energy:</strong> For an object of mass m moving with speed v:
+                <br><strong>K = (1/2) * m * v<sup>2</sup></strong></li>
+            <li><strong>Derivation via Newton's Second Law:</strong> 
+                Starting from W = integral of F dx where F = m(dv/dt) and dx = v dt:
+                <br>W = integral from v<sub>i</sub> to v<sub>f</sub> of m v dv = (1/2)m v<sub>f</sub><sup>2</sup> - (1/2)m v<sub>i</sub><sup>2</sup> = K<sub>f</sub> - K<sub>i</sub>.</li>
+        </ul>
+    </section>
+
+    <!-- 05 POTENTIAL ENERGY -->
+    <section class="phys-section" id="potential">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Potential Energy and Conservative Systems</h2>
+        </div>
+        <p>
+            Potential energy (U) is stored energy associated with the configuration or relative position of a system subject to conservative forces.
+        </p>
+        <ul>
+            <li><strong>Gravitational Potential Energy (Near Earth Surface):</strong> For an object of mass m at a vertical height y above a chosen reference datum:
+                <br><strong>U<sub>g</sub> = m * g * y</strong></li>
+            <li><strong>Elastic Potential Energy (Springs):</strong> For an ideal spring obeying Hooke's Law (F = -kx) stretched or compressed by a displacement x from its unstretched equilibrium position:
+                <br><strong>U<sub>s</sub> = (1/2) * k * x<sup>2</sup></strong><br>
+                where k is the spring constant (stiffness in N/m) and x is the displacement from equilibrium.</li>
+        </ul>
+    </section>
+
+    <!-- 06 CONSERVATIVE FORCES -->
+    <section class="phys-section" id="conservative">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Conservative vs. Non-Conservative Forces</h2>
+        </div>
+        <p>
+            Forces in physics are classified into two broad categories based on path dependence and energy dissipation:
+        </p>
+        <ul>
+            <li><strong>Conservative Forces:</strong> Forces for which the work done in moving an object between two points is completely independent of the path taken. Equivalently, the net work done by a conservative force around any closed loop is exactly zero. Examples include gravitational force, elastic spring force, and electrostatic Coulomb force.</li>
+            <li><strong>Non-Conservative Forces:</strong> Forces for which the work done depends explicitly on the path taken, and mechanical energy is dissipated into thermal or internal energy. Examples include kinetic friction, air resistance (drag), and applied tension from human muscles.</li>
+        </ul>
+    </section>
+
+    <!-- 07 CONSERVATION OF ENERGY -->
+    <section class="phys-section" id="conservation">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Conservation of Mechanical Energy</h2>
+        </div>
+        <p>
+            Total mechanical energy (E) of a system is defined as the sum of its kinetic energy and potential energy: 
+            <strong>E = K + U</strong>.
+        </p>
+        <ul>
+            <li><strong>Principle of Conservation:</strong> When only conservative forces act within an isolated system, the total mechanical energy remains strictly constant:
+                <br><strong>E<sub>i</sub> = E<sub>f</sub> &rarr; K<sub>i</sub> + U<sub>i</sub> = K<sub>f</sub> + U<sub>f</sub></strong></li>
+            <li><strong>Extension with Non-Conservative Forces (like Friction):</strong> When non-conservative forces such as friction do work (W<sub>nc</sub>), total mechanical energy changes by that exact amount:
+                <br><strong>W<sub>nc</sub> = delta E = E<sub>f</sub> - E<sub>i</sub> = (K<sub>f</sub> + U<sub>f</sub>) - (K<sub>i</sub> + U<sub>i</sub>)</strong></li>
+        </ul>
+    </section>
+
+    <!-- 08 POWER -->
+    <section class="phys-section" id="power">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Power Output and Efficiency</h2>
+        </div>
+        <p>
+            Power (P) measures the rate at which work is performed or at which energy is transferred or converted over time.
+        </p>
+        <ul>
+            <li><strong>Average Power:</strong> P<sub>avg</sub> = W / delta t = delta E / delta t. Measured in Watts (W), where 1 W = 1 J/s.</li>
+            <li><strong>Instantaneous Power:</strong> P = dW / dt = F * (dx / dt) = <strong>F * v</strong> (scalar product of force and instantaneous velocity).</li>
+            <li><strong>Mechanical Efficiency (eta):</strong> The ratio of useful power output to total power input: 
+                eta = (P<sub>out</sub> / P<sub>in</sub>) * 100 percent.</li>
+        </ul>
+    </section>
+
+    <!-- 09 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Interactive Work & Energy Test</h2>
+        </div>
+        <p>Test your conceptual understanding of energy conservation and the work-energy theorem.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Conservation of Energy Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    If an object is dropped from rest from a height h and falls freely to the ground (ignoring air resistance), 
+                    what is its speed just before impact?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">square root of (2gh)</option>
+                    <option value="wrong1">gh</option>
+                    <option value="wrong2">square root of (gh)</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">10</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Conservation of Energy on a Roller Coaster):</strong>
+            <p>A cart of mass m = 500 kg starts from rest at the top of a hill of height h<sub>1</sub> = 40.0 m. It rolls down the track, passing through a valley and then ascending a secondary hill of height h<sub>2</sub> = 15.0 m. (a) Calculate the speed of the cart at the top of the second hill. (b) Calculate the maximum speed achieved at the bottom of the valley (height y = 0). (Assume g = 9.81 m/s<sup>2</sup> and neglect friction).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Speed at Top of Second Hill ($h_2 = 15.0\text{ m}$):</strong><br>
+                - Conservation of Mechanical Energy: $E_i = E_f \implies K_i + U_i = K_f + U_f$.<br>
+                - Since initial speed $v_i = 0$, $K_i = 0$. Thus: $m g h_1 = \frac{1}{2}m v_f^2 + m g h_2$.<br>
+                - Mass $m$ cancels out: $g h_1 = \frac{1}{2}v_f^2 + g h_2 \implies v_f^2 = 2g(h_1 - h_2)$.<br>
+                - $v_f^2 = 2(9.81)(40.0 - 15.0) = 19.62(25.0) = 490.5$.<br>
+                - $v_f = \sqrt{490.5} =$ <strong>22.15 m/s</strong>.<br><br>
+                <strong>(b) Maximum Speed at Valley Bottom ($y = 0$):</strong><br>
+                - $m g h_1 = \frac{1}{2}m v_{max}^2 \implies v_{max} = \sqrt{2g h_1}$.<br>
+                - $v_{max} = \sqrt{2(9.81)(40.0)} = \sqrt{784.8} =$ <strong>28.01 m/s</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Work Done by Friction & Non-Conservative Forces):</strong>
+            <p>A 2.00 kg block slides across a horizontal table with an initial speed of 6.00 m/s. Due to kinetic friction, the block travels a distance of 4.00 m before coming to a complete stop. (a) Calculate the work done by friction on the block. (b) Determine the coefficient of kinetic friction ($\mu_k$) between the block and the table. (Assume $g = 9.81\text{ m/s}^2$).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Work Done by Friction:</strong><br>
+                - Using the Work-Energy Theorem ($W_{net} = \Delta K$):<br>
+                - $W_{friction} = K_f - K_i = 0 - \frac{1}{2}m v_i^2$.<br>
+                - $W_{friction} = -\frac{1}{2}(2.00\text{ kg})(6.00\text{ m/s})^2 = -1(36.0) =$ <strong>$-36.0\text{ Joules}$</strong>.<br><br>
+                <strong>(b) Coefficient of Kinetic Friction ($\mu_k$):</strong><br>
+                - Work by a constant friction force is also defined as $W = -f_k \cdot d = -\mu_k m g d$.<br>
+                - $-\mu_k m g d = -36.0 \implies \mu_k (2.00)(9.81)(4.00) = 36.0$.<br>
+                - $\mu_k (78.48) = 36.0 \implies \mu_k = \frac{36.0}{78.48} \approx$ <strong>0.459</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Power Output of an Elevator):</strong>
+            <p>An electric elevator motor lifts a total load of 1200 kg at a constant upward speed of 3.00 m/s. (a) What is the instantaneous mechanical power output required from the motor? (b) If the motor has an operational efficiency of 75.0 percent, what is the total electrical power input required from the mains supply? (Assume $g = 9.81\text{ m/s}^2$).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Mechanical Power Output ($P_{out}$):</strong><br>
+                - Since speed is constant, the upward force exerted by the motor equals the weight of the load: $F = mg = (1200\text{ kg})(9.81\text{ m/s}^2) = 11,772\text{ N}$.<br>
+                - Power $P = F \cdot v = (11,772\text{ N})(3.00\text{ m/s}) = 35,316\text{ W} =$ <strong>$35.3\text{ kW}$</strong>.<br><br>
+                <strong>(b) Total Electrical Power Input ($P_{in}$):</strong><br>
+                - Efficiency $\eta = \frac{P_{out}}{P_{in}} \times 100\% \implies P_{in} = \frac{P_{out}}{\eta} = \frac{35,316\text{ W}}{0.750} = 47,088\text{ W} =$ <strong>$47.1\text{ kW}$</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with work-energy principles or calculus integrals?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down variable force integration, conservative force gradients, or complex power efficiency calculations.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>By conservation of mechanical energy, initial potential energy mgh equals final kinetic energy (1/2)mv<sup>2</sup>. Solving for v yields v = square root of (2gh).</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Equating gravitational potential energy to kinetic energy gives mgh = (1/2)mv<sup>2</sup>. Mass cancels, leaving v = <strong>square root of (2gh)</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

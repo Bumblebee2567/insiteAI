@@ -1,0 +1,810 @@
+{% extends "base.html" %}
+
+{% block title %}
+Redox Reactions | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+html {
+    scroll-behavior: smooth;
+}
+
+.redox-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.redox-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.redox-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.redox-header p {
+    color: #9ca3af;
+    max-width: 780px;
+    margin: auto;
+    line-height: 1.7;
+}
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+.redox-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.redox-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.redox-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.redox-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.redox-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.redox-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.redox-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.redox-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.redox-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.redox-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.redox-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.redox-section p,
+.redox-section li {
+    color: #c9d1d9;
+    line-height: 1.75;
+}
+
+.redox-section ul {
+    padding-left: 22px;
+}
+
+.redox-section li {
+    margin-bottom: 7px;
+}
+
+.highlight,
+.exam-tip {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+}
+
+.highlight strong,
+.exam-tip strong {
+    color: #58a6ff;
+}
+
+.formula {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 16px;
+    margin: 15px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.08rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .92rem;
+    margin: 0;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 18px 0;
+}
+
+.redox-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+}
+
+.redox-table th,
+.redox-table td {
+    border: 1px solid #30363d;
+    padding: 12px;
+    text-align: left;
+}
+
+.redox-table th {
+    background: #0d1117;
+    color: #58a6ff;
+}
+
+.redox-table td {
+    color: #c9d1d9;
+    background: #161b22;
+}
+
+.equation-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 16px 0;
+    overflow-x: auto;
+}
+
+.equation-box .label {
+    color: #58a6ff;
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.equation-box code {
+    color: #ffffff;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.steps {
+    margin: 18px 0;
+}
+
+.step {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 15px 18px;
+    margin-bottom: 12px;
+    color: #c9d1d9;
+}
+
+.example-box {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.ask-ai {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+}
+
+@media (max-width: 768px) {
+    .redox-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .redox-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .redox-header p {
+        font-size: .92rem;
+    }
+
+    .redox-section {
+        padding: 18px;
+        border-radius: 13px;
+    }
+
+    .redox-section h2 {
+        font-size: 1.35rem;
+    }
+
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .redox-nav-wrapper {
+        top: 0;
+    }
+
+    .redox-nav a {
+        font-size: .82rem;
+        padding: 8px 12px;
+    }
+
+    .formula {
+        font-size: .95rem;
+        text-align: left;
+    }
+
+    .example-box,
+    .highlight,
+    .exam-tip {
+        padding: 15px;
+    }
+}
+</style>
+
+<div class="redox-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+    <div class="redox-header">
+        <h1><i class="fa-solid fa-right-left"></i> Redox Reactions</h1>
+        <p>
+            A comprehensive high-school guide to oxidation and reduction, oxidation state rules, 
+            oxidizing and reducing agents, balancing redox half-equations, displacement reactions, 
+            and redox titrations.
+        </p>
+    </div>
+
+    <div class="redox-nav-wrapper">
+        <nav class="redox-nav">
+            <a href="#overview">Overview</a>
+            <a href="#definitions">Definitions</a>
+            <a href="#oxidation-numbers">Oxidation States</a>
+            <a href="#rules">Rules</a>
+            <a href="#agents">Agents</a>
+            <a href="#half-equations">Half-Equations</a>
+            <a href="#balancing">Balancing Method</a>
+            <a href="#types">Types of Redox</a>
+            <a href="#displacement">Displacement</a>
+            <a href="#examples">Examples</a>
+            <a href="#titrations">Redox Titrations</a>
+            <a href="#applications">Applications</a>
+            <a href="#exam">Exam Tips</a>
+        </nav>
+    </div>
+
+    <section class="redox-section" id="overview">
+        <h2>1. What Are Redox Reactions?</h2>
+        <p>
+            A <strong>Redox</strong> reaction (short for <i>Reduction-Oxidation</i>) is a chemical 
+            process in which electrons are transferred between chemical species. Oxidation and 
+            reduction <strong>always occur simultaneously</strong>; one substance cannot be oxidized 
+            without another being reduced.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                <h4>Oxidation</h4>
+                <p>The loss of electrons, loss of hydrogen, or gain of oxygen during a reaction.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-down-to-bracket"></i>
+                <h4>Reduction</h4>
+                <p>The gain of electrons, gain of hydrogen, or loss of oxygen during a reaction.</p>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>Fundamental Rule:</strong>
+            The total number of electrons lost by the species being oxidized must equal the total number of electrons gained by the species being reduced.
+        </div>
+    </section>
+
+    <section class="redox-section" id="definitions">
+        <h2>2. Four Ways to Define Redox</h2>
+
+        <p>
+            Over time, chemistry has expanded the definition of redox reactions from simple oxygen 
+            gain to fundamental electron and oxidation state changes.
+        </p>
+
+        <div class="table-wrap">
+            <table class="redox-table">
+                <tr>
+                    <th>Basis</th>
+                    <th>Oxidation</th>
+                    <th>Reduction</th>
+                </tr>
+                <tr>
+                    <td><strong>Oxygen Transfer</strong></td>
+                    <td>Gain of oxygen</td>
+                    <td>Loss of oxygen</td>
+                </tr>
+                <tr>
+                    <td><strong>Hydrogen Transfer</strong></td>
+                    <td>Loss of hydrogen</td>
+                    <td>Gain of hydrogen</td>
+                </tr>
+                <tr>
+                    <td><strong>Electron Transfer</strong></td>
+                    <td>Loss of electrons</td>
+                    <td>Gain of electrons</td>
+                </tr>
+                <tr>
+                    <td><strong>Oxidation State</strong></td>
+                    <td>Increase in oxidation number</td>
+                    <td>Decrease in oxidation number</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="highlight">
+            <strong>Memory Mnemonics:</strong><br>
+            • <strong>OIL RIG:</strong> <u>O</u>xidation <u>I</u>s <u>L</u>oss, <u>R</u>eduction <u>I</u>s <u>G</u>ain (of electrons).<br>
+            • <strong>LEO says GER:</strong> <u>L</u>ose <u>E</u>lectrons = <u>O</u>xidation, <u>G</u>ain <u>E</u>lectrons = <u>R</u>eduction.
+        </div>
+    </section>
+
+    <section class="redox-section" id="oxidation-numbers">
+        <h2>3. Oxidation States (Oxidation Numbers)</h2>
+
+        <p>
+            An <strong>oxidation state</strong> (or oxidation number) is a integer assigned to an 
+            element in a molecule or ion that represents the hypothetical charge it would have 
+            if all bonds were 100% ionic.
+        </p>
+
+        <div class="formula">
+            Oxidation State = (Hypothetical charge on an atom in a compound)
+        </div>
+
+        <p>
+            Oxidation states are written with the sign <i>before</i> the number (e.g., +2 or -1), 
+            unlike ionic charges which are written with the sign <i>after</i> (e.g., 2+ or 1-).
+        </p>
+    </section>
+
+    <section class="redox-section" id="rules">
+        <h2>4. Rules for Assigning Oxidation Numbers</h2>
+
+        <div class="steps">
+            <div class="step">
+                <strong>1. Uncombined Elements:</strong> Any element in its uncombined state has an oxidation number of <strong>0</strong> (e.g., Na, Fe, O₂, Cl₂, P₄, S₈).
+            </div>
+            <div class="step">
+                <strong>2. Monatomic Ions:</strong> The oxidation number equals the charge on the ion (e.g., Na⁺ = +1, Mg²⁺ = +2, Cl⁻ = -1, O²⁻ = -2).
+            </div>
+            <div class="step">
+                <strong>3. Neutral Compounds:</strong> The sum of oxidation numbers of all atoms in a neutral compound must equal <strong>0</strong> (e.g., in H₂O: 2(+1) + (-2) = 0).
+            </div>
+            <div class="step">
+                <strong>4. Polyatomic Ions:</strong> The sum of oxidation numbers must equal the charge of the ion (e.g., in SO₄²⁻: sum = -2).
+            </div>
+            <div class="step">
+                <strong>5. Fluorine:</strong> Fluorine is the most electronegative element and always has an oxidation state of <strong>-1</strong> in all compounds.
+            </div>
+            <div class="step">
+                <strong>6. Hydrogen:</strong> Hydrogen is <strong>+1</strong> when bonded to non-metals (e.g., HCl, H₂O) and <strong>-1</strong> in metal hydrides (e.g., NaH, CaH₂).
+            </div>
+            <div class="step">
+                <strong>7. Oxygen:</strong> Oxygen is usually <strong>-2</strong> in compounds, except in peroxides like H₂O₂ (-1) and when bonded to fluorine in OF₂ (+2).
+            </div>
+        </div>
+
+        <div class="exam-tip">
+            <strong>Exam Tip:</strong> Group 1 metals are always +1, Group 2 metals are always +2, and Aluminium is always +3 in compounds.
+        </div>
+    </section>
+
+    <section class="redox-section" id="agents">
+        <h2>5. Oxidizing and Reducing Agents</h2>
+
+        <p>
+            Because redox reactions involve electron transfer, reactants play complimentary roles as 
+            electron acceptors or electron donors.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-plus-minus"></i>
+                <h4>Oxidizing Agent (Oxidant)</h4>
+                <p>Accepts electrons and oxidizes another species. The oxidizing agent itself gets <strong>reduced</strong> (its oxidation state decreases).</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-minus"></i>
+                <h4>Reducing Agent (Reductant)</h4>
+                <p>Donates electrons and reduces another species. The reducing agent itself gets <strong>oxidized</strong> (its oxidation state increases).</p>
+            </div>
+        </div>
+
+        <h3>Common Laboratory Agents</h3>
+
+        <div class="table-wrap">
+            <table class="redox-table">
+                <tr>
+                    <th>Agent Type</th>
+                    <th>Common Chemical</th>
+                    <th>Color Change / Role</th>
+                </tr>
+                <tr>
+                    <td><strong>Oxidizing Agent</strong></td>
+                    <td>Acidified KMnO₄ (Potassium Manganate VII)</td>
+                    <td>Purple (MnO₄⁻) → Colorless (Mn²⁺)</td>
+                </tr>
+                <tr>
+                    <td><strong>Oxidizing Agent</strong></td>
+                    <td>Acidified K₂Cr₂O₇ (Potassium Dichromate VI)</td>
+                    <td>Orange (Cr₂O₇²⁻) → Green (Cr³⁺)</td>
+                </tr>
+                <tr>
+                    <td><strong>Reducing Agent</strong></td>
+                    <td>KI (Potassium Iodide)</td>
+                    <td>Colorless (I⁻) → Brown (I₂)</td>
+                </tr>
+                <tr>
+                    <td><strong>Reducing Agent</strong></td>
+                    <td>Reactive Metals (e.g., Zn, Mg)</td>
+                    <td>Solid metal dissolves to form cations</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section class="redox-section" id="half-equations">
+        <h2>6. Half-Equations</h2>
+
+        <p>
+            A half-equation shows only the oxidation or reduction part of a redox reaction, highlighting 
+            the gain or loss of electrons.
+        </p>
+
+        <h3>Oxidation Half-Equation</h3>
+        <p>Electrons appear on the <strong>product side</strong> (right side) as they are lost.</p>
+        <div class="equation-box">
+            <div class="label">Oxidation of Zinc</div>
+            <code>Zn (s) → Zn²⁺ (aq) + 2e⁻</code>
+        </div>
+
+        <h3>Reduction Half-Equation</h3>
+        <p>Electrons appear on the <strong>reactant side</strong> (left side) as they are gained.</p>
+        <div class="equation-box">
+            <div class="label">Reduction of Copper(II)</div>
+            <code>Cu²⁺ (aq) + 2e⁻ → Cu (s)</code>
+        </div>
+
+        <h3>Overall Balanced Redox Equation</h3>
+        <p>Combine both half-equations so that electrons cancel out completely:</p>
+        <div class="equation-box">
+            <div class="label">Net Ionic Equation</div>
+            <code>Zn (s) + Cu²⁺ (aq) → Zn²⁺ (aq) + Cu (s)</code>
+        </div>
+    </section>
+
+    <section class="redox-section" id="balancing">
+        <h2>7. Method for Balancing Complex Redox Equations</h2>
+
+        <p>
+            For complex reactions in acidic aqueous solutions (involving polyatomic ions like 
+            MnO₄⁻ or Cr₂O₇²⁻), follow the systematic <strong>Ion-Electron Method</strong>:
+        </p>
+
+        <div class="steps">
+            <div class="step"><strong>Step 1:</strong> Split the reaction into two half-reactions (oxidation and reduction).</div>
+            <div class="step"><strong>Step 2:</strong> Balance all elements EXCEPT hydrogen and oxygen.</div>
+            <div class="step"><strong>Step 3:</strong> Balance Oxygen atoms by adding <strong>H₂O</strong> molecules to the oxygen-deficient side.</div>
+            <div class="step"><strong>Step 4:</strong> Balance Hydrogen atoms by adding <strong>H⁺</strong> ions to the hydrogen-deficient side.</div>
+            <div class="step"><strong>Step 5:</strong> Balance the net charge by adding electrons (<strong>e⁻</strong>) to the more positive side.</div>
+            <div class="step"><strong>Step 6:</strong> Multiply half-reactions by integers so both have the same number of electrons.</div>
+            <div class="step"><strong>Step 7:</strong> Add the half-reactions together and cancel identical species (H⁺, H₂O, e⁻) on both sides.</div>
+        </div>
+    </section>
+
+    <section class="redox-section" id="types">
+        <h2>8. Major Types of Redox Reactions</h2>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-fire"></i>
+                <h4>Combustion</h4>
+                <p>A fuel reacts rapidly with oxygen to release energy. Oxygen is reduced from 0 to -2.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <h4>Displacement</h4>
+                <p>A more reactive element displaces a less reactive element from its compound.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-layer-group"></i>
+                <h4>Synthesis / Combination</h4>
+                <p>Two elements combine directly to form a single compound (e.g., 2Na + Cl₂ → 2NaCl).</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-recycle"></i>
+                <h4>Disproportionation</h4>
+                <p>A single species is simultaneously oxidized and reduced in the same reaction.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="redox-section" id="displacement">
+        <h2>9. Displacement Reactions</h2>
+
+        <p>
+            In metal displacement, a more electropositive metal donates electrons to the ions of 
+            a less reactive metal.
+        </p>
+
+        <h3>Metal Reactivity Series Trend</h3>
+        <p>
+            Metals high in the reactivity series (e.g., K, Na, Mg, Zn) lose electrons easily and 
+            act as <strong>strong reducing agents</strong>.
+        </p>
+
+        <div class="equation-box">
+            <div class="label">Iron displacing Copper</div>
+            <code>Fe (s) + CuSO₄ (aq) → FeSO₄ (aq) + Cu (s)</code>
+        </div>
+
+        <h3>Halogen Displacement</h3>
+        <p>
+            More electronegative halogens displace less reactive halide ions from solution:
+        </p>
+
+        <div class="equation-box">
+            <div class="label">Chlorine displacing Bromide</div>
+            <code>Cl₂ (g) + 2KBr (aq) → 2KCl (aq) + Br₂ (aq)</code>
+        </div>
+        <p>Chlorine is reduced (0 → -1) and bromide is oxidized (-1 → 0).</p>
+    </section>
+
+    <section class="redox-section" id="examples">
+        <h2>10. Worked Examples</h2>
+
+        <div class="example-box">
+            <h4>Example 1 — Determining Oxidation Numbers</h4>
+            <p>Find the oxidation state of Chromium in <strong>K₂Cr₂O₇</strong>.</p>
+            
+            <p><strong>Step 1:</strong> Identify known oxidation numbers: Potassium (Group 1) = +1, Oxygen = -2.</p>
+            <p><strong>Step 2:</strong> Set up algebraic equation (neutral compound sum = 0):</p>
+            <div class="formula">
+                2(+1) + 2(Cr) + 7(-2) = 0
+            </div>
+            <div class="formula">
+                +2 + 2(Cr) - 14 = 0  ⇒  2(Cr) = +12  ⇒  Cr = +6
+            </div>
+            <p><strong>Answer:</strong> Chromium is in the <strong>+6</strong> oxidation state.</p>
+        </div>
+
+        <div class="example-box">
+            <h4>Example 2 — Disproportionation Reaction</h4>
+            <p>Examine the decomposition of Hydrogen Peroxide: <code>2H₂O₂ (aq) → 2H₂O (l) + O₂ (g)</code></p>
+            <p><strong>Oxidation state of O in H₂O₂:</strong> -1</p>
+            <p><strong>Oxidation state of O in H₂O:</strong> -2 (Reduced: -1 → -2)</p>
+            <p><strong>Oxidation state of O in O₂:</strong> 0 (Oxidized: -1 → 0)</p>
+            <p><strong>Conclusion:</strong> Oxygen is both oxidized and reduced; this is a <strong>disproportionation reaction</strong>.</p>
+        </div>
+    </section>
+
+    <section class="redox-section" id="titrations">
+        <h2>11. Redox Titrations</h2>
+
+        <p>
+            Redox titrations determine the concentration of an unknown oxidizing or reducing agent 
+            by reacting it with a standard solution of known concentration.
+        </p>
+
+        <h3>Potassium Manganate(VII) Titrations</h3>
+        <p>
+            Acidified KMnO₄ is a self-indicating oxidizing agent used to determine concentrations of Fe²⁺ or C₂O₄²⁻ ions.
+        </p>
+
+        <div class="equation-box">
+            <div class="label">Manganate Half-Equation</div>
+            <code>MnO₄⁻ (aq) + 8H⁺ (aq) + 5e⁻ → Mn²⁺ (aq) + 4H₂O (l)</code>
+        </div>
+
+        <div class="highlight">
+            <strong>End Point:</strong>
+            The titration turns from colorless to a permanent faint pink when all reducing agent is consumed and one excess drop of MnO₄⁻ remains.
+        </div>
+    </section>
+
+    <section class="redox-section" id="applications">
+        <h2>12. Real-World Applications</h2>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-battery-three-quarters"></i>
+                <h4>Batteries & Fuel Cells</h4>
+                <p>Spontaneous redox reactions separate electron flow to create electric current.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>Corrosion & Rusting</h4>
+                <p>Iron oxidizes in the presence of water and oxygen: 4Fe + 3O₂ + 2xH₂O → 2Fe₂O₃·xH₂O.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-leaf"></i>
+                <h4>Biological Energy</h4>
+                <p>Respiration oxidizes glucose to CO₂; photosynthesis reduces CO₂ to carbohydrates.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-industry"></i>
+                <h4>Metallurgy</h4>
+                <p>Extracting metals from ores by reduction (e.g., reducing iron ore with CO in a blast furnace).</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="redox-section" id="exam">
+        <h2>13. Exam Checklist</h2>
+
+        <ul>
+            <li>Remember OIL RIG and LEO says GER for electron transfers.</li>
+            <li>Assign oxidation state of 0 to pure elements (O₂, H₂, Cu).</li>
+            <li>Check that charges and atoms are balanced on both sides of half-equations.</li>
+            <li>In acid solutions, balance O using H₂O and H using H⁺.</li>
+            <li>The species oxidized is the REDUCING agent; the species reduced is the OXIDIZING agent.</li>
+            <li>Roman numerals in chemical names denote oxidation states (e.g., Iron(III) Chloride = Fe³⁺).</li>
+            <li>Multiply half-reactions to balance electrons before adding them together.</li>
+        </ul>
+
+        <div class="exam-tip">
+            <strong>Core Memory Line:</strong>
+            Oxidation = Gain of O, Loss of H/e⁻, Increase in Oxidation State.<br>
+            Reduction = Loss of O, Gain of H/e⁻, Decrease in Oxidation State.
+        </div>
+    </section>
+
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Need More Help?</h3>
+        <p>
+            Ask Insite AI to explain redox concepts, find oxidation numbers, 
+            balance complex half-equations, or guide you through a titration calculation.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i>
+            Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

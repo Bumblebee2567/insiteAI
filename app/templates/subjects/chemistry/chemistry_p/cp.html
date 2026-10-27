@@ -1,0 +1,781 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chemistry Practicals | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — CHEMISTRY PRACTICALS
+   BLUE DARK UNIFIED STYLING
+   Fully responsive — no horizontal overflow
+   ========================================================= */
+
+:root {
+    --pr-bg: #0d1117;
+    --pr-panel: #161b22;
+    --pr-panel-light: #1f2937;
+    --pr-border: #30363d;
+    --pr-border-hover: rgba(56, 189, 248, 0.4);
+    
+    --pr-text: #f8fafc;
+    --pr-muted: #94a3b8;
+
+    --pr-blue: #38bdf8;
+    --pr-blue-dark: #0369a1;
+    --pr-green: #34d399;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: var(--pr-bg);
+    color: var(--pr-text);
+}
+
+.practical-page {
+    width: min(1100px, calc(100% - 32px));
+    margin: 30px auto 70px;
+}
+
+/* BACK BUTTON */
+.practical-back {
+    position: fixed;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--pr-border);
+    border-radius: 22px;
+    background: var(--pr-panel);
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.practical-back:hover {
+    transform: translateX(-4px);
+    border-color: var(--pr-blue);
+    color: white;
+}
+
+/* HEADER */
+.practical-header {
+    text-align: center;
+    padding: 30px 15px;
+    margin-bottom: 25px;
+}
+
+.practical-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    font-weight: 850;
+    letter-spacing: -1px;
+}
+
+.practical-header h1 i {
+    color: var(--pr-blue);
+    margin-right: 8px;
+}
+
+.practical-header p {
+    max-width: 780px;
+    margin: 15px auto 0;
+    color: var(--pr-muted);
+    line-height: 1.7;
+    font-size: .98rem;
+}
+
+/* INTRO */
+.practical-intro {
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid var(--pr-border);
+    border-radius: 15px;
+    background: var(--pr-panel);
+}
+
+.practical-intro h2 {
+    margin: 0 0 10px;
+    color: var(--pr-blue);
+    font-size: 1.3rem;
+}
+
+.practical-intro p {
+    margin: 0;
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+/* SECTION TITLE */
+.practical-section-title {
+    margin: 40px 0 18px;
+    color: white;
+    font-size: 1.45rem;
+    font-weight: 800;
+    border-bottom: 1px solid var(--pr-border);
+    padding-bottom: 8px;
+}
+
+.practical-section-title span {
+    color: var(--pr-blue);
+    margin-right: 6px;
+}
+
+/* PRACTICAL GRID & CARDS */
+.practical-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.practical-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    border: 1px solid var(--pr-border);
+    border-radius: 15px;
+    background: var(--pr-panel);
+    transition: transform .25s ease, border-color .25s ease, background-color .25s ease;
+}
+
+.practical-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--pr-border-hover);
+    background: var(--pr-panel-light);
+}
+
+.practical-icon {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, .1);
+    border: 1px solid rgba(56, 189, 248, .2);
+    color: var(--pr-blue);
+    font-size: 20px;
+}
+
+.practical-card h3 {
+    margin: 0 0 8px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.practical-card p {
+    margin: 0 0 20px;
+    color: var(--pr-muted);
+    line-height: 1.6;
+    font-size: .9rem;
+}
+
+.practical-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto;
+    padding: 10px 14px;
+    border: 1px solid rgba(56, 189, 248, .25);
+    border-radius: 9px;
+    background: #0d1a2d;
+    color: var(--pr-blue);
+    text-decoration: none;
+    font-size: .86rem;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.practical-button:hover {
+    background: var(--pr-blue);
+    color: #0d1117;
+    border-color: var(--pr-blue);
+}
+
+/* =========================================================
+   MATHEMATICAL TITRATION CALCULATOR COMPONENT
+   ========================================================= */
+
+.calc-box {
+    background: #0d1524;
+    border: 1px solid var(--pr-border);
+    border-radius: 15px;
+    padding: 22px;
+    margin-top: 20px;
+}
+
+.calc-box h4 {
+    margin-top: 0;
+    color: var(--pr-blue);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.calc-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.calc-input-group label {
+    font-size: 0.8rem;
+    color: var(--pr-muted);
+    margin-bottom: 6px;
+}
+
+.calc-input-group input {
+    background: var(--pr-panel);
+    border: 1px solid var(--pr-border);
+    border-radius: 8px;
+    color: white;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+.calc-input-group input:focus {
+    border-color: var(--pr-blue);
+    outline: none;
+}
+
+.calc-result {
+    background: var(--pr-panel);
+    border-left: 4px solid var(--pr-green);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.calc-result-title {
+    font-size: 0.78rem;
+    color: var(--pr-green);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.calc-result-math {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.calc-steps {
+    font-size: 0.85rem;
+    color: var(--pr-muted);
+    line-height: 1.5;
+    font-family: monospace;
+}
+
+/* ASK INSITE AI */
+.practical-ai {
+    margin-top: 40px;
+    padding: 30px;
+    border: 1px solid rgba(56, 189, 248, 0.18);
+    border-radius: 18px;
+    background: radial-gradient(circle at top, rgba(56, 189, 248, 0.1), transparent 55%), var(--pr-panel);
+    text-align: center;
+}
+
+.practical-ai i {
+    color: var(--pr-blue);
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.practical-ai h3 {
+    margin: 0 0 10px;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.practical-ai p {
+    max-width: 650px;
+    margin: 0 auto 18px;
+    color: var(--pr-muted);
+    line-height: 1.7;
+}
+
+.practical-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 19px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #38bdf8, #0284c7);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.practical-ai a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.25);
+}
+
+/* =========================================================
+   MEDIA RESPONSIVENESS
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .practical-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .calc-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .practical-page {
+        width: calc(100% - 20px);
+    }
+
+    .practical-header {
+        padding: 25px 5px;
+    }
+
+    .practical-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .practical-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .practical-card {
+        padding: 18px;
+    }
+
+    .practical-back {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+
+<div class="practical-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="practical-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+    <!-- HEADER -->
+    <header class="practical-header">
+        <h1>
+            <i class="fa-solid fa-flask"></i>
+            Chemistry Practicals
+        </h1>
+        <p>
+            Explore hands-on laboratory methodologies, qualitative/quantitative testing standards, dynamic procedural checklists, and analytical calculations.
+        </p>
+    </header>
+
+    <!-- INTRO -->
+    <div class="practical-intro">
+        <h2>Explore Chemistry in the Laboratory</h2>
+        <p>
+            Select an experimental module below to review necessary apparatus, dynamic procedures, qualitative observations, safety considerations, and mathematical error evaluations.
+        </p>
+    </div>
+
+    <!-- =====================================================
+         01. ACIDS, BASES AND SALTS
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>01.</span> Acids, Bases &amp; Salts
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-vial"></i>
+            </div>
+            <h3>Acid-Base Reactions</h3>
+            <p>Study chemical transformations between strong/weak acids and bases, indicators, and neutralisation thermodynamics.</p>
+            <a href="{{ url_for('c_abs') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+            <h3>Indicators &amp; pH</h3>
+            <p>Investigate pH transitions of common organic indicators and analyze safe colorimetric scales.</p>
+            <a href="{{ url_for('p_h') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-flask-vial"></i>
+            </div>
+            <h3>Preparation of Salts</h3>
+            <p>Review standard techniques for isolating soluble salts (evaporative crystallization) and insoluble salts (precipitation).</p>
+            <a href="{{ url_for('salts') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         02. VOLUMETRIC ANALYSIS
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>02.</span> Volumetric Analysis
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-flask"></i>
+            </div>
+            <h3>Titration Methodology</h3>
+            <p>Master precise standard volumetric titrations using burettes, pipettes, and stoichiometric indicators.</p>
+            <a href="{{ url_for('titration_methodology') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3>Concentration Calculations</h3>
+            <p>Convert volumetric results into exact concentrations using molar ratios, dilution formulas, and error limits.</p>
+            <a href="{{ url_for('concentration_calculations') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-flask-round-poison"></i>
+            </div>
+            <h3>Standard Solutions</h3>
+            <p>Formulate and weigh precise primary standards in volumetric flasks to set as control concentrations.</p>
+            <a href="{{ url_for('standard_solutions') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         03. QUALITATIVE ANALYSIS
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>03.</span> Qualitative Analysis
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <h3>Tests for Cations</h3>
+            <p>Identify unknown metal cations through distinct precipitation patterns using sodium hydroxide and aqueous ammonia.</p>
+            <a href="{{ url_for('tests_for_cations') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-vial-circle-check"></i>
+            </div>
+            <h3>Tests for Anions</h3>
+            <p>Detect halides, sulfates, sulfites, nitrates and carbonates through acidic gas development or silver/barium complexes.</p>
+            <a href="{{ url_for('cation') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-fire-flame-simple"></i>
+            </div>
+            <h3>Flame Emission Tests</h3>
+            <p>Observe characteristic spectral emission colors of group 1 &amp; 2 elements under a Bunsen burner flame.</p>
+            <a href="{{ url_for('flame') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-cloud"></i>
+            </div>
+            <h3>Gas Evolution Tests</h3>
+            <p>Diagnose chemical gases (carbon dioxide, chlorine, oxygen, hydrogen, and ammonia) with test papers and splints.</p>
+            <a href="{{ url_for('gas_s') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         04. SEPARATION TECHNIQUES
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>04.</span> Separation &amp; Purification
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-filter"></i>
+            </div>
+            <h3>Filtration &amp; Washing</h3>
+            <p>Separate suspended solids from liquids utilizing gravity or vacuum suction filtration setups.</p>
+            <a href="{{ url_for('filter') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-temperature-arrow-up"></i>
+            </div>
+            <h3>Distillation Columns</h3>
+            <p>Separate mixtures of volatile organic liquids based on different boiling points (fractional and simple setups).</p>
+            <a href="{{ url_for('distil') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3>Chromatography Rf</h3>
+            <p>Evaluate retention factors (R_f) of compounds separated along solid phases using chemical solvents.</p>
+            <a href="{{ url_for('rf') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         05. ORGANIC CHEMISTRY PRACTICALS
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>05.</span> Organic Chemistry Practicals
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-atom"></i>
+            </div>
+            <h3>Organic Characterization</h3>
+            <p>Distinguish alkanes, alkenes and terminal compounds using halogenation and oxidizing agents.</p>
+            <a href="{{ url_for('org1') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-fire"></i>
+            </div>
+            <h3>Combustion Profiles</h3>
+            <p>Evaluate degree of unsaturation by observing soot levels and thermodynamic properties in burner tests.</p>
+            <a href="{{ url_for('combust') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-flask"></i>
+            </div>
+            <h3>Functional Group Diagnostics</h3>
+            <p>Identify aldehydes, ketones, and carboxylic acids using Tollens', Fehling's, and carbonate reagents.</p>
+            <a href="{{ url_for('fg') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         06. REDOX & ELECTROCHEMISTRY
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>06.</span> Redox &amp; Electrochemistry
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h3>Electrochemical Cells</h3>
+            <p>Trace charge transfers and analyze chemical products generated during aqueous electrolysis.</p>
+            <a href="{{ url_for('ecells') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+            <h3>Redox Titrations</h3>
+            <p>Carry out standard redox calculations using potassium manganate (KMnO<sub>4</sub>) as a self-indicating oxidizer.</p>
+            <a href="{{ url_for('redoxt') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         07. GENERAL LABORATORY SKILLS
+         ===================================================== -->
+    <h2 class="practical-section-title">
+        <span>07.</span> Laboratory Skills
+    </h2>
+
+    <div class="practical-grid">
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-ruler"></i>
+            </div>
+            <h3>Measurements &amp; Tolerance</h3>
+            <p>Manage raw experimental readings while accounting for equipment uncertainty and standard error propagation.</p>
+            <a href="{{ url_for('mt') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-flask"></i>
+            </div>
+            <h3>Apparatus Catalog</h3>
+            <p>Catalog common glassware, heating elements, vacuum sensors and analytical balances.</p>
+            <a href="{{ url_for('apcat') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="practical-card">
+            <div class="practical-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3>Safety &amp; Chemical Hazards</h3>
+            <p>Implement proper safety wear, ventilation protocols and solid waste disposal standards.</p>
+            <a href="{{ url_for('hazard') }}" class="practical-button">
+                Study Practical
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ASK INSITE AI -->
+    <div class="practical-ai">
+        <i class="fa-solid fa-comments"></i>
+        <h3>Need help with a Chemistry Practical?</h3>
+        <p>Ask Insite AI to explain experiment mechanisms, clarify safety parameters, interpret experimental data, or work out stoichiometry calculations.</p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   TITRATION CALCULATOR JAVASCRIPT
+   ========================================================= */
+
+const acidVolInput = document.getElementById("acidVolume");
+const baseMolInput = document.getElementById("baseMolarity");
+const baseVolInput = document.getElementById("baseVolume");
+
+const calculatedMolarityText = document.getElementById("calculatedMolarity");
+const calculationStepsText = document.getElementById("calculationSteps");
+
+function updateTitrationCalculation() {
+    const Va = parseFloat(acidVolInput.value);
+    const Mb = parseFloat(baseMolInput.value);
+    const Vb = parseFloat(baseVolInput.value);
+
+    if (isNaN(Va) || isNaN(Mb) || isNaN(Vb) || Va <= 0 || Mb <= 0 || Vb <= 0) {
+        calculatedMolarityText.textContent = "Invalid values";
+        calculationStepsText.textContent = "Please provide positive numbers for all fields.";
+        return;
+    }
+
+    // Formula: Ma = (Mb * Vb) / Va
+    const Ma = (Mb * Vb) / Va;
+
+    calculatedMolarityText.textContent = Ma.toFixed(4) + " M";
+    
+    calculationStepsText.innerHTML = 
+        `M_a = (M_b × V_b) / V_a<br>` +
+        `M_a = ({Mb.toFixed(3)} M × {Vb.toFixed(1)} mL) / {Va.toFixed(1)} mL<br>` +
+        `M_a = {Ma.toFixed(4)} mol/dm³`;
+}
+
+acidVolInput.addEventListener("input", updateTitrationCalculation);
+baseMolInput.addEventListener("input", updateTitrationCalculation);
+baseVolInput.addEventListener("input", updateTitrationCalculation);
+
+// Trigger initial on load
+updateTitrationCalculation();
+</script>
+
+{% endblock %}

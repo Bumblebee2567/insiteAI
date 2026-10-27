@@ -1,0 +1,1770 @@
+{% extends "base.html" %}
+
+{% block title %}
+Stoichiometry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.stoich-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+
+.stoich-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.stoich-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.stoich-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+
+.stoich-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.stoich-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.stoich-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.stoich-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.stoich-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.stoich-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.stoich-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+
+.stoich-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.stoich-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.stoich-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.stoich-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.stoich-section p {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.stoich-section li {
+    color: #c9d1d9;
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+/* HIGHLIGHT */
+
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* EXAMPLES */
+
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.example-box p {
+    margin-bottom: 8px;
+}
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 13px 16px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+}
+
+/* TABLE */
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.stoich-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.stoich-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.stoich-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+/* GRID */
+
+.stoich-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.stoich-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.stoich-card i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.stoich-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.stoich-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* STEP BOX */
+
+.step-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.step-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    background: #161b22;
+    border: 1px solid #3b82f6;
+    border-radius: 50%;
+    color: #58a6ff;
+    font-weight: 700;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .stoich-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .stoich-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .stoich-section {
+        padding: 18px;
+    }
+
+    .stoich-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stoich-nav-wrapper {
+        top: 0;
+    }
+
+}
+
+</style>
+
+
+<div class="stoich-page">
+
+    <!-- BACK -->
+
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+
+        <i class="fas fa-arrow-left"></i>
+
+        Back to Chemistry
+
+    </a>
+
+
+    <!-- HEADER -->
+
+    <div class="stoich-header">
+
+        <h1>Stoichiometry</h1>
+
+        <p>
+            A complete guide to the quantitative relationships between
+            reactants and products in chemical reactions, including moles,
+            molar mass, balanced equations, mole ratios, limiting reactants,
+            empirical formulae, molecular formulae, percentage yield,
+            concentration and chemical calculations.
+        </p>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="stoich-nav-wrapper">
+
+        <nav class="stoich-nav">
+
+            <a href="#introduction">Introduction</a>
+
+            <a href="#conservation">Conservation</a>
+
+            <a href="#moles">Moles</a>
+
+            <a href="#molar-mass">Molar Mass</a>
+
+            <a href="#particles">Particles</a>
+
+            <a href="#equations">Equations</a>
+
+            <a href="#ratios">Mole Ratios</a>
+
+            <a href="#mass-mass">Mass Calculations</a>
+
+            <a href="#empirical">Empirical Formula</a>
+
+            <a href="#molecular">Molecular Formula</a>
+
+            <a href="#limiting">Limiting Reactants</a>
+
+            <a href="#excess">Excess Reactants</a>
+
+            <a href="#yield">Percentage Yield</a>
+
+            <a href="#concentration">Concentration</a>
+
+            <a href="#titration">Titration</a>
+
+            <a href="#gas">Gas Stoichiometry</a>
+
+            <a href="#percentage">Percentage Composition</a>
+
+            <a href="#problems">Word Problems</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- INTRODUCTION -->
+
+    <section class="stoich-section" id="introduction">
+
+        <h2>1. What Is Stoichiometry?</h2>
+
+        <p>
+            Stoichiometry is the part of chemistry concerned with measuring
+            the amounts of substances involved in chemical reactions.
+        </p>
+
+        <p>
+            In simple terms, stoichiometry answers questions such as:
+            How much reactant is needed? How much product will be formed?
+            Which reactant will run out first? How many moles are involved?
+            How much mass is produced?
+        </p>
+
+        <div class="highlight">
+
+            <strong>Central idea:</strong>
+
+            A balanced chemical equation provides the quantitative relationship
+            between the substances participating in a reaction.
+
+        </div>
+
+        <h3>The Stoichiometric Chain</h3>
+
+        <div class="formula-box">
+
+            Mass → Moles → Mole Ratio → Moles → Mass
+
+        </div>
+
+        <p>
+            This chain is one of the most important patterns in stoichiometry.
+            When a problem gives mass and asks for another mass, you normally
+            convert the first mass into moles, use the balanced equation to
+            obtain the required mole ratio, and finally convert the resulting
+            moles into mass.
+        </p>
+
+    </section>
+
+
+    <!-- CONSERVATION -->
+
+    <section class="stoich-section" id="conservation">
+
+        <h2>2. Conservation of Mass</h2>
+
+        <p>
+            Stoichiometric calculations are based on the conservation of atoms.
+            In an ordinary chemical reaction, atoms are rearranged rather than
+            created or destroyed.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Therefore:</strong>
+
+            The same number of atoms of each element must appear on both sides
+            of a correctly balanced chemical equation.
+
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="formula-box">
+
+            2H₂ + O₂ → 2H₂O
+
+        </div>
+
+        <p>
+            On the left there are four hydrogen atoms and two oxygen atoms.
+            On the right there are also four hydrogen atoms and two oxygen
+            atoms.
+        </p>
+
+    </section>
+
+
+    <!-- MOLES -->
+
+    <section class="stoich-section" id="moles">
+
+        <h2>3. The Mole</h2>
+
+        <p>
+            A mole is a counting unit used by chemists to describe very large
+            numbers of particles.
+        </p>
+
+        <div class="formula-box">
+
+            Nₐ = 6.022 × 10²³ mol⁻¹
+
+        </div>
+
+        <p>
+            This number is Avogadro's constant. One mole of a substance
+            contains approximately 6.022 × 10²³ specified particles.
+        </p>
+
+        <h3>Mass and Moles</h3>
+
+        <div class="formula-box">
+
+            n = m / M
+
+        </div>
+
+        <p>
+            where:
+        </p>
+
+        <ul>
+
+            <li><strong>n</strong> = amount in moles</li>
+
+            <li><strong>m</strong> = mass in grams</li>
+
+            <li><strong>M</strong> = molar mass in g mol⁻¹</li>
+
+        </ul>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                Calculate the number of moles in 18 g of water.
+            </p>
+
+            <p>
+                Molar mass of H₂O = 18 g mol⁻¹.
+            </p>
+
+            <div class="formula-box">
+
+                n = 18 / 18
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer: <strong>1 mol</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MOLAR MASS -->
+
+    <section class="stoich-section" id="molar-mass">
+
+        <h2>4. Molar Mass</h2>
+
+        <p>
+            Molar mass is the mass of one mole of a substance. It is calculated
+            by adding the relative atomic masses of all atoms represented in
+            the chemical formula.
+        </p>
+
+        <h3>Example: H₂O</h3>
+
+        <div class="formula-box">
+
+            H₂O = (2 × 1) + 16
+
+            <br><br>
+
+            = 18 g mol⁻¹
+
+        </div>
+
+        <h3>Example: CaCO₃</h3>
+
+        <div class="formula-box">
+
+            CaCO₃ = 40 + 12 + (3 × 16)
+
+            <br><br>
+
+            = 100 g mol⁻¹
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Tip:</strong>
+
+            Always count every atom in the formula, including atoms inside
+            brackets.
+
+        </div>
+
+    </section>
+
+
+    <!-- PARTICLES -->
+
+    <section class="stoich-section" id="particles">
+
+        <h2>5. Moles and Number of Particles</h2>
+
+        <p>
+            The number of particles can be calculated from the amount in
+            moles.
+        </p>
+
+        <div class="formula-box">
+
+            N = nNₐ
+
+        </div>
+
+        <p>
+            where N is the number of particles and Nₐ is Avogadro's constant.
+        </p>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                How many molecules are present in 2 mol of water?
+            </p>
+
+            <div class="formula-box">
+
+                N = 2 × 6.022 × 10²³
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer:
+                <strong>1.2044 × 10²⁴ molecules</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EQUATIONS -->
+
+    <section class="stoich-section" id="equations">
+
+        <h2>6. Balanced Chemical Equations</h2>
+
+        <p>
+            Before performing most stoichiometric calculations, the chemical
+            equation must be balanced.
+        </p>
+
+        <h3>Example</h3>
+
+        <p>
+            Consider the formation of water:
+        </p>
+
+        <div class="formula-box">
+
+            2H₂ + O₂ → 2H₂O
+
+        </div>
+
+        <p>
+            The coefficients tell us the relative amounts of the substances
+            involved in the reaction.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Important:</strong>
+
+            The coefficients of a balanced equation represent mole ratios.
+
+        </div>
+
+    </section>
+
+
+    <!-- RATIOS -->
+
+    <section class="stoich-section" id="ratios">
+
+        <h2>7. Stoichiometric Mole Ratios</h2>
+
+        <p>
+            The coefficients in a balanced equation provide the mole ratio
+            between reactants and products.
+        </p>
+
+        <div class="formula-box">
+
+            2H₂ + O₂ → 2H₂O
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table class="stoich-table">
+
+                <tr>
+                    <th>Substance</th>
+                    <th>Coefficient</th>
+                    <th>Relationship</th>
+                </tr>
+
+                <tr>
+                    <td>H₂</td>
+                    <td>2</td>
+                    <td>2 mol</td>
+                </tr>
+
+                <tr>
+                    <td>O₂</td>
+                    <td>1</td>
+                    <td>1 mol</td>
+                </tr>
+
+                <tr>
+                    <td>H₂O</td>
+                    <td>2</td>
+                    <td>2 mol</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Mole ratio:</strong>
+
+            H₂ : O₂ : H₂O = 2 : 1 : 2
+
+        </div>
+
+    </section>
+
+
+    <!-- MASS TO MASS -->
+
+    <section class="stoich-section" id="mass-mass">
+
+        <h2>8. Mass-to-Mass Stoichiometry</h2>
+
+        <p>
+            Mass-to-mass calculations require a conversion from mass to moles,
+            a mole-ratio calculation, and a conversion back to mass.
+        </p>
+
+        <div class="step-box">
+
+            <h4>
+                <span class="step-number">1</span>
+                Write and balance the equation.
+            </h4>
+
+            <p>
+                Never begin a mass calculation from an unbalanced equation.
+            </p>
+
+        </div>
+
+        <div class="step-box">
+
+            <h4>
+                <span class="step-number">2</span>
+                Convert the known mass to moles.
+            </h4>
+
+            <div class="formula-box">
+
+                n = m / M
+
+            </div>
+
+        </div>
+
+        <div class="step-box">
+
+            <h4>
+                <span class="step-number">3</span>
+                Apply the mole ratio.
+            </h4>
+
+        </div>
+
+        <div class="step-box">
+
+            <h4>
+                <span class="step-number">4</span>
+                Convert product moles to mass.
+            </h4>
+
+            <div class="formula-box">
+
+                m = nM
+
+            </div>
+
+        </div>
+
+        <div class="example-box">
+
+            <h4>Worked Example</h4>
+
+            <p>
+                Calcium carbonate decomposes according to:
+            </p>
+
+            <div class="formula-box">
+
+                CaCO₃ → CaO + CO₂
+
+            </div>
+
+            <p>
+                Calculate the mass of carbon dioxide produced from 100 g of
+                CaCO₃.
+            </p>
+
+            <p>
+                Molar masses:
+            </p>
+
+            <ul>
+
+                <li>CaCO₃ = 100 g mol⁻¹</li>
+
+                <li>CO₂ = 44 g mol⁻¹</li>
+
+            </ul>
+
+            <p>
+                First find moles of CaCO₃:
+            </p>
+
+            <div class="formula-box">
+
+                n = 100 / 100 = 1 mol
+
+            </div>
+
+            <p>
+                The mole ratio is 1 : 1.
+            </p>
+
+            <div class="formula-box">
+
+                1 mol CaCO₃ → 1 mol CO₂
+
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula-box">
+
+                m = 1 × 44
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer: <strong>44 g CO₂</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EMPIRICAL -->
+
+    <section class="stoich-section" id="empirical">
+
+        <h2>9. Empirical Formula</h2>
+
+        <p>
+            The empirical formula shows the simplest whole-number ratio of
+            atoms of each element in a compound.
+        </p>
+
+        <h3>General Method</h3>
+
+        <div class="step-box">
+
+            <p>
+                <span class="step-number">1</span>
+                Convert each element's mass into moles.
+            </p>
+
+            <p>
+                <span class="step-number">2</span>
+                Divide all mole values by the smallest mole value.
+            </p>
+
+            <p>
+                <span class="step-number">3</span>
+                Convert the resulting values into the simplest whole-number
+                ratio.
+            </p>
+
+            <p>
+                <span class="step-number">4</span>
+                Write the empirical formula.
+            </p>
+
+        </div>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                Suppose a compound contains 24 g carbon and 4 g hydrogen.
+            </p>
+
+            <p>
+                Carbon:
+            </p>
+
+            <div class="formula-box">
+
+                24 / 12 = 2 mol
+
+            </div>
+
+            <p>
+                Hydrogen:
+            </p>
+
+            <div class="formula-box">
+
+                4 / 1 = 4 mol
+
+            </div>
+
+            <p>
+                Divide by the smallest value, 2:
+            </p>
+
+            <div class="formula-box">
+
+                C : H = 1 : 2
+
+            </div>
+
+            <div class="answer-box">
+
+                Empirical formula: <strong>CH₂</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MOLECULAR -->
+
+    <section class="stoich-section" id="molecular">
+
+        <h2>10. Molecular Formula</h2>
+
+        <p>
+            The molecular formula gives the actual number of atoms of each
+            element in one molecule.
+        </p>
+
+        <div class="formula-box">
+
+            n =
+            Molecular mass /
+            Empirical formula mass
+
+        </div>
+
+        <p>
+            The molecular formula is obtained by multiplying every subscript
+            in the empirical formula by n.
+        </p>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                If the empirical formula is CH₂ and the molecular mass is
+                42 g mol⁻¹:
+            </p>
+
+            <div class="formula-box">
+
+                Empirical formula mass = 14
+
+                <br><br>
+
+                n = 42 / 14 = 3
+
+            </div>
+
+            <div class="answer-box">
+
+                Molecular formula:
+                <strong>C₃H₆</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LIMITING -->
+
+    <section class="stoich-section" id="limiting">
+
+        <h2>11. Limiting Reactant</h2>
+
+        <p>
+            The limiting reactant is the reactant that is completely consumed
+            first. It determines the maximum amount of product that can form.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Think of it like a recipe.</strong>
+
+            If you have enough flour but run out of eggs, the eggs determine
+            how many cakes you can make. The eggs are the limiting ingredient.
+
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="formula-box">
+
+            2H₂ + O₂ → 2H₂O
+
+        </div>
+
+        <p>
+            Suppose we have 3 mol H₂ and 2 mol O₂.
+        </p>
+
+        <p>
+            The equation requires:
+        </p>
+
+        <div class="formula-box">
+
+            2 mol H₂ for every 1 mol O₂
+
+        </div>
+
+        <p>
+            3 mol H₂ requires only 1.5 mol O₂.
+            Since 2 mol O₂ is available, oxygen is in excess.
+        </p>
+
+        <div class="answer-box">
+
+            Limiting reactant: <strong>H₂</strong>
+
+        </div>
+
+        <p>
+            The maximum amount of water is therefore determined by the
+            available hydrogen.
+        </p>
+
+    </section>
+
+
+    <!-- EXCESS -->
+
+    <section class="stoich-section" id="excess">
+
+        <h2>12. Excess Reactant</h2>
+
+        <p>
+            An excess reactant is present in a greater amount than is required
+            to react completely with the limiting reactant.
+        </p>
+
+        <h3>How to Find Excess Remaining</h3>
+
+        <div class="step-box">
+
+            <p>
+                <span class="step-number">1</span>
+                Identify the limiting reactant.
+            </p>
+
+            <p>
+                <span class="step-number">2</span>
+                Use the mole ratio to calculate how much excess reactant is
+                consumed.
+            </p>
+
+            <p>
+                <span class="step-number">3</span>
+                Subtract the amount consumed from the original amount.
+            </p>
+
+        </div>
+
+        <div class="formula-box">
+
+            Excess remaining =
+            Initial amount − Amount consumed
+
+        </div>
+
+    </section>
+
+
+    <!-- YIELD -->
+
+    <section class="stoich-section" id="yield">
+
+        <h2>13. Theoretical Yield and Percentage Yield</h2>
+
+        <p>
+            The theoretical yield is the maximum amount of product predicted
+            by stoichiometric calculations.
+        </p>
+
+        <p>
+            The actual yield is the amount of product obtained experimentally.
+        </p>
+
+        <div class="formula-box">
+
+            Percentage yield =
+            (Actual yield / Theoretical yield) × 100%
+
+        </div>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                A reaction has a theoretical yield of 20 g but produces
+                16 g experimentally.
+            </p>
+
+            <div class="formula-box">
+
+                Percentage yield =
+                (16 / 20) × 100
+
+            </div>
+
+            <div class="answer-box">
+
+                Percentage yield = <strong>80%</strong>
+
+            </div>
+
+        </div>
+
+        <h3>Why Is Actual Yield Often Lower?</h3>
+
+        <ul>
+
+            <li>Incomplete reactions</li>
+
+            <li>Side reactions</li>
+
+            <li>Loss during transfer or purification</li>
+
+            <li>Impure reactants</li>
+
+            <li>Experimental limitations</li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- CONCENTRATION -->
+
+    <section class="stoich-section" id="concentration">
+
+        <h2>14. Concentration and Stoichiometry</h2>
+
+        <p>
+            Concentration relates the amount of dissolved substance to the
+            volume of solution.
+        </p>
+
+        <div class="formula-box">
+
+            c = n / V
+
+        </div>
+
+        <p>
+            where c is concentration in mol dm⁻³, n is moles and V is volume
+            in dm³.
+        </p>
+
+        <h3>Volume Conversion</h3>
+
+        <div class="formula-box">
+
+            1000 cm³ = 1 dm³
+
+        </div>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                A solution contains 0.50 mol of solute in 2.0 dm³.
+            </p>
+
+            <div class="formula-box">
+
+                c = 0.50 / 2.0
+
+            </div>
+
+            <div class="answer-box">
+
+                Concentration = <strong>0.25 mol dm⁻³</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TITRATION -->
+
+    <section class="stoich-section" id="titration">
+
+        <h2>15. Titration Stoichiometry</h2>
+
+        <p>
+            Titration is a laboratory technique used to determine an unknown
+            concentration by reacting a measured amount of one solution with
+            another solution of known concentration.
+        </p>
+
+        <h3>Basic Relationship</h3>
+
+        <div class="formula-box">
+
+            n = cV
+
+        </div>
+
+        <p>
+            When V is measured in dm³, concentration is commonly expressed in
+            mol dm⁻³ and n is obtained in moles.
+        </p>
+
+        <h3>General Titration Steps</h3>
+
+        <div class="step-box">
+
+            <p>
+                <span class="step-number">1</span>
+                Write the balanced chemical equation.
+            </p>
+
+            <p>
+                <span class="step-number">2</span>
+                Calculate moles of the known solution.
+            </p>
+
+            <p>
+                <span class="step-number">3</span>
+                Use the mole ratio.
+            </p>
+
+            <p>
+                <span class="step-number">4</span>
+                Calculate the unknown concentration.
+            </p>
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Important:</strong>
+
+            The concentrations cannot simply be compared directly unless the
+            reaction has a 1:1 mole ratio.
+
+        </div>
+
+    </section>
+
+
+    <!-- GAS -->
+
+    <section class="stoich-section" id="gas">
+
+        <h2>16. Gas Stoichiometry</h2>
+
+        <p>
+            Gases can also participate in stoichiometric calculations.
+            Depending on the conditions and the course being followed,
+            gas quantities may be related using molar gas volume or the
+            ideal gas equation.
+        </p>
+
+        <h3>Ideal Gas Equation</h3>
+
+        <div class="formula-box">
+
+            PV = nRT
+
+        </div>
+
+        <p>
+            where P is pressure, V is volume, n is amount in moles,
+            R is the gas constant and T is absolute temperature.
+        </p>
+
+        <h3>Temperature</h3>
+
+        <div class="formula-box">
+
+            T(K) = T(°C) + 273.15
+
+        </div>
+
+        <div class="highlight">
+
+            <strong>Remember:</strong>
+
+            Temperature must be expressed in kelvin when using the ideal gas
+            equation.
+
+        </div>
+
+    </section>
+
+
+    <!-- PERCENTAGE COMPOSITION -->
+
+    <section class="stoich-section" id="percentage">
+
+        <h2>17. Percentage Composition</h2>
+
+        <p>
+            Percentage composition tells us what percentage of a compound's
+            mass comes from a particular element.
+        </p>
+
+        <div class="formula-box">
+
+            Percentage of element =
+            (Mass contributed by element /
+            Molar mass of compound) × 100%
+
+        </div>
+
+        <div class="example-box">
+
+            <h4>Example: Water</h4>
+
+            <p>
+                H₂O has molar mass 18.
+            </p>
+
+            <p>
+                Hydrogen contributes 2 units of mass.
+            </p>
+
+            <div class="formula-box">
+
+                (2 / 18) × 100
+
+            </div>
+
+            <div class="answer-box">
+
+                Hydrogen ≈ <strong>11.1%</strong>
+
+            </div>
+
+            <p>
+                Oxygen therefore contributes approximately 88.9%.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- WORD PROBLEMS -->
+
+    <section class="stoich-section" id="problems">
+
+        <h2>18. Stoichiometry Word Problems</h2>
+
+        <p>
+            Stoichiometry word problems may combine several calculations.
+            The safest approach is to identify exactly what information is
+            given, determine what is required, and work through the chemical
+            relationship step by step.
+        </p>
+
+
+        <div class="example-box">
+
+            <h4>Word Problem 1 — Mass to Moles</h4>
+
+            <p>
+                A laboratory contains 49 g of sulfuric acid, H₂SO₄.
+                Calculate the number of moles.
+            </p>
+
+            <p>
+                Molar mass:
+            </p>
+
+            <div class="formula-box">
+
+                H₂SO₄ = 2(1) + 32 + 4(16)
+
+                <br><br>
+
+                = 98 g mol⁻¹
+
+            </div>
+
+            <div class="formula-box">
+
+                n = 49 / 98
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer: <strong>0.50 mol</strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <h4>Word Problem 2 — Mass to Mass</h4>
+
+            <p>
+                Magnesium reacts with oxygen:
+            </p>
+
+            <div class="formula-box">
+
+                2Mg + O₂ → 2MgO
+
+            </div>
+
+            <p>
+                Calculate the mass of MgO produced from 24 g of magnesium.
+            </p>
+
+            <p>
+                Molar mass of Mg ≈ 24 g mol⁻¹.
+            </p>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula-box">
+
+                n(Mg) = 24 / 24 = 1 mol
+
+            </div>
+
+            <p>
+                The ratio of Mg to MgO is 1:1.
+            </p>
+
+            <div class="formula-box">
+
+                n(MgO) = 1 mol
+
+            </div>
+
+            <p>
+                Molar mass of MgO ≈ 40 g mol⁻¹.
+            </p>
+
+            <div class="formula-box">
+
+                m = 1 × 40
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer: <strong>40 g MgO</strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <h4>Word Problem 3 — Limiting Reactant</h4>
+
+            <p>
+                Hydrogen reacts with oxygen according to:
+            </p>
+
+            <div class="formula-box">
+
+                2H₂ + O₂ → 2H₂O
+
+            </div>
+
+            <p>
+                If 5 mol H₂ reacts with 2 mol O₂, determine the limiting
+                reactant.
+            </p>
+
+            <p>
+                2 mol H₂ require 1 mol O₂.
+                Therefore 5 mol H₂ require:
+            </p>
+
+            <div class="formula-box">
+
+                5 × 1/2 = 2.5 mol O₂
+
+            </div>
+
+            <p>
+                Only 2 mol O₂ is available.
+            </p>
+
+            <div class="answer-box">
+
+                Limiting reactant: <strong>O₂</strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <h4>Word Problem 4 — Percentage Yield</h4>
+
+            <p>
+                A reaction should theoretically produce 25 g of product.
+                An experiment produces 21 g.
+                Calculate the percentage yield.
+            </p>
+
+            <div class="formula-box">
+
+                Percentage yield =
+                (21 / 25) × 100
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer: <strong>84%</strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <h4>Word Problem 5 — Concentration</h4>
+
+            <p>
+                A solution contains 0.30 mol of NaOH in 600 cm³ of solution.
+                Calculate its concentration in mol dm⁻³.
+            </p>
+
+            <p>
+                First convert the volume:
+            </p>
+
+            <div class="formula-box">
+
+                600 cm³ = 0.600 dm³
+
+            </div>
+
+            <p>
+                Then:
+            </p>
+
+            <div class="formula-box">
+
+                c = 0.30 / 0.600
+
+            </div>
+
+            <div class="answer-box">
+
+                Answer: <strong>0.50 mol dm⁻³</strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="example-box">
+
+            <h4>Word Problem 6 — Multi-Step Stoichiometry</h4>
+
+            <p>
+                Calcium carbonate decomposes according to:
+            </p>
+
+            <div class="formula-box">
+
+                CaCO₃ → CaO + CO₂
+
+            </div>
+
+            <p>
+                A sample contains 250 g of CaCO₃. Calculate the theoretical
+                mass of CO₂ produced.
+            </p>
+
+            <p>
+                Relative formula masses:
+            </p>
+
+            <ul>
+
+                <li>CaCO₃ = 100 g mol⁻¹</li>
+
+                <li>CO₂ = 44 g mol⁻¹</li>
+
+            </ul>
+
+            <div class="formula-box">
+
+                n(CaCO₃) = 250 / 100 = 2.5 mol
+
+            </div>
+
+            <p>
+                The mole ratio is 1:1.
+            </p>
+
+            <div class="formula-box">
+
+                n(CO₂) = 2.5 mol
+
+            </div>
+
+            <div class="formula-box">
+
+                m(CO₂) = 2.5 × 44 = 110 g
+
+            </div>
+
+            <div class="answer-box">
+
+                Theoretical yield = <strong>110 g CO₂</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i class="fas fa-sparkles"></i>
+
+        <h3>Need Help With Stoichiometry?</h3>
+
+        <p>
+            Stoichiometry becomes much easier when you know which quantity to
+            convert first. Ask Insite AI to break down a question, explain a
+            formula, check your working or solve a difficult stoichiometry
+            problem step by step.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fas fa-comments"></i>
+
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

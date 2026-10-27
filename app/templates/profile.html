@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}
+User Profile & Settings | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — USER PROFILE & SETTINGS
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE (NO LATEX)
+   ========================================================= */
+
+:root {
+    --profile-bg: #050a12;
+    --profile-panel: #0a111d;
+    --profile-panel-2: #111a2b;
+    --profile-card: #0a101c;
+    --profile-card-hover: #0e1726;
+
+    --profile-border: rgba(100, 116, 139, .18);
+    --profile-border-blue: rgba(56, 189, 248, .28);
+
+    --profile-text: #f1f5f9;
+    --profile-muted: #94a3b8;
+    --profile-soft: #cbd5e1;
+
+    --profile-blue: #1677b8;
+    --profile-blue-light: #2196d2;
+    --profile-cyan: #38bdf8;
+    --profile-cyan-light: #7dd3fc;
+
+    --profile-green: #34d399;
+    --profile-red: #ef4444;
+    --profile-yellow: #fbbf24;
+
+    --profile-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-page {
+    width: min(1000px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--profile-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.profile-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--profile-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.profile-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.profile-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.profile-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.profile-header h1 i {
+    color: var(--profile-blue-light);
+    margin-right: 8px;
+}
+
+.profile-header p {
+    max-width: 750px;
+    margin: 12px auto 0;
+    color: var(--profile-muted);
+    line-height: 1.75;
+}
+
+.profile-card {
+    margin-bottom: 25px;
+    padding: 30px;
+    background: var(--profile-panel);
+    border: 1px solid var(--profile-border);
+    border-radius: 15px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.profile-card:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.profile-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--profile-border);
+    padding-bottom: 15px;
+}
+
+.profile-card-header i {
+    color: var(--profile-blue-light);
+    font-size: 24px;
+}
+
+.profile-card-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #f8fafc;
+}
+
+.profile-form-group {
+    margin-bottom: 20px;
+}
+
+.profile-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--profile-soft);
+    font-weight: 600;
+    font-size: .95rem;
+}
+
+.profile-input {
+    width: 100%;
+    max-width: 500px;
+    background: #070e18;
+    border: 1px solid var(--profile-border);
+    border-radius: 9px;
+    color: white;
+    padding: 12px 15px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.profile-input:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.profile-btn:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.profile-btn-danger {
+    background: #b91c1c;
+}
+
+.profile-btn-danger:hover {
+    background: #dc2626;
+}
+
+.theme-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    max-width: 600px;
+    margin-top: 10px;
+}
+
+.theme-card {
+    padding: 15px;
+    background: #070e18;
+    border: 2px solid var(--profile-border);
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.theme-card:hover, .theme-card.active {
+    border-color: var(--profile-blue-light);
+    background: #0d1a2a;
+}
+
+.theme-card i {
+    font-size: 22px;
+    color: var(--profile-blue-light);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.theme-card span {
+    font-weight: 600;
+    font-size: .9rem;
+    color: var(--profile-text);
+}
+
+@media (max-width: 760px) {
+    .theme-options { grid-template-columns: 1fr; }
+    .profile-card { padding: 20px; }
+}
+</style>
+
+
+<div class="profile-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('home') }}" class="profile-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Dashboard
+    </a>
+
+    <!-- HEADER -->
+    <header class="profile-header">
+        <h1>
+            <i class="fa-solid fa-user-gear"></i>
+            User Profile & Settings
+        </h1>
+        <p>
+            Manage your account credentials, update your profile name, clear chat history logs, and customize your interface display theme.
+        </p>
+    </header>
+
+    <!-- 01 UPDATE PROFILE NAME -->
+    <section class="profile-card">
+        <div class="profile-card-header">
+            <i class="fa-solid fa-user-pen"></i>
+            <h3>Edit Profile Name</h3>
+        </div>
+        <form action="{{ url_for('update_profile') }}" method="POST">
+            <div class="profile-form-group">
+                <label class="profile-form-label" for="username">Display Username</label>
+                <input type="text" id="username" name="username" class="profile-input" value="{{ current_user.username }}" required>
+            </div>
+            <button type="submit" class="profile-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Save Changes
+            </button>
+        </form>
+    </section>
+
+
+    <!-- 03 DELETE CHAT HISTORY -->
+    <section class="profile-card">
+        <div class="profile-card-header">
+            <i class="fa-solid fa-trash-can text-danger"></i>
+            <h3 class="text-danger">Clear Chat History</h3>
+        </div>
+        <p class="text-muted mb-3">Permanently delete all past AI chat logs stored in the database. This action cannot be undone.</p>
+        
+        <form action="{{ url_for('clear_chat_history') }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete all chat history?');">
+            <button type="submit" class="profile-btn profile-btn-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i> Delete All Chat Logs
+            </button>
+        </form>
+    </section>
+
+</div>
+
+
+{% endblock %}

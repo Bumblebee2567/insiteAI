@@ -1,0 +1,659 @@
+{% extends "base.html" %}
+
+{% block title %}
+Functional Group Diagnostics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --func-bg: #050a12;
+    --func-panel: #0a111d;
+    --func-border: rgba(100, 116, 139, .18);
+    --func-text: #f1f5f9;
+    --func-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --func-blue: #1677b8;
+    --func-blue-light: #2196d2;
+
+    --func-green: #34d399;
+    --func-red: #ef4444;
+}
+
+.func-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--func-text);
+}
+
+/* BACK BUTTON */
+
+.func-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--func-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.func-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.func-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.func-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.func-header h1 i {
+    color: var(--func-blue-light);
+    margin-right: 8px;
+}
+
+.func-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--func-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.func-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--func-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.func-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.func-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.func-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.func-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--func-panel);
+    border: 1px solid var(--func-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.func-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.func-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.func-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.func-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.func-section p,
+.func-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.func-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.func-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--func-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.func-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE */
+
+.func-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.func-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.func-table th,
+.func-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--func-border);
+}
+
+.func-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.func-table td {
+    color: #cbd5e1;
+}
+
+.func-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.colour-dot {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    border: 1px solid rgba(255,255,255,.25);
+}
+
+.dot-silver { background: #cbd5e1; }
+.dot-blue { background: #3b82f6; }
+.dot-red { background: #ef4444; }
+.dot-colourless { background: #64748b; }
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--func-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* INTERACTIVE TEST */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--func-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--func-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--func-panel);
+    border: 1px solid var(--func-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--func-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--func-green); }
+.test-result.wrong { border-left-color: var(--func-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* QUESTIONS */
+
+.exam-question {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #081321;
+    border: 1px solid var(--func-border);
+    border-radius: 9px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+}
+
+.exam-answer {
+    margin-top: 7px;
+    color: #94a3b8;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--func-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .func-section { padding: 20px; }
+    .func-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="func-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="func-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+    <!-- HEADER -->
+    <header class="func-header">
+        <h1>
+            <i class="fa-solid fa-flask-vial"></i>
+            Functional Group Diagnostics
+        </h1>
+        <p>
+            Identify and differentiate aldehydes, ketones, and carboxylic acids using Tollens' reagent, 
+            Fehling's solution, and sodium carbonate.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="func-nav">
+        <a href="#aim">Aim</a>
+        <a href="#principle">Principle</a>
+        <a href="#tests">Key Tests</a>
+        <a href="#procedure">Procedure</a>
+        <a href="#summary">Summary Table</a>
+        <a href="#test">Identify</a>
+        <a href="#precautions">Precautions</a>
+        <a href="#questions">Questions</a>
+    </nav>
+
+    <!-- 01 AIM -->
+    <section class="func-section" id="aim">
+        <div class="func-section-header">
+            <div class="func-number">01</div>
+            <h2>Aim of the Experiment</h2>
+        </div>
+        <p>
+            To distinguish between carbonyl compounds (aldehydes and ketones) and carboxylic acids 
+            using selective chemical oxidation and acid-base characterization tests.
+        </p>
+        <div class="func-info">
+            <strong>Key idea:</strong><br>
+            Aldehydes possess an easily oxidizable hydrogen atom attached to the carbonyl carbon, 
+            allowing them to act as reducing agents. Ketones resist mild oxidation, and carboxylic acids 
+            exhibit acidic properties with carbonates.
+        </div>
+    </section>
+
+    <!-- 02 PRINCIPLE -->
+    <section class="func-section" id="principle">
+        <div class="func-section-header">
+            <div class="func-number">02</div>
+            <h2>Principle of Diagnostics</h2>
+        </div>
+        <p>
+            Different carbonyl and carboxyl functionalities respond distinctively to specific reagents:
+        </p>
+        <ul>
+            <li><strong>Aldehydes:</strong> Readily oxidized to carboxylic acids by mild oxidizing agents like Tollens' and Fehling's reagents.</li>
+            <li><strong>Ketones:</strong> Lack the hydrogen atom required for mild oxidation, yielding negative results with Tollens' and Fehling's tests.</li>
+            <li><strong>Carboxylic Acids:</strong> Contain acidic protons that react with weak bases like sodium carbonate or sodium bicarbonate to release carbon dioxide gas.</li>
+        </ul>
+    </section>
+
+    <!-- 03 TESTS -->
+    <section class="func-section" id="tests">
+        <div class="func-section-header">
+            <div class="func-number">03</div>
+            <h2>Key Reagents & Observations</h2>
+        </div>
+
+        <h3>1. Tollens' Test (Silver Mirror Test)</h3>
+        <p>
+            Tollens' reagent contains ammoniacal silver nitrate [Ag(NH<sub>3</sub>)<sub>2</sub>]<sup>+</sup>. When warmed with an <strong>aldehyde</strong>, silver ions are reduced to metallic silver, depositing a shiny silver mirror on the inner walls of the test tube. Ketones show no reaction.
+        </p>
+
+        <h3>2. Fehling's Test</h3>
+        <p>
+            Fehling's solution contains alkaline copper(II) complexes. When heated with an <strong>aldehyde</strong>, the blue Cu<sup>2+</sup> ions are reduced to a brick-red precipitate of copper(I) oxide (Cu<sub>2</sub>O). Ketones do not react.
+        </p>
+
+        <h3>3. Sodium Carbonate Test</h3>
+        <p>
+            When a <strong>carboxylic acid</strong> is treated with aqueous sodium carbonate (Na<sub>2</sub>CO<sub>3</sub>) or sodium bicarbonate (NaHCO<sub>3</sub>), an acid-base reaction produces effervescence (bubbles) of carbon dioxide gas (CO<sub>2</sub>). Neither aldehydes nor ketones react.
+        </p>
+    </section>
+
+    <!-- 04 PROCEDURE -->
+    <section class="func-section" id="procedure">
+        <div class="func-section-header">
+            <div class="func-number">04</div>
+            <h2>Experimental Procedure</h2>
+        </div>
+        <ol class="step-list">
+            <li>Place 1 mL of each test compound (aldehyde, ketone, carboxylic acid) into separate clean test tubes.</li>
+            <li><strong>Tollens' Test:</strong> Add freshly prepared Tollens' reagent and warm gently in a water bath; check for a silver mirror.</li>
+            <li><strong>Fehling's Test:</strong> Add equal volumes of Fehling's A and B solutions, heat in a water bath, and check for a red precipitate.</li>
+            <li><strong>Carbonate Test:</strong> Add a pinch of solid sodium carbonate or a few drops of sodium carbonate solution and check for effervescence.</li>
+        </ol>
+    </section>
+
+    <!-- 05 SUMMARY TABLE -->
+    <section class="func-section" id="summary">
+        <div class="func-section-header">
+            <div class="func-number">05</div>
+            <h2>Summary of Observations</h2>
+        </div>
+
+        <div class="func-table-wrapper">
+            <table class="func-table">
+                <thead>
+                    <tr>
+                        <th>Functional Group</th>
+                        <th>Example</th>
+                        <th>Tollens' Reagent</th>
+                        <th>Fehling's Solution</th>
+                        <th>Sodium Carbonate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Aldehyde</strong></td>
+                        <td>Ethanal</td>
+                        <td><span class="colour-dot dot-silver"></span>Silver mirror formed</td>
+                        <td><span class="colour-dot dot-red"></span>Brick-red precipitate</td>
+                        <td>No reaction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ketone</strong></td>
+                        <td>Propanone</td>
+                        <td><span class="colour-dot dot-colourless"></span>No reaction</td>
+                        <td><span class="colour-dot dot-blue"></span>No reaction (Stays blue)</td>
+                        <td>No reaction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Carboxylic Acid</strong></td>
+                        <td>Ethanoic Acid</td>
+                        <td>No reaction</td>
+                        <td>No reaction</td>
+                        <td><span class="colour-dot dot-colourless"></span>Effervescence (CO<sub>2</sub> gas)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="func-section" id="test">
+        <div class="func-section-header">
+            <div class="func-number">06</div>
+            <h2>Interactive Diagnostic Test</h2>
+        </div>
+        <p>Test your knowledge on functional group identification.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Identify the Unknown</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    An unknown organic liquid gives a positive <strong>silver mirror</strong> with Tollens' reagent 
+                    and a <strong>brick-red precipitate</strong> with Fehling's solution. What functional group is present?
+                </div>
+
+                <select class="test-select" id="funcAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="aldehyde">Aldehyde</option>
+                    <option value="ketone">Ketone</option>
+                    <option value="acid">Carboxylic Acid</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkFunc">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="funcResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 PRECAUTIONS -->
+    <section class="func-section" id="precautions">
+        <div class="func-section-header">
+            <div class="func-number">07</div>
+            <h2>Precautions & Safety</h2>
+        </div>
+        <ul>
+            <li>Never store Tollens' reagent as it can form explosive silver fulminate compounds over time; prepare it fresh and dispose of it immediately after use.</li>
+            <li>Use water baths for heating flammable organic liquids rather than direct open flames.</li>
+            <li>Wear safety goggles and gloves when handling corrosive acids and reactive reagents.</li>
+        </ul>
+    </section>
+
+    <!-- 08 QUESTIONS -->
+    <section class="func-section" id="questions">
+        <div class="func-section-header">
+            <div class="func-number">08</div>
+            <h2>Common Practical Questions</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>1. Why do aldehydes give a positive Tollens' test while ketones do not?</strong>
+            <div class="exam-answer">Aldehydes possess a hydrogen atom attached directly to the carbonyl carbon which makes them easily oxidizable, whereas ketones lack this hydrogen.</div>
+        </div>
+
+        <div class="exam-question">
+            <strong>2. How do you confirm the presence of a carboxylic acid using a simple chemical test?</strong>
+            <div class="exam-answer">By adding sodium carbonate or sodium bicarbonate, which produces bubbling (effervescence) due to the release of carbon dioxide gas.</div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--func-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need help with functional group tests?</h3>
+        <p style="color:var(--func-muted); margin:0;">
+            Ask Insite AI to explain oxidation reactions, reagent preparations, or test observations.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const funcAnswer = document.getElementById("funcAnswer");
+const checkFunc = document.getElementById("checkFunc");
+const funcResult = document.getElementById("funcResult");
+
+checkFunc.addEventListener("click", function () {
+    const val = funcAnswer.value;
+    funcResult.style.display = "block";
+
+    if (val === "aldehyde") {
+        funcResult.className = "test-result correct";
+        funcResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Aldehydes are strong reducing agents that easily reduce Tollens' and Fehling's reagents, producing a silver mirror and brick-red precipitate respectively.</div>
+        `;
+    } else if (val === "") {
+        funcResult.className = "test-result wrong";
+        funcResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the functional groups.</div>
+        `;
+    } else {
+        funcResult.className = "test-result wrong";
+        funcResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Ketones and carboxylic acids do not reduce Tollens' or Fehling's reagents. The correct answer is an <strong>Aldehyde</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

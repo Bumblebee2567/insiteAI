@@ -1,0 +1,1477 @@
+{% extends "base.html" %}
+
+{% block title %}
+Probability | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .probability-page {
+        min-height: 100vh;
+        padding: 30px 20px 60px;
+        background: #0b0f14;
+    }
+
+    .probability-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #ffffff;
+        background: #151c2d;
+        border: 1px solid #263554;
+        padding: 10px 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+        margin-bottom: 28px;
+    }
+
+    .back-button:hover {
+        background: #0b5ed7;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    .probability-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .probability-header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    .probability-header h1 i {
+        color: #0d6efd;
+    }
+
+    .probability-header p {
+        color: #adb5bd;
+        font-size: 17px;
+        max-width: 750px;
+        margin: auto;
+        line-height: 1.7;
+    }
+
+    .topic-navigation {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 35px;
+        padding: 15px;
+        background: #111820;
+        border-radius: 15px;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+    }
+
+    .topic-navigation a {
+        color: #ffffff;
+        text-decoration: none;
+        background: #1b2633;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .topic-navigation a:hover {
+        background: #0d6efd;
+    }
+
+    .topic-section {
+        background: #111820;
+        border: 1px solid #202b36;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        scroll-margin-top: 90px;
+    }
+
+    .topic-section h2 {
+        color: #4d9cff;
+        font-size: 28px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+    .topic-section h3 {
+        color: #ffffff;
+        font-size: 20px;
+        margin-top: 22px;
+        margin-bottom: 8px;
+    }
+
+    .topic-section p {
+        color: #c5cbd1;
+        line-height: 1.75;
+        margin-bottom: 10px;
+    }
+
+    .topic-section ul {
+        color: #c5cbd1;
+        line-height: 1.8;
+    }
+
+    .topic-section li {
+        margin-bottom: 5px;
+    }
+
+    .formula {
+        background: #0b1118;
+        border-left: 4px solid #0d6efd;
+        padding: 14px 18px;
+        margin: 15px 0;
+        border-radius: 8px;
+        color: #ffffff;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+    }
+
+    .example {
+        background: #172230;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-top: 15px;
+        color: #d9e0e7;
+        line-height: 1.75;
+    }
+
+    .example strong {
+        color: #4d9cff;
+    }
+
+    .definition {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .ai-help {
+        margin-top: 20px;
+        padding: 17px;
+        border-radius: 12px;
+        background: #101827;
+        border: 1px dashed #28518e;
+    }
+
+    .ai-help i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ai-help p {
+        margin: 6px 0 0;
+        font-size: 14px;
+    }
+
+    .ai-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #151c2d;
+        border: 1px solid #263554;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .ai-button:hover {
+        background: #0d6efd;
+        color: #ffffff;
+    }
+
+    .probability-footer {
+        text-align: center;
+        margin-top: 45px;
+        color: #748096;
+    }
+
+    .probability-footer i {
+        color: #0d6efd;
+    }
+
+    @media (max-width: 768px) {
+
+        .probability-page {
+            padding: 20px 12px 45px;
+        }
+
+        .probability-header h1 {
+            font-size: 32px;
+        }
+
+        .probability-header p {
+            font-size: 15px;
+        }
+
+        .topic-section {
+            padding: 20px;
+        }
+
+        .topic-section h2 {
+            font-size: 24px;
+        }
+
+        .topic-section h3 {
+            font-size: 18px;
+        }
+
+        .topic-navigation {
+            justify-content: flex-start;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: thin;
+            scrollbar-color: #0d6efd #111820;
+        }
+
+        .topic-navigation::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .topic-navigation::-webkit-scrollbar-track {
+            background: #111820;
+        }
+
+        .topic-navigation::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 10px;
+        }
+
+        .topic-navigation a {
+            white-space: nowrap;
+        }
+
+        .formula {
+            font-size: 14px;
+        }
+    }
+</style>
+
+
+<div class="probability-page">
+
+    <div class="probability-container">
+
+        <!-- Back Button -->
+
+        <a href="{{ url_for('math_page') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Mathematics
+        </a>
+
+
+        <!-- Header -->
+
+        <header class="probability-header">
+
+            <h1>
+                <i class="fas fa-dice"></i>
+                Probability
+            </h1>
+
+            <p>
+                Probability is the branch of mathematics used to measure
+                uncertainty and determine how likely an event is to occur.
+                It is used in games, statistics, science, finance,
+                weather forecasting and many real-life situations.
+            </p>
+
+        </header>
+
+
+        <!-- Topic Navigation -->
+
+        <nav class="topic-navigation">
+
+            <a href="#basics">Basics</a>
+            <a href="#sample-space">Sample Space</a>
+            <a href="#events">Events</a>
+            <a href="#probability-rules">Rules</a>
+            <a href="#complement">Complement</a>
+            <a href="#addition">Addition</a>
+            <a href="#multiplication">Multiplication</a>
+            <a href="#independence">Independence</a>
+            <a href="#conditional">Conditional</a>
+            <a href="#venn">Venn Diagrams</a>
+            <a href="#tree">Tree Diagrams</a>
+            <a href="#counting">Counting</a>
+            <a href="#permutations">Permutations</a>
+            <a href="#combinations">Combinations</a>
+            <a href="#experimental">Experimental</a>
+            <a href="#distributions">Distributions</a>
+            <a href="#expected-value">Expected Value</a>
+            <a href="#word-problems">Word Problems</a>
+
+        </nav>
+
+
+        <!-- 1. BASICS -->
+
+        <section class="topic-section" id="basics">
+
+            <h2>1. Probability Basics</h2>
+
+            <p>
+                Probability tells us how likely something is to happen.
+                Every probability must lie between 0 and 1 inclusive.
+            </p>
+
+            <div class="formula">
+                0 ≤ P(A) ≤ 1
+            </div>
+
+            <p>
+                Probability can be expressed as a fraction, decimal or
+                percentage.
+            </p>
+
+            <h3>Impossible Event</h3>
+
+            <p>
+                An impossible event is an event that cannot happen.
+            </p>
+
+            <div class="formula">
+                P(impossible event) = 0
+            </div>
+
+            <h3>Certain Event</h3>
+
+            <p>
+                A certain event is an event that must happen.
+            </p>
+
+            <div class="formula">
+                P(certain event) = 1
+            </div>
+
+            <h3>Likely and Unlikely Events</h3>
+
+            <p>
+                An event with a probability close to 1 is very likely,
+                while an event with a probability close to 0 is unlikely.
+            </p>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A fair coin has two possible outcomes: Head and Tail.
+                    Since both outcomes are equally likely:
+                </p>
+
+                <div class="formula">
+                    P(Head) = 1/2 = 0.5 = 50%
+                </div>
+
+            </div>
+
+            <div class="ai-help">
+
+                <i class="fas fa-sparkles"></i>
+                <strong>Ask Insite AI</strong>
+
+                <p>
+                    Don't understand probability? Ask Insite AI to
+                    explain the concept using simple examples.
+                </p>
+
+                <a href="{{ url_for('chat') }}" class="ai-button">
+                    <i class="fas fa-comments"></i>
+                    Ask Insite AI
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- 2. SAMPLE SPACE -->
+
+        <section class="topic-section" id="sample-space">
+
+            <h2>2. Sample Space and Outcomes</h2>
+
+            <p>
+                The <span class="definition">sample space</span> is the
+                complete set of all possible outcomes of an experiment.
+            </p>
+
+            <h3>Coin Toss</h3>
+
+            <div class="formula">
+                S = {H, T}
+            </div>
+
+            <h3>Rolling a Die</h3>
+
+            <div class="formula">
+                S = {1, 2, 3, 4, 5, 6}
+            </div>
+
+            <h3>Two Coin Tosses</h3>
+
+            <div class="formula">
+                S = {HH, HT, TH, TT}
+            </div>
+
+            <p>
+                Notice that the order matters when describing separate
+                stages of an experiment. HT means Head followed by Tail,
+                while TH means Tail followed by Head.
+            </p>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A fair die is rolled. What is the probability of
+                    getting an even number?
+                </p>
+
+                <p>
+                    The possible outcomes are:
+                </p>
+
+                <div class="formula">
+                    {1, 2, 3, 4, 5, 6}
+                </div>
+
+                <p>
+                    The favourable outcomes are 2, 4 and 6.
+                </p>
+
+                <div class="formula">
+                    P(Even) = 3/6 = 1/2
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 3. EVENTS -->
+
+        <section class="topic-section" id="events">
+
+            <h2>3. Events</h2>
+
+            <p>
+                An event is a collection of one or more outcomes from
+                a sample space.
+            </p>
+
+            <h3>Simple Event</h3>
+
+            <p>
+                A simple event contains only one outcome.
+            </p>
+
+            <div class="example">
+                Rolling a 6 on a die is a simple event.
+            </div>
+
+            <h3>Compound Event</h3>
+
+            <p>
+                A compound event contains two or more outcomes.
+            </p>
+
+            <div class="example">
+                Rolling an even number gives {2, 4, 6}.
+            </div>
+
+            <h3>Mutually Exclusive Events</h3>
+
+            <p>
+                Two events are mutually exclusive when they cannot happen
+                at the same time.
+            </p>
+
+            <div class="example">
+                When rolling a die, getting a 2 and getting a 5 on the
+                same roll are mutually exclusive.
+            </div>
+
+            <h3>Exhaustive Events</h3>
+
+            <p>
+                A collection of events is exhaustive if together they
+                contain every possible outcome.
+            </p>
+
+            <div class="formula">
+                P(S) = 1
+            </div>
+
+        </section>
+
+
+        <!-- 4. BASIC RULES -->
+
+        <section class="topic-section" id="probability-rules">
+
+            <h2>4. Basic Probability Rules</h2>
+
+            <p>
+                When all outcomes are equally likely, probability can
+                be calculated by comparing favourable outcomes with
+                the total number of outcomes.
+            </p>
+
+            <div class="formula">
+                P(A) =
+                Number of favourable outcomes /
+                Total number of possible outcomes
+            </div>
+
+            <h3>Probability of the Entire Sample Space</h3>
+
+            <div class="formula">
+                P(S) = 1
+            </div>
+
+            <h3>Probability Cannot Be Negative</h3>
+
+            <div class="formula">
+                P(A) ≥ 0
+            </div>
+
+            <h3>Probability Cannot Exceed One</h3>
+
+            <div class="formula">
+                P(A) ≤ 1
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A bag contains 5 red balls and 3 blue balls.
+                    Find the probability of selecting a red ball.
+                </p>
+
+                <div class="formula">
+                    Total = 5 + 3 = 8
+                    <br><br>
+                    P(Red) = 5/8
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 5. COMPLEMENT -->
+
+        <section class="topic-section" id="complement">
+
+            <h2>5. Complementary Probability</h2>
+
+            <p>
+                The complement of an event is the event that the original
+                event does not occur.
+            </p>
+
+            <p>
+                If A is an event, its complement is commonly written
+                as A' or Aᶜ.
+            </p>
+
+            <div class="formula">
+                P(A') = 1 - P(A)
+            </div>
+
+            <div class="formula">
+                P(A) + P(A') = 1
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    The probability that a student passes an examination
+                    is 0.75. Find the probability that the student fails.
+                </p>
+
+                <div class="formula">
+                    P(Fail) = 1 - P(Pass)
+                    <br>
+                    P(Fail) = 1 - 0.75
+                    <br>
+                    P(Fail) = 0.25
+                </div>
+
+            </div>
+
+            <h3>At Least One</h3>
+
+            <p>
+                Problems involving "at least one" can often be solved
+                more easily using the complement.
+            </p>
+
+            <div class="formula">
+                P(at least one) = 1 - P(none)
+            </div>
+
+        </section>
+
+
+        <!-- 6. ADDITION -->
+
+        <section class="topic-section" id="addition">
+
+            <h2>6. Addition Rule of Probability</h2>
+
+            <p>
+                The addition rule is used when a question involves
+                one event <strong>OR</strong> another event.
+            </p>
+
+            <h3>Mutually Exclusive Events</h3>
+
+            <div class="formula">
+                P(A ∪ B) = P(A) + P(B)
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    Find the probability of rolling either a 2 or a 5
+                    on a fair die.
+                </p>
+
+                <div class="formula">
+                    P(2 or 5)
+                    = 1/6 + 1/6
+                    = 2/6
+                    = 1/3
+                </div>
+
+            </div>
+
+            <h3>Non-Mutually Exclusive Events</h3>
+
+            <p>
+                If two events can occur together, their overlap is
+                counted twice when we simply add their probabilities.
+                Therefore, the intersection must be subtracted once.
+            </p>
+
+            <div class="formula">
+                P(A ∪ B) =
+                P(A) + P(B) - P(A ∩ B)
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    In a class, 20 students study Mathematics,
+                    15 study Physics, and 8 study both.
+                </p>
+
+                <p>
+                    The number who study at least one of the two subjects is:
+                </p>
+
+                <div class="formula">
+                    20 + 15 - 8 = 27
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 7. MULTIPLICATION -->
+
+        <section class="topic-section" id="multiplication">
+
+            <h2>7. Multiplication Rule</h2>
+
+            <p>
+                The multiplication rule is used when a problem involves
+                event A <strong>AND</strong> event B.
+            </p>
+
+            <div class="formula">
+                P(A ∩ B) = P(A) × P(B|A)
+            </div>
+
+            <p>
+                The notation P(B|A) means "the probability of B given
+                that A has already occurred."
+            </p>
+
+            <h3>Independent Case</h3>
+
+            <p>
+                If A and B are independent, the occurrence of A does not
+                change the probability of B.
+            </p>
+
+            <div class="formula">
+                P(A ∩ B) = P(A) × P(B)
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A fair coin is tossed twice. Find the probability
+                    of getting two Heads.
+                </p>
+
+                <div class="formula">
+                    P(HH)
+                    = 1/2 × 1/2
+                    = 1/4
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 8. INDEPENDENCE -->
+
+        <section class="topic-section" id="independence">
+
+            <h2>8. Independent and Dependent Events</h2>
+
+            <h3>Independent Events</h3>
+
+            <p>
+                Two events are independent when the occurrence of one
+                does not affect the probability of the other.
+            </p>
+
+            <div class="formula">
+                P(A ∩ B) = P(A)P(B)
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    Tossing a coin and rolling a die are independent
+                    experiments. The result of the coin toss does not
+                    affect the result of the die.
+                </p>
+
+            </div>
+
+            <h3>Dependent Events</h3>
+
+            <p>
+                Two events are dependent when the first event changes
+                the probability of the second event.
+            </p>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A bag contains 4 red balls and 6 blue balls.
+                    Two balls are selected without replacement.
+                </p>
+
+                <p>
+                    After the first ball is removed, the total number
+                    of balls changes. Therefore, the second probability
+                    depends on the first selection.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 9. CONDITIONAL -->
+
+        <section class="topic-section" id="conditional">
+
+            <h2>9. Conditional Probability</h2>
+
+            <p>
+                Conditional probability is the probability that an event
+                occurs when we already know that another event has occurred.
+            </p>
+
+            <div class="formula">
+                P(A|B) = P(A ∩ B) / P(B)
+            </div>
+
+            <p>
+                The vertical bar means "given that."
+            </p>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    Suppose 30 students are surveyed. 18 play football,
+                    while 10 of those football players also play basketball.
+                </p>
+
+                <p>
+                    If we already know that a selected student plays
+                    football, the conditional probability that the student
+                    also plays basketball is:
+                </p>
+
+                <div class="formula">
+                    P(Basketball | Football) = 10/18 = 5/9
+                </div>
+
+            </div>
+
+            <h3>Conditional Probability and Multiplication</h3>
+
+            <div class="formula">
+                P(A ∩ B) = P(A)P(B|A)
+            </div>
+
+        </section>
+
+
+        <!-- 10. VENN -->
+
+        <section class="topic-section" id="venn">
+
+            <h2>10. Venn Diagrams</h2>
+
+            <p>
+                A Venn diagram represents sets or events using circles.
+                It is useful for understanding unions, intersections
+                and complements.
+            </p>
+
+            <h3>Union</h3>
+
+            <p>
+                The union contains everything belonging to A, B, or both.
+            </p>
+
+            <div class="formula">
+                A ∪ B
+            </div>
+
+            <h3>Intersection</h3>
+
+            <p>
+                The intersection contains the outcomes common to both
+                A and B.
+            </p>
+
+            <div class="formula">
+                A ∩ B
+            </div>
+
+            <h3>Mutually Exclusive Events</h3>
+
+            <p>
+                If two events cannot occur together, their intersection
+                is empty.
+            </p>
+
+            <div class="formula">
+                A ∩ B = ∅
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    If A represents students who study Mathematics and
+                    B represents students who study Physics, the overlap
+                    represents students who study both subjects.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 11. TREE -->
+
+        <section class="topic-section" id="tree">
+
+            <h2>11. Tree Diagrams</h2>
+
+            <p>
+                A tree diagram displays possible outcomes of a sequence
+                of events. It is especially useful when an experiment
+                happens in stages.
+            </p>
+
+            <h3>Important Rule</h3>
+
+            <p>
+                Multiply probabilities along a branch to find the
+                probability of that particular sequence.
+            </p>
+
+            <div class="formula">
+                Probability of branch =
+                Product of probabilities along the branch
+            </div>
+
+            <p>
+                Add probabilities of separate branches when they represent
+                different ways of achieving the required outcome.
+            </p>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A coin is tossed twice. The possible branches are:
+                </p>
+
+                <div class="formula">
+                    HH, HT, TH, TT
+                </div>
+
+                <p>
+                    Each branch has probability:
+                </p>
+
+                <div class="formula">
+                    1/2 × 1/2 = 1/4
+                </div>
+
+            </div>
+
+            <h3>With Replacement</h3>
+
+            <p>
+                If an item is returned after selection, the probabilities
+                remain unchanged for the next selection.
+            </p>
+
+            <h3>Without Replacement</h3>
+
+            <p>
+                If an item is not returned, the probabilities may change
+                after each selection.
+            </p>
+
+        </section>
+
+
+        <!-- 12. COUNTING -->
+
+        <section class="topic-section" id="counting">
+
+            <h2>12. Counting Principles</h2>
+
+            <p>
+                Counting principles help us determine how many possible
+                outcomes exist without listing every outcome individually.
+            </p>
+
+            <h3>Fundamental Counting Principle</h3>
+
+            <p>
+                If one task can be completed in m ways and another task
+                can be completed in n ways, both tasks can be completed
+                in m × n ways.
+            </p>
+
+            <div class="formula">
+                Total number of ways = m × n
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A student has 4 shirts and 3 pairs of trousers.
+                    How many different shirt-and-trouser combinations
+                    are possible?
+                </p>
+
+                <div class="formula">
+                    4 × 3 = 12
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 13. PERMUTATIONS -->
+
+        <section class="topic-section" id="permutations">
+
+            <h2>13. Permutations</h2>
+
+            <p>
+                A permutation is an arrangement of objects where
+                <span class="definition">order matters</span>.
+            </p>
+
+            <h3>Factorial</h3>
+
+            <p>
+                Factorial is written using the symbol !.
+            </p>
+
+            <div class="formula">
+                n! = n × (n - 1) × (n - 2) × ... × 2 × 1
+            </div>
+
+            <div class="formula">
+                0! = 1
+            </div>
+
+            <h3>Permutation Formula</h3>
+
+            <div class="formula">
+                ⁿPᵣ = n! / (n-r)!
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    In how many ways can 3 students be selected and
+                    arranged from 5 students?
+                </p>
+
+                <div class="formula">
+                    ⁵P₃ = 5! / (5-3)!
+                    <br>
+                    = 5! / 2!
+                    <br>
+                    = 60
+                </div>
+
+            </div>
+
+            <h3>When to Use Permutations</h3>
+
+            <ul>
+                <li>Arranging people in seats.</li>
+                <li>Creating passwords where order matters.</li>
+                <li>Choosing positions such as first, second and third.</li>
+                <li>Arranging letters or objects.</li>
+            </ul>
+
+        </section>
+
+
+        <!-- 14. COMBINATIONS -->
+
+        <section class="topic-section" id="combinations">
+
+            <h2>14. Combinations</h2>
+
+            <p>
+                A combination is a selection where
+                <span class="definition">order does not matter</span>.
+            </p>
+
+            <div class="formula">
+                ⁿCᵣ = n! / [r!(n-r)!]
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    How many ways can 3 students be selected from a
+                    group of 5 students?
+                </p>
+
+                <div class="formula">
+                    ⁵C₃ = 5! / (3!2!)
+                    <br>
+                    = 10
+                </div>
+
+            </div>
+
+            <h3>Permutation vs Combination</h3>
+
+            <div class="formula">
+                Permutation → Order matters
+                <br>
+                Combination → Order does not matter
+            </div>
+
+            <div class="example">
+
+                <strong>Simple way to remember:</strong>
+
+                <p>
+                    Choosing 3 people for a committee is a combination.
+                    Arranging 3 people in first, second and third positions
+                    is a permutation.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 15. EXPERIMENTAL -->
+
+        <section class="topic-section" id="experimental">
+
+            <h2>15. Experimental and Theoretical Probability</h2>
+
+            <h3>Theoretical Probability</h3>
+
+            <p>
+                Theoretical probability is based on the possible outcomes
+                of an experiment before the experiment is performed.
+            </p>
+
+            <div class="formula">
+                P(A) =
+                Favourable outcomes /
+                Total possible outcomes
+            </div>
+
+            <h3>Experimental Probability</h3>
+
+            <p>
+                Experimental probability is calculated from actual
+                results obtained after performing an experiment.
+            </p>
+
+            <div class="formula">
+                Experimental Probability =
+                Number of times event occurs /
+                Number of trials
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A coin is tossed 100 times and lands on Heads 57 times.
+                </p>
+
+                <div class="formula">
+                    Experimental P(Heads) = 57/100 = 0.57
+                </div>
+
+            </div>
+
+            <p>
+                As the number of trials becomes very large, experimental
+                probability tends to become closer to the theoretical
+                probability.
+            </p>
+
+        </section>
+
+
+        <!-- 16. PROBABILITY DISTRIBUTIONS -->
+
+        <section class="topic-section" id="distributions">
+
+            <h2>16. Probability Distributions</h2>
+
+            <p>
+                A probability distribution shows the possible values of
+                a random variable together with their probabilities.
+            </p>
+
+            <h3>Random Variable</h3>
+
+            <p>
+                A random variable assigns numerical values to outcomes
+                of a random experiment.
+            </p>
+
+            <h3>Discrete Random Variable</h3>
+
+            <p>
+                A discrete random variable has countable possible values.
+                For example, the number of heads obtained when a coin is
+                tossed several times.
+            </p>
+
+            <h3>Continuous Random Variable</h3>
+
+            <p>
+                A continuous random variable can take any value within
+                a range, such as height, weight, distance or time.
+            </p>
+
+            <h3>Total Probability</h3>
+
+            <div class="formula">
+                ΣP(X) = 1
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    Suppose a random variable X has three possible values:
+                </p>
+
+                <div class="formula">
+                    P(X=1) = 0.2
+                    <br>
+                    P(X=2) = 0.5
+                    <br>
+                    P(X=3) = 0.3
+                </div>
+
+                <p>
+                    The probabilities add to:
+                </p>
+
+                <div class="formula">
+                    0.2 + 0.5 + 0.3 = 1
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 17. EXPECTED VALUE -->
+
+        <section class="topic-section" id="expected-value">
+
+            <h2>17. Expected Value</h2>
+
+            <p>
+                Expected value represents the long-run average result
+                of a random experiment when the experiment is repeated
+                many times.
+            </p>
+
+            <div class="formula">
+                E(X) = Σ[xP(X=x)]
+            </div>
+
+            <div class="example">
+
+                <strong>Example:</strong>
+
+                <p>
+                    A game gives ₦100 with probability 0.4 and ₦0 with
+                    probability 0.6.
+                </p>
+
+                <div class="formula">
+                    E(X)
+                    = (100 × 0.4) + (0 × 0.6)
+                    <br>
+                    = 40
+                </div>
+
+                <p>
+                    The expected value is ₦40.
+                </p>
+
+            </div>
+
+            <h3>Expected Value and Games</h3>
+
+            <p>
+                Expected value can be used to determine whether a game
+                is favourable or unfavourable in the long run.
+            </p>
+
+            <p>
+                A positive expected gain may indicate a favourable game
+                for the player, while a negative expected gain indicates
+                an expected loss in the long run.
+            </p>
+
+        </section>
+
+
+        <!-- 18. WORD PROBLEMS -->
+
+        <section class="topic-section" id="word-problems">
+
+            <h2>18. Probability Word Problems</h2>
+
+            <p>
+                Probability word problems require you to translate a
+                real situation into mathematical events before choosing
+                a formula.
+            </p>
+
+            <h3>Step 1: Identify the Experiment</h3>
+
+            <p>
+                Determine what is happening. Is something being tossed,
+                rolled, selected, arranged or observed?
+            </p>
+
+            <h3>Step 2: Identify the Outcomes</h3>
+
+            <p>
+                Determine all the possible outcomes.
+            </p>
+
+            <h3>Step 3: Identify the Required Event</h3>
+
+            <p>
+                Carefully identify exactly what the question is asking
+                you to find.
+            </p>
+
+            <h3>Step 4: Look for Important Words</h3>
+
+            <ul>
+                <li><strong>AND</strong> often indicates multiplication.</li>
+                <li><strong>OR</strong> often indicates addition.</li>
+                <li><strong>NOT</strong> often indicates a complement.</li>
+                <li><strong>GIVEN THAT</strong> indicates conditional probability.</li>
+                <li><strong>WITHOUT REPLACEMENT</strong> usually indicates dependent events.</li>
+                <li><strong>WITH REPLACEMENT</strong> often indicates independent selections.</li>
+                <li><strong>AT LEAST</strong> can often be solved using a complement.</li>
+                <li><strong>ARRANGE</strong> often suggests permutations.</li>
+                <li><strong>SELECT</strong> often suggests combinations.</li>
+            </ul>
+
+            <h3>Worked Example</h3>
+
+            <div class="example">
+
+                <strong>Question:</strong>
+
+                <p>
+                    A bag contains 4 red balls and 6 blue balls.
+                    One ball is selected at random. Find the probability
+                    of selecting a red ball.
+                </p>
+
+                <p>
+                    First find the total number of balls:
+                </p>
+
+                <div class="formula">
+                    4 + 6 = 10
+                </div>
+
+                <p>
+                    There are 4 favourable outcomes.
+                </p>
+
+                <div class="formula">
+                    P(Red) = 4/10
+                    <br>
+                    = 2/5
+                    <br>
+                    = 0.4
+                    <br>
+                    = 40%
+                </div>
+
+            </div>
+
+            <h3>Another Example</h3>
+
+            <div class="example">
+
+                <strong>Question:</strong>
+
+                <p>
+                    A fair die is rolled. Find the probability of getting
+                    a number greater than 4.
+                </p>
+
+                <p>
+                    The possible outcomes are:
+                </p>
+
+                <div class="formula">
+                    {1, 2, 3, 4, 5, 6}
+                </div>
+
+                <p>
+                    Numbers greater than 4 are 5 and 6.
+                </p>
+
+                <div class="formula">
+                    P(X > 4) = 2/6 = 1/3
+                </div>
+
+            </div>
+
+            <div class="ai-help">
+
+                <i class="fas fa-sparkles"></i>
+                <strong>Ask Insite AI</strong>
+
+                <p>
+                    Probability questions can become complicated when
+                    several rules are combined. If you are stuck, ask
+                    Insite AI to break the question down step by step.
+                </p>
+
+                <a href="{{ url_for('chat') }}" class="ai-button">
+                    <i class="fas fa-comments"></i>
+                    Ask Insite AI
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <div class="probability-footer">
+
+            <i class="fas fa-sparkles"></i>
+
+            Keep practising. Probability becomes easier
+            when you understand why each rule works.
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

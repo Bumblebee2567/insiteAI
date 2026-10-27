@@ -1,0 +1,906 @@
+{% extends "base.html" %}
+
+{% block title %}
+Phrases & Clauses | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENGLISH HUB: PHRASES & CLAUSES (ULTRA-EXTENSIVE MASTERCLASS)
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: var(--eng-blue-light);
+    margin-top: 22px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.eng-section li {
+    margin-bottom: 10px;
+}
+
+.eng-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--eng-border);
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: var(--eng-cyan-light);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 30px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--eng-border);
+    background: #0a111d;
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 25px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 600px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 13px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.exam-question {
+    margin-top: 25px;
+    padding: 24px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--eng-cyan-light);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.exam-answer {
+    margin-top: 15px;
+    padding: 18px 20px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.ask-ai {
+    margin-top: 35px;
+    padding: 35px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 22px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-puzzle-piece"></i>
+            Phrases & Clauses Masterclass
+        </h1>
+        <p>
+            An exhaustive, ultra-detailed academic masterclass covering noun phrases, verb phrases, adjectival phrases, adverbial phrases, 
+            prepositional phrases, main clauses, subordinate clauses, nominal (noun) clauses, adjectival (relative) clauses, adverbial clauses, 
+            confusing structural traps, and advanced examination parsing for JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">01. Overview</a>
+        <a href="#phrases-core">02. Phrase Architecture</a>
+        <a href="#noun-verb-phrases">03. Noun & Verb Phrases</a>
+        <a href="#adj-adv-prep-phrases">04. Modifier Phrases</a>
+        <a href="#clauses-core">05. Clause Architecture</a>
+        <a href="#subordinate-clauses">06. Subordinate Clauses</a>
+        <a href="#confusing-traps">07. Exam Traps</a>
+        <a href="#tests">08. Practice Tests</a>
+        <a href="#problems">09. Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Comprehensive Introduction to Syntactic Architecture</h2>
+        </div>
+        <p>
+            To excel in West African examinations such as JAMB and WAEC, candidates must transcend basic word identification and master 
+            syntactic parsing—the ability to dissect a sentence into its constituent structural units known as phrases and clauses. 
+            Every sentence in English is an intricate architectural construct built by combining these building blocks according to strict hierarchical rules.
+        </p>
+        <p>
+            Examiners frequently extract specific italicized segments from complex passages and require candidates to identify two core components: 
+            (1) whether the unit is a phrase or a clause, and (2) the exact grammatical function it performs within the sentence 
+            (e.g., acting as a subject, direct object, or modifier). A superficial understanding will inevitably lead to examination failure.
+        </p>
+        <div class="eng-info">
+            <strong>The Fundamental Defining Distinction:</strong><br>
+            • A Phrase is a coherent group of related words that functions as a single grammatical unit within a sentence, but it crucially 
+            lacks both a subject and a finite verb.<br>
+            • A Clause is a distinct group of related words that contains both an explicit subject and a finite verb. It may stand alone as a 
+            complete independent sentence or function as a subordinate building block inside a larger sentence structure.
+        </div>
+    </section>
+
+    <!-- 02 PHRASE ARCHITECTURE -->
+    <section class="eng-section" id="phrases-core">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Deep Dive into Phrase Architecture & Classification</h2>
+        </div>
+        <p>
+            A phrase is named after its head word—the central word that determines the grammatical category and core meaning of the entire phrase. 
+            If the head word is a noun, the entire unit operates as a noun phrase; if the head word is a verb, it operates as a verb phrase, and so forth.
+        </p>
+        <p>
+            In JAMB structural questions, candidates are routinely tested on their ability to isolate phrases and determine their functional roles. 
+            We will examine the five primary phrase types tested in WAEC and JAMB.
+        </p>
+    </section>
+
+    <!-- 03 NOUN & VERB PHRASES -->
+    <section class="eng-section" id="noun-verb-phrases">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Noun Phrases and Verb Phrases</h2>
+        </div>
+        
+        <h3>1. The Noun Phrase (NP)</h3>
+        <p>
+            A noun phrase consists of a head noun accompanied by modifiers (determiners, adjectives, participle phrases, or relative clauses). 
+            The entire noun phrase functions syntactically as a single noun, capable of occupying any slot where a noun can appear (subject, direct object, 
+            indirect object, or object of a preposition).
+        </p>
+        <p>
+            Structure: [Determiner] + [Modifiers/Adjectives] + Head Noun + [Post-modifiers]<br>
+            Example: [The brilliant young scholar from Lagos] won the national scholarship award.<br>
+            Functional Analysis: The entire bracketed expression is a noun phrase acting as the subject of the verb "won".
+        </p>
+
+        <h3>2. The Verb Phrase (VP)</h3>
+        <p>
+            A verb phrase consists of a main lexical verb preceded by one or more auxiliary or modal verbs. It serves as the predicate of a clause, 
+            expressing the action, occurrence, or state experienced by the subject.
+        </p>
+        <p>
+            Structure: [Modal Auxiliary] + [Primary Auxiliaries] + Head Lexical Verb<br>
+            Example: The candidate [must have been studying] throughout the entire night.<br>
+            Functional Analysis: The bracketed sequence forms the complete verb phrase expressing modality, aspect, and action.
+        </p>
+    </section>
+
+    <!-- 04 ADJ, ADV, PREP PHRASES -->
+    <section class="eng-section" id="adj-adv-prep-phrases">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Adjectival, Adverbial, and Prepositional Phrases</h2>
+        </div>
+
+        <h3>3. The Adjectival Phrase (AdjP)</h3>
+        <p>
+            An adjectival phrase is anchored by an adjective head word, accompanied by modifiers or intensifiers (such as very, extremely, quite). 
+            Its primary function is to modify a noun or pronoun, appearing either attributively before the noun or predicatively after a linking verb.
+        </p>
+        <p>
+            Example: The politician delivered [extremely controversial] remarks during the summit.<br>
+            Functional Analysis: An adjectival phrase modifying the noun "remarks".
+        </p>
+
+        <h3>4. The Adverbial Phrase (AdvP)</h3>
+        <p>
+            An adverbial phrase is anchored by an adverb head word, modified by intensifiers. It modifies verbs, adjectives, or other adverbs, 
+            answering questions of time, place, manner, or degree.
+        </p>
+        <p>
+            Example: The chemical reaction proceeded [very rapidly] inside the beaker.<br>
+            Functional Analysis: An adverbial phrase modifying the verb "proceeded".
+        </p>
+
+        <h3>5. The Prepositional Phrase (PrepP)</h3>
+        <p>
+            A prepositional phrase begins with a preposition and concludes with its object (a noun or pronoun). Prepositional phrases are exceptionally 
+            versatile: they can function functionally as adjectival phrases (modifying a noun) or adverbial phrases (modifying a verb or clause).
+        </p>
+        <div class="eng-info">
+            <strong>Dual Functional Capability of Prepositional Phrases:</strong><br>
+            • Adjectival Function: The car [in the parking lot] belongs to the dean. (Modifies the noun "car").<br>
+            • Adverbial Function: The minister arrived [at midnight] for the meeting. (Modifies the verb "arrived").
+        </div>
+    </section>
+
+    <!-- 05 CLAUSE ARCHITECTURE -->
+    <section class="eng-section" id="clauses-core">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Deep Dive into Clause Architecture & Classification</h2>
+        </div>
+        <p>
+            A clause represents a higher level of syntactic organization than a phrase. By definition, every clause possesses an explicit subject and 
+            a finite verb. Clauses are categorized into two overarching classifications: Independent (Main) Clauses and Dependent (Subordinate) Clauses.
+        </p>
+
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <thead>
+                    <tr>
+                        <th>Clause Classification</th>
+                        <th>Syntactic Independence</th>
+                        <th>Grammatical Capability</th>
+                        <th>Illustrative Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Independent Clause</strong></td>
+                        <td>Autonomous (Stands alone)</td>
+                        <td>Expresses a complete, self-contained thought</td>
+                        <td>*The laboratory experiment succeeded.*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dependent Clause</strong></td>
+                        <td>Subordinate (Relies on main clause)</td>
+                        <td>Acts as a single part of speech (noun, adjective, adverb)</td>
+                        <td>*...because the temperature was stable.*</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 06 SUBORDINATE CLAUSES -->
+    <section class="eng-section" id="subordinate-clauses">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Mastering Subordinate Clauses (Noun, Adjectival, Adverbial)</h2>
+        </div>
+        <p>
+            Subordinate clauses are the primary focus of JAMB and WAEC structural analysis questions. They are categorized strictly by the 
+            grammatical function they perform within the larger sentence structure.
+        </p>
+
+        <h3>1. Nominal (Noun) Clauses</h3>
+        <p>
+            A noun clause is a dependent clause that steps into the structural shoes of a noun. Because it acts as a noun, it can occupy any nominal slot: 
+            subject, direct object, subject complement, or object of a preposition.
+        </p>
+        <p>
+            Common Introductory Markers: that, what, whatever, who, whoever, whether, how, why.<br>
+            Example as Subject: [What the committee decided] remains highly confidential.<br>
+            Functional Analysis: The bracketed noun clause serves as the grammatical subject of the verb "remains".
+        </p>
+
+        <h3>2. Adjectival (Relative) Clauses</h3>
+        <p>
+            An adjectival clause (frequently referred to as a relative clause) is a dependent clause that modifies a noun or pronoun. It almost always 
+            begins with a relative pronoun (who, whom, whose, which, that) or a relative adverb (where, when).
+        </p>
+        <p>
+            Example: The scientist [who discovered the vaccine] received global recognition.<br>
+            Functional Analysis: The bracketed relative clause modifies the head noun "scientist".
+        </p>
+
+        <h3>3. Adverbial Clauses</h3>
+        <p>
+            An adverbial clause modifies a verb, adjective, or adverb in the main clause, expressing circumstances such as time, place, cause, 
+            condition, concession, purpose, or result. They are introduced by subordinating conjunctions (because, although, if, since, when, unless).
+        </p>
+        <p>
+            Example: The lecture was postponed [because the auditorium leaked heavily].<br>
+            Functional Analysis: An adverbial clause of cause, modifying the verb "postponed".
+        </p>
+    </section>
+
+    <!-- 07 CONFUSING EXAM TRAPS -->
+    <section class="eng-section" id="confusing-traps">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Confusing Examination Traps & Ambiguous Structures</h2>
+        </div>
+        <p>
+            Examiners love testing structures that look like one thing but function as another. Mastering these three common traps will 
+            prevent you from falling for distractor options in your exams.
+        </p>
+
+        <h3>Trap 1: Noun Clause vs. Relative Clause Starting With "What"</h3>
+        <p>
+            Students often assume any clause starting with "what" is a noun clause. However, relative clauses can also begin with "what" 
+            when it functions as a relative pronoun meaning "that which".<br>
+            • Noun Clause: I know [what you did]. (Acts as direct object of "know").<br>
+            • Relative Clause: Give me [what money you have]. (Here, "what" modifies "money", making the whole unit an expanded noun phrase).
+        </p>
+
+        <h3>Trap 2: Participle Phrase vs. Adjectival Clause</h3>
+        <p>
+            A participle phrase modifies a noun just like an adjectival clause, but it lacks a finite verb and subject.<br>
+            • Adjectival Clause: The man [who is standing outside] is my uncle.<br>
+            • Participle Phrase: The man [standing outside] is my uncle.
+        </p>
+
+        <h3>Trap 3: Gerund Phrase vs. Noun Clause</h3>
+        <p>
+            A gerund phrase acts as a noun (e.g., [Swimming in the pool] is fun), but it contains a non-finite "-ing" verb without an explicit subject, 
+            whereas a noun clause contains both a subject and a finite verb ([That he swam in the pool] is amazing).
+        </p>
+    </section>
+
+    <!-- 08 INTERACTIVE TESTS -->
+    <section class="eng-section" id="tests">
+        <div class="eng-section-header">
+            <div class="eng-number">08</div>
+            <h2>Interactive Examination Practice Tests</h2>
+        </div>
+        <p>Test your absolute mastery of structural parsing with these three challenging, high-difficulty past-question simulators.</p>
+
+        <!-- TEST 1 -->
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 1: Clause Identification</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Identify the grammatical name and function of the italicized clause:<br>
+                    <em>"The scholarship will be awarded to <strong>whichever candidate scores the highest aggregate in the screening test</strong>."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer5">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Adjectival clause modifying "candidate"</option>
+                    <option value="correct">Noun clause acting as the object of the preposition "to"</option>
+                    <option value="wrong2">Adverbial clause of condition</option>
+                    <option value="wrong3">Independent main clause</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng5">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult5"></div>
+            </div>
+        </div>
+
+        <!-- TEST 2 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 2: Confusing Modifier Trap</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Identify the grammatical name and function of the italicized unit:<br>
+                    <em>"The police arrested the notorious smuggler <strong>hiding in the abandoned warehouse</strong>."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer6">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Adverbial clause of place</option>
+                    <option value="correct">Adjectival participle phrase modifying "smuggler"</option>
+                    <option value="wrong2">Noun clause acting as direct object</option>
+                    <option value="wrong3">Independent main clause</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng6">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult6"></div>
+            </div>
+        </div>
+
+        <!-- TEST 3 -->
+        <div class="test-box" style="margin-top: 25px;">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Practice Test 3: Complex Nominal Clause</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Identify the grammatical name and function of the italicized clause:<br>
+                    <em>"The reality is <strong>that success requires consistent dedication and sacrifice</strong>."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer7">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Adjectival relative clause</option>
+                    <option value="wrong2">Adverbial clause of result</option>
+                    <option value="correct">Noun clause acting as a subject complement</option>
+                    <option value="wrong3">Independent main clause</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng7">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult7"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">09</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Parsing Dependent Clause Functions):</strong>
+            <p>Analyze the italicized segment in the following WAEC structural question and state its grammatical name and function: <br><em>"The students realized <strong>that the examination questions were exceptionally difficult</strong>."</em></p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution & Grammatical Breakdown:</strong><br>
+                1. Identify Clause Boundaries: The segment contains a subject (the examination questions) and a finite verb (were), confirming it is a clause. Because it cannot stand alone, it is a dependent subordinate clause.<br>
+                2. Determine Syntactic Role: The clause follows the transitive verb "realized" and answers the question "realized what?", acting as the direct object receiver of the verb.<br>
+                3. Final Classification:<br>
+                - Grammatical Name: Nominal (Noun) Clause.<br>
+                - Grammatical Function: Acting as the direct object of the transitive verb "realized".
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Distinguishing Relative Clauses from Noun Clauses):</strong>
+            <p>Compare the structural behavior of the clause in Sentence A versus Sentence B:<br>
+               (A) *I know what you did last summer.*<br>
+               (B) *I know the person who did what you said.*</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                1. Sentence (A) Analysis: The clause "what you did last summer" directly follows the verb "know" and has no antecedent noun preceding it. It replaces a noun entirely, making it a Nominal Clause (Direct Object).<br>
+                2. Sentence (B) Analysis: The clause "who did what you said" directly follows and modifies the specific noun phrase "the person". Because it modifies a noun and begins with a relative pronoun, it is a Relative (Adjectival) Clause.<br>
+                3. Exam Takeaway: Always check if a dependent clause modifies a preceding noun (Relative) or replaces a missing noun argument (Nominal).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:32px; margin-bottom:12px;"></i>
+        <h3 style="margin:0 0 10px; color:white; font-size:1.4rem;">Need further assistance with phrases and clauses?</h3>
+        <p style="color:var(--eng-muted); margin:0 auto; max-width:650px; line-height:1.7;">
+            Ask Insite AI to clarify complex embedded clauses, participial phrase functions, or provide targeted JAMB past questions on syntax.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — PHRASES & CLAUSES INTERACTIVE TEST SCRIPTS
+   ========================================================= */
+
+// Test 1
+const engAnswer5 = document.getElementById("engAnswer5");
+const checkEng5 = document.getElementById("checkEng5");
+const engResult5 = document.getElementById("engResult5");
+
+checkEng5.addEventListener("click", function () {
+    const val = engAnswer5.value;
+    engResult5.style.display = "block";
+
+    if (val === "correct") {
+        engResult5.className = "test-result correct";
+        engResult5.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Outstanding Syntactic Analysis!</div>
+            <div>The italicized dependent clause follows the preposition "to". Because prepositions require nominal objects, this entire subordinate clause functions structurally as a noun clause acting as the object of the preposition "to".</div>
+        `;
+    } else if (val === "") {
+        engResult5.className = "test-result wrong";
+        engResult5.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select one of the provided options from the dropdown menu before evaluating your answer.</div>
+        `;
+    } else {
+        engResult5.className = "test-result wrong";
+        engResult5.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect. Review Clause Functions.</div>
+            <div>Even though the clause begins with "whichever", it serves as the complement of the preposition "to". Therefore, it is a <strong>Noun clause acting as the object of the preposition "to"</strong>.</div>
+        `;
+    }
+});
+
+// Test 2
+const engAnswer6 = document.getElementById("engAnswer6");
+const checkEng6 = document.getElementById("checkEng6");
+const engResult6 = document.getElementById("engResult6");
+
+checkEng6.addEventListener("click", function () {
+    const val = engAnswer6.value;
+    engResult6.style.display = "block";
+
+    if (val === "correct") {
+        engResult6.className = "test-result correct";
+        engResult6.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Excellent Trap Avoidance!</div>
+            <div>Even though it contains action (-ing), it lacks an explicit subject ("who was hiding"), making it a participial phrase rather than a clause, acting adjectivally to modify "smuggler".</div>
+        `;
+    } else if (val === "") {
+        engResult6.className = "test-result wrong";
+        engResult6.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult6.className = "test-result wrong";
+        engResult6.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>Because it lacks a finite subject and verb, it is a <strong>Adjectival participle phrase modifying "smuggler"</strong>.</div>
+        `;
+    }
+});
+
+// Test 3
+const engAnswer7 = document.getElementById("engAnswer7");
+const checkEng7 = document.getElementById("checkEng7");
+const engResult7 = document.getElementById("engResult7");
+
+checkEng7.addEventListener("click", function () {
+    const val = engAnswer7.value;
+    engResult7.style.display = "block";
+
+    if (val === "correct") {
+        engResult7.className = "test-result correct";
+        engResult7.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Flawless Subject Complement Identification!</div>
+            <div>The clause follows the linking verb "is" and renames/completes the subject "reality", functioning structurally as a noun clause acting as a subject complement.</div>
+        `;
+    } else if (val === "") {
+        engResult7.className = "test-result wrong";
+        engResult7.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select an option before evaluating.</div>
+        `;
+    } else {
+        engResult7.className = "test-result wrong";
+        engResult7.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</div>
+            <div>Following the linking verb "is", this structure is a <strong>Noun clause acting as a subject complement</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

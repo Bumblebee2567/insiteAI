@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}
+Physics Hub | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.container-physics{
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.header h1{
+    color:white;
+    font-weight:700;
+}
+
+.header p{
+    color:#9ca3af;
+}
+
+.topic-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.topic-card{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:15px;
+    padding:22px;
+    text-decoration:none;
+    color:white;
+    transition:.25s;
+}
+
+.topic-card:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+    color:white;
+}
+
+.topic-card i{
+    font-size:28px;
+    color:#3b82f6;
+    margin-bottom:12px;
+}
+
+.topic-card h4{
+    margin-bottom:8px;
+}
+
+.topic-card p{
+    color:#9ca3af;
+    font-size:.9rem;
+}
+
+@media(max-width:768px){
+    .topic-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="container-physics">
+    <div class="header">
+        <h1>Physics</h1>
+        <p>Select a topic to begin learning.</p>
+    </div>
+
+    <div class="topic-grid">
+
+        <a href="{{ url_for('kinematics') }}" class="topic-card">
+            <i class="fa-solid fa-gauge-high"></i>
+            <h4>Kinematics & Vectors</h4>
+            <p>Displacement, velocity, acceleration, projectile motion, and vector component analysis in 1D and 2D.</p>
+        </a>
+
+        <a href="{{ url_for('newton_laws') }}" class="topic-card">
+            <i class="fa-solid fa-dumbbell"></i>
+            <h4>Newton's Laws of Motion</h4>
+            <p>Force, inertia, friction, tension, inclined planes, and free-body diagram problem solving.</p>
+        </a>
+
+        <a href="{{ url_for('work_energy') }}" class="topic-card">
+            <i class="fa-solid fa-bolt"></i>
+            <h4>Work, Energy & Power</h4>
+            <p>Work-energy theorem, kinetic and potential energy conservation, conservative forces, and power output.</p>
+        </a>
+
+        <a href="{{ url_for('momentum_collisions') }}" class="topic-card">
+            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+            <h4>Momentum & Collisions</h4>
+            <p>Linear momentum, impulse, conservation laws, elastic/inelastic collisions, and center of mass.</p>
+        </a>
+
+        <a href="{{ url_for('rotational_motion') }}" class="topic-card">
+            <i class="fa-solid fa-compact-disc"></i>
+            <h4>Rotational Dynamics</h4>
+            <p>Angular displacement, torque, moment of inertia, rotational kinetic energy, and angular momentum.</p>
+        </a>
+
+        <a href="{{ url_for('gravitation') }}" class="topic-card">
+            <i class="fa-solid fa-earth-americas"></i>
+            <h4>Universal Gravitation</h4>
+            <p>Newton's law of gravitation, gravitational field strength, orbital mechanics, and Kepler's planetary laws.</p>
+        </a>
+
+        <a href="{{ url_for('properties_matter') }}" class="topic-card">
+            <i class="fa-solid fa-cube"></i>
+            <h4>Properties of Matter</h4>
+            <p>Elasticity, Young's modulus, stress-strain curves, surface tension, viscosity, and fluid dynamics.</p>
+        </a>
+
+        <a href="{{ url_for('thermal_physics') }}" class="topic-card">
+            <i class="fa-solid fa-fire-flame-curved"></i>
+            <h4>Thermal Physics & Heat</h4>
+            <p>Thermal expansion, specific heat capacity, latent heat, heat transfer mechanisms, and calorimetry.</p>
+        </a>
+
+        <a href="{{ url_for('kinetic_theory_gases') }}" class="topic-card">
+            <i class="fa-solid fa-wind"></i>
+            <h4>Kinetic Theory of Gases</h4>
+            <p>Ideal gas equation, root-mean-square molecular speeds, Maxwell-Boltzmann distributions, and pressure.</p>
+        </a>
+
+        <a href="{{ url_for('thermodynamics_laws') }}" class="topic-card">
+            <i class="fa-solid fa-engine"></i>
+            <h4>Laws of Thermodynamics</h4>
+            <p>Zeroth, first, second, and third laws, internal energy, heat engines, refrigerators, and Carnot efficiency.</p>
+        </a>
+
+        <a href="{{ url_for('shm') }}" class="topic-card">
+            <i class="fa-solid fa-wave-square"></i>
+            <h4>Simple Harmonic Motion</h4>
+            <p>Restoring forces, mass-spring systems, simple pendulums, energy graphs, and damped/driven oscillations.</p>
+        </a>
+
+        <a href="{{ url_for('wave_motion') }}" class="topic-card">
+            <i class="fa-solid fa-water"></i>
+            <h4>Mechanical Waves & Sound</h4>
+            <p>Transverse/longitudinal waves, wave equations, superposition, interference, standing waves, and the Doppler effect.</p>
+        </a>
+
+        <a href="{{ url_for('optics_geometric') }}" class="topic-card">
+            <i class="fa-solid fa-glasses"></i>
+            <h4>Geometrical Optics</h4>
+            <p>Reflection, refraction, Snell's law, total internal reflection, spherical mirrors, and thin lenses.</p>
+        </a>
+
+        <a href="{{ url_for('optics_physical') }}" class="topic-card">
+            <i class="fa-solid fa-rainbow"></i>
+            <h4>Physical Optics & Interference</h4>
+            <p>Huygens' principle, Young's double-slit experiment, thin-film interference, diffraction gratings, and polarization.</p>
+        </a>
+
+        <a href="{{ url_for('electrostatics') }}" class="topic-card">
+            <i class="fa-solid fa-bolt-lightning"></i>
+            <h4>Electrostatics</h4>
+            <p>Coulomb's law, electric fields, electric potential energy, electric potential, and capacitance.</p>
+        </a>
+
+        <a href="{{ url_for('current_electricity') }}" class="topic-card">
+            <i class="fa-solid fa-plug"></i>
+            <h4>Current Electricity & Circuits</h4>
+            <p>Ohm's law, electrical resistance, resistivity, Kirchhoff's laws, RC circuits, and electrical power.</p>
+        </a>
+
+        <a href="{{ url_for('magnetism') }}" class="topic-card">
+            <i class="fa-solid fa-magnet"></i>
+            <h4>Magnetism & Electromagnetism</h4>
+            <p>Magnetic fields, Lorentz force on moving charges, magnetic forces on currents, and Ampère's law.</p>
+        </a>
+
+        <a href="{{ url_for('electromagnetic_induction') }}" class="topic-card">
+            <i class="fa-solid fa-tower-broadcast"></i>
+            <h4>Electromagnetic Induction & AC</h4>
+            <p>Faraday's law, Lenz's law, motional EMF, inductors, transformers, and alternating current circuits.</p>
+        </a>
+
+        <a href="{{ url_for('em_waves') }}" class="topic-card">
+            <i class="fa-solid fa-satellite-dish"></i>
+            <h4>Electromagnetic Waves</h4>
+            <p>Maxwell's equations overview, propagation of EM waves, the electromagnetic spectrum, and energy density.</p>
+        </a>
+
+        <a href="{{ url_for('quantum_physics') }}" class="topic-card">
+            <i class="fa-solid fa-lightbulb"></i>
+            <h4>Quantum & Particle Physics</h4>
+            <p>Blackbody radiation, photoelectric effect, Compton scattering, de Broglie matter waves, and wave-particle duality.</p>
+        </a>
+
+        <a href="{{ url_for('atomic_structure_physics') }}" class="topic-card">
+            <i class="fa-solid fa-atom"></i>
+            <h4>Atomic Physics & Spectra</h4>
+            <p>Rutherford and Bohr atomic models, hydrogen emission spectra, spectral series, and X-ray production.</p>
+        </a>
+
+        <a href="{{ url_for('nuclear_physics') }}" class="topic-card">
+            <i class="fa-solid fa-radiation"></i>
+            <h4>Nuclear Physics & Radioactivity</h4>
+            <p>Nuclear binding energy, mass defect, radioactive decay laws, half-life, nuclear fission, and fusion reactions.</p>
+        </a>
+
+        <a href="{{ url_for('semiconductors') }}" class="topic-card">
+            <i class="fa-solid fa-microchip"></i>
+            <h4>Semiconductors & Electronics</h4>
+            <p>Energy bands in solids, intrinsic/extrinsic semiconductors, p-n junctions, diodes, transistors, and logic gates.</p>
+        </a>
+
+        <a href="{{ url_for('physics_problem_solving') }}" class="topic-card">
+            <i class="fa-solid fa-brain"></i>
+            <h4>Physics Problem Solving</h4>
+            <p>Advanced calculations, analytical word problems, calculus-based derivations, and competitive exam practice.</p>
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

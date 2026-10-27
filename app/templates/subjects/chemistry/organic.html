@@ -1,0 +1,2116 @@
+{% extends "base.html" %}
+
+{% block title %}
+Organic Chemistry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ORGANIC CHEMISTRY
+   DARK CARD / BOXED STUDY PAGE
+   ========================================================= */
+
+:root {
+    --oc-bg: #070b14;
+    --oc-panel: #0d1422;
+    --oc-panel-2: #0a101c;
+    --oc-card: #0c1220;
+    --oc-border: rgba(148, 163, 184, 0.16);
+
+    --oc-text: #f8fafc;
+    --oc-muted: #94a3b8;
+    --oc-soft: #cbd5e1;
+
+    --oc-blue: #38bdf8;
+    --oc-blue-dark: #0284c7;
+    --oc-green: #34d399;
+    --oc-purple: #a78bfa;
+    --oc-yellow: #fbbf24;
+    --oc-red: #fb7185;
+
+    --oc-radius: 17px;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.organic-page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 35px auto 70px;
+    color: var(--oc-text);
+    box-sizing: border-box;
+}
+
+.organic-page *,
+.organic-page *::before,
+.organic-page *::after {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 12px;
+
+    background: var(--oc-panel-2);
+    color: var(--oc-soft);
+
+    text-decoration: none;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.back-chemistry:hover {
+    transform: translateX(-4px);
+    border-color: rgba(56,189,248,.5);
+    background: #111a2b;
+    color: white;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.organic-header {
+    text-align: center;
+    padding: 36px 15px 30px;
+}
+
+.organic-header h1 {
+    margin: 0;
+
+    color: white;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 850;
+
+    letter-spacing: -1.5px;
+}
+
+.organic-header h1 i {
+    color: var(--oc-blue);
+    margin-right: 9px;
+}
+
+.organic-header p {
+    max-width: 820px;
+
+    margin: 15px auto 0;
+
+    color: var(--oc-muted);
+
+    line-height: 1.8;
+    font-size: .98rem;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.organic-nav-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+
+    margin-bottom: 25px;
+    padding: 8px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 16px;
+
+    background: #080d17;
+}
+
+.organic-nav {
+    display: flex;
+    gap: 8px;
+
+    overflow-x: auto;
+    padding: 2px;
+
+    scrollbar-width: none;
+}
+
+.organic-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.organic-nav a {
+    flex: 0 0 auto;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+    border: 1px solid transparent;
+
+    color: var(--oc-muted);
+
+    text-decoration: none;
+
+    font-size: .84rem;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.organic-nav a:hover {
+    color: white;
+    background: #111a2b;
+    border-color: var(--oc-border);
+}
+
+/* =========================================================
+   MAIN SECTIONS
+   ========================================================= */
+
+.organic-section {
+    position: relative;
+
+    padding: 30px;
+    margin-bottom: 22px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: var(--oc-radius);
+
+    background: var(--oc-panel);
+
+    box-shadow: 0 12px 35px rgba(0,0,0,.18);
+
+    scroll-margin-top: 90px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 19px;
+}
+
+.section-number {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: rgba(56,189,248,.10);
+    border: 1px solid rgba(56,189,248,.25);
+
+    color: var(--oc-blue);
+
+    font-size: .95rem;
+    font-weight: 800;
+}
+
+.organic-section h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.organic-section h3 {
+    margin-top: 27px;
+
+    color: #7dd3fc;
+
+    font-size: 1.15rem;
+}
+
+.organic-section p,
+.organic-section li {
+    color: var(--oc-soft);
+
+    line-height: 1.8;
+}
+
+.organic-section li {
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   HIGHLIGHT BOX
+   ========================================================= */
+
+.highlight {
+    margin: 20px 0;
+
+    padding: 17px 19px;
+
+    border: 1px solid rgba(56,189,248,.18);
+    border-left: 4px solid var(--oc-blue);
+
+    border-radius: 12px;
+
+    background: #0a1523;
+
+    color: var(--oc-soft);
+
+    line-height: 1.75;
+}
+
+.highlight strong {
+    color: #7dd3fc;
+}
+
+/* =========================================================
+   FORMULA BOX
+   ========================================================= */
+
+.formula {
+    margin: 18px 0;
+    padding: 18px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 13px;
+
+    background: #080e19;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+
+    overflow-x: auto;
+}
+
+.formula-note {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--oc-muted);
+
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+/* =========================================================
+   CONCEPT CARDS
+   ========================================================= */
+
+.concept-grid {
+    display: grid;
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.concept-grid.two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.concept-grid.three {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.concept-card {
+    padding: 21px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 15px;
+
+    background: var(--oc-card);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.concept-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(56,189,248,.35);
+    background: #0e1726;
+}
+
+.concept-card i {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--oc-blue);
+
+    font-size: 25px;
+}
+
+.concept-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+
+    font-size: 1.1rem;
+}
+
+.concept-card p {
+    margin: 0;
+
+    color: var(--oc-muted);
+
+    font-size: .91rem;
+}
+
+/* =========================================================
+   HOMOLOGOUS SERIES
+   ========================================================= */
+
+.homologous-grid {
+    display: grid;
+
+    grid-template-columns: repeat(5, minmax(0,1fr));
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.homolog-card {
+    padding: 16px 10px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 12px;
+
+    background: #080e19;
+
+    text-align: center;
+}
+
+.homolog-card .name {
+    color: #7dd3fc;
+
+    font-size: .82rem;
+    font-weight: 700;
+
+    margin-bottom: 7px;
+}
+
+.homolog-card .formula-small {
+    color: white;
+
+    font-size: .95rem;
+    font-weight: 800;
+}
+
+/* =========================================================
+   FUNCTIONAL GROUP CARDS
+   ========================================================= */
+
+.functional-card {
+    display: grid;
+
+    grid-template-columns: 70px 1fr;
+
+    gap: 15px;
+
+    align-items: center;
+
+    padding: 17px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 14px;
+
+    background: #0a101c;
+}
+
+.functional-symbol {
+    width: 58px;
+    height: 58px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background: rgba(167,139,250,.10);
+    border: 1px solid rgba(167,139,250,.25);
+
+    color: var(--oc-purple);
+
+    font-weight: 800;
+    font-size: .9rem;
+}
+
+.functional-card h3 {
+    margin: 0 0 5px;
+
+    color: white;
+
+    font-size: 1rem;
+}
+
+.functional-card p {
+    margin: 0;
+
+    color: var(--oc-muted);
+
+    font-size: .88rem;
+}
+
+/* =========================================================
+   REACTION CARDS
+   ========================================================= */
+
+.reaction-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0,1fr));
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.reaction-card {
+    padding: 20px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.reaction-card .reaction-icon {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 10px;
+
+    background: rgba(56,189,248,.10);
+
+    color: var(--oc-blue);
+}
+
+.reaction-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+
+    font-size: 1.08rem;
+}
+
+.reaction-card p {
+    margin: 0;
+
+    color: var(--oc-muted);
+
+    font-size: .9rem;
+}
+
+.reaction-equation {
+    margin-top: 13px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    background: #070c15;
+
+    border: 1px solid var(--oc-border);
+
+    color: #e2e8f0;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    overflow-x: auto;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+
+    border-radius: 13px;
+
+    border: 1px solid var(--oc-border);
+
+    margin-top: 18px;
+}
+
+.compare-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.compare-table th,
+.compare-table td {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--oc-border);
+
+    text-align: left;
+
+    color: var(--oc-soft);
+}
+
+.compare-table th {
+    background: #0a101c;
+
+    color: #7dd3fc;
+
+    font-weight: 700;
+}
+
+.compare-table tr:last-child td {
+    border-bottom: none;
+}
+
+.compare-table tr:hover td {
+    background: rgba(56,189,248,.035);
+}
+
+/* =========================================================
+   WORKED EXAMPLES
+   ========================================================= */
+
+.example-box {
+    margin: 20px 0;
+
+    padding: 21px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.example-title {
+    margin-bottom: 11px;
+
+    color: #7dd3fc;
+
+    font-weight: 800;
+}
+
+.step {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 15px 0;
+}
+
+.step-number {
+    flex: 0 0 32px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #075985;
+
+    color: white;
+
+    font-weight: 800;
+}
+
+.step-text {
+    color: var(--oc-soft);
+
+    line-height: 1.7;
+}
+
+.answer-box {
+    margin-top: 16px;
+
+    padding: 15px 17px;
+
+    border-left: 4px solid var(--oc-green);
+
+    border-radius: 9px;
+
+    background: rgba(52,211,153,.055);
+
+    color: var(--oc-soft);
+}
+
+/* =========================================================
+   ORGANIC STRUCTURE VIEW
+   ========================================================= */
+
+.structure-box {
+    margin-top: 20px;
+
+    padding: 25px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 16px;
+
+    background: #080e18;
+
+    text-align: center;
+}
+
+.structure-title {
+    color: #7dd3fc;
+
+    font-size: .8rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 15px;
+}
+
+.structure {
+    font-size: 1.35rem;
+
+    color: white;
+
+    font-weight: 800;
+
+    overflow-x: auto;
+
+    padding: 12px;
+}
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
+
+.checklist {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0,1fr));
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+.check-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 14px;
+
+    border: 1px solid var(--oc-border);
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.check-item i {
+    color: var(--oc-green);
+
+    margin-top: 3px;
+}
+
+.check-item span {
+    color: var(--oc-soft);
+
+    line-height: 1.55;
+
+    font-size: .9rem;
+}
+
+/* =========================================================
+   ASK AI
+   ========================================================= */
+
+.ask-ai {
+    margin-top: 30px;
+
+    padding: 32px;
+
+    border: 1px solid rgba(56,189,248,.18);
+
+    border-radius: 18px;
+
+    background: #0b1320;
+
+    text-align: center;
+}
+
+.ask-ai i {
+    margin-bottom: 12px;
+
+    color: var(--oc-blue);
+
+    font-size: 34px;
+}
+
+.ask-ai h3 {
+    color: white;
+
+    font-size: 1.5rem;
+
+    margin: 0 0 10px;
+}
+
+.ask-ai p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: var(--oc-muted);
+
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 19px;
+
+    border-radius: 11px;
+
+    background: #0284c7;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    transform: translateY(-2px);
+
+    background: #0369a1;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .homologous-grid {
+        grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+
+    .concept-grid.three {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .organic-page {
+        width: calc(100% - 20px);
+
+        margin: 15px auto 45px;
+    }
+
+    .organic-header {
+        padding: 25px 5px;
+    }
+
+    .organic-header h1 {
+        font-size: 2rem;
+
+        letter-spacing: -1px;
+    }
+
+    .organic-header p {
+        font-size: .9rem;
+    }
+
+    .back-chemistry {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .organic-section {
+        padding: 19px 16px;
+
+        border-radius: 15px;
+    }
+
+    .organic-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .organic-nav-wrapper {
+        top: 0;
+
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .organic-nav a {
+        padding: 8px 12px;
+
+        font-size: .78rem;
+    }
+
+    .concept-grid.two,
+    .concept-grid.three,
+    .reaction-grid,
+    .checklist {
+        grid-template-columns: 1fr;
+    }
+
+    .homologous-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+
+    .functional-card {
+        grid-template-columns: 55px 1fr;
+    }
+
+    .formula {
+        font-size: .95rem;
+
+        padding: 15px;
+    }
+
+    .ask-ai {
+        padding: 24px 17px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .organic-page {
+        width: calc(100% - 14px);
+    }
+
+    .organic-section {
+        padding: 16px 13px;
+    }
+
+    .organic-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .concept-card,
+    .reaction-card,
+    .example-box {
+        padding: 17px;
+    }
+
+    .homologous-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .homolog-card {
+        padding: 13px 7px;
+    }
+
+    .structure {
+        font-size: 1.05rem;
+    }
+}
+</style>
+
+
+<div class="organic-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="organic-header">
+
+        <h1>
+            <i class="fa-solid fa-atom"></i>
+            Organic Chemistry
+        </h1>
+
+        <p>
+            A complete study guide covering carbon compounds, hydrocarbons,
+            homologous series, functional groups, nomenclature, structural
+            formulas, and important organic reactions.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <div class="organic-nav-wrapper">
+
+        <nav class="organic-nav">
+
+            <a href="#overview">Overview</a>
+            <a href="#carbon">Carbon</a>
+            <a href="#hydrocarbons">Hydrocarbons</a>
+            <a href="#homologous">Homologous Series</a>
+            <a href="#functional">Functional Groups</a>
+            <a href="#naming">Naming</a>
+            <a href="#reactions">Reactions</a>
+            <a href="#alkanes">Alkanes</a>
+            <a href="#alkenes">Alkenes</a>
+            <a href="#alcohols">Alcohols</a>
+            <a href="#acids">Carboxylic Acids</a>
+            <a href="#exam">Exam Checklist</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         1. OVERVIEW
+         ===================================================== -->
+
+    <section class="organic-section" id="overview">
+
+        <div class="section-header">
+
+            <div class="section-number">01</div>
+
+            <div>
+                <h2>What Is Organic Chemistry?</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Organic chemistry is the study of carbon compounds and their
+            structures, properties and reactions. Carbon is especially
+            important because it forms four covalent bonds and can bond
+            strongly to other carbon atoms, allowing chains, branches and
+            rings to form.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Key idea:</strong>
+
+            Carbon's ability to form four covalent bonds and bond with
+            itself gives rise to an enormous variety of compounds.
+
+        </div>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-link"></i>
+
+                <h3>Covalent Bonding</h3>
+
+                <p>
+                    Carbon normally forms strong covalent bonds by sharing
+                    electrons with other atoms.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-diagram-project"></i>
+
+                <h3>Catenation</h3>
+
+                <p>
+                    Carbon atoms can bond to other carbon atoms to form
+                    chains, branches and rings.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-flask"></i>
+
+                <h3>Huge Variety</h3>
+
+                <p>
+                    Carbon compounds range from simple molecules such as
+                    methane to very complex biological and synthetic molecules.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         2. CARBON
+         ===================================================== -->
+
+    <section class="organic-section" id="carbon">
+
+        <div class="section-header">
+
+            <div class="section-number">02</div>
+
+            <div>
+                <h2>Why Is Carbon So Important?</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Carbon has four valence electrons and can therefore form four
+            covalent bonds. It can also form single, double and triple bonds,
+            giving organic molecules many possible structures.
+        </p>
+
+
+        <div class="formula">
+
+            Carbon valency = 4
+
+            <span class="formula-note">
+                Carbon commonly forms four covalent bonds.
+            </span>
+
+        </div>
+
+
+        <div class="concept-grid two">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-code-branch"></i>
+
+                <h3>Chains</h3>
+
+                <p>
+                    Carbon atoms can join together to form long continuous
+                    carbon chains.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-share-nodes"></i>
+
+                <h3>Branches</h3>
+
+                <p>
+                    Carbon chains can branch, producing structural isomers
+                    with different arrangements.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-ring"></i>
+
+                <h3>Rings</h3>
+
+                <p>
+                    Carbon atoms can connect back to one another to form
+                    cyclic structures.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-arrows-left-right"></i>
+
+                <h3>Multiple Bonds</h3>
+
+                <p>
+                    Carbon can form single, double and triple bonds with
+                    other carbon atoms.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         3. HYDROCARBONS
+         ===================================================== -->
+
+    <section class="organic-section" id="hydrocarbons">
+
+        <div class="section-header">
+
+            <div class="section-number">03</div>
+
+            <div>
+                <h2>Hydrocarbons</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Hydrocarbons are organic compounds containing only carbon and
+            hydrogen. They include alkanes, alkenes and alkynes.
+        </p>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-minus"></i>
+
+                <h3>Alkanes</h3>
+
+                <p>
+                    Saturated hydrocarbons containing carbon-carbon
+                    single bonds.
+                </p>
+
+                <div class="formula">
+                    C<sub>n</sub>H<sub>2n+2</sub>
+                </div>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-equals"></i>
+
+                <h3>Alkenes</h3>
+
+                <p>
+                    Unsaturated hydrocarbons containing at least one
+                    carbon-carbon double bond.
+                </p>
+
+                <div class="formula">
+                    C<sub>n</sub>H<sub>2n</sub>
+                </div>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-grip-lines"></i>
+
+                <h3>Alkynes</h3>
+
+                <p>
+                    Unsaturated hydrocarbons containing at least one
+                    carbon-carbon triple bond.
+                </p>
+
+                <div class="formula">
+                    C<sub>n</sub>H<sub>2n-2</sub>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         4. HOMOLOGOUS SERIES
+         ===================================================== -->
+
+    <section class="organic-section" id="homologous">
+
+        <div class="section-header">
+
+            <div class="section-number">04</div>
+
+            <div>
+                <h2>Homologous Series</h2>
+            </div>
+
+        </div>
+
+        <p>
+            A homologous series is a family of organic compounds with the
+            same functional group and general formula, where successive
+            members differ by a CH<sub>2</sub> unit.
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>Important:</strong>
+
+            Members of a homologous series have similar chemical properties,
+            while physical properties such as boiling point generally change
+            gradually through the series.
+
+        </div>
+
+
+        <div class="homologous-grid">
+
+            <div class="homolog-card">
+                <div class="name">Methane</div>
+                <div class="formula-small">CH₄</div>
+            </div>
+
+            <div class="homolog-card">
+                <div class="name">Ethane</div>
+                <div class="formula-small">C₂H₆</div>
+            </div>
+
+            <div class="homolog-card">
+                <div class="name">Propane</div>
+                <div class="formula-small">C₃H₈</div>
+            </div>
+
+            <div class="homolog-card">
+                <div class="name">Butane</div>
+                <div class="formula-small">C₄H₁₀</div>
+            </div>
+
+            <div class="homolog-card">
+                <div class="name">Pentane</div>
+                <div class="formula-small">C₅H₁₂</div>
+            </div>
+
+        </div>
+
+
+        <div class="formula">
+
+            C<sub>n</sub>H<sub>2n+2</sub>
+
+            <span class="formula-note">
+                General formula for the alkane homologous series.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         5. FUNCTIONAL GROUPS
+         ===================================================== -->
+
+    <section class="organic-section" id="functional">
+
+        <div class="section-header">
+
+            <div class="section-number">05</div>
+
+            <div>
+                <h2>Functional Groups</h2>
+            </div>
+
+        </div>
+
+        <p>
+            A functional group is an atom or group of atoms within an organic
+            molecule that determines many of its characteristic chemical
+            properties and reactions.
+        </p>
+
+
+        <div class="concept-grid two">
+
+            <div class="functional-card">
+
+                <div class="functional-symbol">OH</div>
+
+                <div>
+
+                    <h3>Alcohol</h3>
+
+                    <p>
+                        Contains the hydroxyl functional group, −OH.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="functional-card">
+
+                <div class="functional-symbol">COOH</div>
+
+                <div>
+
+                    <h3>Carboxylic Acid</h3>
+
+                    <p>
+                        Contains the carboxyl group, −COOH.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="functional-card">
+
+                <div class="functional-symbol">C=C</div>
+
+                <div>
+
+                    <h3>Alkene</h3>
+
+                    <p>
+                        Contains a carbon-carbon double bond.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="functional-card">
+
+                <div class="functional-symbol">C≡C</div>
+
+                <div>
+
+                    <h3>Alkyne</h3>
+
+                    <p>
+                        Contains a carbon-carbon triple bond.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         6. NAMING
+         ===================================================== -->
+
+    <section class="organic-section" id="naming">
+
+        <div class="section-header">
+
+            <div class="section-number">06</div>
+
+            <div>
+                <h2>Basic Organic Nomenclature</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Organic compounds are named systematically by identifying the
+            longest carbon chain, the type of bonding or functional group,
+            and any branches or substituents.
+        </p>
+
+
+        <div class="example-box">
+
+            <div class="example-title">
+                Example — Naming an Alkane
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <div class="step-text">
+                    Find the longest continuous carbon chain.
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <div class="step-text">
+                    Count the carbon atoms in that chain.
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <div class="step-text">
+                    Identify any branches or substituents.
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">4</div>
+
+                <div class="step-text">
+                    Number the chain to give important substituents the
+                    lowest possible positions.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table class="compare-table">
+
+                <tr>
+                    <th>Carbon atoms</th>
+                    <th>Prefix</th>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>Meth-</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Eth-</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Prop-</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>But-</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>Pent-</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>Hex-</td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>Hept-</td>
+                </tr>
+
+                <tr>
+                    <td>8</td>
+                    <td>Oct-</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         7. ORGANIC REACTIONS
+         ===================================================== -->
+
+    <section class="organic-section" id="reactions">
+
+        <div class="section-header">
+
+            <div class="section-number">07</div>
+
+            <div>
+                <h2>Major Organic Reactions</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Organic reactions involve breaking existing bonds and forming new
+            bonds. The reaction type depends strongly on the functional group
+            and the reagents and conditions involved.
+        </p>
+
+
+        <div class="reaction-grid">
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <h3>Combustion</h3>
+
+                <p>
+                    Hydrocarbons react with oxygen. Complete combustion
+                    produces carbon dioxide and water.
+                </p>
+
+                <div class="reaction-equation">
+                    CH₄ + 2O₂ → CO₂ + 2H₂O
+                </div>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <h3>Addition</h3>
+
+                <p>
+                    Unsaturated compounds such as alkenes can add atoms or
+                    groups across their carbon-carbon double bond.
+                </p>
+
+                <div class="reaction-equation">
+                    C₂H₄ + H₂ → C₂H₆
+                </div>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-right-left"></i>
+                </div>
+
+                <h3>Substitution</h3>
+
+                <p>
+                    One atom or group in an organic compound is replaced by
+                    another atom or group.
+                </p>
+
+                <div class="reaction-equation">
+                    CH₄ + Cl₂ → CH₃Cl + HCl
+                </div>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </div>
+
+                <h3>Elimination</h3>
+
+                <p>
+                    Atoms or groups are removed from a molecule, often forming
+                    an additional carbon-carbon bond.
+                </p>
+
+                <div class="reaction-equation">
+                    C₂H₅OH → C₂H₄ + H₂O
+                </div>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </div>
+
+                <h3>Oxidation</h3>
+
+                <p>
+                    Organic molecules can undergo oxidation, commonly involving
+                    an increase in oxygen or a decrease in hydrogen.
+                </p>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-flask"></i>
+                </div>
+
+                <h3>Esterification</h3>
+
+                <p>
+                    A carboxylic acid can react with an alcohol to form an
+                    ester and water.
+                </p>
+
+                <div class="reaction-equation">
+                    Acid + Alcohol ⇌ Ester + Water
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         8. ALKANES
+         ===================================================== -->
+
+    <section class="organic-section" id="alkanes">
+
+        <div class="section-header">
+
+            <div class="section-number">08</div>
+
+            <div>
+                <h2>Alkanes</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Alkanes are saturated hydrocarbons containing only carbon-carbon
+            and carbon-hydrogen single bonds.
+        </p>
+
+
+        <div class="formula">
+
+            C<sub>n</sub>H<sub>2n+2</sub>
+
+            <span class="formula-note">
+                General molecular formula for open-chain alkanes.
+            </span>
+
+        </div>
+
+
+        <div class="structure-box">
+
+            <div class="structure-title">
+                Example: Ethane
+            </div>
+
+            <div class="structure">
+                CH<sub>3</sub> — CH<sub>3</sub>
+            </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Main reaction:</strong>
+
+            Alkanes commonly undergo combustion and, under suitable
+            conditions, substitution reactions such as halogenation.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         9. ALKENES
+         ===================================================== -->
+
+    <section class="organic-section" id="alkenes">
+
+        <div class="section-header">
+
+            <div class="section-number">09</div>
+
+            <div>
+                <h2>Alkenes</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Alkenes are unsaturated hydrocarbons containing at least one
+            carbon-carbon double bond.
+        </p>
+
+
+        <div class="formula">
+
+            C<sub>n</sub>H<sub>2n</sub>
+
+            <span class="formula-note">
+                General formula for simple open-chain alkenes containing one
+                carbon-carbon double bond.
+            </span>
+
+        </div>
+
+
+        <div class="structure-box">
+
+            <div class="structure-title">
+                Example: Ethene
+            </div>
+
+            <div class="structure">
+                CH<sub>2</sub> = CH<sub>2</sub>
+            </div>
+
+        </div>
+
+
+        <div class="concept-grid two">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <h3>Addition Reactions</h3>
+
+                <p>
+                    The double bond provides a site where atoms or groups
+                    can be added.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-vial"></i>
+
+                <h3>Bromine Test</h3>
+
+                <p>
+                    Bromine solution can be used as a test for carbon-carbon
+                    unsaturation.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10. ALCOHOLS
+         ===================================================== -->
+
+    <section class="organic-section" id="alcohols">
+
+        <div class="section-header">
+
+            <div class="section-number">10</div>
+
+            <div>
+                <h2>Alcohols</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Alcohols contain the hydroxyl functional group, −OH, attached to
+            a carbon atom.
+        </p>
+
+
+        <div class="structure-box">
+
+            <div class="structure-title">
+                Example: Ethanol
+            </div>
+
+            <div class="structure">
+                CH<sub>3</sub>CH<sub>2</sub>OH
+            </div>
+
+        </div>
+
+
+        <div class="reaction-grid">
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <h3>Combustion</h3>
+
+                <p>
+                    Alcohols can burn in oxygen to produce carbon dioxide and
+                    water when complete combustion occurs.
+                </p>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <div class="reaction-icon">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </div>
+
+                <h3>Dehydration</h3>
+
+                <p>
+                    Alcohols can lose water under suitable conditions,
+                    producing an alkene.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         11. CARBOXYLIC ACIDS
+         ===================================================== -->
+
+    <section class="organic-section" id="acids">
+
+        <div class="section-header">
+
+            <div class="section-number">11</div>
+
+            <div>
+                <h2>Carboxylic Acids</h2>
+            </div>
+
+        </div>
+
+        <p>
+            Carboxylic acids contain the carboxyl functional group,
+            −COOH. They exhibit acidic behaviour because the O−H bond
+            can release a proton.
+        </p>
+
+
+        <div class="structure-box">
+
+            <div class="structure-title">
+                General Structure
+            </div>
+
+            <div class="structure">
+                R — COOH
+            </div>
+
+        </div>
+
+
+        <div class="reaction-card">
+
+            <div class="reaction-icon">
+                <i class="fa-solid fa-flask-vial"></i>
+            </div>
+
+            <h3>Ester Formation</h3>
+
+            <p>
+                Carboxylic acids react with alcohols to produce esters and
+                water under suitable conditions.
+            </p>
+
+            <div class="reaction-equation">
+                RCOOH + R'OH ⇌ RCOOR' + H₂O
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         12. EXAM CHECKLIST
+         ===================================================== -->
+
+    <section class="organic-section" id="exam">
+
+        <div class="section-header">
+
+            <div class="section-number">12</div>
+
+            <div>
+                <h2>Organic Chemistry Exam Checklist</h2>
+            </div>
+
+        </div>
+
+
+        <div class="checklist">
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Know why carbon can form four covalent bonds.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Distinguish alkanes, alkenes and alkynes.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Know the general formula of each major hydrocarbon family.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Understand what a homologous series is.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Recognise common functional groups.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Be able to identify simple organic structures.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Know the major reaction types and their conditions.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Practise balancing organic reaction equations.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>Need help with Organic Chemistry?</h3>
+
+        <p>
+            Ask Insite AI to identify functional groups, name organic
+            compounds, balance reactions, explain homologous series,
+            or solve organic chemistry problems step by step.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i>
+            Ask Insite AI
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}
+English Hub | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.container-english{
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.header h1{
+    color:white;
+    font-weight:700;
+}
+
+.header p{
+    color:#9ca3af;
+}
+
+.topic-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.topic-card{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:15px;
+    padding:22px;
+    text-decoration:none;
+    color:white;
+    transition:.25s;
+}
+
+.topic-card:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+    color:white;
+}
+
+.topic-card i{
+    font-size:28px;
+    color:#3b82f6;
+    margin-bottom:12px;
+}
+
+.topic-card h4{
+    margin-bottom:8px;
+}
+
+.topic-card p{
+    color:#9ca3af;
+    font-size:.9rem;
+}
+
+@media(max-width:768px){
+    .topic-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="container-english">
+    <div class="header">
+        <h1>English Language (JAMB Prep)</h1>
+        <p>Select a topic to begin mastering grammar, lexical items, and comprehension.</p>
+    </div>
+
+    <div class="topic-grid">
+
+        <a href="{{ url_for('nouns_pronouns') }}" class="topic-card">
+            <i class="fa-solid fa-font"></i>
+            <h4>Nouns & Pronouns</h4>
+            <p>Master countable/uncountable nouns, abstract nouns, pronoun case (subjective/objective), and agreement rules.</p>
+        </a>
+
+        <a href="{{ url_for('verbs_tenses') }}" class="topic-card">
+            <i class="fa-solid fa-clock"></i>
+            <h4>Verbs, Tenses & Concord</h4>
+            <p>Understand subject-verb agreement, auxiliary/modal verbs, sequence of tenses, and conditional sentences.</p>
+        </a>
+
+        <a href="{{ url_for('adjectives_adverbs') }}" class="topic-card">
+            <i class="fa-solid fa-sliders"></i>
+            <h4>Adjectives & Adverbs</h4>
+            <p>Study degrees of comparison, order of adjectives, adverbial placement, and avoid common modifiers mistakes.</p>
+        </a>
+
+        <a href="{{ url_for('prepositions_conjunctions') }}" class="topic-card">
+            <i class="fa-solid fa-link"></i>
+            <h4>Prepositions & Conjunctions</h4>
+            <p>Master correct prepositions of time, place, and movement, alongside coordinating and subordinating conjunctions.</p>
+        </a>
+
+        <a href="{{ url_for('phrases_clauses') }}" class="topic-card">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <h4>Phrases & Clauses</h4>
+            <p>Analyze noun phrases, adjectival phrases, adverbial clauses, and relative clauses for JAMB structure questions.</p>
+        </a>
+
+        <a href="{{ url_for('lexis_semantics') }}" class="topic-card">
+            <i class="fa-solid fa-book-open"></i>
+            <h4>Lexis & Semantics (Synonyms & Antonyms)</h4>
+            <p>Expand your vocabulary with JAMB-frequent synonyms, antonyms, homonyms, and contextual meaning questions.</p>
+        </a>
+
+        <a href="{{ url_for('idioms_figures') }}" class="topic-card">
+            <i class="fa-solid fa-masks-theater"></i>
+            <h4>Idiomatic Expressions & Figures of Speech</h4>
+            <p>Interpret common idiomatic phrases, metaphors, similes, irony, and rhetorical devices tested in exams.</p>
+        </a>
+
+        <a href="{{ url_for('sentence_interpretation') }}" class="topic-card">
+            <i class="fa-solid fa-check-double"></i>
+            <h4>Sentence Interpretation & Meaning</h4>
+            <p>Practice questions that test closest in meaning, nearest in meaning, and implied statements.</p>
+        </a>
+
+        <a href="{{ url_for('question_tag_punctuation') }}" class="topic-card">
+            <i class="fa-solid fa-question"></i>
+            <h4>Question Tags & Punctuation</h4>
+            <p>Learn rules for forming correct question tags, exclamation marks, semicolons, and capitalizations.</p>
+        </a>
+
+        <a href="{{ url_for('comprehension_summary') }}" class="topic-card">
+            <i class="fa-solid fa-file-lines"></i>
+            <h4>Reading Comprehension & Summary</h4>
+            <p>Master strategies for identifying main ideas, tone, author's intent, and answering summary questions effectively.</p>
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

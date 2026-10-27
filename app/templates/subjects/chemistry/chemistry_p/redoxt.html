@@ -1,0 +1,643 @@
+{% extends "base.html" %}
+
+{% block title %}
+Redox Titrations | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --redox-bg: #050a12;
+    --redox-panel: #0a111d;
+    --redox-border: rgba(100, 116, 139, .18);
+    --redox-text: #f1f5f9;
+    --redox-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --redox-blue: #1677b8;
+    --redox-blue-light: #2196d2;
+
+    --redox-green: #34d399;
+    --redox-red: #ef4444;
+}
+
+.redox-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--redox-text);
+}
+
+/* BACK BUTTON */
+
+.redox-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--redox-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.redox-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.redox-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.redox-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.redox-header h1 i {
+    color: var(--redox-blue-light);
+    margin-right: 8px;
+}
+
+.redox-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--redox-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.redox-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--redox-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.redox-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.redox-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.redox-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.redox-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--redox-panel);
+    border: 1px solid var(--redox-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.redox-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.redox-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.redox-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.redox-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.redox-section p,
+.redox-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.redox-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.redox-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--redox-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.redox-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE */
+
+.redox-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.redox-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.redox-table th,
+.redox-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--redox-border);
+}
+
+.redox-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.redox-table td {
+    color: #cbd5e1;
+}
+
+.redox-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.colour-dot {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    border: 1px solid rgba(255,255,255,.25);
+}
+
+.dot-purple { background: #a855f7; }
+.dot-colourless { background: #64748b; }
+.dot-pink { background: #f472b6; }
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--redox-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* INTERACTIVE TEST */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--redox-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--redox-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--redox-panel);
+    border: 1px solid var(--redox-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--redox-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--redox-green); }
+.test-result.wrong { border-left-color: var(--redox-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* QUESTIONS */
+
+.exam-question {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #081321;
+    border: 1px solid var(--redox-border);
+    border-radius: 9px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+}
+
+.exam-answer {
+    margin-top: 7px;
+    color: #94a3b8;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--redox-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .redox-section { padding: 20px; }
+    .redox-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="redox-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="redox-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+    <!-- HEADER -->
+    <header class="redox-header">
+        <h1>
+            <i class="fa-solid fa-flask-conical"></i>
+            Redox Titrations
+        </h1>
+        <p>
+            Carry out standard oxidation-reduction calculations using potassium manganate(VII) 
+            (KMnO<sub>4</sub>) as a self-indicating oxidizing agent.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="redox-nav">
+        <a href="#aim">Aim</a>
+        <a href="#principle">Principle</a>
+        <a href="#procedure">Procedure</a>
+        <a href="#calculations">Calculations</a>
+        <a href="#summary">Observations</a>
+        <a href="#test">Identify</a>
+        <a href="#precautions">Precautions</a>
+        <a href="#questions">Questions</a>
+    </nav>
+
+    <!-- 01 AIM -->
+    <section class="redox-section" id="aim">
+        <div class="redox-section-header">
+            <div class="redox-number">01</div>
+            <h2>Aim of the Experiment</h2>
+        </div>
+        <p>
+            To determine the concentration or purity of a reducing agent (such as iron(II) ions or 
+            oxalic acid) by performing a volumetric redox titration against standard potassium manganate(VII).
+        </p>
+        <div class="redox-info">
+            <strong>Key idea:</strong><br>
+            In a redox titration, electrons are transferred from the reducing agent to the oxidizing agent. 
+            Stoichiometric mole ratios are used to calculate unknown concentrations.
+        </div>
+    </section>
+
+    <!-- 02 PRINCIPLE -->
+    <section class="redox-section" id="principle">
+        <div class="redox-section-header">
+            <div class="redox-number">02</div>
+            <h2>Principle of Manganate Titrations</h2>
+        </div>
+        <p>
+            Potassium manganate(VII) acts as a powerful oxidizing agent in acidic solutions:
+        </p>
+        <ul>
+            <li><strong>Self-Indicator:</strong> Purple MnO<sub>4</sub><sup>-</sup> ions are reduced to colorless Mn<sup>2+</sup> ions. Because the reactant is intensely colored and the product is colorless, no external chemical indicator is required.</li>
+            <li><strong>The Endpoint:</strong> The very first drop of excess KMnO<sub>4</sub> added beyond the equivalence point turns the titration mixture a permanent pale pink color.</li>
+            <li><strong>Acidification:</strong> Dilute sulfuric acid (H<sub>2</sub>SO<sub>4</sub>) is always added to provide the necessary hydrogen ions for the complete reduction of manganate. (Nitric or hydrochloric acids are avoided as they interfere with redox reactions).</li>
+        </ul>
+    </section>
+
+    <!-- 03 PROCEDURE -->
+    <section class="redox-section" id="procedure">
+        <div class="redox-section-header">
+            <div class="redox-number">03</div>
+            <h2>Experimental Procedure</h2>
+        </div>
+        <ol class="step-list">
+            <li>Rinse and fill the burette with standard potassium manganate(VII) solution (KMnO<sub>4</sub>).</li>
+            <li>Pipette a measured volume (e.g., 25.0 cm<sup>3</sup>) of the reducing agent solution (e.g., Fe<sup>2+</sup>) into a clean conical flask.</li>
+            <li>Add an excess of dilute sulfuric acid to the conical flask to ensure acidic conditions.</li>
+            <li>Titrate by running KMnO<sub>4</sub> from the burette into the flask with swirling until a permanent pale pink color persists.</li>
+            <li>Record the titre volume and repeat until concordant results (within 0.10 cm<sup>3</sup>) are achieved.</li>
+        </ol>
+    </section>
+
+    <!-- 04 CALCULATIONS -->
+    <section class="redox-section" id="calculations">
+        <div class="redox-section-header">
+            <div class="redox-number">04</div>
+            <h2>Redox Calculation Steps</h2>
+        </div>
+        <p>
+            To solve redox titration problems, follow these systematic steps:
+        </p>
+        <ul>
+            <li><strong>Step 1:</strong> Write out the balanced half-equations and overall ionic equation for the redox reaction.</li>
+            <li><strong>Step 2:</strong> Calculate the moles of the known substance using the formula: Moles = Concentration &times; Volume (in dm<sup>3</sup>).</li>
+            <li><strong>Step 3:</strong> Use the stoichiometric mole ratio from the balanced equation to find the moles of the unknown substance.</li>
+            <li><strong>Step 4:</strong> Determine the concentration or mass of the unknown in the desired volume or sample.</li>
+        </ul>
+    </section>
+
+    <!-- 05 SUMMARY TABLE -->
+    <section class="redox-section" id="summary">
+        <div class="redox-section-header">
+            <div class="redox-number">05</div>
+            <h2>Observation Summary</h2>
+        </div>
+
+        <div class="redox-table-wrapper">
+            <table class="redox-table">
+                <thead>
+                    <tr>
+                        <th>Stage of Titration</th>
+                        <th>Color of Solution in Flask</th>
+                        <th>Chemical Species Present</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Before Titration</strong></td>
+                        <td><span class="colour-dot dot-colourless"></span>Colorless (or pale green for Fe<sup>2+</sup>)</td>
+                        <td>Reducing agent + excess sulfuric acid</td>
+                    </tr>
+                    <tr>
+                        <td><strong>During Titration</strong></td>
+                        <td><span class="colour-dot dot-colourless"></span>Instantly decolorized</td>
+                        <td>MnO<sub>4</sub><sup>-</sup> is consumed as fast as it is added, forming Mn<sup>2+</sup></td>
+                    </tr>
+                    <tr>
+                        <td><strong>At Endpoint</strong></td>
+                        <td><span class="colour-dot dot-pink"></span>Permanent pale pink</td>
+                        <td>First slight excess of unreacted MnO<sub>4</sub><sup>-</sup></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="redox-section" id="test">
+        <div class="redox-section-header">
+            <div class="redox-number">06</div>
+            <h2>Interactive Redox Test</h2>
+        </div>
+        <p>Test your knowledge on potassium manganate titrations.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Analyze the Procedure</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Why is an external indicator (like phenolphthalein) <strong>not required</strong> when titrating with potassium manganate(VII)?
+                </div>
+
+                <select class="redox-select" id="redoxAnswer" style="width: 100%; max-width: 500px; background: var(--redox-panel); border: 1px solid var(--redox-border); border-radius: 8px; color: white; padding: 11px; font-size: .95rem;">
+                    <option value="">Select an answer...</option>
+                    <option value="self">KMnO<sub>4</sub> acts as its own indicator, changing from purple to colorless and pink at the endpoint</option>
+                    <option value="acid">The sulfuric acid acts as a permanent color indicator</option>
+                    <option value="none">Redox reactions do not involve any color changes</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkRedox">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="redoxResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 PRECAUTIONS -->
+    <section class="redox-section" id="precautions">
+        <div class="redox-section-header">
+            <div class="redox-number">07</div>
+            <h2>Precautions & Safety</h2>
+        </div>
+        <ul>
+            <li>Potassium manganate(VII) is an oxidizing agent and a skin irritant; wear gloves and eye protection.</li>
+            <li>Read the burette from the top of the meniscus (curved surface) for KMnO<sub>4</sub> due to its intense purple color obscuring the bottom meniscus.</li>
+            <li>Ensure sulfuric acid is added in sufficient quantities; insufficient acid leads to brown MnO<sub>2</sub> precipitation instead of colorless Mn<sup>2+</sup>.</li>
+        </ul>
+    </section>
+
+    <!-- 08 QUESTIONS -->
+    <section class="redox-section" id="questions">
+        <div class="redox-section-header">
+            <div class="redox-number">08</div>
+            <h2>Common Practical Questions</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>1. Why is dilute sulfuric acid used to acidify the titration mixture instead of hydrochloric acid?</strong>
+            <div class="exam-answer">HCl can be oxidized by KMnO<sub>4</sub> to toxic chlorine gas, which would interfere with stoichiometry and titre volumes. Sulfuric acid is stable against oxidation under these conditions.</div>
+        </div>
+
+        <div class="exam-question">
+            <strong>2. What color change marks the endpoint of a potassium manganate(VII) titration?</strong>
+            <div class="exam-answer">From colorless (or pale green) to a permanent pale pink.</div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--redox-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need help with redox calculations?</h3>
+        <p style="color:var(--redox-muted); margin:0;">
+            Ask Insite AI to help solve stoichiometry problems, half-equations, or titration errors.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const redoxAnswer = document.getElementById("redoxAnswer");
+const checkRedox = document.getElementById("checkRedox");
+const redoxResult = document.getElementById("redoxResult");
+
+checkRedox.addEventListener("click", function () {
+    const val = redoxAnswer.value;
+    redoxResult.style.display = "block";
+
+    if (val === "self") {
+        redoxResult.className = "test-result correct";
+        redoxResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Potassium manganate(VII) is a self-indicator. The purple reactant turns colorless during reaction, and the first excess drop imparts a pale pink color.</div>
+        `;
+    } else if (val === "") {
+        redoxResult.className = "test-result wrong";
+        redoxResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the provided options.</div>
+        `;
+    } else {
+        redoxResult.className = "test-result wrong";
+        redoxResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>KMnO<sub>4</sub> is intensely colored itself, allowing it to act as its own indicator without needing an external chemical.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

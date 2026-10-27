@@ -1,0 +1,677 @@
+{% extends "base.html" %}
+
+{% block title %}
+Biochemistry & Macromolecules | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --bio-bg: #050a12;
+    --bio-panel: #0a111d;
+    --bio-border: rgba(100, 116, 139, .18);
+    --bio-text: #f1f5f9;
+    --bio-muted: #94a3b8;
+
+    --bio-blue: #1677b8;
+    --bio-blue-light: #2196d2;
+    --bio-cyan: #38bdf8;
+
+    --bio-green: #34d399;
+    --bio-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bio-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--bio-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.bio-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--bio-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.bio-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.bio-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.bio-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.bio-header h1 i {
+    color: var(--bio-blue-light);
+    margin-right: 8px;
+}
+
+.bio-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--bio-muted);
+    line-height: 1.75;
+}
+
+.bio-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--bio-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.bio-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.bio-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.bio-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.bio-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.bio-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.bio-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bio-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.bio-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.bio-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--bio-border);
+    padding-bottom: 6px;
+}
+
+.bio-section h4 {
+    color: #38bdf8;
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.bio-section p,
+.bio-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.bio-section li {
+    margin-bottom: 8px;
+}
+
+.bio-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--bio-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.bio-info:hover {
+    transform: translateX(4px);
+}
+
+.bio-info strong {
+    color: #55b6e9;
+}
+
+.bio-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.bio-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.bio-table th,
+.bio-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.bio-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.bio-table td {
+    color: #cbd5e1;
+}
+
+.bio-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--bio-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--bio-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--bio-green); }
+.test-result.wrong { border-left-color: var(--bio-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--bio-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .bio-section { padding: 20px; }
+    .bio-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="bio-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('biology_page') }}" class="bio-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Biology Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="bio-header">
+        <h1>
+            <i class="fa-solid fa-atom"></i>
+            Biochemistry & Macromolecules
+        </h1>
+        <p>
+            An exhaustive masterclass covering the chemical properties of water, dehydration synthesis, hydrolysis reactions, 
+            carbohydrates, lipids, proteins, and nucleic acids.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="bio-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#water">Properties of Water</a>
+        <a href="#carbs">Carbohydrates</a>
+        <a href="#lipids">Lipids</a>
+        <a href="#proteins">Proteins</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="bio-section" id="intro">
+        <div class="bio-section-header">
+            <div class="bio-number">01</div>
+            <h2>Introduction to Biochemistry</h2>
+        </div>
+        <p>
+            Biochemistry explores the chemical substances and vital metabolic processes occurring within living organisms. 
+            At the heart of biochemistry are four major classes of organic macromolecules: carbohydrates, lipids, proteins, and nucleic acids.
+        </p>
+        <p>
+            Almost all macromolecules are polymers constructed from repeating monomer subunits joined together through 
+            <strong>dehydration synthesis (condensation)</strong> reactions, and broken down into monomers via <strong>hydrolysis</strong> reactions.
+        </p>
+        <div class="bio-info">
+            <strong>Core Biochemical Principle:</strong><br>
+            Carbon's unique tetravalent bonding capacity allows it to form stable, complex branched and ringed carbon skeletons 
+            that serve as the backbone for all organic biomolecules.
+        </div>
+    </section>
+
+    <!-- 02 PROPERTIES OF WATER -->
+    <section class="bio-section" id="water">
+        <div class="bio-section-header">
+            <div class="bio-number">02</div>
+            <h2>Chemical Properties of Water</h2>
+        </div>
+        <p>
+            Water (H2O) is the biological medium on Earth, vital for all known life due to its unique chemical characteristics:
+        </p>
+        <ul>
+            <li><strong>Polar Covalent Bonding:</strong> Oxygen attracts electrons more strongly than hydrogen, creating partial negative charges near oxygen and partial positive charges near hydrogen.</li>
+            <li><strong>Hydrogen Bonding:</strong> The attraction between the partial positive charge of hydrogen and partial negative charges on neighboring molecules creates a cohesive network.</li>
+            <li><strong>High Specific Heat Capacity:</strong> Water resists temperature fluctuations, stabilizing thermal conditions inside cells and aquatic biomes.</li>
+            <li><strong>Universal Solvent:</strong> Water's polarity allows it to dissolve ionic compounds and polar molecules (hydrophilic), while repelling nonpolar molecules (hydrophobic).</li>
+        </ul>
+    </section>
+
+    <!-- 03 CARBOHYDRATES -->
+    <section class="bio-section" id="carbs">
+        <div class="bio-section-header">
+            <div class="bio-number">03</div>
+            <h2>Carbohydrates: Sugars and Polysaccharides</h2>
+        </div>
+        <p>
+            Carbohydrates include sugars and polymers of sugars, serving as primary energy sources and structural building blocks:
+        </p>
+        <ul>
+            <li><strong>Monosaccharides:</strong> Simple sugars such as glucose, fructose, and galactose (formula C6H12O6), serving as immediate cellular fuel.</li>
+            <li><strong>Disaccharides:</strong> Formed when two monosaccharides join via a glycosidic linkage through dehydration synthesis (e.g., sucrose, lactose, maltose).</li>
+            <li><strong>Polysaccharides:</strong> Complex carbohydrate polymers:
+                <ul>
+                    <li><em>Energy Storage:</em> Starch in plants and glycogen in animals.</li>
+                    <li><em>Structural Support:</em> Cellulose in plant cell walls and chitin in arthropod exoskeletons and fungal walls.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="bio-table-wrapper">
+            <table class="bio-table">
+                <thead>
+                    <tr>
+                        <th>Macromolecule Class</th>
+                        <th>Monomer Subunit</th>
+                        <th>Primary Linkage</th>
+                        <th>Biological Function</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Carbohydrates</strong></td>
+                        <td>Monosaccharide</td>
+                        <td>Glycosidic bond</td>
+                        <td>Energy storage, cellular fuel, structural support</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lipids</strong></td>
+                        <td>Glycerol & Fatty Acids</td>
+                        <td>Ester linkage</td>
+                        <td>Long-term energy storage, insulation, cell membranes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proteins</strong></td>
+                        <td>Amino Acids</td>
+                        <td>Peptide bond</td>
+                        <td>Enzymatic catalysis, transport, structure, defense</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nucleic Acids</strong></td>
+                        <td>Nucleotides</td>
+                        <td>Phosphodiester bond</td>
+                        <td>Storage and transmission of genetic information</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 04 LIPIDS -->
+    <section class="bio-section" id="lipids">
+        <div class="bio-section-header">
+            <div class="bio-number">04</div>
+            <h2>Lipids: Fats, Phospholipids, and Steroids</h2>
+        </div>
+        <p>
+            Lipids are a diverse group of hydrophobic organic compounds that do not form true polymers:
+        </p>
+        <ul>
+            <li><strong>Triglycerides (Fats):</strong> Composed of one glycerol molecule attached to three fatty acid tails via ester linkages. 
+                <ul>
+                    <li><em>Saturated Fats:</em> Contain no double bonds between carbon atoms; solid at room temperature (e.g., animal fats).</li>
+                    <li><em>Unsaturated Fats:</em> Contain one or more double bonds causing kinks; liquid at room temperature (e.g., plant oils).</li>
+                </ul>
+            </li>
+            <li><strong>Phospholipids:</strong> Consist of a glycerol bound to two fatty acids and a phosphate group, forming the amphipathic foundation of cell membranes.</li>
+            <li><strong>Steroids:</strong> Lipids characterized by a carbon skeleton consisting of four fused rings (e.g., cholesterol, testosterone, estrogen).</li>
+        </ul>
+    </section>
+
+    <!-- 05 PROTEINS -->
+    <section class="bio-section" id="proteins">
+        <div class="bio-section-header">
+            <div class="bio-number">05</div>
+            <h2>Proteins: Structure and Hierarchy</h2>
+        </div>
+        <p>
+            Proteins are polymers of amino acids linked by peptide bonds, executing nearly all cellular tasks:
+        </p>
+        <ul>
+            <li><strong>Primary Structure:</strong> The unique linear sequence of amino acids in a polypeptide chain.</li>
+            <li><strong>Secondary Structure:</strong> Local folding into alpha-helices and beta-pleated sheets stabilized by hydrogen bonds along the backbone.</li>
+            <li><strong>Tertiary Structure:</strong> The overall three-dimensional conformation shaped by interactions among side chains (R-groups), including ionic bonds, hydrogen bonds, hydrophobic interactions, and disulfide bridges.</li>
+            <li><strong>Quaternary Structure:</strong> The association of multiple polypeptide subunits into a functional protein complex (e.g., hemoglobin).</li>
+        </ul>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="bio-section" id="test">
+        <div class="bio-section-header">
+            <div class="bio-number">06</div>
+            <h2>Interactive Biochemistry Test</h2>
+        </div>
+        <p>Test your understanding of macromolecule structures, bonds, and properties.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Macromolecule Linkage Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    What specific type of covalent bond joins amino acid monomers together during protein synthesis?
+                </div>
+
+                <select class="test-select" id="bioAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Glycosidic linkage</option>
+                    <option value="wrong2">Ester linkage</option>
+                    <option value="correct">Peptide bond</option>
+                    <option value="wrong3">Phosphodiester bond</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkBio">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="bioResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="bio-section" id="problems">
+        <div class="bio-section-header">
+            <div class="bio-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Dehydration Synthesis & Polymerization):</strong>
+            <p>If a polypeptide chain is synthesized by joining 125 individual amino acid monomers together, calculate: (a) the number of peptide bonds formed, and (b) the number of water molecules released during this polymerization process.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                (a) <strong>Peptide Bonds Formed:</strong><br>
+                - To connect n monomers into a linear polymer, exactly n - 1 bonds are required.<br>
+                - For 125 amino acids, number of peptide bonds = 125 - 1 = <strong>124 peptide bonds</strong>.<br><br>
+                (b) <strong>Water Molecules Released:</strong><br>
+                - Each time a peptide bond is formed via dehydration synthesis, one molecule of water (H2O) is removed.<br>
+                - Therefore, releasing 1 water molecule per bond yields <strong>124 water molecules</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Protein Denaturation Analysis):</strong>
+            <p>An enzyme is exposed to extreme heat and a high-pH chemical solution, causing it to lose its catalytic activity. Explain which levels of protein structure are disrupted and which level remains intact.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Disrupted Levels:</strong> Extreme heat and pH break hydrogen bonds, ionic bonds, and disulfide bridges. This disrupts the <strong>secondary, tertiary, and quaternary structures</strong>, causing the protein to unfold (denature) and lose its functional shape.<br>
+                - <strong>Intact Level:</strong> The covalent peptide bonds holding the linear amino acid sequence together are remarkably strong and typically remain unbroken during denaturation. Therefore, the <strong>primary structure</strong> remains completely intact.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Saturated vs. Unsaturated Fats):</strong>
+            <p>Compare the chemical structure and physical room-temperature state of saturated fatty acids versus unsaturated fatty acids.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Saturated Fatty Acids:</strong> Contain only single covalent bonds between carbon atoms, meaning they are "saturated" with the maximum possible number of hydrogen atoms. Their straight hydrocarbon tails pack closely together, making them <strong>solid at room temperature</strong> (e.g., butter, lard).<br>
+                - <strong>Unsaturated Fatty Acids:</strong> Contain one or more double bonds between carbon atoms, creating rigid kinks or bends in the hydrocarbon chain. These kinks prevent tight packing, making them <strong>liquid at room temperature</strong> (e.g., olive oil, vegetable oil).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--bio-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with biochemistry or macromolecule structures?</h3>
+        <p style="color:var(--bio-muted); margin:0;">
+            Ask Insite AI to explain enzyme kinetics, ATP hydrolysis energetics, or nucleic acid base pairing chemistry.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const bioAnswer = document.getElementById("bioAnswer");
+const checkBio = document.getElementById("checkBio");
+const bioResult = document.getElementById("bioResult");
+
+checkBio.addEventListener("click", function () {
+    const val = bioAnswer.value;
+    bioResult.style.display = "block";
+
+    if (val === "correct") {
+        bioResult.className = "test-result correct";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Amino acid monomers are joined together by covalent peptide bonds formed through dehydration synthesis reactions.</div>
+        `;
+    } else if (val === "") {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Glycosidic linkages form carbohydrates, ester linkages form lipids, and phosphodiester bonds form nucleic acids. <strong>Peptide bonds</strong> specifically join amino acids in proteins.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

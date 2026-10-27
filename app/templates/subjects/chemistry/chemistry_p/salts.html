@@ -1,0 +1,742 @@
+{% extends "base.html" %}
+
+{% block title %}
+Preparation of Salts | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — PREPARATION OF SALTS PRACTICAL
+   Dark blue theme — interactive laboratory simulation
+   ========================================================= */
+
+:root {
+    --salt-bg: #050a12;
+    --salt-panel: #0a111d;
+    --salt-panel-2: #0d1624;
+    --salt-border: rgba(100, 116, 139, .18);
+
+    --salt-text: #f1f5f9;
+    --salt-muted: #94a3b8;
+
+    --salt-blue: #1677b8;
+    --salt-blue-light: #2196d2;
+    --salt-blue-dark: #075985;
+
+    --salt-green: #34d399;
+    --salt-red: #ef4444;
+    --salt-yellow: #facc15;
+}
+
+.salts-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--salt-text);
+}
+
+/* BACK */
+.salt-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--salt-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.salt-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+.salt-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.salt-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #eaf6ff;
+}
+
+.salt-header h1 i {
+    color: var(--salt-blue-light);
+    margin-right: 8px;
+}
+
+.salt-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--salt-muted);
+    line-height: 1.75;
+}
+
+/* NAV */
+.salt-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--salt-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.salt-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.salt-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.salt-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTION */
+.salt-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--salt-panel);
+    border: 1px solid var(--salt-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.salt-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.salt-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.salt-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.salt-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.salt-section p,
+.salt-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.salt-section li {
+    margin-bottom: 6px;
+}
+
+/* CARDS */
+.salt-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.salt-grid.two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.salt-grid.three {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.salt-card {
+    padding: 19px;
+    background: #080f1a;
+    border: 1px solid var(--salt-border);
+    border-radius: 12px;
+}
+
+.salt-card i {
+    color: var(--salt-blue-light);
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.salt-card h3 {
+    margin: 0 0 7px;
+    color: white;
+    font-size: 1.05rem;
+}
+
+.salt-card p {
+    margin: 0;
+    color: var(--salt-muted);
+    font-size: .9rem;
+}
+
+/* INFO */
+.salt-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--salt-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.salt-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE */
+.salt-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--salt-border);
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.salt-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.salt-table th,
+.salt-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--salt-border);
+    text-align: left;
+    color: #cbd5e1;
+}
+
+.salt-table th {
+    background: #0a141f;
+    color: #55b6e9;
+    font-size: .85rem;
+}
+
+.salt-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================================
+   VIRTUAL SALT LAB SIMULATION
+   ========================================================= */
+
+.salt-lab {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--salt-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.lab-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--salt-border);
+}
+
+.lab-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.lab-status {
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #0d2637;
+    color: #55b6e9;
+    font-size: .73rem;
+    font-weight: 700;
+}
+
+/* LAB STAGE AREA */
+.practical-stage {
+    position: relative;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #091321 0%, #091321 70%, #080d14 70%, #080d14 100%);
+    overflow: hidden;
+    padding: 20px;
+}
+
+.lab-bench {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 30%;
+    background: #0a1019;
+    border-top: 1px solid rgba(148,163,184,.12);
+}
+
+/* ANIMATED APPARATUS DISPLAY CONTAINER */
+.apparatus-box {
+    position: relative;
+    width: 200px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    z-index: 5;
+}
+
+/* BEAKER / FLASK GRAPHIC */
+.virtual-beaker {
+    position: relative;
+    width: 90px;
+    height: 120px;
+    border: 3px solid rgba(203,213,225,0.7);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    background: rgba(255,255,255,0.02);
+    overflow: hidden;
+}
+
+.virtual-liquid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    background: rgba(56, 189, 248, 0.25);
+    transition: background 0.6s ease, height 0.4s ease;
+}
+
+/* STEP DESCRIPTION BOX */
+.step-description-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 20px;
+    background: #0a131f;
+    border: 1px solid var(--salt-border);
+    border-radius: 10px;
+    text-align: center;
+    z-index: 5;
+}
+
+.step-title {
+    color: var(--salt-blue-light);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.step-text {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* LAB CONTROLS */
+.lab-controls {
+    padding: 20px;
+    border-top: 1px solid var(--salt-border);
+}
+
+.lab-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.lab-button {
+    border: 1px solid rgba(33,150,210,.35);
+    background: #0c1b2a;
+    color: #cfeeff;
+    padding: 10px 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.lab-button:hover {
+    background: #0e2639;
+    border-color: rgba(33,150,210,.55);
+}
+
+.lab-button.active-tab {
+    background: var(--salt-blue);
+    color: white;
+    border-color: var(--salt-blue-light);
+}
+
+/* ASK INSITE AI */
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--salt-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai > i {
+    color: #2196d2;
+    font-size: 31px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: .2s ease;
+}
+
+.ask-ai:hover > i {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ask-ai h3 {
+    margin: 0 0 8px;
+}
+
+.ask-ai p {
+    max-width: 650px;
+    margin: auto;
+    color: var(--salt-muted);
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.ask-ai a:hover {
+    background: #0d5b8e;
+}
+
+/* MOBILE */
+@media (max-width: 760px) {
+    .salts-page {
+        width: calc(100% - 18px);
+        margin-top: 15px;
+    }
+    .salt-section {
+        padding: 19px 16px;
+    }
+    .salt-grid.two,
+    .salt-grid.three {
+        grid-template-columns: 1fr;
+    }
+    .practical-stage {
+        height: 400px;
+    }
+}
+</style>
+
+
+<div class="salts-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="salt-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="salt-header">
+        <h1>
+            <i class="fa-solid fa-gem"></i>
+            Preparation of Salts
+        </h1>
+        <p>
+            Review standard laboratory techniques for isolating soluble salts through excess solid crystallization and insoluble salts through ionic precipitation.
+        </p>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="salt-nav">
+        <a href="#solubility">Solubility Rules</a>
+        <a href="#soluble">Soluble Salts</a>
+        <a href="#insoluble">Insoluble Salts</a>
+        <a href="#lab">Virtual Lab Simulation</a>
+        <a href="#practical">Procedure Steps</a>
+    </nav>
+
+
+    <!-- SOLUBILITY RULES -->
+    <section class="salt-section" id="solubility">
+        <div class="salt-section-header">
+            <div class="salt-number">01</div>
+            <h2>Solubility Rules in Water</h2>
+        </div>
+        <p>
+            Before choosing a preparation method, you must determine whether the desired salt is soluble or insoluble in water.
+        </p>
+
+        <div class="salt-table-wrap">
+            <table class="salt-table">
+                <thead>
+                    <tr>
+                        <th>Salt Type</th>
+                        <th>Soluble in Water?</th>
+                        <th>Exceptions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sodium, Potassium, Ammonium salts</strong></td>
+                        <td style="color:var(--salt-green);">Always Soluble</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nitrates (NO<sub>3</sub><sup>-</sup>)</strong></td>
+                        <td style="color:var(--salt-green);">Always Soluble</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chlorides (Cl<sup>-</sup>)</strong></td>
+                        <td style="color:var(--salt-green);">Soluble</td>
+                        <td>Lead(II) chloride, Silver chloride</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sulfates (SO<sub>4</sub><sup>2-</sup>)</strong></td>
+                        <td style="color:var(--salt-green);">Soluble</td>
+                        <td>Lead(II) sulfate, Barium sulfate, Calcium sulfate (spare)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Carbonates (CO<sub>3</sub><sup>2-</sup>)</strong></td>
+                        <td style="color:var(--salt-red);">Insoluble</td>
+                        <td>Sodium, potassium, and ammonium carbonates</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- SOLUBLE SALTS -->
+    <section class="salt-section" id="soluble">
+        <div class="salt-section-header">
+            <div class="salt-number">02</div>
+            <h2>Preparing Soluble Salts (Excess Solid Method)</h2>
+        </div>
+        <p>
+            Soluble salts (such as copper(II) sulfate or zinc chloride) are typically prepared by reacting an acid with an insoluble reactant (metal, metal oxide, or metal carbonate).
+        </p>
+
+        <div class="salt-grid three">
+            <div class="salt-card">
+                <i class="fa-solid fa-fire"></i>
+                <h3>1. Warm & React</h3>
+                <p>Add the insoluble solid to warm acid until no more dissolves, ensuring all acid is fully neutralised (excess solid sits at the bottom).</p>
+            </div>
+            <div class="salt-card">
+                <i class="fa-solid fa-filter"></i>
+                <h3>2. Filter</h3>
+                <p>Filter the mixture to remove the unreacted excess solid. The filtrate is the pure aqueous salt solution.</p>
+            </div>
+            <div class="salt-card">
+                <i class="fa-solid fa-snowflake"></i>
+                <h3>3. Crystallise</h3>
+                <p>Heat the solution to evaporate water until crystals form, then leave to cool, filter, and dry between filter papers.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- INSOLUBLE SALTS -->
+    <section class="salt-section" id="insoluble">
+        <div class="salt-section-header">
+            <div class="salt-number">03</div>
+            <h2>Preparing Insoluble Salts (Precipitation Method)</h2>
+        </div>
+        <p>
+            Insoluble salts (such as barium sulfate or silver chloride) are prepared by <strong>ionic precipitation</strong> (mixing two soluble salt solutions together).
+        </p>
+
+        <div class="salt-info">
+            <strong>Precipitation Principle:</strong>
+            Mix a solution containing the required positive metal ion with a solution containing the required negative non-metal ion. The insoluble salt precipitates out instantly.
+        </div>
+
+        <div class="salt-card">
+            <h3>Example: Preparing Barium Sulfate</h3>
+            <p>
+                Barium Chloride (aq) + Sodium Sulfate (aq) &rarr; Barium Sulfate (s) + Sodium Chloride (aq)<br>
+                <em>The barium sulfate is filtered out, washed with distilled water, and dried in an oven.</em>
+            </p>
+        </div>
+    </section>
+
+
+    <!-- VIRTUAL LAB SIMULATION -->
+    <section class="salt-section" id="lab">
+        <div class="salt-section-header">
+            <div class="salt-number">04</div>
+            <h2>Virtual Salt Preparation Lab</h2>
+        </div>
+        <p>
+            Step through the interactive animated simulation below to observe how chemists physically isolate a pure dry salt sample in the laboratory.
+        </p>
+
+        <div class="salt-lab">
+            <div class="lab-top">
+                <h3>Preparation Simulator: Copper(II) Sulfate</h3>
+                <span class="lab-status" id="labStepStatus">Step 1 of 4</span>
+            </div>
+
+            <!-- PRACTICAL STAGE -->
+            <div class="practical-stage">
+                <div class="lab-bench"></div>
+
+                <div class="apparatus-box">
+                    <div class="virtual-beaker">
+                        <div class="virtual-liquid" id="virtualLiquid"></div>
+                    </div>
+                </div>
+
+                <div class="step-description-card">
+                    <div class="step-title" id="simTitle">1. Addition of Excess Solid</div>
+                    <p class="step-text" id="simDescription">Add excess copper(II) oxide powder to warm dilute sulfuric acid until unreacted powder remains at the bottom.</p>
+                </div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="lab-controls">
+                <div class="lab-buttons">
+                    <button type="button" class="lab-button active-tab" id="btnStep1" onclick="setLabStep(1)">1. Add Solid</button>
+                    <button type="button" class="lab-button" id="btnStep2" onclick="setLabStep(2)">2. Filter Mixture</button>
+                    <button type="button" class="lab-button" id="btnStep3" onclick="setLabStep(3)">3. Crystallise</button>
+                    <button type="button" class="lab-button" id="btnStep4" onclick="setLabStep(4)">4. Dry Crystals</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PRACTICAL PROCEDURE -->
+    <section class="salt-section" id="practical">
+        <div class="salt-section-header">
+            <div class="salt-number">05</div>
+            <h2>Step-by-Step Exam Procedure</h2>
+        </div>
+        <ol>
+            <li>Pour 25 cm<sup>3</sup> of dilute sulfuric acid into a conical flask and warm gently using a Bunsen burner.</li>
+            <li>Add copper(II) oxide powder in small portions while stirring with a glass rod until it is in excess (powder stops disappearing).</li>
+            <li>Filter the hot mixture through filter paper and a funnel to collect the clear blue filtrate in an evaporating basin.</li>
+            <li>Heat the filtrate using a water bath until crystals start to form around the edge (crystallisation point).</li>
+            <li>Leave the basin in a warm place to allow large, well-formed blue crystals to grow slowly.</li>
+            <li>Filter off the remaining liquid and gently dab the pure copper(II) sulfate crystals dry between two sheets of filter paper.</li>
+        </ol>
+    </section>
+
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Need help with Salt Preparations?</h3>
+        <p>Ask Insite AI to explain solubility rules, help you choose reagents for an unknown salt, or test your knowledge with exam questions.</p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   VIRTUAL SALT PREPARATION LAB ANIMATION SCRIPT
+   ========================================================= */
+
+const virtualLiquid = document.getElementById("virtualLiquid");
+const simTitle = document.getElementById("simTitle");
+const simDescription = document.getElementById("simDescription");
+const labStepStatus = document.getElementById("labStepStatus");
+
+const btn1 = document.getElementById("btnStep1");
+const btn2 = document.getElementById("btnStep2");
+const btn3 = document.getElementById("btnStep3");
+const btn4 = document.getElementById("btnStep4");
+
+function setLabStep(step) {
+    // Reset active buttons
+    [btn1, btn2, btn3, btn4].forEach(b => b.classList.remove("active-tab"));
+    
+    if (step === 1) {
+        btn1.classList.add("active-tab");
+        labStepStatus.textContent = "Step 1 of 4";
+        simTitle.textContent = "1. Addition of Excess Solid";
+        simDescription.textContent = "Add excess copper(II) oxide powder to warm dilute sulfuric acid until unreacted powder remains at the bottom.";
+        virtualLiquid.style.background = "rgba(56, 189, 248, 0.4)"; // Clear blue acid with solid at bottom
+        virtualLiquid.style.height = "60%";
+    } else if (step === 2) {
+        btn2.classList.add("active-tab");
+        labStepStatus.textContent = "Step 2 of 4";
+        simTitle.textContent = "2. Filtration of Excess Solid";
+        simDescription.textContent = "Filter the mixture through filter paper into an evaporating basin. The excess solid is trapped; pure copper(II) sulfate solution passes through.";
+        virtualLiquid.style.background = "rgba(37, 99, 235, 0.6)"; // Clear blue filtrate
+        virtualLiquid.style.height = "50%";
+    } else if (step === 3) {
+        btn3.classList.add("active-tab");
+        labStepStatus.textContent = "Step 3 of 4";
+        simTitle.textContent = "3. Heating & Crystallisation";
+        simDescription.textContent = "Heat the filtrate gently in an evaporating basin to evaporate water until crystals form on the edge of a dipped glass rod.";
+        virtualLiquid.style.background = "rgba(29, 78, 216, 0.85)"; // Concentrated saturated solution
+        virtualLiquid.style.height = "35%";
+    } else if (step === 4) {
+        btn4.classList.add("active-tab");
+        labStepStatus.textContent = "Step 4 of 4";
+        simTitle.textContent = "4. Drying Pure Crystals";
+        simDescription.textContent = "Allow the solution to cool fully so crystals form. Filter and dab dry between filter paper to get pure hydrated copper(II) sulfate crystals.";
+        virtualLiquid.style.background = "rgba(96, 165, 250, 0.95)"; // Sparkling crystal appearance
+        virtualLiquid.style.height = "30%";
+    }
+}
+</script>
+
+{% endblock %}

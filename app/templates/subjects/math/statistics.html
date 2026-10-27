@@ -1,0 +1,1568 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics | Insite AI{% endblock %}
+
+{% block content %}
+
+<style>
+    .statistics-page {
+        min-height: 100vh;
+        padding: 90px 20px 60px;
+        background: #0f1115;
+        color: #f1f3f5;
+    }
+
+    .statistics-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        background: #171a21;
+        border: 1px solid #272c36;
+        color: #e8eaed;
+        text-decoration: none;
+        margin-bottom: 25px;
+        transition: 0.2s ease;
+    }
+
+    .back-button:hover {
+        background: #20242d;
+        color: #fff;
+        transform: translateX(-3px);
+    }
+
+    .hero {
+        padding: 35px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #111827, #151b27);
+        border: 1px solid #273142;
+        margin-bottom: 25px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+        color: #0d6efd;
+    }
+
+    .hero p {
+        color: #aeb7c5;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    .topic-nav {
+        top: 70px;
+        z-index: 10;
+        display: flex;
+        gap: 9px;
+        overflow-x: auto;
+        padding: 12px;
+        margin-bottom: 30px;
+        background: rgba(15, 17, 21, 0.94);
+        border: 1px solid #252b35;
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+        scrollbar-width: thin;
+    }
+
+    .topic-nav::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .topic-nav::-webkit-scrollbar-thumb {
+        background: #303743;
+        border-radius: 20px;
+    }
+
+    .topic-nav a {
+        flex: 0 0 auto;
+        text-decoration: none;
+        color: #b8c0cc;
+        background: #171a21;
+        border: 1px solid #282e38;
+        padding: 9px 14px;
+        border-radius: 9px;
+        font-size: 0.9rem;
+        transition: 0.2s;
+    }
+
+    .topic-nav a:hover {
+        color: white;
+        border-color: #0d6efd;
+        background: #182235;
+    }
+
+    .section {
+        margin-bottom: 35px;
+        scroll-margin-top: 145px;
+    }
+
+    .section-card {
+        background: #15181e;
+        border: 1px solid #252b34;
+        border-radius: 18px;
+        padding: 28px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.7rem;
+        font-weight: 750;
+        margin-bottom: 20px;
+    }
+
+    .section-title i {
+        color: #0d6efd;
+    }
+
+    .subtopic {
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-top: 28px;
+        margin-bottom: 12px;
+    }
+
+    .section-card p,
+    .section-card li {
+        color: #b9c1cd;
+        line-height: 1.85;
+    }
+
+    .section-card ul {
+        padding-left: 22px;
+    }
+
+    .formula {
+        background: #0d1117;
+        border-left: 4px solid #0d6efd;
+        padding: 15px 18px;
+        margin: 16px 0;
+        border-radius: 8px;
+        color: #f1f3f5;
+        font-family: "Cambria Math", Georgia, serif;
+        font-size: 1.05rem;
+        overflow-x: auto;
+    }
+
+    .example {
+        margin: 20px 0;
+        padding: 20px;
+        background: #11151b;
+        border: 1px solid #292f39;
+        border-radius: 12px;
+    }
+
+    .example-title {
+        color: #0d6efd;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .answer {
+        margin-top: 12px;
+        padding: 12px 15px;
+        background: #151d2a;
+        border-left: 3px solid #0d6efd;
+        border-radius: 7px;
+        color: #dbe7ff;
+    }
+
+    .note {
+        background: #151b25;
+        border: 1px solid #27354b;
+        border-left: 4px solid #0d6efd;
+        padding: 17px;
+        border-radius: 9px;
+        margin: 18px 0;
+        color: #c4cbd6;
+    }
+
+    .ask-ai {
+        margin-top: 22px;
+        padding: 18px;
+        background: #151a23;
+        border: 1px solid #263247;
+        border-radius: 12px;
+    }
+
+    .ask-ai i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ask-ai strong {
+        color: #fff;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        margin: 18px 0;
+    }
+
+    .statistics-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+    }
+
+    .statistics-table th,
+    .statistics-table td {
+        border: 1px solid #303641;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .statistics-table th {
+        background: #1a2029;
+        color: #fff;
+    }
+
+    .statistics-table td {
+        color: #c2c8d1;
+        background: #11151b;
+    }
+
+    .two-column {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .mini-card {
+        background: #11151b;
+        border: 1px solid #282e38;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .mini-card h4 {
+        color: #fff;
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .mini-card p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+        .statistics-page {
+            padding: 80px 12px 40px;
+        }
+
+        .hero,
+        .section-card {
+            padding: 20px;
+        }
+
+        .topic-nav {
+            top: 60px;
+        }
+
+        .two-column {
+            grid-template-columns: 1fr;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+        }
+    }
+</style>
+
+<div class="statistics-page">
+    <div class="statistics-container">
+
+        <a href="{{ url_for('math_page') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Mathematics
+        </a>
+
+        <div class="hero">
+            <h1><span>Statistics</span></h1>
+            <p>
+                Learn how to collect, organize, represent, analyze and interpret
+                data. From simple averages and frequency tables to grouped data,
+                variance, standard deviation, quartiles, percentiles and
+                statistical word problems.
+            </p>
+        </div>
+
+        <nav class="topic-nav">
+
+            <a href="#intro">Introduction</a>
+            <a href="#data">Data</a>
+            <a href="#frequency">Frequency</a>
+            <a href="#grouped">Grouped Data</a>
+            <a href="#mean">Mean</a>
+            <a href="#assumed">Assumed Mean</a>
+            <a href="#median">Median</a>
+            <a href="#mode">Mode</a>
+            <a href="#quartiles">Quartiles</a>
+            <a href="#percentiles">Percentiles</a>
+            <a href="#range">Range</a>
+            <a href="#variance">Variance</a>
+            <a href="#sd">Standard Deviation</a>
+            <a href="#graphs">Statistical Graphs</a>
+            <a href="#probability">Probability</a>
+            <a href="#wordproblems">Word Problems</a>
+
+        </nav>
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="section" id="intro">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-chart-column"></i>
+                    1. Introduction to Statistics
+                </h2>
+
+                <p>
+                    Statistics is the branch of mathematics concerned with
+                    collecting, organizing, presenting, analyzing and interpreting
+                    data.
+                </p>
+
+                <p>
+                    Whenever information is collected in the form of numbers,
+                    statistics can help us understand what those numbers mean.
+                </p>
+
+                <div class="two-column">
+
+                    <div class="mini-card">
+                        <h4>Descriptive Statistics</h4>
+                        <p>
+                            Describes data using tables, graphs, averages and
+                            measures of spread.
+                        </p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h4>Inferential Statistics</h4>
+                        <p>
+                            Uses information from a sample to make conclusions
+                            about a larger population.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="note">
+                    <strong>Important:</strong>
+                    Statistics is not only about mean, median and mode.
+                    Understanding the distribution and spread of data is equally
+                    important.
+                </div>
+
+                <div class="ask-ai">
+                    <i class="fas fa-sparkles"></i>
+                    <strong>Ask Insite AI:</strong>
+                    Ask me to explain any statistical concept you do not
+                    understand.
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- DATA -->
+
+        <section class="section" id="data">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-database"></i>
+                    2. Data and Types of Data
+                </h2>
+
+                <p>
+                    Data are facts, measurements or observations collected for
+                    analysis.
+                </p>
+
+                <div class="subtopic">Qualitative Data</div>
+
+                <p>
+                    Qualitative data describe qualities or categories rather than
+                    numerical measurements.
+                </p>
+
+                <p>
+                    Examples include gender, colour, occupation and type of food.
+                </p>
+
+                <div class="subtopic">Quantitative Data</div>
+
+                <p>
+                    Quantitative data are numerical and can be counted or measured.
+                </p>
+
+                <p>
+                    Examples include age, height, examination scores and number
+                    of students.
+                </p>
+
+                <div class="subtopic">Discrete Data</div>
+
+                <p>
+                    Discrete data consist of separate countable values.
+                </p>
+
+                <p>
+                    Example: number of children in a family.
+                </p>
+
+                <div class="subtopic">Continuous Data</div>
+
+                <p>
+                    Continuous data can take any value within an interval.
+                </p>
+
+                <p>
+                    Example: height, weight and temperature.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- FREQUENCY -->
+
+        <section class="section" id="frequency">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-list-ol"></i>
+                    3. Frequency Distribution
+                </h2>
+
+                <p>
+                    Frequency tells us how many times a particular value occurs.
+                </p>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Consider the data:
+                        2, 3, 3, 4, 4, 4, 5, 5.
+                    </p>
+
+                    <div class="table-wrap">
+
+                        <table class="statistics-table">
+
+                            <tr>
+                                <th>Value</th>
+                                <th>Frequency</th>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>1</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>2</td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>3</td>
+                            </tr>
+
+                            <tr>
+                                <td>5</td>
+                                <td>2</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <div class="answer">
+                        Total frequency = 1 + 2 + 3 + 2 = 8.
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Cumulative Frequency</div>
+
+                <p>
+                    Cumulative frequency is the running total of frequencies.
+                </p>
+
+                <div class="formula">
+                    Cumulative frequency = previous cumulative frequency + current frequency
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- GROUPED DATA -->
+
+        <section class="section" id="grouped">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-table"></i>
+                    4. Grouped Data
+                </h2>
+
+                <p>
+                    When a data set contains many observations, the values can be
+                    grouped into class intervals.
+                </p>
+
+                <div class="subtopic">Class Interval</div>
+
+                <p>
+                    A class interval is a range of values belonging to the same
+                    group.
+                </p>
+
+                <p>
+                    For example:
+                </p>
+
+                <div class="formula">
+                    10–19, 20–29, 30–39, 40–49
+                </div>
+
+                <div class="subtopic">Class Width</div>
+
+                <p>
+                    The class width represents the size of the interval.
+                </p>
+
+                <div class="subtopic">Class Boundaries</div>
+
+                <p>
+                    For continuous grouping, class boundaries remove gaps between
+                    classes.
+                </p>
+
+                <p>
+                    For example, the class 10–19 can have boundaries:
+                </p>
+
+                <div class="formula">
+                    9.5 and 19.5
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Suppose students' scores are grouped as:
+                    </p>
+
+                    <div class="table-wrap">
+
+                        <table class="statistics-table">
+
+                            <tr>
+                                <th>Score</th>
+                                <th>Frequency</th>
+                            </tr>
+
+                            <tr>
+                                <td>0–9</td>
+                                <td>3</td>
+                            </tr>
+
+                            <tr>
+                                <td>10–19</td>
+                                <td>7</td>
+                            </tr>
+
+                            <tr>
+                                <td>20–29</td>
+                                <td>10</td>
+                            </tr>
+
+                            <tr>
+                                <td>30–39</td>
+                                <td>6</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- MEAN -->
+
+        <section class="section" id="mean">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-calculator"></i>
+                    5. Arithmetic Mean
+                </h2>
+
+                <p>
+                    The arithmetic mean is commonly called the average. It is
+                    obtained by adding all observations and dividing by the number
+                    of observations.
+                </p>
+
+                <div class="formula">
+                    Mean = Σx / n
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example 1: Ungrouped Data
+                    </div>
+
+                    <p>
+                        Find the mean of 4, 6, 8, 10 and 12.
+                    </p>
+
+                    <p>
+                        Sum = 4 + 6 + 8 + 10 + 12 = 40
+                    </p>
+
+                    <p>
+                        Number of observations = 5
+                    </p>
+
+                    <div class="formula">
+                        Mean = 40 / 5 = 8
+                    </div>
+
+                    <div class="answer">
+                        Mean = 8
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Mean of Frequency Data</div>
+
+                <div class="formula">
+                    Mean = Σfx / Σf
+                </div>
+
+                <p>
+                    Here, x is the value and f is its frequency.
+                </p>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example 2
+                    </div>
+
+                    <p>
+                        Values: 2, 4, 6
+                    </p>
+
+                    <p>
+                        Frequencies: 3, 2, 5
+                    </p>
+
+                    <p>
+                        Calculate fx:
+                    </p>
+
+                    <p>
+                        2 × 3 = 6
+                    </p>
+
+                    <p>
+                        4 × 2 = 8
+                    </p>
+
+                    <p>
+                        6 × 5 = 30
+                    </p>
+
+                    <p>
+                        Therefore:
+                    </p>
+
+                    <div class="formula">
+                        Σfx = 44
+                        <br>
+                        Σf = 10
+                    </div>
+
+                    <div class="formula">
+                        Mean = 44 / 10 = 4.4
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ASSUMED MEAN -->
+
+        <section class="section" id="assumed">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-bullseye"></i>
+                    6. Assumed Mean Method
+                </h2>
+
+                <p>
+                    The assumed mean method provides a quicker way of calculating
+                    the mean, especially when the numbers are large.
+                </p>
+
+                <p>
+                    Choose a convenient value as the assumed mean, usually near the
+                    middle of the data.
+                </p>
+
+                <div class="formula">
+                    d = x − A
+                </div>
+
+                <div class="formula">
+                    Mean = A + Σfd / Σf
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Suppose the values are 20, 30, 40 and 50 with frequencies
+                        2, 3, 4 and 1.
+                    </p>
+
+                    <p>
+                        Take assumed mean A = 40.
+                    </p>
+
+                    <div class="formula">
+                        d = x − A
+                    </div>
+
+                    <p>
+                        Calculate each deviation, multiply by its frequency and
+                        obtain Σfd.
+                    </p>
+
+                    <p>
+                        Finally use:
+                    </p>
+
+                    <div class="formula">
+                        Mean = A + Σfd / Σf
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Step-Deviation Method</div>
+
+                <p>
+                    When class widths are equal, deviations can be divided by the
+                    common class width.
+                </p>
+
+                <div class="formula">
+                    u = (x − A) / h
+                </div>
+
+                <div class="formula">
+                    Mean = A + h(Σfu / Σf)
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- MEDIAN -->
+
+        <section class="section" id="median">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-arrows-left-right"></i>
+                    7. Median
+                </h2>
+
+                <p>
+                    The median is the middle value when observations are arranged
+                    in ascending or descending order.
+                </p>
+
+                <div class="subtopic">Odd Number of Observations</div>
+
+                <div class="formula">
+                    Median position = (n + 1) / 2
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Find the median of:
+                        3, 5, 7, 9, 11.
+                    </p>
+
+                    <p>
+                        There are five observations.
+                    </p>
+
+                    <div class="formula">
+                        Median position = (5 + 1) / 2 = 3
+                    </div>
+
+                    <div class="answer">
+                        Median = 7
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Even Number of Observations</div>
+
+                <p>
+                    When there is an even number of observations, take the average
+                    of the two middle values.
+                </p>
+
+                <div class="formula">
+                    Median = (middle value 1 + middle value 2) / 2
+                </div>
+
+                <div class="subtopic">Grouped Data Median</div>
+
+                <div class="formula">
+                    Median = L + [(N/2 − F) / f]h
+                </div>
+
+                <p>
+                    Where L is the lower class boundary of the median class,
+                    N is the total frequency, F is the cumulative frequency before
+                    the median class, f is the frequency of the median class and h
+                    is the class width.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- MODE -->
+
+        <section class="section" id="mode">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    8. Mode
+                </h2>
+
+                <p>
+                    The mode is the value that occurs most frequently.
+                </p>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        2, 3, 3, 4, 5, 3, 6
+                    </p>
+
+                    <div class="answer">
+                        Mode = 3
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Grouped Data Mode</div>
+
+                <div class="formula">
+                    Mode =
+                    L + [(f₁ − f₀) / (2f₁ − f₀ − f₂)]h
+                </div>
+
+                <p>
+                    The modal class is the class with the highest frequency.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- QUARTILES -->
+
+        <section class="section" id="quartiles">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-layer-group"></i>
+                    9. Quartiles
+                </h2>
+
+                <p>
+                    Quartiles divide ordered data into four equal parts.
+                </p>
+
+                <div class="two-column">
+
+                    <div class="mini-card">
+                        <h4>Q₁</h4>
+                        <p>
+                            First quartile. Approximately 25% of observations
+                            lie below it.
+                        </p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h4>Q₂</h4>
+                        <p>
+                            Second quartile. It is the median.
+                        </p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h4>Q₃</h4>
+                        <p>
+                            Third quartile. Approximately 75% of observations
+                            lie below it.
+                        </p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h4>IQR</h4>
+                        <p>
+                            Interquartile range measures the spread of the middle
+                            50% of the data.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="formula">
+                    IQR = Q₃ − Q₁
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Suppose Q₁ = 12 and Q₃ = 30.
+                    </p>
+
+                    <div class="formula">
+                        IQR = 30 − 12 = 18
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- PERCENTILES -->
+
+        <section class="section" id="percentiles">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-percent"></i>
+                    10. Percentiles
+                </h2>
+
+                <p>
+                    Percentiles divide ordered data into one hundred parts.
+                </p>
+
+                <p>
+                    For example, being at the 80th percentile means that the
+                    observation is greater than or equal to approximately 80% of
+                    the observations in the relevant distribution.
+                </p>
+
+                <div class="formula">
+                    Percentile position = P(n + 1) / 100
+                </div>
+
+                <p>
+                    Percentiles are particularly useful when comparing examination
+                    performance and ranking observations.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- RANGE -->
+
+        <section class="section" id="range">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                    11. Range and Measures of Spread
+                </h2>
+
+                <p>
+                    Measures of central tendency tell us where the data are
+                    centred. Measures of dispersion tell us how spread out the
+                    observations are.
+                </p>
+
+                <div class="formula">
+                    Range = Maximum − Minimum
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Data:
+                        5, 8, 12, 15, 20.
+                    </p>
+
+                    <div class="formula">
+                        Range = 20 − 5 = 15
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- VARIANCE -->
+
+        <section class="section" id="variance">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-square-root-variable"></i>
+                    12. Variance
+                </h2>
+
+                <p>
+                    Variance measures how far observations tend to lie from the
+                    mean by using squared deviations.
+                </p>
+
+                <p>
+                    First calculate the mean. Then subtract the mean from each
+                    observation. Square each deviation and find the appropriate
+                    average.
+                </p>
+
+                <div class="formula">
+                    Population variance:
+                    σ² = Σ(x − μ)² / N
+                </div>
+
+                <div class="formula">
+                    Sample variance:
+                    s² = Σ(x − x̄)² / (n − 1)
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        Consider:
+                        2, 4, 6.
+                    </p>
+
+                    <p>
+                        Mean = 4.
+                    </p>
+
+                    <p>
+                        Deviations:
+                        −2, 0, 2.
+                    </p>
+
+                    <p>
+                        Squared deviations:
+                        4, 0, 4.
+                    </p>
+
+                    <p>
+                        Sum of squared deviations = 8.
+                    </p>
+
+                    <div class="formula">
+                        Population variance = 8 / 3
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- STANDARD DEVIATION -->
+
+        <section class="section" id="sd">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    13. Standard Deviation
+                </h2>
+
+                <p>
+                    Standard deviation is the positive square root of variance.
+                    It tells us approximately how widely observations are spread
+                    around the mean.
+                </p>
+
+                <div class="formula">
+                    σ = √[Σ(x − μ)² / N]
+                </div>
+
+                <div class="formula">
+                    s = √[Σ(x − x̄)² / (n − 1)]
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Understanding Standard Deviation
+                    </div>
+
+                    <p>
+                        A small standard deviation means observations tend to be
+                        close to the mean.
+                    </p>
+
+                    <p>
+                        A large standard deviation means observations are more
+                        widely spread.
+                    </p>
+
+                </div>
+
+                <div class="subtopic">
+                    Coefficient of Variation
+                </div>
+
+                <div class="formula">
+                    CV = (Standard Deviation / Mean) × 100%
+                </div>
+
+                <p>
+                    The coefficient of variation is useful when comparing the
+                    relative spread of different data sets.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- GRAPHS -->
+
+        <section class="section" id="graphs">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-chart-area"></i>
+                    14. Statistical Graphs and Charts
+                </h2>
+
+                <div class="subtopic">Bar Chart</div>
+
+                <p>
+                    A bar chart represents categorical or discrete data using
+                    separate rectangular bars.
+                </p>
+
+                <div class="subtopic">Histogram</div>
+
+                <p>
+                    A histogram represents grouped continuous data. Unlike a bar
+                    chart, adjacent histogram bars normally touch.
+                </p>
+
+                <div class="subtopic">Frequency Polygon</div>
+
+                <p>
+                    A frequency polygon is formed by joining points representing
+                    class frequencies, usually at class midpoints.
+                </p>
+
+                <div class="subtopic">Pie Chart</div>
+
+                <p>
+                    A pie chart represents data as sectors of a circle.
+                </p>
+
+                <div class="formula">
+                    Sector angle = (frequency / total frequency) × 360°
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        If 20 out of 100 students prefer football:
+                    </p>
+
+                    <div class="formula">
+                        Angle = (20 / 100) × 360°
+                        <br>
+                        Angle = 72°
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Ogive</div>
+
+                <p>
+                    An ogive is a cumulative frequency curve. It can be used to
+                    estimate medians, quartiles and percentiles from grouped data.
+                </p>
+
+                <div class="subtopic">Scatter Diagram</div>
+
+                <p>
+                    A scatter diagram displays paired observations and helps us
+                    investigate relationships between two variables.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- PROBABILITY -->
+
+        <section class="section" id="probability">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-dice"></i>
+                    15. Probability and Statistics
+                </h2>
+
+                <p>
+                    Probability measures how likely an event is to occur.
+                </p>
+
+                <div class="formula">
+                    P(E) = Number of favourable outcomes / Total number of possible outcomes
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Example
+                    </div>
+
+                    <p>
+                        A fair die has six possible outcomes. What is the
+                        probability of rolling a 4?
+                    </p>
+
+                    <div class="formula">
+                        P(4) = 1 / 6
+                    </div>
+
+                </div>
+
+                <div class="subtopic">Complementary Events</div>
+
+                <div class="formula">
+                    P(A') = 1 − P(A)
+                </div>
+
+                <div class="subtopic">Independent Events</div>
+
+                <div class="formula">
+                    P(A and B) = P(A) × P(B)
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- WORD PROBLEMS -->
+
+        <section class="section" id="wordproblems">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-pen-ruler"></i>
+                    16. Statistics Word Problems
+                </h2>
+
+                <p>
+                    Statistics questions are often presented as real-life
+                    situations rather than direct formulas. The important skill is
+                    identifying the information given and deciding which
+                    statistical method is required.
+                </p>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Word Problem 1 — Mean
+                    </div>
+
+                    <p>
+                        The scores of five students are 45, 52, 61, 70 and 72.
+                        Find their average score.
+                    </p>
+
+                    <p>
+                        Add the scores:
+                    </p>
+
+                    <div class="formula">
+                        45 + 52 + 61 + 70 + 72 = 300
+                    </div>
+
+                    <p>
+                        There are five students.
+                    </p>
+
+                    <div class="formula">
+                        Mean = 300 / 5 = 60
+                    </div>
+
+                    <div class="answer">
+                        The average score is 60.
+                    </div>
+
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Word Problem 2 — Missing Value
+                    </div>
+
+                    <p>
+                        The mean of five numbers is 18. Four of the numbers are
+                        12, 15, 20 and 21. Find the fifth number.
+                    </p>
+
+                    <div class="formula">
+                        Total = Mean × Number of observations
+                    </div>
+
+                    <div class="formula">
+                        Total = 18 × 5 = 90
+                    </div>
+
+                    <p>
+                        Sum of the known values:
+                    </p>
+
+                    <div class="formula">
+                        12 + 15 + 20 + 21 = 68
+                    </div>
+
+                    <div class="formula">
+                        Missing value = 90 − 68 = 22
+                    </div>
+
+                    <div class="answer">
+                        The fifth number is 22.
+                    </div>
+
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Word Problem 3 — Frequency Mean
+                    </div>
+
+                    <p>
+                        The following table gives the number of books read by
+                        students and their frequencies.
+                    </p>
+
+                    <div class="table-wrap">
+
+                        <table class="statistics-table">
+
+                            <tr>
+                                <th>Books (x)</th>
+                                <th>Frequency (f)</th>
+                            </tr>
+
+                            <tr>
+                                <td>1</td>
+                                <td>4</td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>7</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>5</td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>4</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <p>
+                        Calculate fx for each row and then use:
+                    </p>
+
+                    <div class="formula">
+                        Mean = Σfx / Σf
+                    </div>
+
+                </div>
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Word Problem 4 — Comparing Data Sets
+                    </div>
+
+                    <p>
+                        Two classes have the same mean examination score, but
+                        Class A has a much smaller standard deviation than Class B.
+                        What does this tell us?
+                    </p>
+
+                    <div class="answer">
+                        The scores in Class A are more closely concentrated around
+                        the mean, while the scores in Class B are more widely
+                        spread.
+                    </div>
+
+                </div>
+
+                <div class="note">
+                    <strong>Exam tip:</strong>
+                    Do not immediately substitute numbers into a formula. First
+                    identify what the question is asking for: mean, median, mode,
+                    quartile, variance, standard deviation, range, frequency,
+                    probability or another measure.
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- FINAL SUMMARY -->
+
+        <section class="section">
+            <div class="section-card">
+
+                <h2 class="section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Statistics — What You Should Master
+                </h2>
+
+                <ul>
+                    <li>Types and sources of data</li>
+                    <li>Discrete and continuous data</li>
+                    <li>Frequency distributions</li>
+                    <li>Grouped and ungrouped data</li>
+                    <li>Class intervals</li>
+                    <li>Class boundaries</li>
+                    <li>Class midpoints</li>
+                    <li>Cumulative frequency</li>
+                    <li>Arithmetic mean</li>
+                    <li>Mean from frequency tables</li>
+                    <li>Assumed mean method</li>
+                    <li>Step-deviation method</li>
+                    <li>Median</li>
+                    <li>Grouped-data median</li>
+                    <li>Mode</li>
+                    <li>Grouped-data mode</li>
+                    <li>Quartiles</li>
+                    <li>Interquartile range</li>
+                    <li>Percentiles</li>
+                    <li>Range</li>
+                    <li>Variance</li>
+                    <li>Standard deviation</li>
+                    <li>Coefficient of variation</li>
+                    <li>Bar charts</li>
+                    <li>Histograms</li>
+                    <li>Frequency polygons</li>
+                    <li>Pie charts</li>
+                    <li>Ogives</li>
+                    <li>Scatter diagrams</li>
+                    <li>Basic probability</li>
+                    <li>Statistical word problems</li>
+                </ul>
+
+                <div class="ask-ai">
+                    <i class="fas fa-sparkles"></i>
+                    <strong>Need help?</strong>
+                    Ask Insite AI to explain a Statistics topic,
+                    solve a problem step by step, or check your working.
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}

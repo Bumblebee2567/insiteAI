@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nouns & Pronouns | English Hub
+{% endblock %}
+
+{% block content %}
+
+<style>
+.container-module {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    color: white;
+}
+
+.module-header {
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.module-header h1 {
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.module-header p {
+    color: #9ca3af;
+    font-size: 1.05rem;
+}
+
+.content-section h3 {
+    color: #3b82f6;
+    margin-top: 25px;
+    margin-bottom: 12px;
+}
+
+.content-section p, .content-section li {
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.25s;
+}
+
+.back-btn:hover {
+    background: #30363d;
+    border-color: #3b82f6;
+}
+</style>
+
+<div class="container-module">
+    <div class="module-header">
+        <h1>Nouns & Pronouns</h1>
+        <p>Master countable/uncountable nouns, abstract nouns, pronoun case, and agreement rules.</p>
+    </div>
+
+    <div class="content-section">
+        <h3>Overview & Key Concepts</h3>
+        <p>This module provides targeted study material, grammatical rules, and practice examples designed to help you excel in your exams.</p>
+
+        <h3>Important Rules to Remember</h3>
+        <ul>
+            <li>Understand the core definitions and structures.</li>
+            <li>Pay attention to common exceptions and exam traps.</li>
+            <li>Practice with past questions to test your proficiency.</li>
+        </ul>
+
+        <h3>Practice & Application</h3>
+        <p>Apply these rules systematically when tackling objective test items and structural questions.</p>
+    </div>
+
+    <a href="{{ url_for('english_page') }}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to English Hub
+    </a>
+</div>
+
+{% endblock %}

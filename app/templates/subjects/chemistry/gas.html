@@ -1,0 +1,1558 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gas Laws | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.gas-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.gas-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.gas-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.gas-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-button:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+.gas-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.gas-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.gas-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.gas-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.gas-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.gas-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.gas-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+.gas-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.gas-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.gas-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.gas-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.gas-section p,
+.gas-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.gas-section li {
+    margin-bottom: 8px;
+}
+
+/* HIGHLIGHT */
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* LAW CARDS */
+.law-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.law-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.law-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.law-card i {
+    color: #3b82f6;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.law-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.law-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* EXAMPLES */
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 13px 16px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+}
+
+/* TABLE */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+.gas-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+.gas-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.gas-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+    vertical-align: top;
+}
+
+/* VARIABLE CARDS */
+.variable-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.variable-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+.variable-card strong {
+    display: block;
+    color: #58a6ff;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+}
+
+.variable-card span {
+    color: #c9d1d9;
+    font-size: .85rem;
+}
+
+/* ASK AI */
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .gas-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .gas-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .gas-section {
+        padding: 18px;
+    }
+
+    .law-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .variable-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gas-nav-wrapper {
+        top: 0;
+    }
+}
+</style>
+
+<div class="gas-page">
+
+
+<a href="{{ url_for('chemistry_page') }}" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+    Back
+</a>
+
+
+<div class="gas-header">
+
+    <h1>Gas Laws</h1>
+
+    <p>
+        Gas laws describe how the pressure, volume, temperature and
+        amount of a gas are related. This guide explains the major gas
+        laws, their formulas, conditions, units, calculations,
+        applications and common word-problem techniques.
+    </p>
+
+</div>
+
+
+<div class="gas-nav-wrapper">
+
+    <nav class="gas-nav">
+
+        <a href="#introduction">Introduction</a>
+        <a href="#variables">Gas Variables</a>
+        <a href="#temperature">Temperature</a>
+        <a href="#boyle">Boyle's Law</a>
+        <a href="#charles">Charles' Law</a>
+        <a href="#gay-lussac">Gay-Lussac's Law</a>
+        <a href="#avogadro">Avogadro's Law</a>
+        <a href="#combined">Combined Gas Law</a>
+        <a href="#ideal">Ideal Gas Law</a>
+        <a href="#constant">Gas Constant</a>
+        <a href="#pressure">Pressure</a>
+        <a href="#kinetic">Kinetic Theory</a>
+        <a href="#graphs">Gas Law Relationships</a>
+        <a href="#examples">Examples</a>
+        <a href="#problems">Word Problems</a>
+        <a href="#mistakes">Common Mistakes</a>
+
+    </nav>
+
+</div>
+
+
+<section class="gas-section" id="introduction">
+
+    <h2>1. Introduction to Gas Laws</h2>
+
+    <p>
+        Gases behave differently from solids and liquids because their
+        particles are relatively far apart and move freely in random
+        directions.
+    </p>
+
+    <p>
+        Gas laws are mathematical relationships that describe what
+        happens when one or more properties of a gas change.
+    </p>
+
+    <p>
+        The four most important measurable variables used in basic gas
+        laws are pressure, volume, temperature and amount of gas.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Core idea:</strong>
+
+        When one gas variable changes, another variable may also change.
+        The particular relationship depends on which variables are held
+        constant.
+
+    </div>
+
+    <h3>The Major Gas Laws</h3>
+
+    <div class="law-grid">
+
+        <div class="law-card">
+
+            <i class="fas fa-compress"></i>
+
+            <h4>Boyle's Law</h4>
+
+            <p>
+                Relates pressure and volume when temperature and amount
+                of gas remain constant.
+            </p>
+
+        </div>
+
+
+        <div class="law-card">
+
+            <i class="fas fa-temperature-high"></i>
+
+            <h4>Charles' Law</h4>
+
+            <p>
+                Relates volume and absolute temperature when pressure
+                and amount remain constant.
+            </p>
+
+        </div>
+
+
+        <div class="law-card">
+
+            <i class="fas fa-fire"></i>
+
+            <h4>Gay-Lussac's Law</h4>
+
+            <p>
+                Relates pressure and absolute temperature when volume
+                and amount remain constant.
+            </p>
+
+        </div>
+
+
+        <div class="law-card">
+
+            <i class="fas fa-flask"></i>
+
+            <h4>Avogadro's Law</h4>
+
+            <p>
+                Relates volume and amount of gas when pressure and
+                temperature remain constant.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="variables">
+
+    <h2>2. Variables in Gas Laws</h2>
+
+    <p>
+        Understanding the symbols is one of the most important steps
+        in solving gas-law problems.
+    </p>
+
+    <div class="variable-grid">
+
+        <div class="variable-card">
+            <strong>P</strong>
+            <span>Pressure</span>
+        </div>
+
+        <div class="variable-card">
+            <strong>V</strong>
+            <span>Volume</span>
+        </div>
+
+        <div class="variable-card">
+            <strong>T</strong>
+            <span>Temperature</span>
+        </div>
+
+        <div class="variable-card">
+            <strong>n</strong>
+            <span>Amount in moles</span>
+        </div>
+
+    </div>
+
+    <h3>Pressure</h3>
+
+    <p>
+        Pressure is related to the force exerted by gas particles as
+        they collide with the walls of their container.
+    </p>
+
+    <p>
+        Common units include pascals (Pa), kilopascals (kPa),
+        atmospheres (atm) and millimetres of mercury (mmHg).
+    </p>
+
+    <h3>Volume</h3>
+
+    <p>
+        Volume is the amount of space occupied by the gas.
+        Common units include litres (L) and millilitres (mL).
+    </p>
+
+    <h3>Temperature</h3>
+
+    <p>
+        Gas-law calculations require absolute temperature when using
+        relationships involving temperature.
+    </p>
+
+    <h3>Amount</h3>
+
+    <p>
+        The amount of gas is usually measured in moles and represented
+        by <strong>n</strong>.
+    </p>
+
+</section>
+
+
+<section class="gas-section" id="temperature">
+
+    <h2>3. Temperature and the Kelvin Scale</h2>
+
+    <p>
+        A major rule in gas-law calculations is that temperature must
+        normally be expressed in kelvin rather than degrees Celsius.
+    </p>
+
+    <div class="formula-box">
+        T(K) = T(°C) + 273.15
+    </div>
+
+    <h3>Example</h3>
+
+    <div class="example-box">
+
+        <h4>Convert 27°C to Kelvin.</h4>
+
+        <div class="answer-box">
+
+            T = 27 + 273.15
+
+            <br><br>
+
+            T = 300.15 K
+
+        </div>
+
+    </div>
+
+    <div class="highlight">
+
+        <strong>Exam warning:</strong>
+
+        Do not directly substitute Celsius temperatures into Boyle,
+        Charles, Gay-Lussac or combined gas-law formulas when absolute
+        temperature is required.
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="boyle">
+
+    <h2>4. Boyle's Law</h2>
+
+    <p>
+        Boyle's law describes the relationship between the pressure and
+        volume of a fixed amount of gas at constant temperature.
+    </p>
+
+    <div class="formula-box">
+        P₁V₁ = P₂V₂
+    </div>
+
+    <p>
+        Pressure and volume are inversely proportional.
+    </p>
+
+    <div class="formula-box">
+        P ↑ → V ↓
+        <br><br>
+        P ↓ → V ↑
+    </div>
+
+    <h3>Meaning</h3>
+
+    <p>
+        If the volume of a gas is reduced while temperature and amount
+        remain constant, the particles have less space and collide with
+        the container walls more frequently. The pressure therefore
+        increases.
+    </p>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A gas occupies 4.0 L at a pressure of 2.0 atm.
+            What is its volume when the pressure becomes 4.0 atm?
+        </h4>
+
+        <div class="answer-box">
+
+            P₁V₁ = P₂V₂
+
+            <br><br>
+
+            (2.0)(4.0) = (4.0)V₂
+
+            <br><br>
+
+            8.0 = 4.0V₂
+
+            <br><br>
+
+            <strong>V₂ = 2.0 L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="charles">
+
+    <h2>5. Charles' Law</h2>
+
+    <p>
+        Charles' law describes the relationship between volume and
+        absolute temperature when pressure and amount of gas remain
+        constant.
+    </p>
+
+    <div class="formula-box">
+        V₁ / T₁ = V₂ / T₂
+    </div>
+
+    <p>
+        Volume and absolute temperature are directly proportional.
+    </p>
+
+    <div class="formula-box">
+        T ↑ → V ↑
+        <br><br>
+        T ↓ → V ↓
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A gas occupies 2.0 L at 300 K. What volume will it occupy
+            at 450 K if pressure remains constant?
+        </h4>
+
+        <div class="answer-box">
+
+            V₁ / T₁ = V₂ / T₂
+
+            <br><br>
+
+            2.0 / 300 = V₂ / 450
+
+            <br><br>
+
+            V₂ = (2.0 × 450) / 300
+
+            <br><br>
+
+            <strong>V₂ = 3.0 L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="gay-lussac">
+
+    <h2>6. Gay-Lussac's Law</h2>
+
+    <p>
+        Gay-Lussac's law describes the relationship between pressure
+        and absolute temperature when volume and amount of gas remain
+        constant.
+    </p>
+
+    <div class="formula-box">
+        P₁ / T₁ = P₂ / T₂
+    </div>
+
+    <p>
+        Pressure and absolute temperature are directly proportional.
+    </p>
+
+    <div class="formula-box">
+        T ↑ → P ↑
+        <br><br>
+        T ↓ → P ↓
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A gas has a pressure of 100 kPa at 300 K. What pressure
+            will it have at 450 K if the volume remains constant?
+        </h4>
+
+        <div class="answer-box">
+
+            P₁ / T₁ = P₂ / T₂
+
+            <br><br>
+
+            100 / 300 = P₂ / 450
+
+            <br><br>
+
+            P₂ = (100 × 450) / 300
+
+            <br><br>
+
+            <strong>P₂ = 150 kPa</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="avogadro">
+
+    <h2>7. Avogadro's Law</h2>
+
+    <p>
+        Avogadro's law describes the relationship between the volume
+        and amount of gas when temperature and pressure remain constant.
+    </p>
+
+    <div class="formula-box">
+        V₁ / n₁ = V₂ / n₂
+    </div>
+
+    <p>
+        Volume is directly proportional to the number of moles.
+    </p>
+
+    <div class="formula-box">
+        n ↑ → V ↑
+        <br><br>
+        n ↓ → V ↓
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            A gas occupies 6 L when it contains 2 mol.
+            What volume will it occupy when it contains 5 mol,
+            assuming temperature and pressure remain constant?
+        </h4>
+
+        <div class="answer-box">
+
+            V₁ / n₁ = V₂ / n₂
+
+            <br><br>
+
+            6 / 2 = V₂ / 5
+
+            <br><br>
+
+            V₂ = (6 × 5) / 2
+
+            <br><br>
+
+            <strong>V₂ = 15 L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="combined">
+
+    <h2>8. Combined Gas Law</h2>
+
+    <p>
+        The combined gas law combines the pressure-volume-temperature
+        relationships for a fixed amount of gas.
+    </p>
+
+    <div class="formula-box">
+        P₁V₁ / T₁ = P₂V₂ / T₂
+    </div>
+
+    <p>
+        The amount of gas remains constant.
+    </p>
+
+    <h3>When Should You Use It?</h3>
+
+    <p>
+        Use the combined gas law when pressure, volume and temperature
+        can all change between two states while the amount of gas
+        remains constant.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Worked Example</h4>
+
+        <p>
+            A gas occupies 2.0 L at 100 kPa and 300 K.
+            It is changed to 150 kPa and 450 K.
+            Find its new volume.
+        </p>
+
+        <div class="answer-box">
+
+            P₁V₁ / T₁ = P₂V₂ / T₂
+
+            <br><br>
+
+            (100 × 2.0) / 300
+            =
+            (150 × V₂) / 450
+
+            <br><br>
+
+            200 / 300 = 150V₂ / 450
+
+            <br><br>
+
+            V₂ = 2.0 L
+
+            <br><br>
+
+            <strong>Answer: 2.0 L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="ideal">
+
+    <h2>9. Ideal Gas Law</h2>
+
+    <p>
+        The ideal gas law connects pressure, volume, amount of gas and
+        absolute temperature in one equation.
+    </p>
+
+    <div class="formula-box">
+        PV = nRT
+    </div>
+
+    <h3>Meaning of the Symbols</h3>
+
+    <div class="table-wrapper">
+
+        <table class="gas-table">
+
+            <tr>
+                <th>Symbol</th>
+                <th>Meaning</th>
+                <th>Typical SI Unit</th>
+            </tr>
+
+            <tr>
+                <td>P</td>
+                <td>Pressure</td>
+                <td>Pa</td>
+            </tr>
+
+            <tr>
+                <td>V</td>
+                <td>Volume</td>
+                <td>m³</td>
+            </tr>
+
+            <tr>
+                <td>n</td>
+                <td>Amount of gas</td>
+                <td>mol</td>
+            </tr>
+
+            <tr>
+                <td>R</td>
+                <td>Gas constant</td>
+                <td>8.314 J mol⁻¹ K⁻¹</td>
+            </tr>
+
+            <tr>
+                <td>T</td>
+                <td>Absolute temperature</td>
+                <td>K</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Rearranging the Ideal Gas Equation</h3>
+
+    <div class="formula-box">
+        P = nRT / V
+    </div>
+
+    <div class="formula-box">
+        V = nRT / P
+    </div>
+
+    <div class="formula-box">
+        n = PV / RT
+    </div>
+
+    <div class="formula-box">
+        T = PV / nR
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="constant">
+
+    <h2>10. The Gas Constant</h2>
+
+    <p>
+        The value of R depends on the units used for pressure and volume.
+    </p>
+
+    <div class="formula-box">
+        R = 8.314 J mol⁻¹ K⁻¹
+    </div>
+
+    <p>
+        Another commonly used value is approximately:
+    </p>
+
+    <div class="formula-box">
+        R = 0.0821 L·atm·mol⁻¹·K⁻¹
+    </div>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        Always make sure your value of R matches the pressure and
+        volume units in your calculation.
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="pressure">
+
+    <h2>11. Gas Pressure and Particle Collisions</h2>
+
+    <p>
+        Gas pressure comes from collisions between gas particles and
+        the walls of their container.
+    </p>
+
+    <h3>Increasing Temperature</h3>
+
+    <p>
+        When a gas in a rigid container is heated, its particles gain
+        kinetic energy and move faster. Their collisions with the walls
+        become more frequent and energetic.
+    </p>
+
+    <div class="formula-box">
+        Temperature ↑ → Particle kinetic energy ↑ → Pressure ↑
+    </div>
+
+    <h3>Reducing Volume</h3>
+
+    <p>
+        If the same amount of gas is compressed into a smaller volume,
+        particles have less space and collide with the walls more often.
+    </p>
+
+    <div class="formula-box">
+        Volume ↓ → Collision frequency ↑ → Pressure ↑
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="kinetic">
+
+    <h2>12. Kinetic Molecular Theory</h2>
+
+    <p>
+        Kinetic molecular theory provides a model for explaining the
+        behaviour of gases using the motion of their particles.
+    </p>
+
+    <h3>Main Assumptions</h3>
+
+    <ul>
+
+        <li>
+            Gas particles are in constant random motion.
+        </li>
+
+        <li>
+            The individual volume of gas particles is considered
+            negligible compared with the volume of the container in
+            the idealized model.
+        </li>
+
+        <li>
+            Attractive and repulsive forces between particles are
+            assumed to be negligible for an ideal gas.
+        </li>
+
+        <li>
+            Collisions are treated as elastic in the idealized model.
+        </li>
+
+        <li>
+            The average kinetic energy of particles depends on absolute
+            temperature.
+        </li>
+
+    </ul>
+
+    <div class="highlight">
+
+        <strong>Key relationship:</strong>
+
+        Higher absolute temperature means greater average kinetic
+        energy of gas particles.
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="graphs">
+
+    <h2>13. Gas-Law Relationships</h2>
+
+    <h3>Boyle's Law</h3>
+
+    <p>
+        At constant temperature, pressure increases as volume decreases.
+        The relationship is inverse.
+    </p>
+
+    <div class="formula-box">
+        P ∝ 1/V
+    </div>
+
+    <h3>Charles' Law</h3>
+
+    <p>
+        At constant pressure, volume increases directly with absolute
+        temperature.
+    </p>
+
+    <div class="formula-box">
+        V ∝ T
+    </div>
+
+    <h3>Gay-Lussac's Law</h3>
+
+    <p>
+        At constant volume, pressure increases directly with absolute
+        temperature.
+    </p>
+
+    <div class="formula-box">
+        P ∝ T
+    </div>
+
+    <h3>Avogadro's Law</h3>
+
+    <p>
+        At constant pressure and temperature, volume increases directly
+        with the number of moles.
+    </p>
+
+    <div class="formula-box">
+        V ∝ n
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="gas-table">
+
+            <tr>
+                <th>Law</th>
+                <th>Variables Compared</th>
+                <th>Constant Variables</th>
+                <th>Relationship</th>
+            </tr>
+
+            <tr>
+                <td>Boyle</td>
+                <td>P and V</td>
+                <td>T and n</td>
+                <td>Inverse</td>
+            </tr>
+
+            <tr>
+                <td>Charles</td>
+                <td>V and T</td>
+                <td>P and n</td>
+                <td>Direct</td>
+            </tr>
+
+            <tr>
+                <td>Gay-Lussac</td>
+                <td>P and T</td>
+                <td>V and n</td>
+                <td>Direct</td>
+            </tr>
+
+            <tr>
+                <td>Avogadro</td>
+                <td>V and n</td>
+                <td>P and T</td>
+                <td>Direct</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="examples">
+
+    <h2>14. Worked Examples</h2>
+
+
+    <div class="example-box">
+
+        <h4>Example 1 — Boyle's Law</h4>
+
+        <p>
+            A gas has a volume of 10 L at 1 atm. If the volume is reduced
+            to 5 L at constant temperature, find the new pressure.
+        </p>
+
+        <div class="answer-box">
+
+            P₁V₁ = P₂V₂
+
+            <br><br>
+
+            (1)(10) = P₂(5)
+
+            <br><br>
+
+            <strong>P₂ = 2 atm</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 2 — Charles' Law</h4>
+
+        <p>
+            A gas occupies 3 L at 300 K. What volume will it occupy
+            at 600 K if pressure remains constant?
+        </p>
+
+        <div class="answer-box">
+
+            V₁ / T₁ = V₂ / T₂
+
+            <br><br>
+
+            3 / 300 = V₂ / 600
+
+            <br><br>
+
+            <strong>V₂ = 6 L</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 3 — Gay-Lussac's Law</h4>
+
+        <p>
+            A sealed gas container has a pressure of 200 kPa at 300 K.
+            What will its pressure be at 600 K?
+        </p>
+
+        <div class="answer-box">
+
+            P₁ / T₁ = P₂ / T₂
+
+            <br><br>
+
+            200 / 300 = P₂ / 600
+
+            <br><br>
+
+            <strong>P₂ = 400 kPa</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 4 — Choosing the Correct Law</h4>
+
+        <p>
+            A gas is heated while its pressure remains constant.
+            Its volume increases. Which gas law describes this situation?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Charles' Law.</strong>
+
+            <br><br>
+
+            Charles' law relates volume and absolute temperature at
+            constant pressure.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="problems">
+
+    <h2>15. Gas-Law Word Problems</h2>
+
+
+    <div class="example-box">
+
+        <h4>Problem 1</h4>
+
+        <p>
+            A gas occupies 8 L at 2 atm. The pressure is increased to
+            4 atm while temperature remains constant. Find the new
+            volume.
+        </p>
+
+        <div class="answer-box">
+
+            P₁V₁ = P₂V₂
+
+            <br><br>
+
+            (2)(8) = (4)V₂
+
+            <br><br>
+
+            <strong>V₂ = 4 L</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 2</h4>
+
+        <p>
+            A balloon has a volume of 2 L at 250 K. It is heated to
+            500 K while pressure remains constant. Find its new volume.
+        </p>
+
+        <div class="answer-box">
+
+            V₁ / T₁ = V₂ / T₂
+
+            <br><br>
+
+            2 / 250 = V₂ / 500
+
+            <br><br>
+
+            <strong>V₂ = 4 L</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 3</h4>
+
+        <p>
+            A gas has a pressure of 100 kPa at 300 K. It is heated to
+            600 K in a rigid container. Find the new pressure.
+        </p>
+
+        <div class="answer-box">
+
+            P₁ / T₁ = P₂ / T₂
+
+            <br><br>
+
+            100 / 300 = P₂ / 600
+
+            <br><br>
+
+            <strong>P₂ = 200 kPa</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 4</h4>
+
+        <p>
+            A gas has a volume of 5 L at 300 K and 1 atm.
+            It is changed to 400 K and 2 atm.
+            Find the new volume.
+        </p>
+
+        <div class="answer-box">
+
+            P₁V₁ / T₁ = P₂V₂ / T₂
+
+            <br><br>
+
+            (1 × 5) / 300
+            =
+            (2 × V₂) / 400
+
+            <br><br>
+
+            V₂ = 3.33 L approximately.
+
+            <br><br>
+
+            <strong>Answer: 3.33 L</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 5</h4>
+
+        <p>
+            A gas occupies 10 L at 1 atm and 300 K. Calculate the number
+            of moles using R = 0.0821 L·atm·mol⁻¹·K⁻¹.
+        </p>
+
+        <div class="answer-box">
+
+            PV = nRT
+
+            <br><br>
+
+            n = PV / RT
+
+            <br><br>
+
+            n = (1 × 10) / (0.0821 × 300)
+
+            <br><br>
+
+            <strong>n ≈ 0.406 mol</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 6 — Conceptual</h4>
+
+        <p>
+            Why does a pressure cooker allow food to cook at a higher
+            temperature than ordinary boiling water?
+        </p>
+
+        <div class="answer-box">
+
+            Increasing the pressure above the liquid increases its
+            boiling temperature. Therefore, water inside a pressure
+            cooker can reach a temperature above its normal boiling
+            point at atmospheric pressure.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="gas-section" id="mistakes">
+
+    <h2>16. Common Gas-Law Mistakes</h2>
+
+    <h3>1. Using Celsius Instead of Kelvin</h3>
+
+    <p>
+        Temperature should normally be converted to kelvin before it
+        is substituted into temperature-based gas-law equations.
+    </p>
+
+    <h3>2. Mixing Units</h3>
+
+    <p>
+        Make sure pressure, volume and the gas constant use compatible
+        units.
+    </p>
+
+    <h3>3. Choosing the Wrong Law</h3>
+
+    <p>
+        Look carefully at which variables change and which variables
+        remain constant.
+    </p>
+
+    <h3>4. Forgetting the Inverse Relationship</h3>
+
+    <p>
+        Boyle's law is inverse. Increasing pressure causes volume to
+        decrease when temperature and amount remain constant.
+    </p>
+
+    <h3>5. Forgetting Moles</h3>
+
+    <p>
+        If the amount of gas changes, a simple two-state Boyle,
+        Charles or Gay-Lussac calculation may no longer be sufficient.
+        Consider Avogadro's law, the combined relationships or the
+        ideal gas equation depending on the problem.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Best strategy:</strong>
+
+        First write down P, V, T and n for the initial and final states.
+        Then identify what remains constant. Finally choose the equation.
+
+    </div>
+
+</section>
+
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With Gas Laws?</h3>
+
+    <p>
+        Confused about Boyle's law, Charles' law, Gay-Lussac's law,
+        Avogadro's law, the combined gas law or PV = nRT?
+        Ask Insite AI to explain the concept step by step, identify
+        the correct formula, or solve a gas-law word problem with you.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

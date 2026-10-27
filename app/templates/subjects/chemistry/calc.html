@@ -1,0 +1,738 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chemistry Problem Solving & Mastery | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --prob-bg: #050a12;
+    --prob-panel: #0a111d;
+    --prob-border: rgba(100, 116, 139, .18);
+    --prob-text: #f1f5f9;
+    --prob-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --prob-blue: #1677b8;
+    --prob-blue-light: #2196d2;
+
+    --prob-green: #34d399;
+    --prob-red: #ef4444;
+}
+
+.prob-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--prob-text);
+}
+
+/* BACK BUTTON */
+
+.prob-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--prob-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.prob-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.prob-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.prob-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.prob-header h1 i {
+    color: var(--prob-blue-light);
+    margin-right: 8px;
+}
+
+.prob-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--prob-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.prob-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--prob-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.prob-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.prob-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.prob-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.prob-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--prob-panel);
+    border: 1px solid var(--prob-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.prob-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.prob-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.prob-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.prob-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.prob-section p,
+.prob-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.prob-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.prob-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--prob-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.prob-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE */
+
+.prob-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.prob-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.prob-table th,
+.prob-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--prob-border);
+}
+
+.prob-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.prob-table td {
+    color: #cbd5e1;
+}
+
+.prob-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--prob-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* INTERACTIVE TEST */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--prob-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--prob-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--prob-panel);
+    border: 1px solid var(--prob-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--prob-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--prob-green); }
+.test-result.wrong { border-left-color: var(--prob-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* QUESTIONS & WORKED EXAMPLES */
+
+.exam-question {
+    margin-top: 15px;
+    padding: 18px;
+    background: #081321;
+    border: 1px solid var(--prob-border);
+    border-radius: 11px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.05rem;
+}
+
+.exam-answer {
+    margin-top: 10px;
+    padding: 12px 15px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--prob-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .prob-section { padding: 20px; }
+    .prob-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="prob-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="prob-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="prob-header">
+        <h1>
+            <i class="fa-solid fa-brain"></i>
+            Chemistry Problem Solving & Mastery
+        </h1>
+        <p>
+            An exhaustive masterclass covering stoichiometric calculations, chemical equations, 
+            thermodynamics, kinetics, equilibrium word problems, electrochemistry, and advanced exam prep.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="prob-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#stoichiometry">Stoichiometry & Moles</a>
+        <a href="#solutions">Solution Concentration</a>
+        <a href="#thermo">Thermochemistry</a>
+        <a href="#kinetics">Reaction Kinetics</a>
+        <a href="#equilibrium">Chemical Equilibrium</a>
+        <a href="#acids">Acids & Bases</a>
+        <a href="#electro">Electrochemistry</a>
+        <a href="#organic">Organic Synthesis</a>
+        <a href="#interactive">Interactive Test</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="prob-section" id="intro">
+        <div class="prob-section-header">
+            <div class="prob-number">01</div>
+            <h2>Introduction to Chemical Problem Solving</h2>
+        </div>
+        <p>
+            Mastering chemistry requires a blend of conceptual understanding, mathematical fluency, and systematic 
+            problem-solving strategies. Whether tackling simple mole conversions or complex multi-variable equilibrium problems, 
+            approaching each question with a structured framework ensures accuracy and confidence.
+        </p>
+        <div class="prob-info">
+            <strong>The UPS-CHECK Strategy:</strong><br>
+            1. Understand the physical and chemical principles.<br>
+            2. Plan the pathway using dimensional analysis and balanced equations.<br>
+            3. Solve step-by-step with proper units and significant figures.<br>
+            4. Check reasonableness against chemical intuition.
+        </div>
+    </section>
+
+    <!-- 02 STOICHIOMETRY -->
+    <section class="prob-section" id="stoichiometry">
+        <div class="prob-section-header">
+            <div class="prob-number">02</div>
+            <h2>Stoichiometry, Moles, and Limiting Reactants</h2>
+        </div>
+        <p>
+            Stoichiometry forms the quantitative bedrock of chemistry, linking mass, moles, particles, and gas volumes.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Combustion Analysis):</strong>
+            <p>A 2.50 g sample of a hydrocarbon undergoes complete combustion to produce 7.92 g of carbon dioxide (CO<sub>2</sub>) and 1.62 g of water (H<sub>2</sub>O). Determine the empirical formula of the hydrocarbon.</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Calculate moles of carbon from CO<sub>2</sub>: Moles CO<sub>2</sub> = 7.92 g / 44.01 g/mol = 0.180 mol. Therefore, moles of C = 0.180 mol.<br>
+                2. Calculate moles of hydrogen from H<sub>2</sub>O: Moles H<sub>2</sub>O = 1.62 g / 18.02 g/mol = 0.0899 mol. Since each water molecule has 2 H atoms, moles of H = 2 &times; 0.0899 = 0.180 mol.<br>
+                3. Find the mole ratio C : H = 0.180 : 0.180 = 1 : 1.<br>
+                4. Empirical formula = <strong>CH</strong> (Benzene or acetylene family empirical unit).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Limiting Reactant & Theoretical Yield):</strong>
+            <p>If 15.0 g of aluminum reacts with 35.0 g of chlorine gas (Cl<sub>2</sub>) to form aluminum chloride (AlCl<sub>3</sub>), which reactant is limiting, and what mass of AlCl<sub>3</sub> is produced?</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Balanced Equation: 2Al<sub>(s)</sub> + 3Cl<sub>2(g)</sub> &rarr; 2AlCl<sub>3(s)</sub><br>
+                2. Calculate moles available: Moles Al = 15.0 g / 26.98 g/mol = 0.556 mol. Moles Cl<sub>2</sub> = 35.0 g / 70.90 g/mol = 0.494 mol.<br>
+                3. Determine required ratio: For 0.494 mol Cl<sub>2</sub>, required Al = 0.494 &times; (2/3) = 0.329 mol. Since we have 0.556 mol Al available (which is more than 0.329 mol), <strong>Chlorine (Cl<sub>2</sub>) is the limiting reactant</strong>.<br>
+                4. Calculate mass of AlCl<sub>3</sub> produced: Moles AlCl<sub>3</sub> = Moles Cl<sub>2</sub> &times; (2/3) = 0.494 &times; (2/3) = 0.329 mol. Mass = 0.329 mol &times; 133.34 g/mol = <strong>43.9 g of AlCl<sub>3</sub></strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 03 SOLUTIONS -->
+    <section class="prob-section" id="solutions">
+        <div class="prob-section-header">
+            <div class="prob-number">03</div>
+            <h2>Solution Concentration, Molarity, and Dilutions</h2>
+        </div>
+        <p>
+            Concentration calculations govern titrations, precipitation reactions, and solution preparations.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Titration Stoichiometry):</strong>
+            <p>25.0 cm<sup>3</sup> of a sodium hydroxide (NaOH) solution requires 21.45 cm<sup>3</sup> of 0.125 mol/dm<sup>3</sup> hydrochloric acid (HCl) for complete neutralization. What is the concentration of the NaOH solution in g/dm<sup>3</sup>?</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Balanced Equation: NaOH<sub>(aq)</sub> + HCl<sub>(aq)</sub> &rarr; NaCl<sub>(aq)</sub> + H<sub>2</sub>O<sub>(l)</sub> (1:1 mole ratio).<br>
+                2. Calculate moles of HCl used: Moles = 0.125 mol/dm<sup>3</sup> &times; (21.45 / 1000) dm<sup>3</sup> = 2.681 &times; 10<sup>-3</sup> mol.<br>
+                3. Moles of NaOH neutralized = 2.681 &times; 10<sup>-3</sup> mol in 25.0 cm<sup>3</sup>.<br>
+                4. Concentration in mol/dm<sup>3</sup> = (2.681 &times; 10<sup>-3</sup> mol / 0.0250 dm<sup>3</sup>) = 0.10725 mol/dm<sup>3</sup>.<br>
+                5. Convert to g/dm<sup>3</sup> (Molar mass NaOH = 39.997 g/mol): 0.10725 &times; 39.997 = <strong>4.29 g/dm<sup>3</sup></strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 4 (Serial Dilution):</strong>
+            <p>Calculate the final concentration of a solution prepared by taking 15.0 cm<sup>3</sup> of 2.00 mol/dm<sup>3</sup> stock nitric acid (HNO<sub>3</sub>) and diluting it in a volumetric flask to a total volume of 250.0 cm<sup>3</sup>.</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Use the dilution formula: C<sub>1</sub>V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub><br>
+                2. C<sub>2</sub> = (C<sub>1</sub> &times; V<sub>1</sub>) / V<sub>2</sub> = (2.00 mol/dm<sup>3</sup> &times; 15.0 cm<sup>3</sup>) / 250.0 cm<sup>3</sup><br>
+                3. C<sub>2</sub> = 30.0 / 250.0 = <strong>0.120 mol/dm<sup>3</sup></strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 THERMOCHEMISTRY -->
+    <section class="prob-section" id="thermo">
+        <div class="prob-section-header">
+            <div class="prob-number">04</div>
+            <h2>Thermochemistry and Enthalpy Changes</h2>
+        </div>
+        <p>
+            Evaluating heat flow, calorimeter constants, and Hess's Law cycles.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 5 (Calorimetry & Enthalpy of Neutralization):</strong>
+            <p>When 50.0 cm<sup>3</sup> of 1.00 mol/dm<sup>3</sup> HCl is mixed with 50.0 cm<sup>3</sup> of 1.00 mol/dm<sup>3</sup> NaOH in a polystyrene cup calorimeter, the temperature rises from 21.5 degrees Celsius to 28.3 degrees Celsius. Calculate the enthalpy change of neutralization per mole of water formed. (Assume density of solution = 1.00 g/cm<sup>3</sup> and specific heat capacity c = 4.18 J/g&middot;°C).</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Total mass of solution (m) = 50.0 + 50.0 = 100.0 g.<br>
+                2. Temperature change (delta T) = 28.3 - 21.5 = 6.8 degrees Celsius.<br>
+                3. Heat released (q) = m &times; c &times; delta T = 100.0 g &times; 4.18 J/g&middot;°C &times; 6.8 degrees Celsius = 2842.4 J = 2.842 kJ.<br>
+                4. Moles of water formed = 0.050 dm<sup>3</sup> &times; 1.00 mol/dm<sup>3</sup> = 0.0500 mol.<br>
+                5. Enthalpy of neutralization (delta H) = -q / moles = -2.842 kJ / 0.0500 mol = <strong>-56.8 kJ/mol</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 05 KINETICS -->
+    <section class="prob-section" id="kinetics">
+        <div class="prob-section-header">
+            <div class="prob-number">05</div>
+            <h2>Reaction Kinetics and Rate Laws</h2>
+        </div>
+        <p>
+            Determining rate orders, rate constants (k), and half-lives from experimental initial rates data.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 6 (Method of Initial Rates):</strong>
+            <p>For the reaction A + B &rarr; Products, the following initial rate data was collected:<br>
+            Experiment 1: [A] = 0.10 M, [B] = 0.10 M, Rate = 2.0 &times; 10<sup>-4</sup> M/s<br>
+            Experiment 2: [A] = 0.20 M, [B] = 0.10 M, Rate = 8.0 &times; 10<sup>-4</sup> M/s<br>
+            Experiment 3: [A] = 0.10 M, [B] = 0.30 M, Rate = 6.0 &times; 10<sup>-4</sup> M/s<br>
+            Determine the rate law and calculate the rate constant k.</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. General Rate Law: Rate = k[A]<sup>m</sup>[B]<sup>n</sup><br>
+                2. Find order with respect to A (m): Comparing Exp 1 and 2, [A] doubles (0.10 to 0.20) while [B] is constant. Rate quadruples (2.0 &times; 10<sup>-4</sup> to 8.0 &times; 10<sup>-4</sup>). Therefore, 2<sup>m</sup> = 4, so <strong>m = 2 (second order in A)</strong>.<br>
+                3. Find order with respect to B (n): Comparing Exp 1 and 3, [B] triples (0.10 to 0.30) while [A] is constant. Rate triples (2.0 &times; 10<sup>-4</sup> to 6.0 &times; 10<sup>-4</sup>). Therefore, 3<sup>n</sup> = 3, so <strong>n = 1 (first order in B)</strong>.<br>
+                4. Rate Law: Rate = k[A]<sup>2</sup>[B].<br>
+                5. Calculate rate constant k using Exp 1: 2.0 &times; 10<sup>-4</sup> = k (0.10)<sup>2</sup> (0.10) &rarr; k = 2.0 &times; 10<sup>-4</sup> / 0.001 = <strong>0.20 M<sup>-2</sup>s<sup>-1</sup></strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 EQUILIBRIUM -->
+    <section class="prob-section" id="equilibrium">
+        <div class="prob-section-header">
+            <div class="prob-number">06</div>
+            <h2>Chemical Equilibrium (K<sub>c</sub> and K<sub>p</sub>)</h2>
+        </div>
+        <p>
+            ICE tables (Initial, Change, Equilibrium) and equilibrium constant expressions.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 7 (ICE Table Calculation):</strong>
+            <p>1.00 mol of hydrogen and 1.00 mol of iodine are placed in a 2.00 dm<sup>3</sup> sealed flask at 450 degrees Celsius and allowed to reach equilibrium: H<sub>2(g)</sub> + I<sub>2(g)</sub> &rightleftharpoons; 2HI<sub>(g)</sub>. At equilibrium, 1.56 mol of HI is present. Calculate the equilibrium constant K<sub>c</sub>.</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Initial concentrations: [H<sub>2</sub>] = 1.00 / 2.00 = 0.50 M; [I<sub>2</sub>] = 1.00 / 2.00 = 0.50 M; [HI] = 0.<br>
+                2. Equilibrium moles of HI = 1.56 mol &rarr; Equilibrium [HI] = 1.56 / 2.00 = 0.78 M.<br>
+                3. Change in [HI] = +0.78 M. From stoichiometry, change in [H<sub>2</sub>] and [I<sub>2</sub>] = -0.78 / 2 = -0.39 M.<br>
+                4. Equilibrium concentrations: [H<sub>2</sub>] = 0.50 - 0.39 = 0.11 M; [I<sub>2</sub>] = 0.50 - 0.39 = 0.11 M.<br>
+                5. Calculate K<sub>c</sub>: K<sub>c</sub> = [HI]<sup>2</sup> / ([H<sub>2</sub>][I<sub>2</sub>]) = (0.78)<sup>2</sup> / (0.11 &times; 0.11) = 0.6084 / 0.0121 = <strong>50.3</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 ACIDS & BASES -->
+    <section class="prob-section" id="acids">
+        <div class="prob-section-header">
+            <div class="prob-number">07</div>
+            <h2>Acids, Bases, pH, and Buffer Solutions</h2>
+        </div>
+        <p>
+            Calculations involving strong/weak acids, K<sub>a</sub>, pK<sub>a</sub>, pH, and Henderson-Hasselbalch buffers.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 8 (Weak Acid pH Calculation):</strong>
+            <p>Calculate the pH of a 0.150 mol/dm<sup>3</sup> solution of ethanoic acid (CH<sub>3</sub>COOH). Given that K<sub>a</sub> = 1.74 &times; 10<sup>-5</sup> mol/dm<sup>3</sup>.</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Equilibrium Expression: K<sub>a</sub> = [H<sup>+</sup>][CH<sub>3</sub>COO<sup>-</sup>] / [CH<sub>3</sub>COOH] &approx; [H<sup>+</sup>]<sup>2</sup> / C<br>
+                2. Rearrange for [H<sup>+</sup>]: [H<sup>+</sup>] = square root of (K<sub>a</sub> &times; C) = square root of (1.74 &times; 10<sup>-5</sup> &times; 0.150) = square root of (2.61 &times; 10<sup>-6</sup>) = 1.615 &times; 10<sup>-3</sup> M.<br>
+                3. Calculate pH: pH = -log<sub>10</sub>[H<sup>+</sup>] = -log<sub>10</sub>(1.615 &times; 10<sup>-3</sup>) = <strong>2.79</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 ELECTROCHEMISTRY -->
+    <section class="prob-section" id="electro">
+        <div class="prob-section-header">
+            <div class="prob-number">08</div>
+            <h2>Electrochemistry and Nernst Equation</h2>
+        </div>
+        <p>
+            Standard cell potentials (E degrees cell), Gibbs free energy, and Faraday's laws of electrolysis.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 9 (Faraday's Law Calculation):</strong>
+            <p>A constant current of 2.00 A is passed through an aqueous solution of copper(II) sulfate for 45.0 minutes. Calculate the mass of solid copper deposited at the cathode. (F = 96,485 C/mol, Molar mass Cu = 63.55 g/mol).</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Calculate total charge (Q): Q = I &times; t = 2.00 A &times; (45.0 &times; 60 s) = 5400 C.<br>
+                2. Calculate moles of electrons transferred: Moles e<sup>-</sup> = Q / F = 5400 / 96,485 = 0.05597 mol.<br>
+                3. Half-equation at cathode: Cu<sup>2+</sup> + 2e<sup>-</sup> &rarr; Cu (2 moles of e<sup>-</sup> per 1 mole of Cu).<br>
+                4. Moles of Cu deposited = 0.05597 / 2 = 0.02798 mol.<br>
+                5. Mass of Cu = 0.02798 mol &times; 63.55 g/mol = <strong>1.78 g</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 ORGANIC -->
+    <section class="prob-section" id="organic">
+        <div class="prob-section-header">
+            <div class="prob-number">09</div>
+            <h2>Organic Synthesis & Reaction Mechanisms</h2>
+        </div>
+        <p>
+            Multi-step synthetic pathways, functional group transformations, and retrosynthetic analysis.
+        </p>
+
+        <div class="exam-question">
+            <strong>Problem 10 (Synthetic Pathway):</strong>
+            <p>Outline a 3-step synthetic pathway to convert propene into 1-bromopropane.</p>
+            <div class="exam-answer">
+                <strong>Step-by-step Solution:</strong><br>
+                1. Step 1: Hydrohalogenation in the presence of peroxides (anti-Markovnikov addition). React propene with HBr in the presence of organic peroxides (ROOR) to yield 1-bromopropane.<br>
+                *Note: If standard Markovnikov addition is used without peroxides, 2-bromopropane is formed instead.*
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 INTERACTIVE TEST -->
+    <section class="prob-section" id="interactive">
+        <div class="prob-section-header">
+            <div class="prob-number">10</div>
+            <h2>Interactive Problem Solving Test</h2>
+        </div>
+        <p>Test your computational mastery with a sample calculation problem.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Stoichiometry Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    What volume of <strong>0.200 mol/dm<sup>3</sup> sodium hydroxide</strong> is required to completely 
+                    neutralize <strong>25.0 cm<sup>3</sup> of 0.100 mol/dm<sup>3</sup> sulfuric acid (H<sub>2</sub>SO<sub>4</sub>)</strong>?
+                </div>
+
+                <select class="test-select" id="probAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">25.0 cm<sup>3</sup></option>
+                    <option value="wrong1">12.5 cm<sup>3</sup></option>
+                    <option value="wrong2">50.0 cm<sup>3</sup></option>
+                </select>
+                <br>
+                <button class="test-button" id="checkProb">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="probResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--prob-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need help with complex chemistry problems?</h3>
+        <p style="color:var(--prob-muted); margin:0;">
+            Ask Insite AI to break down difficult word problems, derivation steps, or organic mechanisms.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const probAnswer = document.getElementById("probAnswer");
+const checkProb = document.getElementById("checkProb");
+const probResult = document.getElementById("probResult");
+
+checkProb.addEventListener("click", function () {
+    const val = probAnswer.value;
+    probResult.style.display = "block";
+
+    if (val === "correct") {
+        probResult.className = "test-result correct";
+        probResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Moles H<sub>2</sub>SO<sub>4</sub> = 0.025 dm<sup>3</sup> &times; 0.100 M = 0.0025 mol. Since H<sub>2</sub>SO<sub>4</sub> reacts 1:2 with NaOH, moles NaOH required = 0.0050 mol. Volume = 0.0050 / 0.200 = 0.025 dm<sup>3</sup> = <strong>25.0 cm<sup>3</sup></strong>.</div>
+        `;
+    } else if (val === "") {
+        probResult.className = "test-result wrong";
+        probResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided.</div>
+        `;
+    } else {
+        probResult.className = "test-result wrong";
+        probResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Remember that sulfuric acid is diprotic (H<sub>2</sub>SO<sub>4</sub> + 2NaOH &rarr; Na<sub>2</sub>SO<sub>4</sub> + 2H<sub>2</sub>O), doubling the moles of NaOH required. The correct answer is <strong>25.0 cm<sup>3</sup></strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

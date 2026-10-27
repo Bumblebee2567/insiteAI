@@ -1,0 +1,3082 @@
+{% extends "base.html" %}
+
+{% block title %}
+Environmental Chemistry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENVIRONMENTAL CHEMISTRY
+   ORIGINAL INSITE BLUE VISUAL LANGUAGE
+   ========================================================= */
+
+:root {
+    --ec-bg: #070b14;
+    --ec-panel: #0d1422;
+    --ec-panel-2: #111a2b;
+    --ec-card: #0a101c;
+    --ec-card-hover: #0e1726;
+
+    --ec-border: rgba(148, 163, 184, .16);
+    --ec-border-blue: rgba(56, 189, 248, .28);
+
+    --ec-text: #f8fafc;
+    --ec-muted: #94a3b8;
+    --ec-soft: #cbd5e1;
+
+    --ec-blue: #38bdf8;
+    --ec-blue-light: #7dd3fc;
+    --ec-blue-dark: #0284c7;
+    --ec-blue-glow: rgba(56, 189, 248, .18);
+
+    --ec-yellow: #fbbf24;
+    --ec-red: #fb7185;
+
+    --ec-radius: 18px;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.environment-page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 35px auto 70px;
+    color: var(--ec-text);
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--ec-border);
+    border-radius: 12px;
+
+    background: rgba(17, 26, 43, .85);
+    color: var(--ec-soft);
+
+    text-decoration: none;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease,
+        color .2s ease;
+}
+
+.back-chemistry:hover {
+    transform: translateX(-4px);
+
+    border-color: rgba(56, 189, 248, .55);
+
+    background: #142033;
+
+    color: white;
+}
+
+.back-chemistry i {
+    color: var(--ec-blue);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.environment-header {
+    text-align: center;
+    padding: 35px 15px 30px;
+}
+
+.environment-header h1 {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 850;
+
+    letter-spacing: -1.5px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #bae6fd 55%,
+        #38bdf8 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.environment-header h1 i {
+    color: var(--ec-blue);
+    margin-right: 8px;
+}
+
+.environment-header p {
+    max-width: 850px;
+
+    margin: 15px auto 0;
+
+    color: var(--ec-muted);
+
+    line-height: 1.8;
+    font-size: .98rem;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.environment-nav-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+
+    margin-bottom: 25px;
+    padding: 8px;
+
+    border: 1px solid var(--ec-border);
+    border-radius: 16px;
+
+    background: rgba(7, 11, 20, .86);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .15);
+}
+
+.environment-nav {
+    display: flex;
+    gap: 8px;
+
+    overflow-x: auto;
+    padding: 2px;
+
+    scrollbar-width: none;
+}
+
+.environment-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.environment-nav a {
+    flex: 0 0 auto;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+    border: 1px solid transparent;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: .84rem;
+    font-weight: 600;
+
+    transition:
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.environment-nav a:hover {
+    color: white;
+
+    background: #111a2b;
+
+    border-color: var(--ec-border);
+}
+
+.environment-nav a:focus-visible {
+    outline: 2px solid var(--ec-blue);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   MAIN SECTIONS
+   ========================================================= */
+
+.environment-section {
+    position: relative;
+
+    padding: 30px;
+    margin-bottom: 22px;
+
+    border: 1px solid var(--ec-border);
+    border-radius: var(--ec-radius);
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(56, 189, 248, .055),
+            transparent 35%
+        ),
+        var(--ec-panel);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, .18);
+
+    scroll-margin-top: 90px;
+}
+
+.environment-section::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 28px;
+    right: 28px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(56, 189, 248, .22),
+            transparent
+        );
+
+    pointer-events: none;
+}
+
+.environment-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.environment-section-number {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: rgba(56, 189, 248, .12);
+
+    border: 1px solid rgba(56, 189, 248, .25);
+
+    color: var(--ec-blue);
+
+    font-weight: 800;
+}
+
+.environment-section h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.environment-section h3 {
+    margin-top: 28px;
+
+    color: var(--ec-blue-light);
+
+    font-size: 1.15rem;
+}
+
+.environment-section h4 {
+    color: var(--ec-blue-light);
+}
+
+.environment-section p,
+.environment-section li {
+    color: var(--ec-soft);
+
+    line-height: 1.8;
+}
+
+.environment-section li {
+    margin-bottom: 7px;
+}
+
+.environment-section strong {
+    color: #e0f2fe;
+}
+
+/* =========================================================
+   ALL CARD SYSTEMS
+   ========================================================= */
+
+.environment-grid,
+.concept-grid {
+    display: grid;
+
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.environment-grid.two,
+.concept-grid.two {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+}
+
+.environment-grid.three,
+.concept-grid.three {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+}
+
+.concept-grid.four {
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+}
+
+.environment-card,
+.concept-card,
+.source-card,
+.info-box,
+.topic-box,
+.exam-box {
+    border: 1px solid var(--ec-border);
+
+    border-radius: 15px;
+
+    background: var(--ec-card);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+.environment-card,
+.concept-card {
+    padding: 21px;
+}
+
+.environment-card:hover,
+.concept-card:hover,
+.source-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(56, 189, 248, .35);
+
+    background: var(--ec-card-hover);
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, .15);
+}
+
+.environment-card i,
+.concept-card > i {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--ec-blue);
+
+    font-size: 25px;
+}
+
+.environment-card h3,
+.concept-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+
+    font-size: 1.1rem;
+}
+
+.environment-card p,
+.concept-card p {
+    margin: 0;
+
+    color: var(--ec-muted);
+
+    font-size: .91rem;
+}
+
+/* =========================================================
+   SOURCE CARDS
+   ========================================================= */
+
+.source-card {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    padding: 19px;
+}
+
+.source-icon {
+    flex: 0 0 42px;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background: rgba(56, 189, 248, .1);
+
+    border: 1px solid rgba(56, 189, 248, .2);
+}
+
+.source-icon i {
+    color: var(--ec-blue);
+}
+
+.source-card h4 {
+    margin: 0 0 6px;
+
+    color: white;
+}
+
+.source-card p {
+    margin: 0;
+
+    color: var(--ec-muted);
+
+    font-size: .9rem;
+}
+
+/* =========================================================
+   HIGHLIGHTS
+   ========================================================= */
+
+.highlight {
+    margin: 20px 0;
+
+    padding: 17px 19px;
+
+    border: 1px solid rgba(56, 189, 248, .18);
+
+    border-left: 4px solid var(--ec-blue);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(56, 189, 248, .08),
+            rgba(56, 189, 248, .025)
+        );
+
+    color: var(--ec-soft);
+
+    line-height: 1.7;
+}
+
+.highlight strong {
+    color: var(--ec-blue-light);
+}
+
+/* =========================================================
+   INFO / TOPIC / EXAM BOX
+   ========================================================= */
+
+.info-box,
+.topic-box,
+.exam-box {
+    padding: 21px;
+
+    margin-top: 18px;
+}
+
+.info-box h4,
+.topic-box h4,
+.exam-box h3 {
+    margin-top: 0;
+
+    color: var(--ec-blue-light);
+
+    font-weight: 800;
+}
+
+.info-box p,
+.topic-box p,
+.exam-box li {
+    color: var(--ec-muted);
+}
+
+/* =========================================================
+   FORMULAS
+   ========================================================= */
+
+.formula,
+.equation-box {
+    margin: 18px 0;
+
+    padding: 18px;
+
+    border: 1px solid var(--ec-border);
+
+    border-radius: 13px;
+
+    background: #080e19;
+
+    color: white;
+
+    text-align: center;
+
+    overflow-x: auto;
+}
+
+.formula {
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+.equation {
+    color: #e0f2fe;
+
+    font-size: 1.05rem;
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+.formula-note,
+.equation-box small {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--ec-muted);
+
+    font-size: .8rem;
+
+    font-weight: 400;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+
+    margin-top: 18px;
+
+    border-radius: 13px;
+
+    border: 1px solid var(--ec-border);
+}
+
+.environment-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.environment-table th,
+.environment-table td {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--ec-border);
+
+    text-align: left;
+
+    color: var(--ec-soft);
+}
+
+.environment-table th {
+    background: #0a101c;
+
+    color: var(--ec-blue-light);
+
+    font-weight: 700;
+}
+
+.environment-table tr:last-child td {
+    border-bottom: none;
+}
+
+.environment-table tr:hover td {
+    background: rgba(56, 189, 248, .035);
+}
+
+/* =========================================================
+   CAUSE / EFFECT
+   ========================================================= */
+
+.cause-effect {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-top: 18px;
+}
+
+.cause-effect-card {
+    padding: 18px;
+
+    background: #080e18;
+
+    border: 1px solid var(--ec-border);
+
+    border-radius: 13px;
+}
+
+.cause-effect-card .label {
+    color: var(--ec-blue-light);
+
+    font-size: .76rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+}
+
+.cause-effect-card p {
+    margin: 7px 0 0;
+}
+
+/* =========================================================
+   PROCESS
+   ========================================================= */
+
+.process {
+    margin-top: 20px;
+}
+
+.process-step {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 15px 0;
+}
+
+.process-number {
+    flex: 0 0 32px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #0284c7
+        );
+
+    color: white;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 5px 16px rgba(14, 165, 233, .18);
+}
+
+.process-text {
+    color: var(--ec-soft);
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   ENVIRONMENT LAB
+   ========================================================= */
+
+.environment-lab {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--ec-border);
+
+    border-radius: 16px;
+
+    background: #080e19;
+}
+
+.lab-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+}
+
+.lab-header h3 {
+    margin: 0;
+
+    color: white;
+}
+
+.live-badge {
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    border: 1px solid rgba(56, 189, 248, .2);
+
+    background: rgba(56, 189, 248, .08);
+
+    color: var(--ec-blue-light);
+
+    font-size: .72rem;
+
+    font-weight: 700;
+}
+
+.canvas-box {
+    position: relative;
+
+    width: 100%;
+
+    height: 340px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--ec-border);
+
+    border-radius: 13px;
+
+    background: #050a12;
+}
+
+#environmentCanvas {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+}
+
+.canvas-caption {
+    position: absolute;
+
+    bottom: 12px;
+    right: 14px;
+
+    color: #64748b;
+
+    font-size: .72rem;
+}
+
+.environment-metrics {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-top: 14px;
+}
+
+.environment-metric {
+    padding: 14px;
+
+    border: 1px solid var(--ec-border);
+
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.environment-metric span {
+    display: block;
+
+    color: var(--ec-muted);
+
+    font-size: .75rem;
+}
+
+.environment-metric strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--ec-blue-light);
+
+    font-size: 1.2rem;
+}
+
+.environment-controls {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+.environment-control {
+    padding: 14px;
+
+    border: 1px solid var(--ec-border);
+
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.environment-control label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--ec-soft);
+
+    font-size: .8rem;
+
+    font-weight: 600;
+}
+
+.environment-control input[type="range"] {
+    width: 100%;
+
+    accent-color: var(--ec-blue);
+}
+
+.environment-control output {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--ec-blue-light);
+
+    font-size: .78rem;
+}
+
+/* =========================================================
+   ASK INSITE AI
+   IMPORTANT:
+   ICON IS INVISIBLE UNTIL THE ENTIRE CARD IS HOVERED.
+   ========================================================= */
+
+.ask-ai {
+    position: relative;
+
+    margin-top: 30px;
+
+    padding: 32px;
+
+    border: 1px solid rgba(56, 189, 248, .18);
+
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(56, 189, 248, .12),
+            transparent 55%
+        ),
+        #0b1320;
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+.ask-ai > i {
+    display: block;
+
+    color: var(--ec-blue);
+
+    font-size: 34px;
+
+    opacity: 0;
+
+    transform: translateY(7px) scale(.92);
+
+    pointer-events: none;
+
+    transition:
+        opacity .22s ease,
+        transform .22s ease;
+}
+
+/* ICON ONLY APPEARS WHEN HOVERING THE ASK-AI CARD */
+.ask-ai:hover > i {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.ask-ai h3 {
+    color: white;
+
+    font-size: 1.5rem;
+
+    margin: 0 0 10px;
+}
+
+.ask-ai p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: var(--ec-muted);
+
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 19px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #0284c7
+        );
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.ask-ai a:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(14, 165, 233, .25);
+}
+
+/* =========================================================
+   REMOVE GREEN AS A PRIMARY UI COLOR
+   ========================================================= */
+
+.environment-page .text-green,
+.environment-page .green,
+.environment-page .success,
+.environment-page .reacted {
+    color: var(--ec-blue) !important;
+}
+
+.environment-page [style*="#34d399"],
+.environment-page [style*="#6ee7b7"] {
+    color: var(--ec-blue) !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .concept-grid.four {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .environment-metrics {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .environment-controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .environment-page {
+        width: calc(100% - 20px);
+
+        margin: 15px auto 45px;
+    }
+
+    .environment-header {
+        padding: 25px 5px;
+    }
+
+    .environment-header h1 {
+        font-size: 2rem;
+
+        letter-spacing: -1px;
+    }
+
+    .environment-header p {
+        font-size: .9rem;
+    }
+
+    .back-chemistry {
+        width: 100%;
+
+        justify-content: center;
+
+        box-sizing: border-box;
+    }
+
+    .environment-section {
+        padding: 19px 16px;
+
+        border-radius: 15px;
+    }
+
+    .environment-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .environment-grid.two,
+    .environment-grid.three,
+    .concept-grid.two,
+    .concept-grid.three,
+    .concept-grid.four {
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+    }
+
+    .environment-nav-wrapper {
+        top: 0;
+
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .environment-nav a {
+        padding: 8px 12px;
+
+        font-size: .78rem;
+    }
+
+    .formula,
+    .equation-box {
+        padding: 15px;
+
+        font-size: .95rem;
+    }
+
+    .cause-effect {
+        grid-template-columns: 1fr;
+    }
+
+    .ask-ai {
+        padding: 24px 17px;
+    }
+
+    .canvas-box {
+        height: 260px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .environment-page {
+        width: calc(100% - 14px);
+    }
+
+    .environment-section {
+        padding: 16px 13px;
+    }
+
+    .environment-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .environment-card,
+    .concept-card {
+        padding: 17px;
+    }
+
+    .environment-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .environment-metric {
+        padding: 11px;
+    }
+
+    .environment-metric strong {
+        font-size: 1rem;
+    }
+
+    .source-card {
+        padding: 15px;
+    }
+}
+</style>
+
+
+<div class="environment-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}"
+       class="back-chemistry">
+
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="environment-header">
+
+        <h1>
+            <i class="fa-solid fa-earth-africa"></i>
+            Environmental Chemistry
+        </h1>
+
+        <p>
+            Explore the chemistry of air, water and the atmosphere,
+            including major pollutants, greenhouse gases, ozone chemistry,
+            acid rain, eutrophication, water treatment and the chemical
+            processes that influence environmental change.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <div class="environment-nav-wrapper">
+
+        <nav class="environment-nav">
+
+            <a href="#overview">Overview</a>
+            <a href="#air">Air Pollution</a>
+            <a href="#pollutants">Pollutants</a>
+            <a href="#acidrain">Acid Rain</a>
+            <a href="#water">Water Pollution</a>
+            <a href="#treatment">Water Treatment</a>
+            <a href="#greenhouse">Greenhouse Gases</a>
+            <a href="#ozone">Ozone</a>
+            <a href="#climate">Climate Chemistry</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#exam">Exam Checklist</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         01 OVERVIEW
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="overview">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                01
+            </div>
+
+            <div>
+                <h2>
+                    What Is Environmental Chemistry?
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            <strong>Environmental chemistry</strong> studies the chemical
+            substances, reactions and processes occurring in the atmosphere,
+            hydrosphere, soil and living systems.
+        </p>
+
+        <p>
+            It helps us understand how natural processes and human activities
+            alter the chemical composition of the environment and how those
+            changes affect ecosystems, human health and climate.
+        </p>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-wind"></i>
+
+                <h3>Atmosphere</h3>
+
+                <p>
+                    Chemistry of gases, aerosols, pollutants,
+                    ozone and greenhouse gases.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <h3>Hydrosphere</h3>
+
+                <p>
+                    Chemistry of rivers, lakes, groundwater,
+                    oceans and drinking water.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <h3>Ecosystems</h3>
+
+                <p>
+                    Chemical substances circulate between air,
+                    water, soil and living organisms.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Core idea:</strong>
+            Environmental problems are often chemical problems involving
+            concentration, reaction rates, equilibrium, oxidation-reduction,
+            solubility and energy transfer.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         02 AIR POLLUTION
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="air">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                02
+            </div>
+
+            <div>
+                <h2>
+                    Air Pollution
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            <strong>Air pollution</strong> occurs when harmful gases,
+            particles or other substances are present in the atmosphere
+            at concentrations capable of causing environmental or health
+            effects.
+        </p>
+
+
+        <div class="concept-grid two">
+
+            <div class="source-card">
+
+                <div class="source-icon">
+                    <i class="fa-solid fa-car"></i>
+                </div>
+
+                <div>
+
+                    <h4>Vehicle emissions</h4>
+
+                    <p>
+                        Combustion engines can release carbon monoxide,
+                        nitrogen oxides, hydrocarbons and particulate matter.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="source-card">
+
+                <div class="source-icon">
+                    <i class="fa-solid fa-industry"></i>
+                </div>
+
+                <div>
+
+                    <h4>Industrial emissions</h4>
+
+                    <p>
+                        Industrial processes may release sulfur compounds,
+                        nitrogen oxides, particles and other pollutants.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="source-card">
+
+                <div class="source-icon">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <div>
+
+                    <h4>Combustion</h4>
+
+                    <p>
+                        Burning fuels and biomass produces gases and
+                        particles whose composition depends on combustion
+                        conditions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="source-card">
+
+                <div class="source-icon">
+                    <i class="fa-solid fa-smog"></i>
+                </div>
+
+                <div>
+
+                    <h4>Particulate matter</h4>
+
+                    <p>
+                        Tiny solid and liquid particles can remain suspended
+                        in air and penetrate deeply into the respiratory system.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         03 MAJOR POLLUTANTS
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="pollutants">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                03
+            </div>
+
+            <div>
+                <h2>
+                    Major Air Pollutants
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table class="environment-table">
+
+                <tr>
+                    <th>Pollutant</th>
+                    <th>Important source</th>
+                    <th>Environmental significance</th>
+                </tr>
+
+                <tr>
+                    <td><strong>CO</strong></td>
+                    <td>Incomplete combustion</td>
+                    <td>Reduces oxygen transport in the body.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>CO₂</strong></td>
+                    <td>Fossil-fuel combustion</td>
+                    <td>Important greenhouse gas.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>SO₂</strong></td>
+                    <td>Burning sulfur-containing fuels</td>
+                    <td>Contributes to acid deposition and respiratory pollution.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>NOₓ</strong></td>
+                    <td>High-temperature combustion</td>
+                    <td>Contributes to acid deposition and photochemical smog.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Particulates</strong></td>
+                    <td>Combustion, dust and industry</td>
+                    <td>Can damage respiratory and cardiovascular health.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>VOCs</strong></td>
+                    <td>Fuels, solvents and industry</td>
+                    <td>Can participate in photochemical reactions.</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h4>Primary vs secondary pollutants</h4>
+
+            <p>
+                A <strong>primary pollutant</strong> is emitted directly,
+                while a <strong>secondary pollutant</strong> forms in the
+                atmosphere through chemical reactions involving other
+                substances.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         04 ACID RAIN
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="acidrain">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                04
+            </div>
+
+            <div>
+                <h2>
+                    Acid Rain & Acid Deposition
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            Sulfur dioxide and nitrogen oxides released into the atmosphere
+            can undergo oxidation and react with water to form acidic
+            substances.
+        </p>
+
+
+        <div class="equation-box">
+
+            <div class="equation">
+                SO₂ → SO₃ → H₂SO₄
+            </div>
+
+            <small>
+                Simplified pathway showing the formation of sulfuric acid.
+            </small>
+
+        </div>
+
+
+        <div class="equation-box">
+
+            <div class="equation">
+                NO₂ + H₂O → acids containing nitric acid
+            </div>
+
+            <small>
+                Atmospheric nitrogen oxides contribute to nitric acid formation.
+            </small>
+
+        </div>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-tree"></i>
+
+                <h3>Vegetation</h3>
+
+                <p>
+                    Acid deposition can alter soil chemistry and affect
+                    nutrient availability.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-fish"></i>
+
+                <h3>Aquatic systems</h3>
+
+                <p>
+                    Acidification can change the chemistry of lakes and
+                    streams and stress aquatic organisms.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-landmark"></i>
+
+                <h3>Buildings</h3>
+
+                <p>
+                    Acids can react with carbonate-containing stone and
+                    accelerate chemical weathering.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         05 WATER POLLUTION
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="water">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                05
+            </div>
+
+            <div>
+                <h2>
+                    Water Pollution
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            Water pollution occurs when physical, chemical or biological
+            contaminants enter water bodies and change their natural
+            conditions.
+        </p>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-flask"></i>
+
+                <h3>Chemical pollutants</h3>
+
+                <p>
+                    Heavy metals, acids, nutrients, pesticides,
+                    detergents and industrial chemicals.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-bacteria"></i>
+
+                <h3>Biological pollutants</h3>
+
+                <p>
+                    Pathogenic microorganisms and excessive organic matter
+                    can make water unsafe.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-trash"></i>
+
+                <h3>Physical pollutants</h3>
+
+                <p>
+                    Suspended solids, plastics, sediments and other
+                    materials can alter water quality.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <h3>Eutrophication</h3>
+
+        <p>
+            Excess nitrate and phosphate nutrients can stimulate excessive
+            algae and plant growth. When this biomass decomposes,
+            microorganisms consume dissolved oxygen, potentially producing
+            low-oxygen conditions.
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>Key chain:</strong><br>
+
+            Excess nutrients → algal growth → decomposition →
+            increased oxygen demand → reduced dissolved oxygen →
+            stress or death of aquatic organisms.
+
+        </div>
+
+
+        <h3>Biochemical Oxygen Demand</h3>
+
+        <p>
+            <strong>BOD</strong> describes the amount of dissolved oxygen
+            consumed by microorganisms while decomposing biodegradable
+            organic matter in water.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         06 WATER TREATMENT
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="treatment">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                06
+            </div>
+
+            <div>
+                <h2>
+                    Water Treatment Chemistry
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="concept-grid four">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-filter"></i>
+
+                <h3>Screening</h3>
+
+                <p>
+                    Large debris and solids are physically removed.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-vial"></i>
+
+                <h3>Coagulation</h3>
+
+                <p>
+                    Chemicals help destabilise small suspended particles
+                    so they can form larger aggregates.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-water"></i>
+
+                <h3>Filtration</h3>
+
+                <p>
+                    Water passes through a medium that removes remaining
+                    suspended material.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-shield-virus"></i>
+
+                <h3>Disinfection</h3>
+
+                <p>
+                    Chemical or physical methods reduce harmful
+                    microorganisms.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h4>Chlorination</h4>
+
+            <p>
+                Chlorine-based disinfectants can produce chemically active
+                species in water that damage microorganisms and help make
+                treated water safer.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         07 GREENHOUSE GASES
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="greenhouse">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                07
+            </div>
+
+            <div>
+                <h2>
+                    Greenhouse Gases
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            Greenhouse gases absorb and re-emit infrared radiation,
+            contributing to the warming effect of Earth's atmosphere.
+        </p>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-cloud"></i>
+
+                <h3>Carbon dioxide</h3>
+
+                <p>
+                    Produced naturally and by processes including
+                    fossil-fuel combustion and land-use change.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <h3>Methane</h3>
+
+                <p>
+                    A potent greenhouse gas associated with wetlands,
+                    agriculture, waste and fossil-fuel systems.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-temperature-arrow-up"></i>
+
+                <h3>Nitrous oxide</h3>
+
+                <p>
+                    Released by natural and agricultural processes and
+                    contributes to radiative forcing.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="equation-box">
+
+            <div class="equation">
+                CO₂ + energy from combustion → CO₂ released to atmosphere
+            </div>
+
+            <small>
+                Carbon dioxide is not itself "pollution" in every context;
+                its environmental significance depends strongly on concentration
+                and atmospheric effects.
+            </small>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>Important distinction:</strong>
+            The greenhouse effect is a natural atmospheric process.
+            Human activity can increase concentrations of greenhouse gases,
+            strengthening the warming influence of the atmosphere.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         08 OZONE
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="ozone">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                08
+            </div>
+
+            <div>
+                <h2>
+                    Ozone Chemistry
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="concept-grid two">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-sun"></i>
+
+                <h3>Stratospheric ozone</h3>
+
+                <p>
+                    Ozone in the stratosphere absorbs much of the Sun's
+                    harmful ultraviolet radiation.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-city"></i>
+
+                <h3>Ground-level ozone</h3>
+
+                <p>
+                    Ozone near Earth's surface is a secondary pollutant
+                    involved in photochemical smog.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <h3>Formation and breakdown</h3>
+
+        <div class="equation-box">
+
+            <div class="equation">
+                O₂ + UV → 2O
+            </div>
+
+            <div class="equation" style="margin-top:10px;">
+                O + O₂ → O₃
+            </div>
+
+            <small>
+                Simplified stratospheric ozone formation pathway.
+            </small>
+
+        </div>
+
+
+        <h3>Ozone depletion</h3>
+
+        <p>
+            Certain halogen-containing compounds can release reactive chlorine
+            or bromine species in the stratosphere. These species participate
+            in catalytic cycles that destroy ozone.
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>Remember:</strong>
+            Stratospheric ozone protects against ultraviolet radiation,
+            while ground-level ozone is a harmful air pollutant.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         09 CLIMATE CHEMISTRY
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="climate">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                09
+            </div>
+
+            <div>
+                <h2>
+                    Atmospheric & Climate Chemistry
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            Environmental chemistry connects atmospheric composition with
+            chemical reactions, radiation, equilibrium and transport.
+        </p>
+
+
+        <div class="concept-grid two">
+
+            <div class="info-box">
+
+                <h4>Photochemical smog</h4>
+
+                <p>
+                    Sunlight can drive reactions between nitrogen oxides,
+                    volatile organic compounds and atmospheric oxygen,
+                    producing secondary pollutants including ozone.
+                </p>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <h4>Carbon cycle</h4>
+
+                <p>
+                    Carbon continuously moves between the atmosphere,
+                    oceans, soils, rocks and living organisms through
+                    processes such as photosynthesis, respiration,
+                    decomposition and combustion.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="formula">
+
+            Atmospheric chemistry =
+            <span style="color:#6ee7b7;">
+                emissions + transport + reactions + removal
+            </span>
+
+            <span class="formula-note">
+                A useful framework for analysing environmental chemical systems.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10 INTERACTIVE ENVIRONMENT LAB
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="lab">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                10
+            </div>
+
+            <div>
+                <h2>
+                    Interactive Pollution Lab
+                </h2>
+            </div>
+
+        </div>
+
+        <p>
+            Adjust the pollutant concentration and atmospheric sunlight
+            to observe a simplified model of atmospheric pollutant
+            transformation.
+        </p>
+
+
+        <div class="environment-lab">
+
+            <div class="lab-header">
+
+                <h3>
+                    Atmospheric Reaction Model
+                </h3>
+
+                <span class="live-badge">
+                    Simulation active
+                </span>
+
+            </div>
+
+
+            <div class="canvas-box">
+
+                <canvas id="environmentCanvas"></canvas>
+
+                <div class="canvas-caption">
+                    Simplified atmospheric particle model
+                </div>
+
+            </div>
+
+
+            <div class="environment-metrics">
+
+                <div class="environment-metric">
+                    <span>Pollutant level</span>
+                    <strong id="pollutantMetric">50</strong>
+                </div>
+
+                <div class="environment-metric">
+                    <span>Sunlight</span>
+                    <strong id="sunlightMetric">50</strong>
+                </div>
+
+                <div class="environment-metric">
+                    <span>Reaction rate</span>
+                    <strong id="reactionMetric">25</strong>
+                </div>
+
+                <div class="environment-metric">
+                    <span>Remaining</span>
+                    <strong id="remainingMetric">50</strong>
+                </div>
+
+            </div>
+
+
+            <div class="environment-controls">
+
+                <div class="environment-control">
+
+                    <label>
+                        Pollutant concentration
+                    </label>
+
+                    <input
+                        id="pollutantControl"
+                        type="range"
+                        min="10"
+                        max="100"
+                        value="50"
+                    >
+
+                    <output id="pollutantValue">
+                        50
+                    </output>
+
+                </div>
+
+
+                <div class="environment-control">
+
+                    <label>
+                        Sunlight intensity
+                    </label>
+
+                    <input
+                        id="sunlightControl"
+                        type="range"
+                        min="10"
+                        max="100"
+                        value="50"
+                    >
+
+                    <output id="sunlightValue">
+                        50
+                    </output>
+
+                </div>
+
+
+                <div class="environment-control">
+
+                    <label>
+                        Wind / mixing
+                    </label>
+
+                    <input
+                        id="windControl"
+                        type="range"
+                        min="0.3"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                    >
+
+                    <output id="windValue">
+                        1.0×
+                    </output>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         11 ENVIRONMENTAL SOLUTIONS
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="solutions">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                11
+            </div>
+
+            <div>
+                <h2>
+                    Chemical Solutions to Environmental Problems
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="concept-grid three">
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-filter-circle-dollar"></i>
+
+                <h3>Pollution control</h3>
+
+                <p>
+                    Catalytic converters, filters, scrubbers and other
+                    technologies can reduce pollutant emissions.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-recycle"></i>
+
+                <h3>Waste management</h3>
+
+                <p>
+                    Recycling, controlled treatment and improved material
+                    recovery reduce environmental contamination.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-solar-panel"></i>
+
+                <h3>Cleaner energy</h3>
+
+                <p>
+                    Reducing combustion of carbon-intensive fuels can lower
+                    emissions of several atmospheric pollutants and greenhouse gases.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-faucet-drip"></i>
+
+                <h3>Water protection</h3>
+
+                <p>
+                    Wastewater treatment and nutrient management reduce
+                    chemical loading in aquatic systems.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                <h3>Green chemistry</h3>
+
+                <p>
+                    Chemical processes can be redesigned to reduce hazardous
+                    substances, waste and energy consumption.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <h3>Monitoring</h3>
+
+                <p>
+                    Chemical analysis allows pollutants and environmental
+                    conditions to be measured and tracked.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         12 EXAM CHECKLIST
+         ===================================================== -->
+
+    <section class="environment-section"
+             id="exam">
+
+        <div class="environment-section-header">
+
+            <div class="environment-section-number">
+                12
+            </div>
+
+            <div>
+                <h2>
+                    Environmental Chemistry Exam Checklist
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="exam-box">
+
+            <h3>
+                <i class="fa-solid fa-graduation-cap"></i>
+                Know these before the exam
+            </h3>
+
+            <ul>
+
+                <li>
+                    Distinguish primary and secondary air pollutants.
+                </li>
+
+                <li>
+                    Know major sources and effects of CO, CO₂, SO₂,
+                    NOₓ, particulates and VOCs.
+                </li>
+
+                <li>
+                    Explain how sulfur and nitrogen oxides contribute
+                    to acid deposition.
+                </li>
+
+                <li>
+                    Explain eutrophication and the connection between
+                    nutrient loading and dissolved oxygen.
+                </li>
+
+                <li>
+                    Understand BOD as an indicator of oxygen consumption
+                    associated with biodegradable organic matter.
+                </li>
+
+                <li>
+                    Know the major stages of water treatment and their purposes.
+                </li>
+
+                <li>
+                    Identify important greenhouse gases and explain the
+                    greenhouse effect.
+                </li>
+
+                <li>
+                    Distinguish stratospheric ozone from ground-level ozone.
+                </li>
+
+                <li>
+                    Understand the simplified chemistry of ozone formation
+                    and catalytic ozone destruction.
+                </li>
+
+                <li>
+                    Connect environmental chemistry to reaction rates,
+                    equilibrium, oxidation-reduction and atmospheric reactions.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="highlight">
+
+            <strong>High-value exam idea:</strong>
+            Environmental chemistry is not just memorising pollutants.
+            Be able to connect a pollutant to its source, chemical reaction,
+            environmental effect and possible control method.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ASK INSITE AI
+         ===================================================== -->
+
+    <div class="ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>
+            Need help with Environmental Chemistry?
+        </h3>
+
+        <p>
+            Ask Insite AI to explain pollution chemistry, solve environmental
+            chemistry calculations, analyse atmospheric reactions, or prepare
+            you for an examination.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   INSITE AI — ENVIRONMENTAL CHEMISTRY LAB
+   ========================================================= */
+
+const environmentCanvas =
+    document.getElementById("environmentCanvas");
+
+const environmentCtx =
+    environmentCanvas.getContext("2d");
+
+let pollutantLevel = 50;
+let sunlightLevel = 50;
+let windSpeed = 1;
+
+let environmentParticles = [];
+let environmentTime = 0;
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+function resizeEnvironmentCanvas() {
+
+    const rect =
+        environmentCanvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    environmentCanvas.width =
+        rect.width * ratio;
+
+    environmentCanvas.height =
+        rect.height * ratio;
+
+    environmentCtx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+}
+
+
+/* =========================================================
+   PARTICLE CREATION
+   ========================================================= */
+
+function createEnvironmentParticle() {
+
+    const rect =
+        environmentCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 340;
+
+    const pollutant =
+        Math.random() < .55;
+
+    return {
+
+        x: Math.random() * width,
+
+        y: Math.random() * height,
+
+        vx:
+            (Math.random() - .5) *
+            windSpeed,
+
+        vy:
+            (Math.random() - .5) *
+            windSpeed,
+
+        radius:
+            Math.max(
+                3,
+                Math.min(
+                    8,
+                    width / 110
+                )
+            ),
+
+        pollutant,
+
+        reacted: false
+
+    };
+}
+
+
+/* =========================================================
+   CREATE PARTICLES
+   ========================================================= */
+
+function createEnvironmentParticles() {
+
+    environmentParticles = [];
+
+    const count =
+        Math.max(
+            15,
+            Math.round(
+                pollutantLevel / 3
+            )
+        );
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        environmentParticles.push(
+            createEnvironmentParticle()
+        );
+
+    }
+}
+
+
+/* =========================================================
+   UPDATE PARTICLES
+   ========================================================= */
+
+function updateEnvironmentParticles() {
+
+    const rect =
+        environmentCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 340;
+
+    const reactionProbability =
+        sunlightLevel *
+        .00008 *
+        windSpeed;
+
+    for (
+        const particle
+        of environmentParticles
+    ) {
+
+        particle.x +=
+            particle.vx *
+            windSpeed;
+
+        particle.y +=
+            particle.vy *
+            windSpeed;
+
+        if (
+            particle.x < -10
+        ) {
+
+            particle.x =
+                width + 10;
+
+        }
+
+        if (
+            particle.x > width + 10
+        ) {
+
+            particle.x = -10;
+
+        }
+
+        if (
+            particle.y < -10
+        ) {
+
+            particle.y =
+                height + 10;
+
+        }
+
+        if (
+            particle.y > height + 10
+        ) {
+
+            particle.y = -10;
+
+        }
+
+
+        if (
+            particle.pollutant &&
+            !particle.reacted &&
+            Math.random() <
+            reactionProbability
+        ) {
+
+            particle.reacted = true;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW PARTICLE
+   ========================================================= */
+
+function drawEnvironmentParticle(
+    particle
+) {
+
+    const color =
+        particle.reacted
+            ? "#34d399"
+            : particle.pollutant
+                ? "#fb7185"
+                : "#38bdf8";
+
+    environmentCtx.beginPath();
+
+    environmentCtx.arc(
+        particle.x,
+        particle.y,
+        particle.radius,
+        0,
+        Math.PI * 2
+    );
+
+    environmentCtx.fillStyle =
+        color;
+
+    environmentCtx.shadowBlur = 12;
+
+    environmentCtx.shadowColor =
+        color;
+
+    environmentCtx.fill();
+
+    environmentCtx.shadowBlur = 0;
+
+}
+
+
+/* =========================================================
+   DRAW ATMOSPHERE
+   ========================================================= */
+
+function drawEnvironmentCanvas() {
+
+    const rect =
+        environmentCanvas.getBoundingClientRect();
+
+    const width =
+        rect.width || 600;
+
+    const height =
+        rect.height || 340;
+
+    environmentCtx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* grid */
+
+    environmentCtx.strokeStyle =
+        "rgba(148,163,184,.045)";
+
+    environmentCtx.lineWidth = 1;
+
+    for (
+        let x = 0;
+        x < width;
+        x += 40
+    ) {
+
+        environmentCtx.beginPath();
+
+        environmentCtx.moveTo(
+            x,
+            0
+        );
+
+        environmentCtx.lineTo(
+            x,
+            height
+        );
+
+        environmentCtx.stroke();
+
+    }
+
+
+    for (
+        let y = 0;
+        y < height;
+        y += 40
+    ) {
+
+        environmentCtx.beginPath();
+
+        environmentCtx.moveTo(
+            0,
+            y
+        );
+
+        environmentCtx.lineTo(
+            width,
+            y
+        );
+
+        environmentCtx.stroke();
+
+    }
+
+
+    /* sunlight */
+
+    const sunX =
+        width * .88;
+
+    const sunY =
+        height * .16;
+
+    const sunRadius =
+        Math.max(
+            18,
+            width * .035
+        );
+
+    environmentCtx.beginPath();
+
+    environmentCtx.arc(
+        sunX,
+        sunY,
+        sunRadius,
+        0,
+        Math.PI * 2
+    );
+
+    environmentCtx.fillStyle =
+        "#fbbf24";
+
+    environmentCtx.shadowBlur = 25;
+
+    environmentCtx.shadowColor =
+        "#fbbf24";
+
+    environmentCtx.fill();
+
+    environmentCtx.shadowBlur = 0;
+
+
+    /* sunlight rays */
+
+    environmentCtx.strokeStyle =
+        "rgba(251,191,36,.25)";
+
+    environmentCtx.lineWidth = 2;
+
+    for (
+        let i = 0;
+        i < 7;
+        i++
+    ) {
+
+        const angle =
+            i * Math.PI / 3.5;
+
+        environmentCtx.beginPath();
+
+        environmentCtx.moveTo(
+            sunX,
+            sunY
+        );
+
+        environmentCtx.lineTo(
+            sunX +
+            Math.cos(angle) *
+            70,
+
+            sunY +
+            Math.sin(angle) *
+            70
+        );
+
+        environmentCtx.stroke();
+
+    }
+
+
+    environmentParticles.forEach(
+        drawEnvironmentParticle
+    );
+
+
+    /* labels */
+
+    environmentCtx.fillStyle =
+        "#94a3b8";
+
+    environmentCtx.font =
+        "12px Arial";
+
+    environmentCtx.textAlign =
+        "left";
+
+    environmentCtx.fillText(
+        "Atmospheric reaction zone",
+        15,
+        20
+    );
+
+    environmentCtx.fillStyle =
+        "#fb7185";
+
+    environmentCtx.fillText(
+        "Pollutant",
+        15,
+        height - 32
+    );
+
+    environmentCtx.fillStyle =
+        "#34d399";
+
+    environmentCtx.fillText(
+        "Reacted species",
+        15,
+        height - 15
+    );
+
+}
+
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+function updateEnvironmentMetrics() {
+
+    const reactionRate =
+        Math.round(
+            pollutantLevel *
+            sunlightLevel /
+            100
+        );
+
+    const remaining =
+        Math.max(
+            0,
+            Math.round(
+                pollutantLevel -
+                reactionRate * .45
+            )
+        );
+
+
+    document.getElementById(
+        "pollutantMetric"
+    ).textContent =
+        pollutantLevel;
+
+
+    document.getElementById(
+        "sunlightMetric"
+    ).textContent =
+        sunlightLevel;
+
+
+    document.getElementById(
+        "reactionMetric"
+    ).textContent =
+        reactionRate;
+
+
+    document.getElementById(
+        "remainingMetric"
+    ).textContent =
+        remaining;
+
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+function animateEnvironment() {
+
+    updateEnvironmentParticles();
+
+    drawEnvironmentCanvas();
+
+    updateEnvironmentMetrics();
+
+    environmentTime++;
+
+    requestAnimationFrame(
+        animateEnvironment
+    );
+
+}
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+document
+    .getElementById(
+        "pollutantControl"
+    )
+    .addEventListener(
+        "input",
+        function() {
+
+            pollutantLevel =
+                Number(this.value);
+
+            document.getElementById(
+                "pollutantValue"
+            ).textContent =
+                pollutantLevel;
+
+            createEnvironmentParticles();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sunlightControl"
+    )
+    .addEventListener(
+        "input",
+        function() {
+
+            sunlightLevel =
+                Number(this.value);
+
+            document.getElementById(
+                "sunlightValue"
+            ).textContent =
+                sunlightLevel;
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "windControl"
+    )
+    .addEventListener(
+        "input",
+        function() {
+
+            windSpeed =
+                Number(this.value);
+
+            document.getElementById(
+                "windValue"
+            ).textContent =
+                windSpeed.toFixed(1) + "×";
+
+            environmentParticles.forEach(
+                particle => {
+
+                    particle.vx =
+                        (Math.random() - .5) *
+                        windSpeed;
+
+                    particle.vy =
+                        (Math.random() - .5) *
+                        windSpeed;
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        resizeEnvironmentCanvas();
+
+        createEnvironmentParticles();
+
+    }
+);
+
+resizeEnvironmentCanvas();
+
+createEnvironmentParticles();
+
+updateEnvironmentMetrics();
+
+animateEnvironment();
+
+</script>
+
+{% endblock %}

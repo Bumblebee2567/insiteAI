@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mathematics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.container-math{
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.header h1{
+    color:white;
+    font-weight:700;
+}
+
+.header p{
+    color:#9ca3af;
+}
+
+.topic-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.topic-card{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:15px;
+    padding:22px;
+    text-decoration:none;
+    color:white;
+    transition:.25s;
+}
+
+.topic-card:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+    color:white;
+}
+
+.topic-card i{
+    font-size:28px;
+    color:#3b82f6;
+    margin-bottom:12px;
+}
+
+.topic-card h4{
+    margin-bottom:8px;
+}
+
+.topic-card p{
+    color:#9ca3af;
+    font-size:.9rem;
+}
+
+@media(max-width:768px){
+
+    .topic-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+
+<div class="container-math">
+
+    <div class="header">
+        <h1> Mathematics</h1>
+        <p>Select a topic to begin learning.</p>
+    </div>
+
+    <div class="topic-grid">
+
+        <a href="{{ url_for('num_and_frac_page') }}" class="topic-card">
+            <i class="fa-solid fa-divide"></i>
+            <h4>Numbers & Fractions</h4>
+            <p>Integers, fractions, decimals, percentages.</p>
+        </a>
+
+        <a href="{{ url_for('algebra') }}" class="topic-card">
+            <i class="fa-solid fa-square-root-variable"></i>
+            <h4>Algebra</h4>
+            <p>Expressions, equations and formulae.</p>
+        </a>
+
+        <a href="{{ url_for('graph_') }}" class="topic-card">
+            <i class="fa-solid fa-chart-line"></i>
+            <h4>Graphs & Functions</h4>
+            <p>Linear graphs, quadratic graphs and functions.</p>
+        </a>
+
+        <a href="{{ url_for('geometry') }}" class="topic-card">
+            <i class="fa-solid fa-ruler-combined"></i>
+            <h4>Geometry</h4>
+            <p>Lines, angles, polygons and constructions.</p>
+        </a>
+
+        <a href="{{ url_for('menstruation') }}" class="topic-card">
+            <i class="fa-solid fa-drafting-compass"></i>
+            <h4>Mensuration</h4>
+            <p>Area, perimeter, surface area and volume.</p>
+        </a>
+
+        <a href="{{ url_for('trigonometry') }}" class="topic-card">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <h4>Trigonometry</h4>
+            <p>Sine, cosine, tangent and applications.</p>
+        </a>
+
+        <a href="{{ url_for('c_geometry') }}" class="topic-card">
+            <i class="fa-solid fa-arrows-left-right"></i>
+            <h4>Coordinate Geometry</h4>
+            <p>Distance, midpoint and straight lines.</p>
+        </a>
+
+        <a href="{{ url_for('statistics') }}" class="topic-card">
+            <i class="fa-solid fa-chart-pie"></i>
+            <h4>Statistics</h4>
+            <p>Mean, median, mode, charts and graphs.</p>
+        </a>
+
+        <a href="{{ url_for('probability') }}" class="topic-card">
+            <i class="fa-solid fa-dice"></i>
+            <h4>Probability</h4>
+            <p>Simple probability and counting.</p>
+        </a>
+
+        <a href="{{ url_for('indices') }}" class="topic-card">
+            <i class="fa-solid fa-superscript"></i>
+            <h4>Indices & Logarithms</h4>
+            <p>Laws of indices and logarithms.</p>
+        </a>
+
+        <a href="{{ url_for('sequence') }}" class="topic-card">
+            <i class="fa-solid fa-wave-square"></i>
+            <h4>Sequences</h4>
+            <p>Arithmetic and geometric sequences.</p>
+        </a>
+
+        <a href="{{ url_for('calculus') }}" class="topic-card">
+            <i class="fa-solid fa-infinity"></i>
+            <h4>Calculus (Intro)</h4>
+            <p>Basic differentiation and integration.</p>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

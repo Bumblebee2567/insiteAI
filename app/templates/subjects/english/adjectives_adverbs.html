@@ -1,0 +1,751 @@
+{% extends "base.html" %}
+
+{% block title %}
+Adjectives & Adverbs | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ENGLISH HUB: ADJECTIVES & ADVERBS (ULTRA-DETAILED)
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: var(--eng-blue-light);
+    margin-top: 22px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.eng-section li {
+    margin-bottom: 10px;
+}
+
+.eng-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--eng-border);
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: var(--eng-cyan-light);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 30px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--eng-border);
+    background: #0a111d;
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 25px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 600px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 13px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.exam-question {
+    margin-top: 25px;
+    padding: 24px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: var(--eng-cyan-light);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.exam-answer {
+    margin-top: 15px;
+    padding: 18px 20px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.ask-ai {
+    margin-top: 35px;
+    padding: 35px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 22px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-sliders"></i>
+            Adjectives & Adverbs Masterclass
+        </h1>
+        <p>
+            An exhaustive academic masterclass covering descriptive modification, the precise order of adjectives (OSASCOMP), 
+            degrees of comparison, flat adverbs, relative adverbial clauses, and advanced modifier placement traps tested in JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">01. Overview</a>
+        <a href="#types">02. Modifier Categories</a>
+        <a href="#osascomp">03. OSASCOMP Rule</a>
+        <a href="#comparison">04. Comparison Degrees</a>
+        <a href="#adverbs">05. Adverbial Placement</a>
+        <a href="#modifiers">06. Dangling Modifiers</a>
+        <a href="#test">07. Interactive Test</a>
+        <a href="#problems">08. Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Comprehensive Introduction to Adjectives & Adverbs</h2>
+        </div>
+        <p>
+            Language derives its precision, descriptive richness, and clarity from modifiers—specifically <strong>adjectives</strong> and 
+            <strong>adverbs</strong>. While nouns establish the core subjects and objects of discourse and verbs drive action, modifiers qualify, 
+            restrict, expand, or specify the precise attributes and conditions surrounding those nominal and verbal elements.
+        </p>
+        <p>
+            In West African and international examinations like JAMB and WAEC, test items focusing on adjectives and adverbs move far beyond 
+            basic identification. Examiners target subtle syntactic traps, including complex adjective sequencing (the OSASCOMP acronym), 
+            irregular comparative and superlative formations, ambiguous modifier placement, and the precise distinction between flat adverbs 
+            and standardly inflected adverbial forms.
+        </p>
+        <div class="eng-info">
+            <strong>Core Syntactic Principle:</strong><br>
+            An adjective modifies a noun or pronoun by answering questions such as *Which one?*, *What kind?*, or *How many?*. 
+            Conversely, an adverb modifies a verb, an adjective, or another adverb by answering questions such as *How?*, *When?*, *Where?*, 
+            *To what extent?*, or *In what manner?*.
+        </div>
+        <h3>Syntactic Functions of Modifiers</h3>
+        <p>
+            Understanding where modifiers sit relative to their targets determines sentence grammaticality:
+        </p>
+        <ul>
+            <li><strong>Attributive Position:</strong> Adjectives placed immediately before the noun they modify (e.g., *A <strong>brilliant</strong> student*).</li>
+            <li><strong>Predicative Position:</strong> Adjectives placed after a linking verb, modifying the subject (e.g., *The student is <strong>brilliant</strong>*).</li>
+            <li><strong>Intensifying Adverbs:</strong> Adverbs that scale adjectives or other adverbs (e.g., *She performed <strong>exceptionally</strong> well*).</li>
+        </ul>
+    </section>
+
+    <!-- 02 MODIFIER CATEGORIES -->
+    <section class="eng-section" id="types">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Specialized Categories of Modifiers</h2>
+        </div>
+        <p>
+            Modifiers encompass diverse subclasses that dictate their grammatical behavior in complex examinations.
+        </p>
+        <h3>Descriptive vs. Limiting Adjectives</h3>
+        <p>
+            <strong>Descriptive adjectives</strong> ascribe physical or qualitative traits (e.g., *tall, rusted, acidic*). 
+            <strong>Limiting adjectives</strong> restrict nouns rather than describing them, including demonstrative (*this, that*), 
+            possessive (*my, their*), and quantitative (*several, much*) determiners.
+        </p>
+        <h3>Flat Adverbs</h3>
+        <p>
+            A <strong>flat adverb</strong> (or plain adverb) has the exact same morphological form as its adjective counterpart without taking the standard "-ly" suffix. 
+            Examiners frequently test sentences where candidates mistakenly add "-ly" to words that should remain flat.
+        </p>
+        <div class="eng-info">
+            <strong>Exam Trap on Flat Adverbs:</strong><br>
+            ❌ *Incorrect:* Drive <strong>slowly</strong> around the sharp bend.<br>
+            ✔️ *Standard Conversational & Idiomatic English:* Drive <strong>slow</strong> around the sharp bend.<br>
+            <em>Note:</em> While *slowly* is grammatically permissible, standard exam items test fixed idiomatic adverbial imperatives like *drive slow, hold tight, fly high, and cost dear*.
+        </div>
+    </section>
+
+    <!-- 03 OSASCOMP RULE -->
+    <section class="eng-section" id="osascomp">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>The Strict Order of Adjectives (OSASCOMP)</h2>
+        </div>
+        <p>
+            When two or more descriptive adjectives precede a single noun in English, native speakers do not sequence them randomly. 
+            They follow an unyielding chronological hierarchy codified by the acronym <strong>OSASCOMP</strong>.
+        </p>
+
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <thead>
+                    <tr>
+                        <th>Acronym Letter</th>
+                        <th>Category Name</th>
+                        <th>Grammatical Function</th>
+                        <th>Illustrative Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>O</strong></td>
+                        <td>Opinion</td>
+                        <td>Subjective judgment or value</td>
+                        <td>*lovely, horrible, intelligent, tedious*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>S</strong></td>
+                        <td>Size</td>
+                        <td>Physical dimensions or scale</td>
+                        <td>*massive, tiny, tall, microscopic*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A</strong></td>
+                        <td>Age</td>
+                        <td>Chronological timeframe</td>
+                        <td>*ancient, adolescent, brand-new, elderly*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>S</strong></td>
+                        <td>Shape</td>
+                        <td>Geometric outline or form</td>
+                        <td>*spherical, rectangular, curved, flat*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C</strong></td>
+                        <td>Color</td>
+                        <td>Optical hue or shade</td>
+                        <td>*crimson, turquoise, obsidian, amber*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>O</strong></td>
+                        <td>Origin</td>
+                        <td>Geographical source or nationality</td>
+                        <td>*Nigerian, Scandinavian, lunar, domestic*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M</strong></td>
+                        <td>Material</td>
+                        <td>Substance composition</td>
+                        <td>*metallic, synthetic, woolen, ceramic*</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P</strong></td>
+                        <td>Purpose</td>
+                        <td>Intended utilization (noun adjunct)</td>
+                        <td>*sleeping (bag), drilling (rig), wedding (ring)*</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 04 COMPARISON DEGREES -->
+    <section class="eng-section" id="comparison">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Degrees of Comparison & Superlative Traps</h2>
+        </div>
+        <p>
+            Adjectives and adverbs alter their morphological structure across three degrees of comparison: <strong>Positive</strong>, 
+            <strong>Comparative</strong>, and <strong>Superlative</strong>. JAMB and WAEC test exceptional irregular forms and structural redundancies.
+        </p>
+        <h3>Rules of Morphological Scaling</h3>
+        <ul>
+            <li><strong>Short Modifiers:</strong> Take "-er" for comparative and "-est" for superlative (e.g., *fast, faster, fastest*).</li>
+            <li><strong>Long Modifiers:</strong> Take "more" for comparative and "most" for superlative (e.g., *intelligent, more intelligent, most intelligent*).</li>
+            <li><strong>Absolute Adjectives (Non-Gradable):</strong> Certain modifiers describe absolute states that cannot logically be compared (e.g., *dead, unique, universal, perfect, fatal, infinite*). Saying *"more perfect"* or *"most unique"* is heavily penalized in exams.</li>
+        </ul>
+    </section>
+
+    <!-- 05 ADVERBIAL PLACEMENT -->
+    <section class="eng-section" id="adverbs">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Adverbial Placement & Focus</h2>
+        </div>
+        <p>
+            Unlike adjectives which have relatively fixed attributive positions before nouns, adverbs are highly mobile within sentence architecture. 
+            However, shifting an adverb's position can dramatically alter the scope and focus of the statement.
+        </p>
+        <div class="eng-info">
+            <strong>The Restrictive Adverb Trap (*Only*):</strong><br>
+            The adverb "only" must be placed immediately before the specific word or phrase it modifies. Misplacing "only" completely alters legal meaning.<br>
+            *Meaning A:* <strong>Only</strong> Chinedu scored an A in physics. (Nobody else scored an A).<br>
+            *Meaning B:* Chinedu <strong>only</strong> scored an A in physics. (He scored an A, but did not study or do anything else).
+        </div>
+    </section>
+
+    <!-- 06 MISPLACED MODIFIERS -->
+    <section class="eng-section" id="modifiers">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Misplaced, Dangling, and Squinting Modifiers</h2>
+        </div>
+        <p>
+            A modifier is classified as <strong>misplaced</strong> when syntactic distance separates it from its intended target, creating illogical or humorous interpretations. 
+            A <strong>dangling modifier</strong> occurs when the introductory modifying phrase lacks any explicit noun target to modify within the main clause.
+        </p>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="eng-section" id="test">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Interactive Advanced Modifier Test</h2>
+        </div>
+        <p>Test your absolute mastery of adjective sequencing, absolute modifiers, and adverbial traps with this challenging simulator.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> JAMB Objective Test Simulator</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Choose the option that correctly sequences the adjectives to complete the sentence:<br>
+                    <em>"The laboratory technician purchased several _________ microscopes for the science department."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer3">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">brand-new, optical, German, high-power</option>
+                    <option value="wrong2">German, brand-new, optical, high-power</option>
+                    <option value="correct">brand-new, high-power, optical, German</option>
+                    <option value="wrong3">optical, brand-new, German, high-power</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng3">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Advanced OSASCOMP Sequencing Analysis):</strong>
+            <p>Analyze and correct the adjective sequence in this WAEC structural item: <br><em>"The museum curator displayed an antique magnificent wooden large carved sculpture."</em></p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution & Grammatical Breakdown:</strong><br>
+                1. <strong>Extract Modifiers:</strong> *antique (Age), magnificent (Opinion), wooden (Material), large (Size), carved (Purpose/Descriptor)*.<br>
+                2. <strong>Apply OSASCOMP Hierarchy:</strong><br>
+                  - **O**pinion: *magnificent*<br>
+                  - **S**ize: *large*<br>
+                  - **A**ge: *antique*<br>
+                  - **M**aterial: *wooden*<br>
+                  - **P**urpose/Descriptor: *carved*<br>
+                3. <strong>Fully Corrected Version:</strong><br>
+                <em>"The museum curator displayed a <strong>magnificent large antique wooden carved</strong> sculpture."</em>
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Non-Gradable Absolute Adjectives):</strong>
+            <p>Explain why the examiners marked the sentence *"Dr. Bello's medical hypothesis was far more unique than previous theories"* as structurally flawed.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                1. <strong>Analyze "Unique":</strong> The adjective "unique" means being the only one of its kind; it denotes an absolute, binary state (an object is either unique or it is not).<br>
+                2. <strong>Identify Redundancy:</strong> Because uniqueness is absolute, it cannot take comparative scaling modifiers like *more* or *most*.<br>
+                3. <strong>Correction:</strong> Remove the comparative modifier, or replace "unique" with a gradable alternative like *unusual* or *original*.<br>
+                4. <strong>Fully Corrected Version:</strong><br>
+                <em>"Dr. Bello's medical hypothesis was <strong>more original</strong> than previous theories."</em>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:32px; margin-bottom:12px;"></i>
+        <h3 style="margin:0 0 10px; color:white; font-size:1.4rem;">Need further assistance with adjectives, adverbs, or exam prep?</h3>
+        <p style="color:var(--eng-muted); margin:0 auto; max-width:650px; line-height:1.7;">
+            Ask Insite AI to clarify flat adverbs, superlative exceptions, or provide targeted JAMB past questions on modifiers.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — ADJECTIVES & ADVERBS INTERACTIVE TEST SCRIPT
+   ========================================================= */
+
+const engAnswer3 = document.getElementById("engAnswer3");
+const checkEng3 = document.getElementById("checkEng3");
+const engResult3 = document.getElementById("engResult3");
+
+checkEng3.addEventListener("click", function () {
+    const val = engAnswer3.value;
+    engResult3.style.display = "block";
+
+    if (val === "correct") {
+        engResult3.className = "test-result correct";
+        engResult3.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct! Flawless OSASCOMP Application!</div>
+            <div>Following OSASCOMP strictly: "brand-new" (Age) precedes "high-power" (Purpose/Descriptor), which precedes "optical" (Material/Nature), which precedes "German" (Origin). This represents precise adherence to standard English adjective sequencing.</div>
+        `;
+    } else if (val === "") {
+        engResult3.className = "test-result wrong";
+        engResult3.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Selection Required</div>
+            <div>Please select one of the provided options from the dropdown menu before evaluating your answer.</div>
+        `;
+    } else {
+        engResult3.className = "test-result wrong";
+        engResult3.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Incorrect. Review OSASCOMP.</div>
+            <div>Random sequencing violates standard English grammar rules. Age must precede purpose, which must precede origin. The correct sequence is <strong>brand-new, high-power, optical, German</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

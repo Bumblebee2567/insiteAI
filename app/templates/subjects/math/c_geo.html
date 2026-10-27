@@ -1,0 +1,1453 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Coordinate Geometry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .coordinate-page {
+        background: #0b0f19;
+        color: #f5f7ff;
+        padding: 25px 18px 70px;
+    }
+
+    /* BACK BUTTON */
+
+    .coordinate-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+
+        padding: 9px 15px;
+
+        color: #dbe7f5;
+        background: #18212c;
+
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 9px;
+
+        text-decoration: none;
+
+        transition: 0.2s ease;
+    }
+
+    .coordinate-back:hover {
+        color: white;
+        background: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+
+    /* HEADER */
+
+    .coordinate-header {
+        text-align: center;
+        padding: 35px 10px 25px;
+    }
+
+    .coordinate-icon {
+        width: 68px;
+        height: 68px;
+
+        margin: 0 auto 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #69a9ff;
+        background: #18212c;
+
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+
+        font-size: 28px;
+    }
+
+    .coordinate-header h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .coordinate-header p {
+        max-width: 750px;
+        margin: auto;
+
+        color: #aeb9c6;
+        line-height: 1.7;
+    }
+
+
+    /* TOPIC NAVIGATION */
+
+    .coordinate-topic-wrapper {
+        margin: 15px 0 30px;
+    }
+
+    .coordinate-topic-nav {
+        display: flex;
+        gap: 10px;
+
+        overflow-x: auto;
+
+        padding: 5px 3px 12px;
+
+        scrollbar-width: thin;
+        scrollbar-color: #397fcf transparent;
+    }
+
+    .coordinate-topic-nav::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .coordinate-topic-nav::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .coordinate-topic-nav::-webkit-scrollbar-thumb {
+        background: #397fcf;
+        border-radius: 20px;
+    }
+
+    .coordinate-topic {
+        flex: 0 0 auto;
+
+        padding: 9px 15px;
+
+        color: #cdd8e4;
+        background: #18212c;
+
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 9px;
+
+        text-decoration: none;
+        white-space: nowrap;
+
+        font-size: 14px;
+
+        transition: 0.2s ease;
+    }
+
+    .coordinate-topic:hover {
+        color: white;
+        background: #246bb3;
+        border-color: #246bb3;
+    }
+
+
+    /* MAIN SECTIONS */
+
+    .coordinate-section {
+        background: #151e28;
+
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 15px;
+
+        padding: 27px;
+
+        margin-bottom: 24px;
+
+        scroll-margin-top: 95px;
+    }
+
+    .coordinate-section h2 {
+        color: #f3f6fa;
+
+        font-size: 1.5rem;
+        font-weight: 750;
+
+        margin-bottom: 17px;
+    }
+
+    .coordinate-section h3 {
+        color: #78b4ff;
+
+        font-size: 1.12rem;
+
+        margin-top: 27px;
+        margin-bottom: 11px;
+    }
+
+    .coordinate-section p,
+    .coordinate-section li {
+        color: #cbd4de;
+        line-height: 1.85;
+    }
+
+    .coordinate-section ul,
+    .coordinate-section ol {
+        padding-left: 23px;
+    }
+
+
+    /* FORMULA */
+
+    .coordinate-formula {
+        background: #1b2632;
+
+        border-left: 4px solid #347fd1;
+
+        padding: 15px 18px;
+
+        margin: 17px 0;
+
+        border-radius: 8px;
+
+        color: #edf4fb;
+
+        overflow-x: auto;
+    }
+
+
+    /* EXAMPLE */
+
+    .coordinate-example {
+        background: #192532;
+
+        border: 1px solid rgba(68,143,220,0.25);
+
+        padding: 18px;
+
+        margin-top: 19px;
+
+        border-radius: 10px;
+    }
+
+    .coordinate-example-title {
+        color: #78b4ff;
+
+        font-weight: 700;
+
+        margin-bottom: 9px;
+    }
+
+    .coordinate-answer {
+        background: #1d2935;
+
+        padding: 14px;
+
+        margin-top: 11px;
+
+        border-radius: 8px;
+
+        border-left: 3px solid #347fd1;
+
+        color: #dce5ee;
+
+        line-height: 1.9;
+    }
+
+
+    /* ASK INSITE AI */
+
+    .ask-insite {
+        margin-top: 24px;
+
+        padding: 16px 17px;
+
+        background: #18232f;
+
+        border: 1px solid rgba(68,143,220,0.22);
+
+        border-radius: 10px;
+
+        color: #cbd4de;
+    }
+
+    .ask-insite a {
+        color: #78b4ff;
+
+        font-weight: 700;
+
+        text-decoration: none;
+    }
+
+    .ask-insite a:hover {
+        text-decoration: underline;
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 768px) {
+
+        .coordinate-page {
+            padding: 18px 12px 55px;
+        }
+
+        .coordinate-header {
+            padding-top: 28px;
+        }
+
+        .coordinate-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .coordinate-header p {
+            font-size: 0.95rem;
+        }
+
+        .coordinate-section {
+            padding: 21px;
+        }
+
+        .coordinate-section h2 {
+            font-size: 1.35rem;
+        }
+
+        .coordinate-section h3 {
+            font-size: 1.05rem;
+        }
+
+    }
+
+</style>
+
+<div class="coordinate-page">
+
+<!-- BACK TO MATHEMATICS -->
+
+<a href="{{ url_for('math_page') }}" class="coordinate-back">
+    <i class="fas fa-arrow-left"></i>
+    Mathematics
+</a>
+
+
+<!-- HEADER -->
+
+<div class="coordinate-header">
+
+    <div class="coordinate-icon">
+        <i class="fas fa-chart-line"></i>
+    </div>
+
+    <h1>Coordinate Geometry</h1>
+
+    <p>
+        Learn how mathematics can be used to describe points,
+        lines, distances, shapes and relationships on a coordinate
+        plane.
+    </p>
+
+</div>
+
+
+<!-- SCROLLABLE TOPICS -->
+
+<div class="coordinate-topic-wrapper">
+
+    <div class="coordinate-topic-nav">
+
+        <a href="#basics" class="coordinate-topic">
+            Basics
+        </a>
+
+        <a href="#plane" class="coordinate-topic">
+            Coordinate Plane
+        </a>
+
+        <a href="#points" class="coordinate-topic">
+            Points
+        </a>
+
+        <a href="#distance" class="coordinate-topic">
+            Distance
+        </a>
+
+        <a href="#midpoint" class="coordinate-topic">
+            Midpoint
+        </a>
+
+        <a href="#slope" class="coordinate-topic">
+            Slope
+        </a>
+
+        <a href="#lines" class="coordinate-topic">
+            Straight Lines
+        </a>
+
+        <a href="#parallel" class="coordinate-topic">
+            Parallel Lines
+        </a>
+
+        <a href="#perpendicular" class="coordinate-topic">
+            Perpendicular Lines
+        </a>
+
+        <a href="#equations" class="coordinate-topic">
+            Line Equations
+        </a>
+
+        <a href="#intercepts" class="coordinate-topic">
+            Intercepts
+        </a>
+
+        <a href="#circles" class="coordinate-topic">
+            Circles
+        </a>
+
+        <a href="#applications" class="coordinate-topic">
+            Applications
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- 1. BASICS -->
+
+<section class="coordinate-section" id="basics">
+
+    <h2>1. Introduction to Coordinate Geometry</h2>
+
+    <p>
+        Coordinate geometry is a part of mathematics where we use
+        numbers and a graph to describe where things are located.
+    </p>
+
+    <p>
+        Instead of simply saying that a point is "somewhere to the
+        right and above another point", coordinate geometry allows
+        us to describe its exact position using numbers.
+    </p>
+
+    <p>
+        This makes it possible to study shapes, distances, lines,
+        angles and many other geometric ideas using algebra.
+    </p>
+
+    <h3>Why Do We Need Coordinates?</h3>
+
+    <p>
+        Imagine that you are trying to tell someone where a particular
+        house is located on a large map. Saying "it is near the
+        middle" would not be very precise.
+    </p>
+
+    <p>
+        Coordinates solve this problem. Every position on the
+        coordinate plane can be described using a pair of numbers.
+    </p>
+
+    <h3>The Basic Idea</h3>
+
+    <p>
+        A coordinate is normally written as:
+    </p>
+
+    <div class="coordinate-formula">
+        (x, y)
+    </div>
+
+    <p>
+        The first number tells us how far to move horizontally.
+        The second number tells us how far to move vertically.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Simple Example
+        </div>
+
+        <p>
+            Consider the point (4, 3).
+        </p>
+
+        <div class="coordinate-answer">
+
+            Start at the origin.
+
+            <br>
+
+            Move 4 units to the right.
+
+            <br>
+
+            Then move 3 units upward.
+
+            <br><br>
+
+            You arrive at the point (4, 3).
+
+        </div>
+
+    </div>
+
+    <div class="ask-insite">
+        <i class="fas fa-sparkles text-primary"></i>
+        Don't understand the basic idea?
+        <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+    </div>
+
+</section>
+
+
+<!-- 2. COORDINATE PLANE -->
+
+<section class="coordinate-section" id="plane">
+
+    <h2>2. The Coordinate Plane</h2>
+
+    <p>
+        The coordinate plane is the grid used to locate points.
+        It is made from two number lines that cross each other.
+    </p>
+
+    <h3>The x-axis</h3>
+
+    <p>
+        The horizontal line is called the <strong>x-axis</strong>.
+    </p>
+
+    <p>
+        Moving to the right gives positive x-values, while moving
+        to the left gives negative x-values.
+    </p>
+
+    <h3>The y-axis</h3>
+
+    <p>
+        The vertical line is called the <strong>y-axis</strong>.
+    </p>
+
+    <p>
+        Moving upward gives positive y-values, while moving
+        downward gives negative y-values.
+    </p>
+
+    <h3>The Origin</h3>
+
+    <p>
+        The point where the x-axis and y-axis meet is called the
+        <strong>origin</strong>.
+    </p>
+
+    <div class="coordinate-formula">
+        Origin = (0, 0)
+    </div>
+
+    <h3>The Four Quadrants</h3>
+
+    <p>
+        The two axes divide the coordinate plane into four regions
+        called quadrants.
+    </p>
+
+    <ul>
+        <li>
+            <strong>Quadrant I:</strong> x is positive and y is positive.
+        </li>
+
+        <li>
+            <strong>Quadrant II:</strong> x is negative and y is positive.
+        </li>
+
+        <li>
+            <strong>Quadrant III:</strong> x is negative and y is negative.
+        </li>
+
+        <li>
+            <strong>Quadrant IV:</strong> x is positive and y is negative.
+        </li>
+    </ul>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Example
+        </div>
+
+        <p>
+            Which quadrant contains the point (-5, 2)?
+        </p>
+
+        <div class="coordinate-answer">
+
+            x = -5 → negative
+
+            <br>
+
+            y = 2 → positive
+
+            <br><br>
+
+            Therefore, the point is in
+            <strong>Quadrant II</strong>.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 3. POINTS -->
+
+<section class="coordinate-section" id="points">
+
+    <h2>3. Plotting and Reading Points</h2>
+
+    <p>
+        A point is represented by an ordered pair:
+    </p>
+
+    <div class="coordinate-formula">
+        (x, y)
+    </div>
+
+    <p>
+        The order matters. The x-coordinate always comes first,
+        followed by the y-coordinate.
+    </p>
+
+    <h3>How to Plot a Point</h3>
+
+    <ol>
+        <li>Start at the origin.</li>
+        <li>Read the x-coordinate.</li>
+        <li>Move horizontally.</li>
+        <li>Read the y-coordinate.</li>
+        <li>Move vertically.</li>
+        <li>Mark the point.</li>
+    </ol>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Example
+        </div>
+
+        <p>
+            Plot the point (-3, -4).
+        </p>
+
+        <div class="coordinate-answer">
+
+            Start at (0, 0).
+
+            <br>
+
+            Move 3 units left because x = -3.
+
+            <br>
+
+            Move 4 units down because y = -4.
+
+            <br><br>
+
+            The point lies in Quadrant III.
+
+        </div>
+
+    </div>
+
+    <h3>Points on the Axes</h3>
+
+    <p>
+        If a point has an x-coordinate of zero, it lies on the
+        y-axis.
+    </p>
+
+    <div class="coordinate-formula">
+        (0, y)
+    </div>
+
+    <p>
+        If a point has a y-coordinate of zero, it lies on the
+        x-axis.
+    </p>
+
+    <div class="coordinate-formula">
+        (x, 0)
+    </div>
+
+</section>
+
+
+<!-- 4. DISTANCE -->
+
+<section class="coordinate-section" id="distance">
+
+    <h2>4. Distance Between Two Points</h2>
+
+    <p>
+        Sometimes we know the coordinates of two points and want
+        to know how far apart they are.
+    </p>
+
+    <p>
+        If the points lie horizontally or vertically, the distance
+        can be found by simple subtraction.
+    </p>
+
+    <p>
+        But if the points are separated both horizontally and
+        vertically, we can use the distance formula.
+    </p>
+
+    <h3>Distance Formula</h3>
+
+    <div class="coordinate-formula">
+        d = √[(x₂ - x₁)² + (y₂ - y₁)²]
+    </div>
+
+    <p>
+        This formula comes from the Pythagorean theorem. The
+        horizontal difference becomes one side of a right triangle,
+        the vertical difference becomes the other side, and the
+        distance between the points becomes the hypotenuse.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Worked Example
+        </div>
+
+        <p>
+            Find the distance between A(2, 3) and B(6, 6).
+        </p>
+
+        <div class="coordinate-answer">
+
+            x₁ = 2, y₁ = 3
+
+            <br>
+
+            x₂ = 6, y₂ = 6
+
+            <br><br>
+
+            d = √[(6 - 2)² + (6 - 3)²]
+
+            <br>
+
+            d = √[4² + 3²]
+
+            <br>
+
+            d = √[16 + 9]
+
+            <br>
+
+            d = √25
+
+            <br>
+
+            <strong>d = 5 units</strong>
+
+        </div>
+
+    </div>
+
+    <div class="ask-insite">
+        <i class="fas fa-sparkles text-primary"></i>
+        Still confused about the distance formula?
+        <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+    </div>
+
+</section>
+
+
+<!-- 5. MIDPOINT -->
+
+<section class="coordinate-section" id="midpoint">
+
+    <h2>5. Midpoint of a Line Segment</h2>
+
+    <p>
+        The midpoint is the point that lies exactly halfway between
+        two endpoints.
+    </p>
+
+    <p>
+        Think of a line segment as a ruler. If you cut it exactly
+        in half, the point where you cut it is the midpoint.
+    </p>
+
+    <h3>Midpoint Formula</h3>
+
+    <div class="coordinate-formula">
+        M = ((x₁ + x₂)/2, (y₁ + y₂)/2)
+    </div>
+
+    <p>
+        Notice what the formula does: it finds the average of the
+        two x-coordinates and separately finds the average of the
+        two y-coordinates.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Worked Example
+        </div>
+
+        <p>
+            Find the midpoint of A(2, 4) and B(8, 10).
+        </p>
+
+        <div class="coordinate-answer">
+
+            x-coordinate:
+
+            <br>
+
+            (2 + 8) / 2 = 10 / 2 = 5
+
+            <br><br>
+
+            y-coordinate:
+
+            <br>
+
+            (4 + 10) / 2 = 14 / 2 = 7
+
+            <br><br>
+
+            Therefore:
+
+            <br>
+
+            <strong>M = (5, 7)</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 6. SLOPE -->
+
+<section class="coordinate-section" id="slope">
+
+    <h2>6. Gradient or Slope</h2>
+
+    <p>
+        The slope tells us how steep a line is and which direction
+        the line is moving.
+    </p>
+
+    <p>
+        Imagine walking along a hill. A very steep hill has a large
+        slope, while a flat road has a slope of zero.
+    </p>
+
+    <h3>Rise and Run</h3>
+
+    <p>
+        Slope compares the vertical change with the horizontal
+        change.
+    </p>
+
+    <div class="coordinate-formula">
+        Slope = rise / run
+    </div>
+
+    <h3>Slope Formula</h3>
+
+    <div class="coordinate-formula">
+        m = (y₂ - y₁) / (x₂ - x₁)
+    </div>
+
+    <h3>Understanding Positive and Negative Slope</h3>
+
+    <p>
+        A positive slope means the line rises as you move from
+        left to right.
+    </p>
+
+    <p>
+        A negative slope means the line falls as you move from
+        left to right.
+    </p>
+
+    <p>
+        A slope of zero represents a horizontal line.
+    </p>
+
+    <p>
+        A vertical line has an undefined slope because its
+        horizontal change is zero.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Worked Example
+        </div>
+
+        <p>
+            Find the slope of the line passing through
+            A(2, 3) and B(6, 11).
+        </p>
+
+        <div class="coordinate-answer">
+
+            m = (11 - 3) / (6 - 2)
+
+            <br>
+
+            m = 8 / 4
+
+            <br>
+
+            <strong>m = 2</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 7. STRAIGHT LINES -->
+
+<section class="coordinate-section" id="lines">
+
+    <h2>7. Straight-Line Graphs</h2>
+
+    <p>
+        A straight-line graph is a graph whose points lie along
+        one straight path.
+    </p>
+
+    <p>
+        One of the most common ways to represent a straight line
+        is the slope-intercept form.
+    </p>
+
+    <div class="coordinate-formula">
+        y = mx + c
+    </div>
+
+    <p>
+        Here, <strong>m</strong> represents the slope and
+        <strong>c</strong> represents the y-intercept.
+    </p>
+
+    <h3>What Is the y-intercept?</h3>
+
+    <p>
+        The y-intercept is the point where the line crosses the
+        y-axis.
+    </p>
+
+    <p>
+        Since every point on the y-axis has x = 0, the y-intercept
+        can be found by putting x = 0.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Example
+        </div>
+
+        <p>
+            Consider:
+        </p>
+
+        <div class="coordinate-formula">
+            y = 2x + 3
+        </div>
+
+        <div class="coordinate-answer">
+
+            The slope is 2.
+
+            <br>
+
+            The y-intercept is 3.
+
+            <br><br>
+
+            Therefore, the line crosses the y-axis at:
+
+            <br>
+
+            <strong>(0, 3)</strong>
+
+        </div>
+
+    </div>
+
+    <h3>Point-Slope Form</h3>
+
+    <p>
+        If we know a point on a line and its slope, we can use
+        point-slope form.
+    </p>
+
+    <div class="coordinate-formula">
+        y - y₁ = m(x - x₁)
+    </div>
+
+</section>
+
+
+<!-- 8. PARALLEL -->
+
+<section class="coordinate-section" id="parallel">
+
+    <h2>8. Parallel Lines</h2>
+
+    <p>
+        Parallel lines are lines that travel in the same direction
+        and never meet, even if they are extended indefinitely.
+    </p>
+
+    <p>
+        On a coordinate plane, two different non-vertical lines
+        are parallel when they have the same slope.
+    </p>
+
+    <div class="coordinate-formula">
+        m₁ = m₂
+    </div>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Example
+        </div>
+
+        <p>
+            Are these lines parallel?
+        </p>
+
+        <div class="coordinate-formula">
+            y = 3x + 2
+            <br>
+            y = 3x - 5
+        </div>
+
+        <div class="coordinate-answer">
+
+            First line slope = 3
+
+            <br>
+
+            Second line slope = 3
+
+            <br><br>
+
+            Since their slopes are equal, the lines are
+            <strong>parallel</strong>.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 9. PERPENDICULAR -->
+
+<section class="coordinate-section" id="perpendicular">
+
+    <h2>9. Perpendicular Lines</h2>
+
+    <p>
+        Perpendicular lines meet at a right angle, which means
+        the angle between them is 90°.
+    </p>
+
+    <p>
+        For two non-vertical lines to be perpendicular, their
+        slopes are negative reciprocals of each other.
+    </p>
+
+    <div class="coordinate-formula">
+        m₁ × m₂ = -1
+    </div>
+
+    <p>
+        A negative reciprocal means two things happen:
+        the sign changes and the fraction is flipped.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Example
+        </div>
+
+        <p>
+            A line has slope 2. Find the slope of a perpendicular
+            line.
+        </p>
+
+        <div class="coordinate-answer">
+
+            Write 2 as a fraction:
+
+            <br>
+
+            2 = 2/1
+
+            <br><br>
+
+            Flip the fraction:
+
+            <br>
+
+            1/2
+
+            <br><br>
+
+            Change the sign:
+
+            <br>
+
+            <strong>-1/2</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 10. LINE EQUATIONS -->
+
+<section class="coordinate-section" id="equations">
+
+    <h2>10. Finding the Equation of a Line</h2>
+
+    <p>
+        Sometimes you are given information about a line and
+        asked to find its equation.
+    </p>
+
+    <p>
+        The most common information provided is a point on the line
+        and its slope, or two points on the line.
+    </p>
+
+    <h3>When the Slope and One Point Are Known</h3>
+
+    <p>
+        Use:
+    </p>
+
+    <div class="coordinate-formula">
+        y - y₁ = m(x - x₁)
+    </div>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Worked Example
+        </div>
+
+        <p>
+            Find the equation of the line with slope 3 passing
+            through (2, 5).
+        </p>
+
+        <div class="coordinate-answer">
+
+            y - 5 = 3(x - 2)
+
+            <br><br>
+
+            Expand:
+
+            <br>
+
+            y - 5 = 3x - 6
+
+            <br><br>
+
+            Add 5:
+
+            <br>
+
+            <strong>y = 3x - 1</strong>
+
+        </div>
+
+    </div>
+
+    <h3>When Two Points Are Known</h3>
+
+    <p>
+        First calculate the slope using the two points.
+        Then use one of the points with the point-slope formula.
+    </p>
+
+</section>
+
+
+<!-- 11. INTERCEPTS -->
+
+<section class="coordinate-section" id="intercepts">
+
+    <h2>11. x- and y-Intercepts</h2>
+
+    <p>
+        An intercept is a point where a graph crosses one of
+        the coordinate axes.
+    </p>
+
+    <h3>y-Intercept</h3>
+
+    <p>
+        To find the y-intercept, set x equal to zero.
+    </p>
+
+    <div class="coordinate-formula">
+        x = 0
+    </div>
+
+    <h3>x-Intercept</h3>
+
+    <p>
+        To find the x-intercept, set y equal to zero.
+    </p>
+
+    <div class="coordinate-formula">
+        y = 0
+    </div>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Worked Example
+        </div>
+
+        <p>
+            Find the intercepts of:
+        </p>
+
+        <div class="coordinate-formula">
+            y = 2x + 6
+        </div>
+
+        <div class="coordinate-answer">
+
+            <strong>y-intercept:</strong>
+
+            <br>
+
+            Set x = 0.
+
+            <br>
+
+            y = 2(0) + 6
+
+            <br>
+
+            y = 6
+
+            <br>
+
+            y-intercept = (0, 6)
+
+            <br><br>
+
+            <strong>x-intercept:</strong>
+
+            <br>
+
+            Set y = 0.
+
+            <br>
+
+            0 = 2x + 6
+
+            <br>
+
+            -6 = 2x
+
+            <br>
+
+            x = -3
+
+            <br>
+
+            x-intercept = (-3, 0)
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 12. CIRCLES -->
+
+<section class="coordinate-section" id="circles">
+
+    <h2>12. Circles on the Coordinate Plane</h2>
+
+    <p>
+        Coordinate geometry can also be used to describe circles.
+    </p>
+
+    <p>
+        The standard equation of a circle is:
+    </p>
+
+    <div class="coordinate-formula">
+        (x - h)² + (y - k)² = r²
+    </div>
+
+    <p>
+        In this equation, (h, k) is the centre of the circle and
+        r is its radius.
+    </p>
+
+    <h3>Understanding the Equation</h3>
+
+    <p>
+        The equation tells us that every point on the circle is
+        exactly the same distance from the centre.
+    </p>
+
+    <div class="coordinate-example">
+
+        <div class="coordinate-example-title">
+            Example
+        </div>
+
+        <p>
+            Identify the centre and radius of:
+        </p>
+
+        <div class="coordinate-formula">
+            (x - 3)² + (y + 2)² = 25
+        </div>
+
+        <div class="coordinate-answer">
+
+            Compare with:
+
+            <br>
+
+            (x - h)² + (y - k)² = r²
+
+            <br><br>
+
+            h = 3
+
+            <br>
+
+            k = -2
+
+            <br>
+
+            r² = 25
+
+            <br>
+
+            r = 5
+
+            <br><br>
+
+            <strong>Centre = (3, -2)</strong>
+
+            <br>
+
+            <strong>Radius = 5</strong>
+
+        </div>
+
+    </div>
+
+    <div class="ask-insite">
+        <i class="fas fa-sparkles text-primary"></i>
+        Need help understanding circle equations?
+        <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+    </div>
+
+</section>
+
+
+<!-- 13. APPLICATIONS -->
+
+<section class="coordinate-section" id="applications">
+
+    <h2>13. Applications of Coordinate Geometry</h2>
+
+    <p>
+        Coordinate geometry is not just about drawing points on
+        graphs. It gives us mathematical tools for describing
+        positions, shapes and relationships.
+    </p>
+
+    <h3>Maps and Navigation</h3>
+
+    <p>
+        Coordinates can be used to represent locations on maps.
+        Distances and directions can then be calculated
+        mathematically.
+    </p>
+
+    <h3>Architecture and Construction</h3>
+
+    <p>
+        Engineers and architects can use coordinate systems to
+        describe exact positions and dimensions of structures.
+    </p>
+
+    <h3>Computer Graphics</h3>
+
+    <p>
+        Computers use coordinates to position objects on screens.
+        Moving an object to the right, left, up or down can all
+        be represented using changes in coordinates.
+    </p>
+
+    <h3>Physics</h3>
+
+    <p>
+        Coordinates are also used to describe the position and
+        movement of objects.
+    </p>
+
+    <h3>What You Should Be Able to Do</h3>
+
+    <ul>
+
+        <li>Read and plot coordinates.</li>
+
+        <li>Identify quadrants.</li>
+
+        <li>Calculate the distance between two points.</li>
+
+        <li>Find the midpoint of a line segment.</li>
+
+        <li>Calculate the gradient of a line.</li>
+
+        <li>Find equations of straight lines.</li>
+
+        <li>Identify parallel and perpendicular lines.</li>
+
+        <li>Find x- and y-intercepts.</li>
+
+        <li>Understand the equation of a circle.</li>
+
+        <li>Apply coordinate geometry to real problems.</li>
+
+    </ul>
+
+    <div class="ask-insite">
+        <i class="fas fa-sparkles text-primary"></i>
+        Have a coordinate geometry question?
+        <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+    </div>
+
+</section>
+
+</div>
+
+{% endblock %}

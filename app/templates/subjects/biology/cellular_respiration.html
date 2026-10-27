@@ -1,0 +1,670 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cellular Respiration | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --bio-bg: #050a12;
+    --bio-panel: #0a111d;
+    --bio-border: rgba(100, 116, 139, .18);
+    --bio-text: #f1f5f9;
+    --bio-muted: #94a3b8;
+
+    --bio-blue: #1677b8;
+    --bio-blue-light: #2196d2;
+    --bio-cyan: #38bdf8;
+
+    --bio-green: #34d399;
+    --bio-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bio-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--bio-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.bio-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--bio-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.bio-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.bio-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.bio-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.bio-header h1 i {
+    color: var(--bio-blue-light);
+    margin-right: 8px;
+}
+
+.bio-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--bio-muted);
+    line-height: 1.75;
+}
+
+.bio-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--bio-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.bio-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.bio-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.bio-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.bio-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.bio-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.bio-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bio-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.bio-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.bio-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--bio-border);
+    padding-bottom: 6px;
+}
+
+.bio-section h4 {
+    color: #38bdf8;
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.bio-section p,
+.bio-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.bio-section li {
+    margin-bottom: 8px;
+}
+
+.bio-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--bio-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.bio-info:hover {
+    transform: translateX(4px);
+}
+
+.bio-info strong {
+    color: #55b6e9;
+}
+
+.bio-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.bio-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.bio-table th,
+.bio-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.bio-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.bio-table td {
+    color: #cbd5e1;
+}
+
+.bio-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--bio-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--bio-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--bio-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--bio-green); }
+.test-result.wrong { border-left-color: var(--bio-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--bio-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .bio-section { padding: 20px; }
+    .bio-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="bio-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('biology_page') }}" class="bio-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Biology Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="bio-header">
+        <h1>
+            <i class="fa-solid fa-fire"></i>
+            Cellular Respiration & Bioenergetics
+        </h1>
+        <p>
+            An exhaustive masterclass covering aerobic cellular respiration, glycolysis, pyruvate oxidation, 
+            the Krebs citric acid cycle, electron transport chains, and ATP synthase chemiosmosis.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="bio-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#glycolysis">Glycolysis</a>
+        <a href="#krebs">Krebs Cycle</a>
+        <a href="# oxidative">Oxidative Phosphorylation</a>
+        <a href="#fermentation">Fermentation</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="bio-section" id="intro">
+        <div class="bio-section-header">
+            <div class="bio-number">01</div>
+            <h2>Introduction to Cellular Respiration</h2>
+        </div>
+        <p>
+            Cellular respiration is the set of metabolic reactions and processes that take place in the cells of organisms 
+            to convert biochemical energy from nutrients into adenosine triphosphate (ATP), and then release waste products.
+        </p>
+        <p>
+            The overall chemical equation for aerobic cellular respiration is: 
+            <strong>C6H12O6 + 6 O2 &rarr; 6 CO2 + 6 H2O + Energy (ATP + Heat)</strong>. 
+            This process is divided into four major stages: glycolysis, pyruvate oxidation, the Krebs cycle, and oxidative phosphorylation.
+        </p>
+        <div class="bio-info">
+            <strong>Core Energetic Principle:</strong><br>
+            Cellular respiration is a controlled redox (oxidation-reduction) catabolic pathway where glucose is oxidized 
+            and oxygen is reduced, capturing free energy in the phosphate bonds of ATP.
+        </div>
+    </section>
+
+    <!-- 02 GLYCOLYSIS -->
+    <section class="bio-section" id="glycolysis">
+        <div class="bio-section-header">
+            <div class="bio-number">02</div>
+            <h2>Stage 1: Glycolysis (Cytoplasm)</h2>
+        </div>
+        <p>
+            Glycolysis is a universal metabolic pathway that occurs in the cytoplasm of all living cells, requiring zero oxygen (anaerobic).
+        </p>
+        <ul>
+            <li><strong>Energy Investment Phase (Steps 1-5):</strong> The cell invests 2 ATP molecules to phosphorylate a 6-carbon glucose molecule, splitting it into two 3-carbon phosphorylated sugars (glyceraldehyde 3-phosphate).</li>
+            <li><strong>Energy Payoff Phase (Steps 6-10):</strong> Each 3-carbon intermediate is oxidized, transferring electrons to NAD+ to form NADH, and producing 4 ATP molecules via substrate-level phosphorylation.</li>
+            <li><strong>Net Yield per Glucose:</strong> 2 ATP, 2 NADH, and 2 pyruvate molecules.</li>
+        </ul>
+
+        <div class="bio-table-wrapper">
+            <table class="bio-table">
+                <thead>
+                    <tr>
+                        <th>Stage of Respiration</th>
+                        <th>Cellular Location</th>
+                        <th>Inputs</th>
+                        <th>Outputs / Net Yield</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Glycolysis</strong></td>
+                        <td>Cytoplasm</td>
+                        <td>Glucose, 2 ATP, 2 NAD+, 4 ADP</td>
+                        <td>2 Pyruvate, 2 NADH, Net 2 ATP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pyruvate Oxidation</strong></td>
+                        <td>Mitochondrial Matrix</td>
+                        <td>2 Pyruvate, 2 Coenzyme A, 2 NAD+</td>
+                        <td>2 Acetyl-CoA, 2 NADH, 2 CO2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Krebs (Citric Acid) Cycle</strong></td>
+                        <td>Mitochondrial Matrix</td>
+                        <td>2 Acetyl-CoA, 6 NAD+, 2 FAD, 2 ADP</td>
+                        <td>4 CO2, 6 NADH, 2 FADH2, 2 ATP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Oxidative Phosphorylation</strong></td>
+                        <td>Inner Mitochondrial Membrane</td>
+                        <td>NADH, FADH2, O2, ADP</td>
+                        <td>H2O, NAD+, FAD, ~28-32 ATP</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 03 KREBS CYCLE -->
+    <section class="bio-section" id="krebs">
+        <div class="bio-section-header">
+            <div class="bio-number">03</div>
+            <h2>Stages 2 & 3: Pyruvate Oxidation & The Krebs Cycle</h2>
+        </div>
+        <p>
+            In eukaryotic cells, if oxygen is present, pyruvates are transported across the mitochondrial double membrane into the matrix.
+        </p>
+        <ul>
+            <li><strong>Pyruvate Oxidation (Link Reaction):</strong> Each 3-carbon pyruvate is decarboxylated (releasing CO2), oxidized to an acetyl group while reducing NAD+ to NADH, and attached to Coenzyme A to form Acetyl-CoA.</li>
+            <li><strong>The Krebs (Citric Acid) Cycle:</strong> Acetyl-CoA combines with a 4-carbon oxaloacetate molecule to form 6-carbon citrate. Through an 8-step cyclical pathway, citrate is systematically oxidized back into oxaloacetate.</li>
+            <li><strong>Products per Glucose (Two turns of the cycle):</strong> 4 CO2, 6 NADH, 2 FADH2, and 2 ATP (via substrate-level phosphorylation).</li>
+        </ul>
+    </section>
+
+    <!-- 04 OXIDATIVE PHOSPHORYLATION -->
+    <section class="bio-section" id="oxidative">
+        <div class="bio-section-header">
+            <div class="bio-number">04</div>
+            <h2>Stage 4: Oxidative Phosphorylation & Chemiosmosis</h2>
+        </div>
+        <p>
+            Oxidative phosphorylation accounts for the vast majority of ATP generated during aerobic respiration, consisting of two coupled processes: 
+            the Electron Transport Chain (ETC) and chemiosmosis via ATP synthase.
+        </p>
+        <ul>
+            <li><strong>Electron Transport Chain (ETC):</strong> A series of protein complexes (I-IV) embedded in the inner mitochondrial membrane. NADH and FADH2 donate high-energy electrons down the chain. As electrons pass through, complexes pump protons (H+) from the matrix into the intermembrane space.</li>
+            <li><strong>Final Electron Acceptor:</strong> Oxygen (O2) acts as the terminal electron acceptor at Complex IV, combining with electrons and protons to form metabolic water (H2O).</li>
+            <li><strong>Chemiosmosis & ATP Synthase:</strong> The accumulated proton gradient creates an electrochemical proton-motive force. Protons flow back into the mitochondrial matrix exclusively through the turbine-like channel of <strong>ATP synthase</strong>, driving the catalytic phosphorylation of ADP into ATP.</li>
+        </ul>
+        <div class="bio-info">
+            <strong>Proton-Motive Force:</strong><br>
+            Chemiosmosis is the process where energy stored in the form of a hydrogen ion gradient across a membrane is used to drive cellular work, specifically the synthesis of ATP.
+        </div>
+    </section>
+
+    <!-- 05 FERMENTATION -->
+    <section class="bio-section" id="fermentation">
+        <div class="bio-section-header">
+            <div class="bio-number">05</div>
+            <h2>Anaerobic Pathways: Fermentation</h2>
+        </div>
+        <p>
+            When oxygen is absent or in short supply, cells cannot run oxidative phosphorylation. To sustain glycolysis and maintain ATP production, 
+            cells rely on <strong>fermentation</strong> to regenerate NAD+ from NADH.
+        </p>
+        <ul>
+            <li><strong>Lactic Acid Fermentation:</strong> Pyruvate is reduced directly by NADH to form lactate, regenerating NAD+. Occurs in human skeletal muscle during strenuous exercise and in certain bacteria/fungi (used to make yogurt and cheese).</li>
+            <li><strong>Alcohol Fermentation:</strong> Pyruvate is converted into acetaldehyde (releasing CO2), which is then reduced by NADH to produce ethanol and regenerate NAD+. Occurs in yeast (used in baking and brewing).</li>
+        </ul>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="bio-section" id="test">
+        <div class="bio-section-header">
+            <div class="bio-number">06</div>
+            <h2>Interactive Cellular Respiration Test</h2>
+        </div>
+        <p>Test your understanding of cellular respiration stages, electron transport, and ATP yield.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Electron Transport Chain Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    What molecule serves as the <strong>final electron acceptor</strong> at the end of the electron transport chain in aerobic cellular respiration?
+                </div>
+
+                <select class="test-select" id="bioAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">Carbon dioxide (CO2)</option>
+                    <option value="correct">Oxygen (O2)</option>
+                    <option value="wrong2">Glucose (C6H12O6)</option>
+                    <option value="wrong3">Water (H2O)</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkBio">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="bioResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="bio-section" id="problems">
+        <div class="bio-section-header">
+            <div class="bio-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (ATP Yield Accounting per Glucose Molecule):</strong>
+            <p>Calculate the theoretical maximum net yield of ATP produced from the complete aerobic respiration of one glucose molecule, accounting for substrate-level phosphorylation and oxidative phosphorylation.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                1. <strong>Glycolysis:</strong> Net 2 ATP (substrate-level) + 2 NADH (yielding ~5 ATP via transport).<br>
+                2. <strong>Pyruvate Oxidation:</strong> 2 NADH yielded (yielding ~5 ATP).<br>
+                3. <strong>Krebs Cycle:</strong> 2 ATP (substrate-level) + 6 NADH (~15 ATP) + 2 FADH2 (~3 ATP).<br>
+                - <strong>Total Net Yield:</strong> Approximately 30 to 32 ATP molecules generated per single glucose molecule oxidized completely to carbon dioxide and water.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Role of Oxygen in the ETC):</strong>
+            <p>Explain what happens to the electron transport chain and ATP synthesis if a poison blocks the final enzyme complex (Complex IV) or removes oxygen from the cellular environment.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Halt of Electron Flow:</strong> Without oxygen to accept electrons at the end of Complex IV, electrons become backed up along the entire electron transport chain.<br>
+                - <strong>Loss of Proton Gradient:</strong> Because electrons stop moving, proton pumping across the inner mitochondrial membrane ceases, causing the proton-motive force to dissipate.<br>
+                - <strong>Failure of ATP Synthase:</strong> ATP synthase cannot generate ATP without the proton gradient, leading to rapid cellular energy failure and cell death.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Comparing Aerobic Respiration vs. Fermentation):</strong>
+            <p>Compare the net ATP yield per glucose molecule between aerobic cellular respiration and anaerobic fermentation. Why is fermentation necessary for cells in the absence of oxygen?</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Energy Efficiency:</strong> Aerobic respiration yields roughly 30-32 ATP per glucose, whereas anaerobic fermentation yields only 2 ATP (from glycolysis alone).<br>
+                - <strong>Regeneration of NAD+:</strong> Glycolysis requires a continuous supply of NAD+ to accept electrons. In the absence of oxygen, the electron transport chain cannot oxidize NADH back to NAD+. Fermentation provides an alternative pathway to oxidize NADH back to NAD+, allowing glycolysis to continue producing vital emergency ATP.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--bio-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with cellular respiration or metabolic pathways?</h3>
+        <p style="color:var(--bio-muted); margin:0;">
+            Ask Insite AI to explain Krebs cycle intermediates, chemiosmosis uncouplers, or mitochondrial disease pathologies.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const bioAnswer = document.getElementById("bioAnswer");
+const checkBio = document.getElementById("checkBio");
+const bioResult = document.getElementById("bioResult");
+
+checkBio.addEventListener("click", function () {
+    const val = bioAnswer.value;
+    bioResult.style.display = "block";
+
+    if (val === "correct") {
+        bioResult.className = "test-result correct";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Oxygen (O2) is the final electron acceptor in the electron transport chain, combining with electrons and protons to form metabolic water.</div>
+        `;
+    } else if (val === "") {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Carbon dioxide is a byproduct of pyruvate oxidation and the Krebs cycle. <strong>Oxygen</strong> is required as the final electron acceptor at the end of the electron transport chain.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

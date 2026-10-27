@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block title %}
+    Login | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body{
+        background:#0f172a;
+        color:#fff;
+    }
+
+    .login-wrapper{
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:40px 15px;
+    }
+
+    .login-card{
+        width:100%;
+        max-width:430px;
+        background:#1e293b;
+        border-radius:22px;
+        padding:35px;
+        box-shadow:0 15px 45px rgba(0,0,0,.45);
+        border:1px solid rgba(255,255,255,.06);
+    }
+
+    .logo{
+        width:80px;
+        height:80px;
+        border-radius:20px;
+        background:linear-gradient(135deg,#2563eb,#3b82f6);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:34px;
+        margin:auto;
+        margin-bottom:30px;
+        margin-top: 20px;
+        box-shadow:0 10px 25px rgba(37,99,235,.45);
+    }
+
+    .title{
+        text-align:center;
+        font-size:2rem;
+        font-weight:700;
+        margin-bottom:5px;
+    }
+
+    .subtitle{
+        text-align:center;
+        color:#94a3b8;
+        margin-bottom:30px;
+    }
+
+    label{
+        margin-top:15px;
+        margin-bottom:8px;
+        font-weight:600;
+    }
+
+    .form-control{
+        background:#0f172a;
+        color:white;
+        border:1px solid #334155;
+        border-radius:12px;
+        padding:12px;
+    }
+
+    .form-control:focus{
+        background:#0f172a;
+        color:white;
+        border-color:#3b82f6;
+        box-shadow:0 0 0 .2rem rgba(59,130,246,.25);
+    }
+
+    .btn-login{
+        width:100%;
+        margin-top:25px;
+        padding:12px;
+        border:none;
+        border-radius:12px;
+        background:linear-gradient(135deg,#2563eb,#3b82f6);
+        color:white;
+        font-size:17px;
+        font-weight:600;
+        transition:.3s;
+    }
+
+    .btn-login:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 25px rgba(37,99,235,.45);
+    }
+
+    .register-text{
+        text-align:center;
+        margin-top:25px;
+        color:#94a3b8;
+    }
+
+    .register-text a{
+        color:#60a5fa;
+        text-decoration:none;
+        font-weight:600;
+    }
+
+    .register-text a:hover{
+        text-decoration:underline;
+    }
+
+    .alert{
+        border-radius:12px;
+    }
+
+    @media(max-width:576px){
+
+        .login-card{
+            padding:28px 22px;
+        }
+
+        .title{
+            font-size:1.7rem;
+        }
+
+    }
+</style>
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" id="img"/><br>
+        </div>
+
+        <h2 class="title">
+            Insite AI
+        </h2>
+
+        <p class="subtitle">
+            Sign in to continue chatting with your AI assistant.
+        </p>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            {{ form.username.label(class="form-label") }}
+
+            {{ form.username(
+                class="form-control",
+                placeholder="Enter your username",
+                autocomplete="username"
+            ) }}
+
+            {{ form.password.label(class="form-label") }}
+
+            {{ form.password(
+                class="form-control",
+                placeholder="Enter your password",
+                autocomplete="current-password"
+            ) }}
+
+            {{ form.submit(
+                class="btn-login",
+                value="Login"
+            ) }}
+
+        </form>
+
+        <div class="register-text">
+            Don't have an account?
+            <a href="{{ url_for('register_page') }}">
+                Create one
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

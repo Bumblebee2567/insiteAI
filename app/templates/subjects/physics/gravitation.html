@@ -1,0 +1,663 @@
+{% extends "base.html" %}
+
+{% block title %}
+Universal Gravitation & Orbital Mechanics | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-earth-americas"></i>
+            Universal Gravitation, Rockets & Satellite Dynamics
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering Newton's law of universal gravitation, gravitational field strength, 
+            Kepler's laws, satellite orbital mechanics, rocket propulsion physics, and gravitational escape velocity.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#newton_grav">Law of Gravitation</a>
+        <a href="#field">Gravitational Field</a>
+        <a href="#potential">Potential Energy</a>
+        <a href="#kepler">Kepler's Laws</a>
+        <a href="#satellites">Satellite Orbits</a>
+        <a href="#rockets">Rocket Physics</a>
+        <a href="#escape">Escape Velocity</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Gravitation & Space Mechanics</h2>
+        </div>
+        <p>
+            Gravitation is the universal attractive interaction existing between all matter in the universe. 
+            While terrestrial gravity near the surface of the Earth imparts a nearly constant downward acceleration (g approximately 9.81 m/s<sup>2</sup>), 
+            Isaac Newton recognized that the exact same force governs the orbits of the Moon around the Earth, artificial communication satellites, 
+            interplanetary space probes, and ballistic rocket trajectories.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Gravity is an attractive central force that acts along the line connecting the centers of two interacting masses. 
+            It is the foundational force governing celestial mechanics, orbital maneuvers, and space exploration.
+        </div>
+    </section>
+
+    <!-- 02 NEWTON'S LAW OF GRAVITATION -->
+    <section class="phys-section" id="newton_grav">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Newton's Law of Universal Gravitation</h2>
+        </div>
+        <p>
+            Newton's Law of Universal Gravitation states that every point mass attracts every other point mass with a force 
+            proportional to the product of their masses and inversely proportional to the square of the distance between them:
+        </p>
+        <div class="phys-info">
+            <strong>Equation:</strong><br>
+            <strong>F<sub>g</sub> = (G * m<sub>1</sub> * m<sub>2</sub>) / r<sup>2</sup></strong><br>
+            where G is the universal gravitational constant (G approximately 6.674 &times; 10<sup>-11</sup> N&middot;m<sup>2</sup>/kg<sup>2</sup>), 
+            m<sub>1</sub> and m<sub>2</sub> are the interacting masses, and r is the center-to-center separation distance.
+        </div>
+        <ul>
+            <li><strong>Inverse-Square Nature:</strong> Because force falls off as 1/r<sup>2</sup>, doubling the distance between two masses reduces the gravitational attraction by a factor of four.</li>
+            <li><strong>Shell Theorem:</strong> A spherically symmetric mass distributes its gravitational force outside its radius as if all its mass were concentrated at its exact geometric center.</li>
+        </ul>
+    </section>
+
+    <!-- 03 GRAVITATIONAL FIELD -->
+    <section class="phys-section" id="field">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Gravitational Field Strength</h2>
+        </div>
+        <p>
+            The gravitational field vector (g) at any point in space is defined as the gravitational force experienced by a small test mass m<sub>test</sub> placed at that point, divided by the test mass:
+        </p>
+        <ul>
+            <li><strong>Definition:</strong> 
+                <strong>g = F<sub>g</sub> / m<sub>test</sub></strong></li>
+            <li><strong>Magnitude for a Spherically Symmetric Mass M:</strong> 
+                <strong>g = (G * M) / r<sup>2</sup></strong><br>
+                measured in Newtons per kilogram (N/kg) or meters per second squared (m/s<sup>2</sup>).</li>
+            <li><strong>Altitude Variation:</strong> As an object moves to an altitude h above the Earth's surface (where r = R<sub>E</sub> + h, with R<sub>E</sub> being the Earth's radius), gravitational field strength decreases according to:
+                <br><strong>g(h) = (G * M<sub>E</sub>) / (R<sub>E</sub> + h)<sup>2</sup></strong></li>
+        </ul>
+    </section>
+
+    <!-- 04 POTENTIAL ENERGY -->
+    <section class="phys-section" id="potential">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Gravitational Potential Energy (General)</h2>
+        </div>
+        <p>
+            Near the Earth's surface, gravitational potential energy is approximated as U = mgh. However, for large astronomical distances where g varies, 
+            we use the general expression derived by integrating the universal gravitational force from infinity (r = infinity, where potential energy is defined as zero) to a distance r:
+        </p>
+        <ul>
+            <li><strong>General Potential Energy Formula:</strong> 
+                <strong>U(r) = - ((G * M * m) / r)</strong></li>
+            <li><strong>Negative Sign Significance:</strong> Gravitational potential energy is always negative because zero potential energy is defined at infinite separation (r = infinity), and work must be done against gravity to separate masses.</li>
+        </ul>
+    </section>
+
+    <!-- 05 KEPLER'S LAWS -->
+    <section class="phys-section" id="kepler">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Kepler's Planetary Laws</h2>
+        </div>
+        <p>
+            Johannes Kepler formulated three empirical laws describing planetary motion, which Isaac Newton later proved were exact mathematical consequences of his Law of Gravitation:
+        </p>
+        <ul>
+            <li><strong>First Law (Law of Orbits):</strong> All planets and satellites move in elliptical orbits, with the central primary body located at one of the two focal points.</li>
+            <li><strong>Second Law (Law of Equal Areas):</strong> A line segment joining a planet or satellite to the central body sweeps out equal areas during equal intervals of time. This is a direct consequence of the <strong>conservation of angular momentum</strong> (L = m * v * r * sin(theta) = constant), meaning orbiting bodies move fastest when closest to the primary body (periapsis) and slowest when farthest (apoapsis).</li>
+            <li><strong>Third Law (Law of Periods):</strong> The square of the orbital period (T) of any orbiting body is directly proportional to the cube of the semi-major axis (r) of its orbit:
+                <br><strong>T<sup>2</sup> = ((4 * pi<sup>2</sup>) / (G * M)) * r<sup>3</sup></strong></li>
+        </ul>
+    </section>
+
+    <!-- 06 SATELLITES -->
+    <section class="phys-section" id="satellites">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Satellite Orbital Mechanics</h2>
+        </div>
+        <p>
+            A satellite of mass m orbiting a central astronomical body of mass M at a stable orbital radius r experiences a centripetal force provided entirely by the gravitational attraction:
+        </p>
+        <ul>
+            <li><strong>Orbital Speed (v):</strong> 
+                Equating gravitational force to centripetal force ((G * M * m) / r<sup>2</sup> = (m * v<sup>2</sup>) / r):
+                <br><strong>v = square root of ((G * M) / r)</strong></li>
+            <li><strong>Orbital Period (T):</strong> 
+                The time required for one complete orbit (T = (2 * pi * r) / v):
+                <br><strong>T = 2 * pi * square root of (r<sup>3</sup> / (G * M))</strong></li>
+            <li><strong>Geostationary Satellites:</strong> A satellite whose orbital period matches the rotational period of the Earth (24 hours), remaining permanently fixed above a single geographic location on the equator at an altitude of approximately 35,786 km.</li>
+            <li><strong>Total Orbital Energy:</strong> E = K + U = (1/2)*m*v<sup>2</sup> - ((G * M * m) / r) = - ((G * M * m) / (2 * r)).</li>
+        </ul>
+    </section>
+
+    <!-- 07 ROCKETS -->
+    <section class="phys-section" id="rockets">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Rocket Propulsion & Tsiolkovsky Mechanics</h2>
+        </div>
+        <p>
+            Rocket propulsion operates entirely on the <strong>conservation of momentum</strong> (Newton's Third Law). As a rocket expels exhaust gases backward at high velocity relative to the rocket, the rocket gains forward momentum.
+        </p>
+        <ul>
+            <li><strong>Tsiolkovsky Rocket Equation:</strong> Relates the final velocity achieved by a rocket to its initial mass (m<sub>i</sub> including propellant), final dry mass (m<sub>f</sub> after all propellant is burned), and effective exhaust velocity (v<sub>e</sub>):
+                <br><strong>delta v = v<sub>e</sub> * ln(m<sub>i</sub> / m<sub>f</sub>)</strong></li>
+            <li><strong>Mass Ratio:</strong> The efficiency and capability of a rocket depend heavily on its mass ratio (m<sub>i</sub> / m<sub>f</sub>). Because most of a launch vehicle's mass consists of chemical propellant, multi-stage rockets are utilized to drop empty fuel tanks and increase payload delivery capability.</li>
+            <li><strong>Thrust Force:</strong> F<sub>thrust</sub> = v<sub>rel</sub> * (dm / dt), where dm/dt is the mass burn rate of the expelled exhaust gas.</li>
+        </ul>
+    </section>
+
+    <!-- 08 ESCAPE VELOCITY -->
+    <section class="phys-section" id="escape">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Gravitational Escape Velocity</h2>
+        </div>
+        <p>
+            Escape velocity (v<sub>esc</sub>) is the minimum initial speed required for an unpowered object (such as a spacecraft or rocket) 
+            to escape the gravitational field of a celestial body and reach infinite distance with zero residual speed.
+        </p>
+        <div class="phys-info">
+            <strong>Derivation via Energy Conservation (K<sub>i</sub> + U<sub>i</sub> = K<sub>f</sub> + U<sub>f</sub>):</strong><br>
+            Setting K<sub>f</sub> = 0 and U<sub>f</sub> = 0 at r = infinity:<br>
+            (1/2) * m * v<sub>esc</sub><sup>2</sup> - ((G * M * m) / R) = 0 implies <strong>v<sub>esc</sub> = square root of ((2 * G * M) / R)</strong><br>
+            where R is the radius of the celestial body. Note that escape velocity is independent of the escaping object's mass (m). 
+            For Earth, the escape speed from the surface is approximately 11.2 km/s.
+        </div>
+    </section>
+
+    <!-- 09 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Interactive Gravitation Test</h2>
+        </div>
+        <p>Test your conceptual understanding of orbital mechanics, Kepler's laws, and escape velocity.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Orbital Mechanics Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    If the orbital radius of a satellite in circular orbit around the Earth is 
+                    <strong>tripled</strong> (r becomes 3r), what happens to its orbital period (T)?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">It increases by a factor of 3 raised to the power of (3/2) (approximately 5.2 times)</option>
+                    <option value="wrong1">It triples (increases by a factor of 3)</option>
+                    <option value="wrong2">It increases by a factor of 9</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">10</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Satellite Orbital Speed & Period):</strong>
+            <p>A communications satellite is placed in a circular orbit at an altitude of h = 35,786 km above the Earth's surface. 
+            Given that the Earth's mass is M<sub>E</sub> = 5.972 &times; 10<sup>24</sup> kg and its mean radius is R<sub>E</sub> = 6.371 &times; 10<sup>6</sup> m, 
+            calculate: (a) the orbital speed of the satellite, and (b) its orbital period in hours. (Use G = 6.674 &times; 10<sup>-11</sup> N&middot;m<sup>2</sup>/kg<sup>2</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Orbital Radius and Speed (v):</strong><br>
+                - Total orbital radius r = R<sub>E</sub> + h = 6.371 &times; 10<sup>6</sup> m + 35.786 &times; 10<sup>6</sup> m = 4.2157 &times; 10<sup>7</sup> m.<br>
+                - v = square root of ((G * M<sub>E</sub>) / r) = square root of (((6.674 &times; 10<sup>-11</sup>)(5.972 &times; 10<sup>24</sup>)) / (4.2157 &times; 10<sup>7</sup>)) = square root of (3.986 &times; 10<sup>14</sup> / 4.2157 &times; 10<sup>7</sup>) = square root of (9.455 &times; 10<sup>6</sup>) approximately equal to <strong>3075 m/s</strong> (3.08 km/s).<br><br>
+                <strong>(b) Orbital Period (T):</strong><br>
+                - T = (2 * pi * r) / v = (2 * pi * 4.2157 &times; 10<sup>7</sup> m) / (3075 m/s) = (2.648 &times; 10<sup>8</sup>) / 3075 approximately equal to 86,114 seconds.<br>
+                - Convert to hours: T = 86,114 / 3600 approximately equal to <strong>23.9 hours</strong> (a geostationary orbit!).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Escape Speed Calculation):</strong>
+            <p>Calculate the escape speed from the surface of the Moon. Given that the Moon's mass is M<sub>M</sub> = 7.342 &times; 10<sup>22</sup> kg 
+            and its radius is R<sub>M</sub> = 1.737 &times; 10<sup>6</sup> m. (Use G = 6.674 &times; 10<sup>-11</sup> N&middot;m<sup>2</sup>/kg<sup>2</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula for escape speed: v<sub>esc</sub> = square root of ((2 * G * M<sub>M</sub>) / R<sub>M</sub>).<br>
+                - Substitute values:<br>
+                v<sub>esc</sub> = square root of (((2 * 6.674 &times; 10<sup>-11</sup> N&middot;m<sup>2</sup>/kg<sup>2</sup>) * (7.342 &times; 10<sup>22</sup> kg)) / (1.737 &times; 10<sup>6</sup> m)).<br>
+                - v<sub>esc</sub> = square root of (9.791 &times; 10<sup>12</sup> / 1.737 &times; 10<sup>6</sup>) = square root of (5.637 &times; 10<sup>6</sup>) approximately equal to <strong>2374 m/s</strong> (2.37 km/s).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Rocket Delta-V via Tsiolkovsky Equation):</strong>
+            <p>A sounding rocket has an effective exhaust velocity of v<sub>e</sub> = 2500 m/s. Its initial total mass is m<sub>i</sub> = 10,000 kg, 
+            of which 8,000 kg is fuel (leaving a dry mass of m<sub>f</sub> = 2,000 kg). Calculate the maximum velocity change (delta v) 
+            delivered by the rocket engine in free space (ignoring gravity and atmospheric drag).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Tsiolkovsky Rocket Equation: delta v = v<sub>e</sub> * ln(m<sub>i</sub> / m<sub>f</sub>).<br>
+                - Mass ratio: m<sub>i</sub> / m<sub>f</sub> = 10,000 kg / 2,000 kg = 5.0.<br>
+                - Natural logarithm: ln(5.0) approximately equal to 1.609.<br>
+                - delta v = (2500 m/s) * 1.609 approximately equal to <strong>4023 m/s</strong> (4.02 km/s).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with orbital mechanics, rockets, or Kepler's laws?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down elliptical orbit energy integrals, Hohmann transfer orbits, or multi-stage rocket staging calculations.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>According to Kepler's Third Law, T<sup>2</sup> is proportional to r<sup>3</sup>. Therefore, T is proportional to r raised to the power of (3/2). If r is multiplied by 3, T increases by 3 raised to the power of (3/2) = square root of 27 approximately equal to 5.20 times.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Kepler's Third Law states that T<sup>2</sup> is proportional to r<sup>3</sup>, meaning period scales with r to the power of (3/2), which equals approximately 5.2 times when radius is tripled.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

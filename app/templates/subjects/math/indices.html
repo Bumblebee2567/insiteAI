@@ -1,0 +1,1276 @@
+{% extends "base.html" %}
+
+{% block title %}
+Indices and Logarithms | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .indices-page {
+        min-height: 100vh;
+        padding: 30px 20px 60px;
+        background: #0b0f14;
+    }
+
+    .indices-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #ffffff;
+        background: #151c2d;
+        border: 1px solid #263554;
+        padding: 10px 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+        margin-bottom: 28px;
+    }
+
+    .back-button:hover {
+        background: #0d6efd;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    .indices-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .indices-header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    .indices-header h1 i {
+        color: #0d6efd;
+    }
+
+    .indices-header p {
+        color: #adb5bd;
+        font-size: 17px;
+        max-width: 780px;
+        margin: auto;
+        line-height: 1.7;
+    }
+
+    .topic-navigation {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 35px;
+        padding: 15px;
+        background: #111820;
+        border-radius: 15px;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+    }
+
+    .topic-navigation a {
+        color: #ffffff;
+        text-decoration: none;
+        background: #1b2633;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .topic-navigation a:hover {
+        background: #0d6efd;
+    }
+
+    .topic-section {
+        background: #111820;
+        border: 1px solid #202b36;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        scroll-margin-top: 90px;
+    }
+
+    .topic-section h2 {
+        color: #4d9cff;
+        font-size: 28px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+    .topic-section h3 {
+        color: #ffffff;
+        font-size: 20px;
+        margin-top: 22px;
+        margin-bottom: 8px;
+    }
+
+    .topic-section p {
+        color: #c5cbd1;
+        line-height: 1.75;
+        margin-bottom: 10px;
+    }
+
+    .topic-section ul {
+        color: #c5cbd1;
+        line-height: 1.8;
+    }
+
+    .topic-section li {
+        margin-bottom: 5px;
+    }
+
+    .formula {
+        background: #0b1118;
+        border-left: 4px solid #0d6efd;
+        padding: 14px 18px;
+        margin: 15px 0;
+        border-radius: 8px;
+        color: #ffffff;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+    }
+
+    .example {
+        background: #172230;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-top: 15px;
+        color: #d9e0e7;
+        line-height: 1.75;
+    }
+
+    .example strong {
+        color: #4d9cff;
+    }
+
+    .definition {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .ai-help {
+        margin-top: 20px;
+        padding: 17px;
+        border-radius: 12px;
+        background: #101827;
+        border: 1px dashed #28518e;
+    }
+
+    .ai-help i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ai-help p {
+        margin: 6px 0 0;
+        font-size: 14px;
+    }
+
+    .ai-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #151c2d;
+        border: 1px solid #263554;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .ai-button:hover {
+        background: #0d6efd;
+        color: #ffffff;
+    }
+
+    .indices-footer {
+        text-align: center;
+        margin-top: 45px;
+        color: #748096;
+    }
+
+    .indices-footer i {
+        color: #0d6efd;
+    }
+
+    @media (max-width: 768px) {
+
+        .indices-page {
+            padding: 20px 12px 45px;
+        }
+
+        .indices-header h1 {
+            font-size: 32px;
+        }
+
+        .indices-header p {
+            font-size: 15px;
+        }
+
+        .topic-section {
+            padding: 20px;
+        }
+
+        .topic-section h2 {
+            font-size: 24px;
+        }
+
+        .topic-section h3 {
+            font-size: 18px;
+        }
+
+        .topic-navigation {
+            justify-content: flex-start;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: thin;
+            scrollbar-color: #0d6efd #111820;
+        }
+
+        .topic-navigation::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .topic-navigation::-webkit-scrollbar-track {
+            background: #111820;
+        }
+
+        .topic-navigation::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 10px;
+        }
+
+        .topic-navigation a {
+            white-space: nowrap;
+        }
+
+        .formula {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="indices-page">
+
+```
+<div class="indices-container">
+
+    <a href="{{ url_for('math_page') }}" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back to Mathematics
+    </a>
+
+
+    <header class="indices-header">
+
+        <h1>
+            <i class="fas fa-superscript"></i>
+            Indices and Logarithms
+        </h1>
+
+        <p>
+            Indices and logarithms are closely connected ideas used
+            throughout algebra, equations, science, finance and
+            higher mathematics. Indices describe repeated
+            multiplication, while logarithms help us find unknown
+            powers.
+        </p>
+
+    </header>
+
+
+    <nav class="topic-navigation">
+
+        <a href="#indices-basics">Indices Basics</a>
+        <a href="#index-laws">Laws of Indices</a>
+        <a href="#zero-negative">Zero & Negative</a>
+        <a href="#fractional">Fractional Indices</a>
+        <a href="#standard-form">Standard Form</a>
+        <a href="#simplification">Simplification</a>
+        <a href="#index-equations">Index Equations</a>
+        <a href="#log-basics">Logarithms</a>
+        <a href="#log-laws">Log Laws</a>
+        <a href="#change-base">Change of Base</a>
+        <a href="#log-equations">Log Equations</a>
+        <a href="#exponential">Exponential Equations</a>
+        <a href="#applications">Applications</a>
+
+    </nav>
+
+
+    <section class="topic-section" id="indices-basics">
+
+        <h2>1. Understanding Indices</h2>
+
+        <p>
+            An index, also called an exponent or power, tells us how
+            many times a number is multiplied by itself.
+        </p>
+
+        <div class="formula">
+            aⁿ = a × a × a × ... × a
+        </div>
+
+        <p>
+            The number a is called the <span class="definition">base</span>,
+            while n is called the <span class="definition">index</span>
+            or exponent.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Expand 5³.
+            </p>
+
+            <div class="formula">
+                5³ = 5 × 5 × 5
+                <br>
+                = 125
+            </div>
+
+        </div>
+
+        <h3>Important Examples</h3>
+
+        <div class="formula">
+            2² = 4
+            <br>
+            3³ = 27
+            <br>
+            10² = 100
+            <br>
+            10³ = 1000
+        </div>
+
+        <p>
+            Indices allow repeated multiplication to be written
+            compactly and are especially useful when expressions
+            become complicated.
+        </p>
+
+        <div class="ai-help">
+
+            <i class="fas fa-sparkles"></i>
+            <strong>Ask Insite AI</strong>
+
+            <p>
+                If indices seem confusing, ask Insite AI to explain
+                them step by step with simple examples.
+            </p>
+
+            <a href="{{ url_for('chat') }}" class="ai-button">
+                <i class="fas fa-comments"></i>
+                Ask Insite AI
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="index-laws">
+
+        <h2>2. Laws of Indices</h2>
+
+        <p>
+            The laws of indices allow us to simplify expressions
+            involving powers.
+        </p>
+
+        <h3>Multiplication of Powers with the Same Base</h3>
+
+        <p>
+            When powers with the same base are multiplied, add
+            their indices.
+        </p>
+
+        <div class="formula">
+            aᵐ × aⁿ = aᵐ⁺ⁿ
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                2³ × 2⁴
+                <br>
+                = 2³⁺⁴
+                <br>
+                = 2⁷
+                <br>
+                = 128
+            </div>
+
+        </div>
+
+        <h3>Division of Powers with the Same Base</h3>
+
+        <div class="formula">
+            aᵐ ÷ aⁿ = aᵐ⁻ⁿ
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                5⁶ ÷ 5²
+                <br>
+                = 5⁶⁻²
+                <br>
+                = 5⁴
+            </div>
+
+        </div>
+
+        <h3>Power Raised to Another Power</h3>
+
+        <div class="formula">
+            (aᵐ)ⁿ = aᵐⁿ
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                (2³)²
+                <br>
+                = 2⁶
+                <br>
+                = 64
+            </div>
+
+        </div>
+
+        <h3>Power of a Product</h3>
+
+        <div class="formula">
+            (ab)ⁿ = aⁿbⁿ
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                (2 × 3)²
+                <br>
+                = 2² × 3²
+                <br>
+                = 4 × 9
+                <br>
+                = 36
+            </div>
+
+        </div>
+
+        <h3>Power of a Quotient</h3>
+
+        <div class="formula">
+            (a/b)ⁿ = aⁿ/bⁿ
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="zero-negative">
+
+        <h2>3. Zero and Negative Indices</h2>
+
+        <h3>Zero Index</h3>
+
+        <p>
+            Any non-zero number raised to the power zero equals 1.
+        </p>
+
+        <div class="formula">
+            a⁰ = 1
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                7⁰ = 1
+                <br>
+                100⁰ = 1
+                <br>
+                x⁰ = 1
+            </div>
+
+        </div>
+
+        <h3>Negative Indices</h3>
+
+        <p>
+            A negative index means that the base is moved to the
+            denominator and the sign of the index becomes positive.
+        </p>
+
+        <div class="formula">
+            a⁻ⁿ = 1/aⁿ
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                2⁻³
+                <br>
+                = 1/2³
+                <br>
+                = 1/8
+            </div>
+
+        </div>
+
+        <h3>Another Example</h3>
+
+        <div class="formula">
+            x⁻⁴ = 1/x⁴
+        </div>
+
+        <p>
+            Negative indices do not mean that the final answer
+            must be negative.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="fractional">
+
+        <h2>4. Fractional Indices</h2>
+
+        <p>
+            Fractional indices are connected to roots.
+        </p>
+
+        <div class="formula">
+            a¹⁄ⁿ = ⁿ√a
+        </div>
+
+        <p>
+            Therefore, an index of 1/2 represents a square root,
+            while an index of 1/3 represents a cube root.
+        </p>
+
+        <div class="formula">
+            a¹⁄² = √a
+            <br>
+            a¹⁄³ = ∛a
+        </div>
+
+        <h3>General Rule</h3>
+
+        <div class="formula">
+            aᵐ⁄ⁿ = ⁿ√(aᵐ)
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                16¹⁄²
+                <br>
+                = √16
+                <br>
+                = 4
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                27²⁄³
+                <br>
+                = (∛27)²
+                <br>
+                = 3²
+                <br>
+                = 9
+            </div>
+
+        </div>
+
+        <h3>Negative Fractional Indices</h3>
+
+        <div class="formula">
+            a⁻ᵐ⁄ⁿ = 1 / ⁿ√(aᵐ)
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="standard-form">
+
+        <h2>5. Standard Form and Powers of Ten</h2>
+
+        <p>
+            Standard form is used to write very large or very small
+            numbers conveniently.
+        </p>
+
+        <div class="formula">
+            A × 10ⁿ
+        </div>
+
+        <p>
+            For standard form, A must be at least 1 but less than 10.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Write 4500000 in standard form.
+            </p>
+
+            <div class="formula">
+                4.5 × 10⁶
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Write 0.00032 in standard form.
+            </p>
+
+            <div class="formula">
+                3.2 × 10⁻⁴
+            </div>
+
+        </div>
+
+        <h3>Multiplication in Standard Form</h3>
+
+        <div class="formula">
+            (a × 10ᵐ)(b × 10ⁿ)
+            =
+            ab × 10ᵐ⁺ⁿ
+        </div>
+
+        <h3>Division in Standard Form</h3>
+
+        <div class="formula">
+            (a × 10ᵐ)/(b × 10ⁿ)
+            =
+            (a/b) × 10ᵐ⁻ⁿ
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="simplification">
+
+        <h2>6. Simplifying Expressions with Indices</h2>
+
+        <p>
+            When simplifying expressions containing indices, first
+            identify terms with the same base and then apply the
+            appropriate law.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Simplify:
+            </p>
+
+            <div class="formula">
+                x³ × x⁵
+                <br>
+                = x⁸
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Simplify:
+            </p>
+
+            <div class="formula">
+                a⁷ ÷ a²
+                <br>
+                = a⁵
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Simplify:
+            </p>
+
+            <div class="formula">
+                (x²y³)²
+                <br>
+                = x⁴y⁶
+            </div>
+
+        </div>
+
+        <h3>Important Tip</h3>
+
+        <p>
+            Do not add indices unless the terms are being multiplied
+            with the same base. Do not multiply indices unless one
+            power is raised to another power.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="index-equations">
+
+        <h2>7. Equations Involving Indices</h2>
+
+        <p>
+            Some equations contain the unknown in the index.
+            These are called exponential equations.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                2ˣ = 8
+            </div>
+
+            <p>
+                Since 8 = 2³:
+            </p>
+
+            <div class="formula">
+                2ˣ = 2³
+                <br>
+                x = 3
+            </div>
+
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                3ˣ = 81
+            </div>
+
+            <p>
+                Since 81 = 3⁴:
+            </p>
+
+            <div class="formula">
+                3ˣ = 3⁴
+                <br>
+                x = 4
+            </div>
+
+        </div>
+
+        <p>
+            When the two sides can be expressed using the same base,
+            compare their indices.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="log-basics">
+
+        <h2>8. Introduction to Logarithms</h2>
+
+        <p>
+            A logarithm answers the question:
+            <strong>"What power must this base be raised to in order
+            to obtain this number?"</strong>
+        </p>
+
+        <div class="formula">
+            logₐ x = y
+            ⇔
+            aʸ = x
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                log₂ 8 = 3
+            </div>
+
+            <p>
+                because:
+            </p>
+
+            <div class="formula">
+                2³ = 8
+            </div>
+
+        </div>
+
+        <h3>Another Example</h3>
+
+        <div class="formula">
+            log₁₀ 1000 = 3
+            <br>
+            because
+            <br>
+            10³ = 1000
+        </div>
+
+        <h3>Parts of a Logarithm</h3>
+
+        <div class="formula">
+            logₐ x = y
+        </div>
+
+        <p>
+            a is the base, x is the argument, and y is the logarithm.
+        </p>
+
+        <h3>Common Logarithm</h3>
+
+        <p>
+            A logarithm with base 10 is called a common logarithm.
+        </p>
+
+        <div class="formula">
+            log₁₀ x
+        </div>
+
+        <h3>Natural Logarithm</h3>
+
+        <p>
+            A logarithm with base e is called the natural logarithm.
+            It is written as ln.
+        </p>
+
+        <div class="formula">
+            ln x = logₑ x
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="log-laws">
+
+        <h2>9. Laws of Logarithms</h2>
+
+        <h3>Product Law</h3>
+
+        <div class="formula">
+            logₐ(MN)
+            =
+            logₐM + logₐN
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                log₂(8 × 4)
+                <br>
+                = log₂8 + log₂4
+                <br>
+                = 3 + 2
+                <br>
+                = 5
+            </div>
+
+        </div>
+
+        <h3>Quotient Law</h3>
+
+        <div class="formula">
+            logₐ(M/N)
+            =
+            logₐM - logₐN
+        </div>
+
+        <h3>Power Law</h3>
+
+        <div class="formula">
+            logₐ(Mⁿ)
+            =
+            n logₐM
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                log₂(8²)
+                <br>
+                = 2log₂8
+                <br>
+                = 2 × 3
+                <br>
+                = 6
+            </div>
+
+        </div>
+
+        <h3>Logarithm of One</h3>
+
+        <div class="formula">
+            logₐ1 = 0
+        </div>
+
+        <h3>Logarithm of the Base</h3>
+
+        <div class="formula">
+            logₐa = 1
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="change-base">
+
+        <h2>10. Change of Base</h2>
+
+        <p>
+            The change-of-base formula allows a logarithm to be
+            converted to another base.
+        </p>
+
+        <div class="formula">
+            logₐb = logₓb / logₓa
+        </div>
+
+        <p>
+            The most common choices for x are 10 and e.
+        </p>
+
+        <div class="formula">
+            logₐb = log b / log a
+        </div>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Express log₂10 using common logarithms.
+            </p>
+
+            <div class="formula">
+                log₂10 = log10 / log2
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="log-equations">
+
+        <h2>11. Solving Logarithmic Equations</h2>
+
+        <p>
+            Logarithmic equations can often be solved by converting
+            logarithmic form into exponential form or by applying
+            the laws of logarithms.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                log₂x = 5
+            </div>
+
+            <p>
+                Convert to exponential form:
+            </p>
+
+            <div class="formula">
+                2⁵ = x
+                <br>
+                x = 32
+            </div>
+
+        </div>
+
+        <h3>Example with a Product</h3>
+
+        <div class="example">
+
+            <strong>Question:</strong>
+
+            <div class="formula">
+                log₂x + log₂4 = 5
+            </div>
+
+            <p>
+                Use the product law:
+            </p>
+
+            <div class="formula">
+                log₂(4x) = 5
+            </div>
+
+            <p>
+                Convert to exponential form:
+            </p>
+
+            <div class="formula">
+                4x = 2⁵
+                <br>
+                4x = 32
+                <br>
+                x = 8
+            </div>
+
+        </div>
+
+        <h3>Important Restriction</h3>
+
+        <p>
+            The argument of a real logarithm must be positive.
+        </p>
+
+        <div class="formula">
+            x > 0
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="exponential">
+
+        <h2>12. Exponential Equations and Logarithms</h2>
+
+        <p>
+            Logarithms are especially useful when the unknown appears
+            in an exponent and the two sides cannot easily be written
+            using the same base.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <div class="formula">
+                2ˣ = 7
+            </div>
+
+            <p>
+                Take logarithms of both sides:
+            </p>
+
+            <div class="formula">
+                log(2ˣ) = log7
+            </div>
+
+            <p>
+                Apply the power law:
+            </p>
+
+            <div class="formula">
+                x log2 = log7
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                x = log7 / log2
+            </div>
+
+        </div>
+
+        <h3>General Exponential Form</h3>
+
+        <div class="formula">
+            aˣ = b
+            <br><br>
+            x = logₐb
+        </div>
+
+        <p>
+            This relationship is one of the main reasons logarithms
+            are useful in mathematics.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="applications">
+
+        <h2>13. Applications of Indices and Logarithms</h2>
+
+        <p>
+            Indices and logarithms are not only algebraic topics.
+            They are used to model real-world situations involving
+            growth, decay, repeated multiplication and extremely
+            large or small quantities.
+        </p>
+
+        <h3>Compound Growth</h3>
+
+        <p>
+            Compound growth can be represented using powers.
+        </p>
+
+        <div class="formula">
+            A = P(1 + r)ⁿ
+        </div>
+
+        <p>
+            where P is the initial amount, r is the growth rate per
+            period and n is the number of periods.
+        </p>
+
+        <h3>Compound Interest</h3>
+
+        <div class="formula">
+            A = P(1 + r/n)ⁿᵗ
+        </div>
+
+        <p>
+            This formula is used when interest is compounded multiple
+            times per year.
+        </p>
+
+        <h3>Exponential Decay</h3>
+
+        <p>
+            Quantities such as radioactive substances, some populations
+            and certain physical processes can decrease exponentially.
+        </p>
+
+        <div class="formula">
+            A = A₀(1-r)ᵗ
+        </div>
+
+        <h3>Finding Time Using Logarithms</h3>
+
+        <p>
+            If time appears as an exponent, logarithms can be used
+            to isolate it.
+        </p>
+
+        <div class="example">
+
+            <strong>Example:</strong>
+
+            <p>
+                Suppose:
+            </p>
+
+            <div class="formula">
+                100(1.05)ᵗ = 200
+            </div>
+
+            <p>
+                Divide by 100:
+            </p>
+
+            <div class="formula">
+                1.05ᵗ = 2
+            </div>
+
+            <p>
+                Take logarithms:
+            </p>
+
+            <div class="formula">
+                t log(1.05) = log2
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                t = log2 / log(1.05)
+            </div>
+
+        </div>
+
+        <div class="ai-help">
+
+            <i class="fas fa-sparkles"></i>
+            <strong>Ask Insite AI</strong>
+
+            <p>
+                Indices and logarithms become much easier when you
+                practise different types of equations. Ask Insite AI
+                to explain a difficult question or create practice
+                questions for you.
+            </p>
+
+            <a href="{{ url_for('chat') }}" class="ai-button">
+                <i class="fas fa-comments"></i>
+                Ask Insite AI
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <div class="indices-footer">
+
+        <i class="fas fa-sparkles"></i>
+
+        Keep practising — indices and logarithms become much easier
+        once you understand the connection between powers and logs.
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

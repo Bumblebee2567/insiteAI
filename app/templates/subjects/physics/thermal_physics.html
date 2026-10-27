@@ -1,0 +1,654 @@
+{% extends "base.html" %}
+
+{% block title %}
+Thermal Physics & Heat | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-temperature-high"></i>
+            Thermal Physics, Heat Transfer & Calorimetry
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering temperature scales, thermal expansion, specific heat capacity, 
+            latent heat phase transitions, heat transfer mechanisms, and calorimetry problem solving.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#temp">Temperature & Scales</a>
+        <a href="#expansion">Thermal Expansion</a>
+        <a href="#heat_capacity">Specific Heat</a>
+        <a href="#latent">Latent Heat</a>
+        <a href="#transfer">Heat Transfer</a>
+        <a href="#calorimetry">Calorimetry</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Thermal Physics</h2>
+        </div>
+        <p>
+            Thermal physics is the branch of physics concerned with temperature, heat, and the microscopic statistical behavior of systems containing large numbers of particles. 
+            While mechanics deals with macroscopic forces and motion, thermal physics investigates how energy is stored as internal kinetic and potential energy among atoms and molecules.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Heat is defined specifically as thermal energy transferred between a system and its surroundings as a result of a temperature difference. 
+            Thermal equilibrium is reached when two systems in thermal contact cease to exchange net heat energy, sharing a common temperature.
+        </div>
+    </section>
+
+    <!-- 02 TEMPERATURE & SCALES -->
+    <section class="phys-section" id="temp">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Temperature Scales & Zeroth Law of Thermodynamics</h2>
+        </div>
+        <p>
+            Temperature is a quantitative measure of the average translational kinetic energy of the microscopic particles comprising a substance.
+        </p>
+        <ul>
+            <li><strong>Zeroth Law of Thermodynamics:</strong> If object A is in thermal equilibrium with object B, and object B is separately in thermal equilibrium with object C, then object A and object C are also in thermal equilibrium with each other. This law justifies the use of thermometers to measure temperature.</li>
+            <li><strong>Temperature Conversion Formulas:</strong><br>
+                - Celsius to Fahrenheit: <strong>Fahrenheit = (Celsius &times; (9 / 5)) + 32</strong><br>
+                - Fahrenheit to Celsius: <strong>Celsius = (Fahrenheit - 32) &times; (5 / 9)</strong><br>
+                - Celsius to Kelvin: <strong>Kelvin = Celsius + 273.15</strong></li>
+        </ul>
+    </section>
+
+    <!-- 03 THERMAL EXPANSION -->
+    <section class="phys-section" id="expansion">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Thermal Expansion of Solids and Liquids</h2>
+        </div>
+        <p>
+            When the temperature of a substance increases, the average amplitude of atomic vibrations increases, causing the interatomic separation to grow and resulting in macroscopic thermal expansion.
+        </p>
+        <ul>
+            <li><strong>Linear Expansion (Solids):</strong> The fractional change in length is proportional to the change in temperature:
+                <br><strong>Change in Length = Original Length &times; Coefficient of Linear Expansion &times; Change in Temperature</strong></li>
+            <li><strong>Area Expansion:</strong> The change in surface area follows:
+                <br><strong>Change in Area = Original Area &times; (2 &times; Coefficient of Linear Expansion) &times; Change in Temperature</strong></li>
+            <li><strong>Volume Expansion (Solids and Liquids):</strong> The change in volume follows:
+                <br><strong>Change in Volume = Original Volume &times; Coefficient of Volume Expansion &times; Change in Temperature</strong><br>
+                (Note: For isotropic solid materials, the coefficient of volume expansion is approximately equal to three times the coefficient of linear expansion).</li>
+        </ul>
+    </section>
+
+    <!-- 04 SPECIFIC HEAT CAPACITY -->
+    <section class="phys-section" id="heat_capacity">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Specific Heat Capacity</h2>
+        </div>
+        <p>
+            When heat is added to a substance without changing its phase, its temperature rises. 
+            The amount of heat (Q) required to produce a given temperature change depends on the mass of the substance and its intrinsic material property known as specific heat capacity (c).
+        </p>
+        <div class="phys-info">
+            <strong>Equation:</strong><br>
+            <strong>Heat Added = Mass &times; Specific Heat Capacity &times; Change in Temperature</strong><br>
+            where Q is measured in Joules (J), mass in kilograms (kg), c in J/(kg&middot;K), and temperature change in Kelvin or Celsius degrees.
+        </div>
+        <ul>
+            <li><strong>Molar Specific Heat:</strong> For gases, heat capacity is often expressed per mole rather than per kilogram: 
+                <strong>Q = n &times; C &times; Change in Temperature</strong>, where n is the number of moles and C is the molar heat capacity.</li>
+        </ul>
+    </section>
+
+    <!-- 05 LATENT HEAT -->
+    <section class="phys-section" id="latent">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Latent Heat & Phase Transitions</h2>
+        </div>
+        <p>
+            During a phase transition (such as melting solid ice into liquid water or boiling liquid water into steam), 
+            added heat energy goes entirely into breaking intermolecular bonds rather than increasing the kinetic energy of the particles. 
+            Consequently, <strong>temperature remains strictly constant during a phase change</strong>.
+        </p>
+        <ul>
+            <li><strong>Equation for Phase Change:</strong> 
+                <strong>Heat = Mass &times; Latent Heat</strong><br>
+                where L is the specific latent heat of fusion (melting/freezing) or vaporization (boiling/condensing) measured in J/kg.</li>
+            <li><strong>Latent Heat of Fusion (L<sub>f</sub>):</strong> Energy required per unit mass to transform a solid into a liquid at its melting point (for water, approximately 3.33 &times; 10<sup>5</sup> J/kg).</li>
+            <li><strong>Latent Heat of Vaporization (L<sub>v</sub>):</strong> Energy required per unit mass to transform a liquid into a gas at its boiling point (for water, approximately 2.26 &times; 10<sup>6</sup> J/kg).</li>
+        </ul>
+    </section>
+
+    <!-- 06 HEAT TRANSFER MECHANISMS -->
+    <section class="phys-section" id="transfer">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Mechanisms of Heat Transfer</h2>
+        </div>
+        <p>
+            Heat energy is transferred from regions of higher temperature to regions of lower temperature via three distinct physical mechanisms:
+        </p>
+        <ul>
+            <li><strong>1. Conduction:</strong> The transfer of thermal energy through direct microscopic collisions of atoms and free electrons within a material, without bulk motion of the material itself. 
+                Governed by Fourier's Law for heat current: 
+                <strong>Rate of Heat Transfer = (Thermal Conductivity &times; Cross-Sectional Area &times; Temperature Difference) / Thickness</strong>.</li>
+            <li><strong>2. Convection:</strong> The transfer of thermal energy through the bulk macroscopic movement of fluids (liquids or gases) driven by density differences resulting from temperature gradients.</li>
+            <li><strong>3. Radiation:</strong> The transfer of thermal energy via electromagnetic waves (primarily infrared radiation) across empty space, requiring no intervening medium. Governed by the Stefan-Boltzmann Law for blackbody radiation: 
+                <strong>Radiated Power = Stefan-Boltzmann Constant &times; Surface Area &times; Emissivity &times; Temperature in Kelvin to the fourth power</strong>.</li>
+        </ul>
+    </section>
+
+    <!-- 07 CALORIMETRY -->
+    <section class="phys-section" id="calorimetry">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Calorimetry & Conservation of Energy</h2>
+        </div>
+        <p>
+            Calorimetry is the quantitative measurement of heat exchange between bodies within an isolated thermal system. 
+            By the principle of conservation of energy, in an isolated calorimeter where no heat escapes to the external environment, 
+            the total heat lost by hotter objects must equal the total heat gained by cooler objects:
+        </p>
+        <div class="phys-info">
+            <strong>Calorimetry Principle:</strong><br>
+            <strong>Sum of Heat Lost + Sum of Heat Gained = 0</strong><br>
+            (accounting for both temperature changes using specific heat and phase transitions using latent heat).
+        </div>
+    </section>
+
+    <!-- 08 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Interactive Thermal Physics Test</h2>
+        </div>
+        <p>Test your conceptual understanding of specific heat, latent heat, and phase transitions.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Phase Transition Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    When ice at 0 degrees Celsius absorbs heat and melts completely into liquid water at 0 degrees Celsius, 
+                    what happens to its <strong>temperature</strong> during the melting process?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">It remains strictly constant at 0 degrees Celsius until all ice has melted</option>
+                    <option value="wrong1">It rises steadily as heat is added</option>
+                    <option value="wrong2">It drops below 0 degrees Celsius</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Specific Heat & Calorimetry):</strong>
+            <p>A 0.500 kg iron horseshoe at an initial temperature of 500 degrees Celsius is dropped into an insulated aluminum calorimeter cup containing 1.50 kg of water at 20.0 degrees Celsius. 
+            The mass of the aluminum cup is 0.200 kg. Calculate the final equilibrium temperature of the system. 
+            (Specific heats: iron = 450 J/(kg&middot;K), aluminum = 900 J/(kg&middot;K), water = 4186 J/(kg&middot;K)).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Heat lost by iron + Heat gained by water + Heat gained by aluminum cup = 0.<br>
+                - (m * c * delta T)<sub>iron</sub> + (m * c * delta T)<sub>water</sub> + (m * c * delta T)<sub>aluminum</sub> = 0.<br>
+                - Let T<sub>f</sub> be the final equilibrium temperature:<br>
+                &nbsp;&nbsp;&bull; Iron: (0.500)(450)(T<sub>f</sub> - 500) = 225(T<sub>f</sub> - 500)<br>
+                &nbsp;&nbsp;&bull; Water: (1.50)(4186)(T<sub>f</sub> - 20.0) = 6279(T<sub>f</sub> - 20)<br>
+                &nbsp;&nbsp;&bull; Aluminum: (0.200)(900)(T<sub>f</sub> - 20.0) = 180(T<sub>f</sub> - 20)<br>
+                - Combine terms: 225(T<sub>f</sub> - 500) + 6459(T<sub>f</sub> - 20) = 0.<br>
+                - 225T<sub>f</sub> - 112,500 + 6459T<sub>f</sub> - 129,180 = 0.<br>
+                - 6684T<sub>f</sub> = 241,680 implies T<sub>f</sub> = 241,680 / 6684 approximately equal to <strong>36.2 degrees Celsius</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Latent Heat & Phase Change):</strong>
+            <p>How much total heat energy is required to transform 0.200 kg of solid ice initially at -20.0 degrees Celsius entirely into superheated steam at 110.0 degrees Celsius? 
+            (Given: c<sub>ice</sub> = 2100 J/(kg&middot;K), c<sub>water</sub> = 4186 J/(kg&middot;K), c<sub>steam</sub> = 2010 J/(kg&middot;K), 
+            L<sub>f</sub> = 3.33 &times; 10<sup>5</sup> J/kg, L<sub>v</sub> = 2.26 &times; 10<sup>6</sup> J/kg).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - <strong>Step 1 (Warm ice from -20 to 0 degrees):</strong><br>
+                Q<sub>1</sub> = m * c<sub>ice</sub> * delta T = (0.200)(2100)(20.0) = 8,400 J.<br><br>
+                - <strong>Step 2 (Melting ice at 0 degrees):</strong><br>
+                Q<sub>2</sub> = m * L<sub>f</sub> = (0.200)(3.33 &times; 10<sup>5</sup>) = 66,600 J.<br><br>
+                - <strong>Step 3 (Warm water from 0 to 100 degrees):</strong><br>
+                Q<sub>3</sub> = m * c<sub>water</sub> * delta T = (0.200)(4186)(100.0) = 83,720 J.<br><br>
+                - <strong>Step 4 (Vaporizing water at 100 degrees):</strong><br>
+                Q<sub>4</sub> = m * L<sub>v</sub> = (0.200)(2.26 &times; 10<sup>6</sup>) = 452,000 J.<br><br>
+                - <strong>Step 5 (Warm steam from 100 to 110 degrees):</strong><br>
+                Q<sub>5</sub> = m * c<sub>steam</sub> * delta T = (0.200)(2010)(10.0) = 4,020 J.<br><br>
+                - <strong>Total Heat (Q<sub>total</sub>):</strong> 8,400 + 66,600 + 83,720 + 452,000 + 4,020 = <strong>614,740 Joules</strong> (614.7 kJ).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Thermal Expansion):</strong>
+            <p>A brass rod has a precise length of 2.00 m at a temperature of 20.0 degrees Celsius. 
+            If the rod is heated to 100.0 degrees Celsius, calculate its new length. 
+            (Given that the coefficient of linear expansion for brass is alpha = 1.9 &times; 10<sup>-5</sup> (degrees Celsius)<sup>-1</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: Change in Length = Original Length &times; Coefficient of Linear Expansion &times; Change in Temperature.<br>
+                - Change in Temperature = 100.0 - 20.0 = 80.0 degrees Celsius.<br>
+                - Change in Length = (2.00 m) &times; (1.9 &times; 10<sup>-5</sup>) &times; (80.0) = 0.00304 meters (3.04 mm).<br>
+                - Final Length = Original Length + Change in Length = 2.00 + 0.00304 = <strong>2.00304 meters</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with thermal physics or calorimetry?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down complex heat conduction differential equations, Stefan-Boltzmann radiation problems, or latent heat mixtures.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>During a phase transition like melting, all added heat energy goes into overcoming intermolecular forces to change the state of matter rather than increasing the kinetic energy of particles, so the temperature remains strictly constant.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>During phase changes, added heat goes toward latent heat rather than kinetic energy, meaning temperature <strong>remains strictly constant</strong> until the phase transition is complete.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

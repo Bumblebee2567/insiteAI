@@ -1,0 +1,1595 @@
+{% extends "base.html" %}
+
+{% block title %}
+States of Matter | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.states-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.states-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.states-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.states-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+.states-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.states-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.states-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.states-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.states-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.states-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.states-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+.states-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.states-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.states-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.states-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.states-section p,
+.states-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.states-section li {
+    margin-bottom: 8px;
+}
+
+/* HIGHLIGHT */
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* STATE CARDS */
+.state-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.state-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.state-card i {
+    color: #3b82f6;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.state-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.state-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* EXAMPLES */
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 13px 16px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+}
+
+/* TABLE */
+.comparison-wrapper {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+.comparison-table {
+    width: 100%;
+    min-width: 750px;
+    border-collapse: collapse;
+}
+
+.comparison-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.comparison-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+    vertical-align: top;
+}
+
+/* PARTICLE MODEL */
+.particle-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 18px;
+}
+
+.particle-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.particle-box p {
+    color: #9ca3af;
+}
+
+/* ASK AI */
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .states-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .states-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .states-section {
+        padding: 18px;
+    }
+
+    .state-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .states-nav-wrapper {
+        top: 0;
+    }
+}
+</style>
+
+<div class="states-page">
+
+
+<a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+    <i class="fas fa-arrow-left"></i>
+    Back to Chemistry
+</a>
+
+
+<div class="states-header">
+
+    <h1>States of Matter</h1>
+
+    <p>
+        Matter exists in different physical states depending on the
+        arrangement, movement and energy of its particles. This guide
+        explains solids, liquids, gases and plasma, together with the
+        changes between these states and the particle theory behind them.
+    </p>
+
+</div>
+
+
+<div class="states-nav-wrapper">
+
+    <nav class="states-nav">
+
+        <a href="#introduction">Introduction</a>
+        <a href="#particle-theory">Particle Theory</a>
+        <a href="#solid">Solids</a>
+        <a href="#liquid">Liquids</a>
+        <a href="#gas">Gases</a>
+        <a href="#plasma">Plasma</a>
+        <a href="#comparison">Comparison</a>
+        <a href="#kinetic">Kinetic Energy</a>
+        <a href="#temperature">Temperature</a>
+        <a href="#melting">Melting</a>
+        <a href="#freezing">Freezing</a>
+        <a href="#evaporation">Evaporation</a>
+        <a href="#boiling">Boiling</a>
+        <a href="#condensation">Condensation</a>
+        <a href="#sublimation">Sublimation</a>
+        <a href="#deposition">Deposition</a>
+        <a href="#heating">Heating Curves</a>
+        <a href="#diffusion">Diffusion</a>
+        <a href="#pressure">Gas Pressure</a>
+        <a href="#examples">Examples</a>
+        <a href="#problems">Word Problems</a>
+
+    </nav>
+
+</div>
+
+
+<section class="states-section" id="introduction">
+
+    <h2>1. Introduction to Matter</h2>
+
+    <p>
+        Matter is anything that has mass and occupies space. The chair
+        you sit on, the water you drink, the air you breathe and the
+        screen you are looking at are all examples of matter.
+    </p>
+
+    <p>
+        Matter is made up of extremely small particles. Depending on
+        the substance, these particles may be atoms, molecules or ions.
+    </p>
+
+    <p>
+        The physical state of a substance depends largely on the
+        arrangement and movement of its particles and on the strength
+        of the attractive forces between those particles.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Key idea:</strong>
+
+        The particles themselves do not normally disappear when a
+        substance changes state. Instead, their arrangement, separation
+        and movement change.
+
+    </div>
+
+    <h3>The Four Major States of Matter</h3>
+
+    <div class="state-grid">
+
+        <div class="state-card">
+
+            <i class="fas fa-cube"></i>
+
+            <h4>Solid</h4>
+
+            <p>
+                Has a definite shape and definite volume. Its particles
+                are closely packed and mainly vibrate about fixed positions.
+            </p>
+
+        </div>
+
+
+        <div class="state-card">
+
+            <i class="fas fa-tint"></i>
+
+            <h4>Liquid</h4>
+
+            <p>
+                Has a definite volume but takes the shape of its container.
+                Its particles can move past one another.
+            </p>
+
+        </div>
+
+
+        <div class="state-card">
+
+            <i class="fas fa-wind"></i>
+
+            <h4>Gas</h4>
+
+            <p>
+                Has no definite shape or volume. Its particles are widely
+                separated and move rapidly in random directions.
+            </p>
+
+        </div>
+
+
+        <div class="state-card">
+
+            <i class="fas fa-bolt"></i>
+
+            <h4>Plasma</h4>
+
+            <p>
+                A high-energy state containing freely moving charged
+                particles such as ions and electrons.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="particle-theory">
+
+    <h2>2. Particle Theory of Matter</h2>
+
+    <p>
+        The particle theory of matter is a model used to explain the
+        behaviour and properties of substances.
+    </p>
+
+    <h3>Main Ideas</h3>
+
+    <ul>
+
+        <li>
+            All matter is made of tiny particles.
+        </li>
+
+        <li>
+            There are spaces between particles.
+        </li>
+
+        <li>
+            Particles are constantly moving.
+        </li>
+
+        <li>
+            Particles attract one another.
+        </li>
+
+        <li>
+            The particles of a substance are not necessarily identical
+            to the particles of another substance.
+        </li>
+
+        <li>
+            Increasing temperature generally increases the average
+            kinetic energy of particles.
+        </li>
+
+    </ul>
+
+    <div class="particle-box">
+
+        <h4>Why Particle Theory Matters</h4>
+
+        <p>
+            Particle theory helps explain why solids keep their shape,
+            why liquids flow, why gases can be compressed, why perfume
+            spreads through a room, and why heating can cause a substance
+            to change state.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="solid">
+
+    <h2>3. Solids</h2>
+
+    <p>
+        A solid is a state of matter with a definite shape and a definite
+        volume.
+    </p>
+
+    <p>
+        The particles in a solid are packed closely together. Strong
+        attractive forces hold them in relatively fixed positions.
+    </p>
+
+    <h3>Particle Movement</h3>
+
+    <p>
+        Solid particles are not completely motionless. They vibrate around
+        their fixed positions. When the temperature increases, these
+        vibrations generally become more energetic.
+    </p>
+
+    <h3>Properties of Solids</h3>
+
+    <ul>
+
+        <li>Definite shape</li>
+        <li>Definite volume</li>
+        <li>Very low compressibility</li>
+        <li>Particles closely packed</li>
+        <li>Strong attractive forces</li>
+        <li>Particles vibrate about fixed positions</li>
+
+    </ul>
+
+    <div class="example-box">
+
+        <h4>Examples</h4>
+
+        <p>
+            Iron, copper, aluminium, salt crystals, ice, diamond,
+            wood and many plastics are solids.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="liquid">
+
+    <h2>4. Liquids</h2>
+
+    <p>
+        A liquid has a definite volume but does not have a definite shape.
+        It takes the shape of the container in which it is placed.
+    </p>
+
+    <p>
+        Liquid particles remain relatively close together, but they have
+        enough freedom to move and slide past one another.
+    </p>
+
+    <h3>Properties of Liquids</h3>
+
+    <ul>
+
+        <li>Definite volume</li>
+        <li>No definite shape</li>
+        <li>Usually difficult to compress</li>
+        <li>Particles remain relatively close</li>
+        <li>Particles can move past each other</li>
+        <li>Liquids can flow</li>
+
+    </ul>
+
+    <div class="example-box">
+
+        <h4>Examples</h4>
+
+        <p>
+            Water, ethanol, mercury, petrol and cooking oil are examples
+            of liquids.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="gas">
+
+    <h2>5. Gases</h2>
+
+    <p>
+        A gas has neither a definite shape nor a definite volume.
+        It expands to fill whatever container is available.
+    </p>
+
+    <p>
+        Gas particles are much farther apart than particles in solids
+        and liquids. They move rapidly in random directions.
+    </p>
+
+    <h3>Properties of Gases</h3>
+
+    <ul>
+
+        <li>No definite shape</li>
+        <li>No definite volume</li>
+        <li>Highly compressible</li>
+        <li>Particles widely separated</li>
+        <li>Particles move rapidly</li>
+        <li>Gas particles collide with one another and the container</li>
+
+    </ul>
+
+    <div class="highlight">
+
+        <strong>Why can gases be compressed?</strong>
+
+        There are relatively large spaces between gas particles.
+        Applying pressure can reduce these spaces.
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Examples</h4>
+
+        <p>
+            Oxygen, nitrogen, hydrogen, helium and carbon dioxide are
+            common examples of gases.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="plasma">
+
+    <h2>6. Plasma</h2>
+
+    <p>
+        Plasma is often described as the fourth major state of matter.
+        It forms when a gas receives enough energy for some atoms or
+        molecules to become ionized.
+    </p>
+
+    <p>
+        Ionization involves removing electrons from atoms or molecules,
+        producing positive ions and free electrons.
+    </p>
+
+    <h3>Properties of Plasma</h3>
+
+    <ul>
+
+        <li>Contains charged particles</li>
+        <li>Contains free electrons and ions</li>
+        <li>Can conduct electricity</li>
+        <li>Can respond strongly to magnetic fields</li>
+        <li>Usually exists at high energies</li>
+
+    </ul>
+
+    <h3>Examples of Plasma</h3>
+
+    <ul>
+
+        <li>The Sun</li>
+        <li>Other stars</li>
+        <li>Lightning</li>
+        <li>Electric arcs</li>
+        <li>Some fluorescent lamps</li>
+
+    </ul>
+
+    <div class="highlight">
+
+        <strong>Important distinction:</strong>
+
+        Plasma is not simply an extremely hot ordinary gas. It is an
+        ionized state containing significant numbers of charged particles.
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="comparison">
+
+    <h2>7. Comparing the Four States</h2>
+
+    <div class="comparison-wrapper">
+
+        <table class="comparison-table">
+
+            <tr>
+
+                <th>Property</th>
+                <th>Solid</th>
+                <th>Liquid</th>
+                <th>Gas</th>
+                <th>Plasma</th>
+
+            </tr>
+
+            <tr>
+
+                <td>Shape</td>
+                <td>Definite</td>
+                <td>Container shape</td>
+                <td>Container shape</td>
+                <td>Container shape</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Volume</td>
+                <td>Definite</td>
+                <td>Definite</td>
+                <td>Not definite</td>
+                <td>Not definite</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Particle spacing</td>
+                <td>Very close</td>
+                <td>Close</td>
+                <td>Far apart</td>
+                <td>Generally far apart</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Particle movement</td>
+                <td>Vibration</td>
+                <td>Sliding/flowing</td>
+                <td>Rapid random movement</td>
+                <td>Rapid charged-particle movement</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Compressibility</td>
+                <td>Very low</td>
+                <td>Very low</td>
+                <td>High</td>
+                <td>High</td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="kinetic">
+
+    <h2>8. Particle Motion and Kinetic Energy</h2>
+
+    <p>
+        Kinetic energy is the energy associated with motion.
+        Since particles are constantly moving, they possess kinetic
+        energy.
+    </p>
+
+    <div class="formula-box">
+        KE = ½mv²
+    </div>
+
+    <p>
+        In a substance, temperature is related to the average kinetic
+        energy of its particles. Increasing the temperature generally
+        increases their average kinetic energy.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Remember:</strong>
+
+        Temperature is related to the average kinetic energy of particles,
+        while the total thermal energy of an object also depends on factors
+        such as the amount of substance.
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="temperature">
+
+    <h2>9. Temperature and Particle Motion</h2>
+
+    <p>
+        Temperature provides a measure related to the average kinetic
+        energy of particles in a substance.
+    </p>
+
+    <div class="formula-box">
+        Temperature ↑ → Average kinetic energy ↑
+    </div>
+
+    <div class="formula-box">
+        Temperature ↓ → Average kinetic energy ↓
+    </div>
+
+    <p>
+        This relationship helps explain why heating a substance can
+        eventually cause its particles to move enough to change the
+        substance from one physical state to another.
+    </p>
+
+</section>
+
+
+<section class="states-section" id="melting">
+
+    <h2>10. Melting</h2>
+
+    <p>
+        Melting is the change of state from a solid to a liquid.
+    </p>
+
+    <div class="formula-box">
+        Solid → Liquid
+    </div>
+
+    <p>
+        When a solid is heated, energy is transferred to its particles.
+        Their motion becomes increasingly energetic. At the melting point,
+        the structure of the solid can begin to break down and the particles
+        gain greater freedom of movement.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Melting point:</strong>
+
+        The temperature at which a substance changes from solid to liquid
+        at a specified pressure.
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            Ice changes into liquid water when enough energy is supplied.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="freezing">
+
+    <h2>11. Freezing</h2>
+
+    <p>
+        Freezing is the reverse of melting. A liquid changes into a solid
+        when sufficient energy is removed.
+    </p>
+
+    <div class="formula-box">
+        Liquid → Solid
+    </div>
+
+    <p>
+        As energy is removed, particle motion decreases and particles
+        become arranged into a more ordered solid structure.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            Liquid water becomes ice when it is cooled sufficiently.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="evaporation">
+
+    <h2>12. Evaporation</h2>
+
+    <p>
+        Evaporation is the gradual conversion of a liquid into a gas
+        from the surface of the liquid.
+    </p>
+
+    <div class="formula-box">
+        Liquid → Gas
+    </div>
+
+    <h3>Why Does Evaporation Occur?</h3>
+
+    <p>
+        Not all particles in a liquid have exactly the same kinetic
+        energy. Some particles at the surface have enough energy to
+        escape the attractive forces holding them in the liquid.
+    </p>
+
+    <h3>Factors Affecting Evaporation</h3>
+
+    <ul>
+
+        <li>Higher temperature generally increases evaporation.</li>
+
+        <li>Larger surface area generally increases evaporation.</li>
+
+        <li>Moving air can increase evaporation.</li>
+
+        <li>Lower humidity generally favours faster evaporation.</li>
+
+        <li>The nature of the liquid affects its evaporation rate.</li>
+
+    </ul>
+
+    <div class="example-box">
+
+        <h4>Everyday Example</h4>
+
+        <p>
+            Sweat evaporates from the skin. The escape of higher-energy
+            water molecules can remove energy from the skin and produce
+            a cooling effect.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="boiling">
+
+    <h2>13. Boiling</h2>
+
+    <p>
+        Boiling is the rapid vaporization of a liquid that occurs
+        throughout the liquid when its vapour pressure equals the
+        external pressure.
+    </p>
+
+    <div class="formula-box">
+        Liquid → Gas
+    </div>
+
+    <h3>Boiling Point</h3>
+
+    <p>
+        The boiling point of a liquid depends on the external pressure.
+        At higher external pressure, a liquid generally requires a
+        higher temperature to boil.
+    </p>
+
+    <h3>Boiling vs Evaporation</h3>
+
+    <div class="comparison-wrapper">
+
+        <table class="comparison-table">
+
+            <tr>
+                <th>Boiling</th>
+                <th>Evaporation</th>
+            </tr>
+
+            <tr>
+                <td>Occurs throughout the liquid.</td>
+                <td>Occurs mainly at the surface.</td>
+            </tr>
+
+            <tr>
+                <td>Occurs at the boiling point for a given pressure.</td>
+                <td>Can occur below the boiling point.</td>
+            </tr>
+
+            <tr>
+                <td>Usually rapid.</td>
+                <td>Usually slower.</td>
+            </tr>
+
+            <tr>
+                <td>Bubbles can form throughout the liquid.</td>
+                <td>Bulk bubbling is not required.</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="condensation">
+
+    <h2>14. Condensation</h2>
+
+    <p>
+        Condensation is the change from a gas to a liquid.
+    </p>
+
+    <div class="formula-box">
+        Gas → Liquid
+    </div>
+
+    <p>
+        When gas particles lose energy, their average motion decreases.
+        Attractive forces can then bring particles closer together,
+        allowing the liquid state to form.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            Water vapour can condense into liquid droplets on the outside
+            of a cold glass.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="sublimation">
+
+    <h2>15. Sublimation</h2>
+
+    <p>
+        Sublimation is the direct change of a solid into a gas without
+        passing through the liquid state under the given conditions.
+    </p>
+
+    <div class="formula-box">
+        Solid → Gas
+    </div>
+
+    <h3>Examples</h3>
+
+    <ul>
+
+        <li>Dry ice changing directly into carbon dioxide gas.</li>
+
+        <li>Solid iodine producing iodine vapour when heated.</li>
+
+        <li>Some mothball substances gradually entering the gas phase.</li>
+
+    </ul>
+
+</section>
+
+
+<section class="states-section" id="deposition">
+
+    <h2>16. Deposition</h2>
+
+    <p>
+        Deposition is the reverse of sublimation. A gas changes directly
+        into a solid without becoming a liquid first.
+    </p>
+
+    <div class="formula-box">
+        Gas → Solid
+    </div>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            Water vapour can form ice directly on a sufficiently cold
+            surface, producing frost.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="heating">
+
+    <h2>17. Heating and Cooling Curves</h2>
+
+    <p>
+        A heating curve shows how the temperature of a substance changes
+        as energy is supplied.
+    </p>
+
+    <h3>Typical Heating Process</h3>
+
+    <div class="formula-box">
+        Solid → Melting → Liquid → Boiling → Gas
+    </div>
+
+    <p>
+        During a phase change, energy can continue to enter the substance
+        without causing an increase in temperature. The energy is being
+        used to change the arrangement and interactions of the particles.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        On an ideal heating curve for a pure substance at constant pressure,
+        the temperature remains approximately constant during a phase
+        change even though energy continues to be transferred.
+
+    </div>
+
+    <h3>Cooling Process</h3>
+
+    <div class="formula-box">
+        Gas → Condensation → Liquid → Freezing → Solid
+    </div>
+
+</section>
+
+
+<section class="states-section" id="diffusion">
+
+    <h2>18. Diffusion</h2>
+
+    <p>
+        Diffusion is the net movement of particles from a region of
+        higher concentration to a region of lower concentration as a
+        result of random particle motion.
+    </p>
+
+    <div class="formula-box">
+        Higher concentration → Lower concentration
+    </div>
+
+    <p>
+        Diffusion continues until the particles become more evenly
+        distributed.
+    </p>
+
+    <h3>Diffusion in Gases</h3>
+
+    <p>
+        Diffusion is generally rapid in gases because gas particles are
+        far apart and move rapidly.
+    </p>
+
+    <h3>Diffusion in Liquids</h3>
+
+    <p>
+        Diffusion also occurs in liquids, but it is generally slower
+        because liquid particles are closer together and their movement
+        is more restricted.
+    </p>
+
+    <div class="example-box">
+
+        <h4>Example</h4>
+
+        <p>
+            When perfume is sprayed in one part of a room, its molecules
+            eventually spread through the air by diffusion.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="pressure">
+
+    <h2>19. Gas Pressure</h2>
+
+    <p>
+        Gas pressure is produced by collisions between moving gas
+        particles and the walls of their container.
+    </p>
+
+    <div class="highlight">
+
+        <strong>
+            More frequent and/or more energetic collisions generally
+            produce greater pressure.
+        </strong>
+
+    </div>
+
+    <h3>Temperature and Pressure</h3>
+
+    <p>
+        If the volume of a sealed container remains constant, increasing
+        the temperature makes the gas particles move faster. They collide
+        with the walls more frequently and with greater energy.
+    </p>
+
+    <div class="formula-box">
+        Temperature ↑ → Particle speed ↑ → Pressure ↑
+    </div>
+
+    <h3>Volume and Pressure</h3>
+
+    <p>
+        If temperature remains constant, reducing the volume gives the
+        particles less space to move and increases the frequency of
+        collisions with the container walls.
+    </p>
+
+    <div class="formula-box">
+        Volume ↓ → Collision frequency ↑ → Pressure ↑
+    </div>
+
+</section>
+
+
+<section class="states-section" id="examples">
+
+    <h2>20. Everyday Applications</h2>
+
+    <div class="state-grid">
+
+        <div class="state-card">
+
+            <i class="fas fa-snowflake"></i>
+
+            <h4>Ice</h4>
+
+            <p>
+                Ice is solid water. Heating it sufficiently causes it
+                to melt into liquid water.
+            </p>
+
+        </div>
+
+        <div class="state-card">
+
+            <i class="fas fa-cloud"></i>
+
+            <h4>Cloud Formation</h4>
+
+            <p>
+                Water vapour can cool and condense into tiny liquid
+                droplets that contribute to cloud formation.
+            </p>
+
+        </div>
+
+        <div class="state-card">
+
+            <i class="fas fa-temperature-high"></i>
+
+            <h4>Boiling Water</h4>
+
+            <p>
+                Heating water sufficiently causes it to undergo boiling,
+                producing water vapour.
+            </p>
+
+        </div>
+
+        <div class="state-card">
+
+            <i class="fas fa-bolt"></i>
+
+            <h4>Lightning</h4>
+
+            <p>
+                Lightning produces extremely energetic ionized matter,
+                creating plasma.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="states-section" id="problems">
+
+    <h2>21. Word Problems and Practice</h2>
+
+
+    <div class="example-box">
+
+        <h4>Problem 1 — Identifying a State</h4>
+
+        <p>
+            A substance has a fixed volume but takes the shape of its
+            container. What state of matter is it?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer: Liquid.</strong>
+
+            <br><br>
+
+            Liquids have a definite volume but do not have a definite
+            shape.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 2 — Melting</h4>
+
+        <p>
+            A piece of ice is heated until it becomes liquid water.
+            Identify the change of state.
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer: Melting.</strong>
+
+            <br><br>
+
+            Solid → Liquid
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 3 — Condensation</h4>
+
+        <p>
+            Water vapour in the air comes into contact with a cold
+            window and forms liquid droplets. What process occurred?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer: Condensation.</strong>
+
+            <br><br>
+
+            Gas → Liquid
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 4 — Evaporation</h4>
+
+        <p>
+            Why does water usually evaporate faster from a wide,
+            shallow container than from a narrow, deep container?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer:</strong>
+
+            The wide container provides a larger surface area, giving
+            more liquid particles an opportunity to escape from the
+            surface.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 5 — Gas Pressure</h4>
+
+        <p>
+            A sealed container contains a gas. The container is heated
+            while its volume remains constant. What happens to the
+            pressure and why?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer:</strong>
+
+            The pressure increases because the particles gain kinetic
+            energy and collide with the walls more frequently and more
+            energetically.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 6 — Sublimation</h4>
+
+        <p>
+            A solid substance changes directly into a gas without first
+            becoming a liquid. What is the process called?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer: Sublimation.</strong>
+
+            <br><br>
+
+            Solid → Gas
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 7 — Particle Theory</h4>
+
+        <p>
+            Explain why a gas is much easier to compress than a solid.
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer:</strong>
+
+            Gas particles are separated by relatively large spaces.
+            When pressure is applied, these spaces can be reduced.
+            Solid particles are already packed closely together, so
+            there is much less empty space available.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 8 — Heating Curve</h4>
+
+        <p>
+            During the melting of a pure substance, energy continues
+            to be supplied but the temperature remains approximately
+            constant. Explain why.
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer:</strong>
+
+            The supplied energy is being used mainly to overcome
+            attractive forces and change the arrangement of the
+            particles rather than increasing their average kinetic
+            energy.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 9 — Diffusion</h4>
+
+        <p>
+            A bottle of perfume is opened in one corner of a classroom.
+            After some time, students far away can smell it. Explain
+            this using particle theory.
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer:</strong>
+
+            Perfume molecules are constantly moving randomly. They
+            diffuse through the air from regions where their
+            concentration is higher toward regions where it is lower.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 10 — Comparing States</h4>
+
+        <p>
+            Explain why a liquid can flow while a solid usually cannot.
+        </p>
+
+        <div class="answer-box">
+
+            <strong>Answer:</strong>
+
+            The particles in a liquid can move past one another,
+            allowing the liquid to flow. In a solid, particles are
+            held in relatively fixed positions and mainly vibrate,
+            preventing the substance from flowing in the same way.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With States of Matter?</h3>
+
+    <p>
+        Confused about solids, liquids, gases, plasma, particle motion,
+        changes of state, heating curves, evaporation, boiling,
+        condensation, diffusion or gas pressure?
+        Ask Insite AI to explain the concept step by step, simplify
+        a difficult question, or work through a chemistry problem
+        with you.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

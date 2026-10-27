@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+
+{% block title %}
+About Insite AI | Platform Overview & Features
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — "LEARN MORE" / ABOUT PLATFORM PAGE
+   MATCHING EXACT INSITE BLUE VISUAL LANGUAGE (NO LATEX)
+   ========================================================= */
+
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-panel-2: #111a2b;
+    --eng-card: #0a101c;
+    --eng-card-hover: #0e1726;
+
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-border-blue: rgba(56, 189, 248, .28);
+
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+    --eng-soft: #cbd5e1;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+    --eng-cyan-light: #7dd3fc;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+    --eng-yellow: #fbbf24;
+
+    --eng-radius: 18px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.about-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.about-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.about-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.about-header {
+    text-align: center;
+    padding: 40px 10px 30px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.about-header h1 {
+    margin: 0;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 850;
+    color: #eaf6ff;
+    letter-spacing: -1px;
+}
+
+.about-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 10px;
+}
+
+.about-header p {
+    max-width: 850px;
+    margin: 15px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.about-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 25px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.about-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.about-nav a {
+    flex: 0 0 auto;
+    padding: 8px 14px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .84rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.about-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.about-section {
+    margin-bottom: 30px;
+    padding: 35px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.about-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.about-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.about-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.about-section h2 {
+    margin: 0;
+    font-size: 1.55rem;
+    color: #f8fafc;
+}
+
+.about-section h3 {
+    color: var(--eng-cyan-light);
+    margin-top: 32px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.about-section p,
+.about-section li {
+    color: #cbd5e1;
+    line-height: 1.85;
+}
+
+.about-section li {
+    margin-bottom: 10px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.feature-card {
+    padding: 22px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    transition: transform .2s ease, border-color .2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56, 189, 248, .4);
+}
+
+.feature-card i {
+    color: var(--eng-blue-light);
+    font-size: 24px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.feature-card h4 {
+    margin: 0 0 8px;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.feature-card p {
+    margin: 0;
+    color: var(--eng-muted);
+    font-size: .92rem;
+}
+
+.about-info {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.about-info strong {
+    color: #55b6e9;
+}
+
+.get-started-box {
+    margin-top: 35px;
+    padding: 40px;
+    background: radial-gradient(circle at top, rgba(56, 189, 248, .12), transparent 60%), #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 18px;
+    text-align: center;
+}
+
+.get-started-box h3 {
+    margin: 0 0 10px;
+    color: white;
+    font-size: 1.6rem;
+}
+
+.get-started-box p {
+    max-width: 650px;
+    margin: 0 auto 20px;
+    color: var(--eng-muted);
+}
+
+.get-started-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #38bdf8, #0284c7);
+    border-radius: 11px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.get-started-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, .25);
+}
+
+@media (max-width: 760px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .about-section { padding: 22px; }
+}
+</style>
+
+
+<div class="about-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('home') }}" class="about-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to home
+    </a>
+
+    <!-- HEADER -->
+    <header class="about-header">
+        <h1>
+            <i class="fa-solid fa-circle-info"></i>
+            About Insite AI Platform
+        </h1>
+        <p>
+            Discover how Insite AI empowers students with intelligent academic masterclasses, interactive simulations, 
+            instant AI-powered chat assistance, and rigorous exam preparation for JAMB, WAEC, and university curricula.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="about-nav">
+        <a href="#mission">01. Our Mission</a>
+        <a href="#subjects">02. Study Hubs</a>
+        <a href="#ai-chat">03. Insite AI Chat</a>
+        <a href="#accounts">04. Account & Security</a>
+        <a href="#features">05. Key Features</a>
+    </nav>
+
+    <!-- 01 MISSION -->
+    <section class="about-section" id="mission">
+        <div class="about-section-header">
+            <div class="about-number">01</div>
+            <h2>Our Mission & Platform Vision</h2>
+        </div>
+        <p>
+            <strong>Insite AI</strong> is built with a singular mission: to democratize world-class academic support and transform how students 
+            prepare for high-stakes examinations. We combine rigorous, curriculum-aligned academic notes with cutting-edge artificial intelligence 
+            to provide personalized, step-by-step guidance in mathematics, physics, chemistry, biology, and English language.
+        </p>
+        <p>
+            Whether you are preparing for the Joint Admissions and Matriculation Board (JAMB) UTME, the West African Senior School Certificate 
+            Examination (WASSCE), or foundational university courses, Insite AI delivers structured masterclasses designed for deep conceptual retention.
+        </p>
+        <div class="about-info">
+            <strong>The Insite Standard:</strong> Every study page is structured with exhaustive step-by-step explanations, interactive simulation tools, 
+            self-assessment test boxes, and worked examination examples.
+        </div>
+    </section>
+
+    <!-- 02 SUBJECT HUBS -->
+    <section class="about-section" id="subjects">
+        <div class="about-section-header">
+            <div class="about-number">02</div>
+            <h2>Comprehensive Subject Study Hubs</h2>
+        </div>
+        <p>
+            Our platform provides dedicated learning hubs across major academic disciplines, each containing comprehensive multi-topic masterclasses:
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-calculator"></i>
+                <h4>Mathematics Hub</h4>
+                <p>Master algebra, calculus, trigonometry, statistics, and complex mathematical problem-solving with step-by-step proofs.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-atom"></i>
+                <h4>Physics Hub</h4>
+                <p>Explore mechanics, thermodynamics, optics, electromagnetism, and quantum physics with interactive calculators and lab models.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-flask"></i>
+                <h4>Chemistry Hub</h4>
+                <p>Dive into organic, inorganic, physical, and environmental chemistry complete with balanced reaction equations and lab simulations.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-dna"></i>
+                <h4>Biology Hub</h4>
+                <p>Understand cell biology, genetics, biochemistry, ecology, and human anatomy through detailed illustrations and structured notes.</p>
+            </div>
+            <div class="feature-card" style="grid-column: 1 / -1;">
+                <i class="fa-solid fa-font"></i>
+                <h4>English Language Hub (10+ Masterclasses)</h4>
+                <p>Master nouns and pronouns, verb tenses, concord, adjectives, adverbs, prepositions, clauses, lexis, idioms, oral English, and comprehension.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03 INSITE AI CHAT -->
+    <section class="about-section" id="ai-chat">
+        <div class="about-section-header">
+            <div class="about-number">03</div>
+            <h2>Insite AI Chat & Personal Tutoring</h2>
+        </div>
+        <p>
+            Stuck on a difficult past question or a complex scientific concept? The <strong>Insite AI Chat Assistant</strong> is available 24/7 
+            to provide instant, conversational tutoring.
+        </p>
+        <ul>
+            <li><strong>Step-by-Step Problem Solving:</strong> Ask the AI to solve mathematical and physics problems step by step.</li>
+            <li><strong>Chemical Explanations:</strong> Request clear educational breakdowns of reaction mechanisms and stoichiometry.</li>
+            <li><strong>Grammar & Essay Guidance:</strong> Get instant analysis on essay structure, concord corrections, and literary devices.</li>
+        </ul>
+        <div class="about-info">
+            <strong>Seamless Integration:</strong> Every study page features a direct "Ask Insite AI" call-to-action button, allowing you to transition 
+            instantly from studying notes to chatting with your personal AI tutor.
+        </div>
+    </section>
+
+    <!-- 04 ACCOUNTS & SECURITY -->
+    <section class="about-section" id="accounts">
+        <div class="about-section-header">
+            <div class="about-number">04</div>
+            <h2>Account Management: Logging In & Logging Out</h2>
+        </div>
+        <p>
+            Managing your Insite AI student profile is secure, fast, and straightforward.
+        </p>
+        <ul>
+            <li><strong>Secure Registration & Login:</strong> Create your student account with your email and a secure password. Your authentication state 
+                is managed securely via Flask session cookies.</li>
+            <li><strong>Personalized Workspace:</strong> Logging in unlocks your dashboard, saving your progress across subject hubs and enabling 
+                unlimited AI tutoring chat sessions.</li>
+            <li><strong>Logging Out:</strong> You can safely terminate your active session at any time by clicking the <strong>Log Out</strong> button 
+                in the navigation bar. This immediately clears your secure Flask session, protecting your account privacy on shared or public devices.</li>
+        </ul>
+    </section>
+
+    <!-- 05 FEATURES -->
+    <section class="about-section" id="features">
+        <div class="about-section-header">
+            <div class="about-number">05</div>
+            <h2>Key Platform Features</h2>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-bolt"></i>
+                <h4>Lightning Fast Navigation</h4>
+                <p>Sticky internal navigation bars allow you to jump instantly between topics within any masterclass without reloading.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-gamepad"></i>
+                <h4>Interactive Test Simulators</h4>
+                <p>Test your knowledge with built-in multiple-choice quiz widgets that provide instant correctness validation and explanations.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <h4>Fully Responsive Design</h4>
+                <p>Optimized seamlessly for desktop workstations, tablets, and mobile smartphones for studying anywhere, anytime.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>Distraction-Free Dark Theme</h4>
+                <p>Designed with a sleek, eye-friendly dark palette (Insite Blue visual language) to reduce eye strain during late-night study sessions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GET STARTED -->
+    <div class="get-started-box">
+        <h3>Ready to Transform Your Examination Preparation?</h3>
+        <p>Dive into our comprehensive subject hubs, test your skills with interactive simulators, or ask Insite AI a question right now.</p>
+        <a href="{{ url_for('study_page') }}" class="get-started-btn">
+            <i class="fa-solid fa-rocket"></i> Explore Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

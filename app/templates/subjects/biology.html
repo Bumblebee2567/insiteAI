@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}
+Biology Hub | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.container-biology{
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.header h1{
+    color:white;
+    font-weight:700;
+}
+
+.header p{
+    color:#9ca3af;
+}
+
+.topic-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.topic-card{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:15px;
+    padding:22px;
+    text-decoration:none;
+    color:white;
+    transition:.25s;
+}
+
+.topic-card:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+    color:white;
+}
+
+.topic-card i{
+    font-size:28px;
+    color:#3b82f6;
+    margin-bottom:12px;
+}
+
+.topic-card h4{
+    margin-bottom:8px;
+}
+
+.topic-card p{
+    color:#9ca3af;
+    font-size:.9rem;
+}
+
+@media(max-width:768px){
+    .topic-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="container-biology">
+    <div class="header">
+        <h1>Biology</h1>
+        <p>Select a topic to begin learning.</p>
+    </div>
+
+    <div class="topic-grid">
+
+        <a href="{{ url_for('cell_biology_energetics') }}" class="topic-card">
+            <i class="fa-solid fa-microscope"></i>
+            <h4>Cell Biology & Membrane Dynamics</h4>
+            <p>Master cell theory, organelle ultrastructure, fluid mosaic phospholipid bilayers, and transport mechanisms.</p>
+        </a>
+
+        <a href="{{ url_for('molecular_genetics_heredity') }}" class="topic-card">
+            <i class="fa-solid fa-dna"></i>
+            <h4>Molecular Genetics & Heredity</h4>
+            <p>Examine the Central Dogma, DNA replication forks, transcription, translation, and genetic mutations.</p>
+        </a>
+
+        <a href="{{ url_for('evolution_diversity') }}" class="topic-card">
+            <i class="fa-solid fa-paw"></i>
+            <h4>Evolution & Natural Selection</h4>
+            <p>Investigate Darwinian natural selection, genetic drift, gene flow, Hardy-Weinberg equilibrium, and speciation.</p>
+        </a>
+
+        <a href="{{ url_for('ecology_biosphere_dynamics') }}" class="topic-card">
+            <i class="fa-solid fa-earth-americas"></i>
+            <h4>Ecology & Biosphere Dynamics</h4>
+            <p>Analyze biogeochemical nutrient cycles, energy flow across trophic webs, and population demographics.</p>
+        </a>
+
+        <a href="{{ url_for('biochemistry_macromolecules') }}" class="topic-card">
+            <i class="fa-solid fa-utensils"></i>
+            <h4>Biochemistry & Macromolecules</h4>
+            <p>Study carbohydrates, proteins, lipids, nucleic acids, and chemical food test laboratory techniques.</p>
+        </a>
+
+        <a href="{{ url_for('cellular_respiration') }}" class="topic-card">
+            <i class="fa-solid fa-fire"></i>
+            <h4>Cellular Respiration</h4>
+            <p>Explore glycolysis, the Krebs cycle, oxidative phosphorylation, and ATP synthase chemiosmosis.</p>
+        </a>
+
+        <a href="{{ url_for('photosynthesis') }}" class="topic-card">
+            <i class="fa-solid fa-sun"></i>
+            <h4>Photosynthesis</h4>
+            <p>Master light-dependent reactions in thylakoids and carbon fixation through the Calvin cycle.</p>
+        </a>
+
+        <a href="{{ url_for('cell_cycle_division') }}" class="topic-card">
+            <i class="fa-solid fa-shapes"></i>
+            <h4>Cell Cycle, Mitosis & Meiosis</h4>
+            <p>Understand interphase checkpoints, mitotic somatic cell division, and meiotic gametogenesis.</p>
+        </a>
+
+        <a href="{{ url_for('mendelian_genetics') }}" class="topic-card">
+            <i class="fa-solid fa-table"></i>
+            <h4>Mendelian & Chromosomal Inheritance</h4>
+            <p>Calculate monohybrid/dihybrid crosses, analyze pedigree charts, and explore sex-linked traits.</p>
+        </a>
+
+        <a href="{{ url_for('human_nervous_system') }}" class="topic-card">
+            <i class="fa-solid fa-brain"></i>
+            <h4>Human Nervous System</h4>
+            <p>Study neuron action potentials, synaptic neurotransmission, and fast reflex arc pathways.</p>
+        </a>
+
+        <a href="{{ url_for('immunology_defense') }}" class="topic-card">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h4>Immunology & Defense Mechanisms</h4>
+            <p>Examine innate barrier defenses, inflammatory responses, adaptive B/T lymphocytes, and vaccines.</p>
+        </a>
+
+        <a href="{{ url_for('endocrine_homeostasis') }}" class="topic-card">
+            <i class="fa-solid fa-gauge"></i>
+            <h4>Endocrine System & Homeostasis</h4>
+            <p>Investigate hormone signaling pathways, pituitary-hypothalamic axes, and feedback regulation.</p>
+        </a>
+
+        <a href="{{ url_for('cardiorespiratory_physiology') }}" class="topic-card">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h4>Cardiorespiratory Physiology</h4>
+            <p>Analyze cardiac cycle mechanics, blood vessel hemodynamics, and gas exchange in alveolar lungs.</p>
+        </a>
+
+        <a href="{{ url_for('plant_biology_anatomy') }}" class="topic-card">
+            <i class="fa-solid fa-tree"></i>
+            <h4>Plant Anatomy & Transport</h4>
+            <p>Explore xylem water tension-cohesion, phloem pressure flow translocation, and plant hormones.</p>
+        </a>
+
+        <a href="{{ url_for('biotechnology_genomics') }}" class="topic-card">
+            <i class="fa-solid fa-flask-vial"></i>
+            <h4>Biotechnology & Genomics</h4>
+            <p>Master PCR amplification, gel electrophoresis, recombinant plasmids, and CRISPR gene editing.</p>
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

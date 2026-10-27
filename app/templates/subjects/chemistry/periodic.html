@@ -1,0 +1,1585 @@
+{% extends "base.html" %}
+
+{% block title %}
+Periodic Table | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .periodic-page {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    /* HEADER */
+    .periodic-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .periodic-header h1 {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 2.4rem;
+    }
+
+    .periodic-header p {
+        color: #9ca3af;
+        max-width: 750px;
+        margin: auto;
+    }
+
+    /* BACK BUTTON */
+    .back-maths {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        margin-bottom: 20px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        color: #e6edf3;
+        text-decoration: none;
+        transition: .25s;
+    }
+
+    .back-maths:hover {
+        border-color: #3b82f6;
+        color: #ffffff;
+        transform: translateX(-3px);
+    }
+
+    /* TOPIC NAVIGATION */
+    .periodic-nav-wrapper {
+        position: sticky;
+        top: 10px;
+        z-index: 20;
+        background: #0d1117;
+        padding: 8px 0;
+        margin-bottom: 25px;
+    }
+
+    .periodic-nav {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 5px;
+        scrollbar-width: thin;
+        scrollbar-color: #3b82f6 #161b22;
+    }
+
+    .periodic-nav::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .periodic-nav::-webkit-scrollbar-track {
+        background: #161b22;
+        border-radius: 10px;
+    }
+
+    .periodic-nav::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 10px;
+    }
+
+    .periodic-nav a {
+        flex: 0 0 auto;
+        padding: 9px 15px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        color: #c9d1d9;
+        text-decoration: none;
+        font-size: .9rem;
+        transition: .25s;
+    }
+
+    .periodic-nav a:hover {
+        border-color: #3b82f6;
+        color: #ffffff;
+    }
+
+    /* SECTIONS */
+    .periodic-section {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 22px;
+        scroll-margin-top: 90px;
+    }
+
+    .periodic-section h2 {
+        color: #ffffff;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .periodic-section h3 {
+        color: #58a6ff;
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    .periodic-section h4 {
+        color: #79c0ff;
+        margin-top: 20px;
+    }
+
+    .periodic-section p {
+        color: #c9d1d9;
+    }
+
+    .periodic-section li {
+        color: #c9d1d9;
+        margin-bottom: 7px;
+    }
+
+    /* HIGHLIGHT */
+    .highlight {
+        background: #0d1117;
+        border-left: 4px solid #3b82f6;
+        padding: 15px 18px;
+        margin: 18px 0;
+        border-radius: 8px;
+    }
+
+    .highlight strong {
+        color: #58a6ff;
+    }
+
+    /* FORMULA */
+    .formula {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        padding: 16px;
+        margin: 15px 0;
+        border-radius: 10px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* TABLE */
+    .periodic-table-container {
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+    .periodic-table {
+        width: 100%;
+        min-width: 900px;
+        border-collapse: separate;
+        border-spacing: 4px;
+    }
+
+    .periodic-table th {
+        color: #9ca3af;
+        font-size: .8rem;
+        padding: 5px;
+    }
+
+    .element {
+        min-width: 55px;
+        height: 65px;
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 7px;
+        text-align: center;
+        vertical-align: middle;
+        transition: .2s;
+    }
+
+    .element:hover {
+        border-color: #3b82f6;
+        transform: scale(1.05);
+    }
+
+    .element .number {
+        display: block;
+        font-size: .65rem;
+        color: #8b949e;
+    }
+
+    .element .symbol {
+        display: block;
+        color: #58a6ff;
+        font-weight: 700;
+        font-size: 1.15rem;
+    }
+
+    .element .name {
+        display: block;
+        color: #c9d1d9;
+        font-size: .55rem;
+    }
+
+    /* PERIODIC GROUP CARDS */
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .property-card {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .property-card i {
+        color: #3b82f6;
+        font-size: 25px;
+        margin-bottom: 10px;
+    }
+
+    .property-card h4 {
+        color: #ffffff;
+    }
+
+    .property-card p {
+        color: #9ca3af;
+        font-size: .9rem;
+    }
+
+    /* TREND BOX */
+    .trend-box {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 15px;
+    }
+
+    .trend-arrow {
+        color: #58a6ff;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    /* ASK AI */
+    .ask-ai {
+        background: linear-gradient(
+            135deg,
+            #161b22,
+            #111827
+        );
+        border: 1px solid #30363d;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .ask-ai i {
+        font-size: 32px;
+        color: #3b82f6;
+        margin-bottom: 12px;
+    }
+
+    .ask-ai h3 {
+        color: #ffffff;
+    }
+
+    .ask-ai p {
+        color: #9ca3af;
+    }
+
+    .ask-ai a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        background: #3b82f6;
+        color: white;
+        text-decoration: none;
+        transition: .25s;
+    }
+
+    .ask-ai a:hover {
+        background: #2563eb;
+        color: white;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+
+        .periodic-page {
+            padding: 12px;
+            margin: 15px auto;
+        }
+
+        .periodic-header h1 {
+            font-size: 1.9rem;
+        }
+
+        .periodic-section {
+            padding: 18px;
+        }
+
+        .property-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .periodic-nav-wrapper {
+            top: 0;
+        }
+    }
+</style>
+
+<div class="periodic-page">
+
+<a href="{{ url_for('chemistry_page') }}" class="back-maths">
+    <i class="fas fa-arrow-left"></i>
+    Back to Chemistry
+</a>
+
+
+<div class="periodic-header">
+
+    <h1>Periodic Table</h1>
+
+    <p>
+        Explore the arrangement of the chemical elements,
+        periodic trends, electron structure, groups, periods,
+        atomic radius, ionic radius, ionisation energy,
+        electronegativity and much more.
+    </p>
+
+</div>
+
+
+<!-- NAVIGATION -->
+
+<div class="periodic-nav-wrapper">
+
+    <div class="periodic-nav">
+
+        <a href="#introduction">Introduction</a>
+
+        <a href="#history">History</a>
+
+        <a href="#structure">Structure</a>
+
+        <a href="#groups">Groups</a>
+
+        <a href="#periods">Periods</a>
+
+        <a href="#blocks">Blocks</a>
+
+        <a href="#metals">Metals & Nonmetals</a>
+
+        <a href="#atomic-radius">Atomic Radius</a>
+
+        <a href="#ionic-radius">Ionic Radius</a>
+
+        <a href="#ionisation">Ionisation Energy</a>
+
+        <a href="#electron-affinity">Electron Affinity</a>
+
+        <a href="#electronegativity">Electronegativity</a>
+
+        <a href="#trends">Periodic Trends</a>
+
+        <a href="#valency">Valency</a>
+
+        <a href="#reactivity">Reactivity</a>
+
+        <a href="#uses">Applications</a>
+
+    </div>
+
+</div>
+
+
+<!-- INTRODUCTION -->
+
+<section class="periodic-section" id="introduction">
+
+    <h2>1. What Is the Periodic Table?</h2>
+
+    <p>
+        The periodic table is a systematic arrangement of chemical
+        elements according to their atomic number, electron
+        configuration and recurring chemical properties.
+    </p>
+
+    <p>
+        Every known chemical element is represented by a symbol.
+        For example, hydrogen is H, oxygen is O, carbon is C,
+        sodium is Na and chlorine is Cl.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Key idea:</strong>
+
+        The modern periodic table is arranged in increasing
+        atomic number.
+        
+        Atomic number means the number of protons in the nucleus
+        of an atom.
+
+    </div>
+
+    <h3>Why Is It Called "Periodic"?</h3>
+
+    <p>
+        The word periodic means something that repeats at regular
+        intervals.
+    </p>
+
+    <p>
+        When elements are arranged by increasing atomic number,
+        similar chemical and physical properties appear again
+        and again. This repeating pattern is called periodicity.
+    </p>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section class="periodic-section" id="history">
+
+    <h2>2. History of the Periodic Table</h2>
+
+    <h3>Early Attempts</h3>
+
+    <p>
+        Before the modern periodic table existed, scientists
+        attempted to classify elements according to similarities
+        in their properties.
+    </p>
+
+    <h3>Döbereiner's Triads</h3>
+
+    <p>
+        Johann Wolfgang Döbereiner noticed that some elements
+        could be arranged in groups of three called triads.
+    </p>
+
+    <p>
+        In some triads, the atomic mass of the middle element
+        was approximately the average of the other two.
+    </p>
+
+    <h3>Newlands' Law of Octaves</h3>
+
+    <p>
+        John Newlands proposed that when elements were arranged
+        according to increasing atomic mass, similar properties
+        appeared approximately every eighth element.
+    </p>
+
+    <h3>Mendeleev</h3>
+
+    <p>
+        Dmitri Mendeleev developed one of the most important
+        early periodic tables.
+    </p>
+
+    <p>
+        He arranged elements mainly according to atomic mass
+        but also considered their chemical properties.
+    </p>
+
+    <p>
+        One of Mendeleev's greatest achievements was leaving gaps
+        for elements that had not yet been discovered.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        Mendeleev did not simply make a list of known elements.
+        He used the patterns in the table to predict the existence
+        and properties of undiscovered elements.
+
+    </div>
+
+    <h3>Moseley and Atomic Number</h3>
+
+    <p>
+        Henry Moseley demonstrated that atomic number was a more
+        fundamental basis for arranging elements than atomic mass.
+    </p>
+
+    <p>
+        This helped establish the modern periodic law.
+    </p>
+
+    <div class="formula">
+
+        Modern Periodic Law:
+        The physical and chemical properties of elements are
+        periodic functions of their atomic numbers.
+
+    </div>
+
+</section>
+
+
+<!-- STRUCTURE -->
+
+<section class="periodic-section" id="structure">
+
+    <h2>3. Structure of the Periodic Table</h2>
+
+    <p>
+        The periodic table contains rows called periods and
+        columns called groups.
+    </p>
+
+    <div class="property-grid">
+
+        <div class="property-card">
+
+            <i class="fas fa-arrow-right"></i>
+
+            <h4>Periods</h4>
+
+            <p>
+                Horizontal rows in the periodic table.
+            </p>
+
+        </div>
+
+        <div class="property-card">
+
+            <i class="fas fa-arrow-down"></i>
+
+            <h4>Groups</h4>
+
+            <p>
+                Vertical columns containing elements with
+                related valence-electron patterns.
+            </p>
+
+        </div>
+
+        <div class="property-card">
+
+            <i class="fas fa-atom"></i>
+
+            <h4>Atomic Number</h4>
+
+            <p>
+                The number of protons in an atom.
+            </p>
+
+        </div>
+
+        <div class="property-card">
+
+            <i class="fas fa-layer-group"></i>
+
+            <h4>Electron Configuration</h4>
+
+            <p>
+                The arrangement of electrons around the nucleus.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PERIODIC TABLE -->
+
+<section class="periodic-section">
+
+    <h2>4. Simplified Periodic Table</h2>
+
+    <p>
+        The table below shows the general arrangement of the
+        elements. The full periodic table contains all currently
+        recognized chemical elements.
+    </p>
+
+    <div class="periodic-table-container">
+
+        <table class="periodic-table">
+
+            <tr>
+
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+                <th>11</th>
+                <th>12</th>
+                <th>13</th>
+                <th>14</th>
+                <th>15</th>
+                <th>16</th>
+                <th>17</th>
+                <th>18</th>
+
+            </tr>
+
+            <tr>
+
+                <td class="element">
+                    <span class="number">1</span>
+                    <span class="symbol">H</span>
+                    <span class="name">Hydrogen</span>
+                </td>
+
+                <td colspan="16"></td>
+
+                <td class="element">
+                    <span class="number">2</span>
+                    <span class="symbol">He</span>
+                    <span class="name">Helium</span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="element">
+                    <span class="number">3</span>
+                    <span class="symbol">Li</span>
+                    <span class="name">Lithium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">4</span>
+                    <span class="symbol">Be</span>
+                    <span class="name">Beryllium</span>
+                </td>
+
+                <td colspan="10"></td>
+
+                <td class="element">
+                    <span class="number">5</span>
+                    <span class="symbol">B</span>
+                    <span class="name">Boron</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">6</span>
+                    <span class="symbol">C</span>
+                    <span class="name">Carbon</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">7</span>
+                    <span class="symbol">N</span>
+                    <span class="name">Nitrogen</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">8</span>
+                    <span class="symbol">O</span>
+                    <span class="name">Oxygen</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">9</span>
+                    <span class="symbol">F</span>
+                    <span class="name">Fluorine</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">10</span>
+                    <span class="symbol">Ne</span>
+                    <span class="name">Neon</span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="element">
+                    <span class="number">11</span>
+                    <span class="symbol">Na</span>
+                    <span class="name">Sodium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">12</span>
+                    <span class="symbol">Mg</span>
+                    <span class="name">Magnesium</span>
+                </td>
+
+                <td colspan="10"></td>
+
+                <td class="element">
+                    <span class="number">13</span>
+                    <span class="symbol">Al</span>
+                    <span class="name">Aluminium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">14</span>
+                    <span class="symbol">Si</span>
+                    <span class="name">Silicon</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">15</span>
+                    <span class="symbol">P</span>
+                    <span class="name">Phosphorus</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">16</span>
+                    <span class="symbol">S</span>
+                    <span class="name">Sulfur</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">17</span>
+                    <span class="symbol">Cl</span>
+                    <span class="name">Chlorine</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">18</span>
+                    <span class="symbol">Ar</span>
+                    <span class="name">Argon</span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="element">
+                    <span class="number">19</span>
+                    <span class="symbol">K</span>
+                    <span class="name">Potassium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">20</span>
+                    <span class="symbol">Ca</span>
+                    <span class="name">Calcium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">21</span>
+                    <span class="symbol">Sc</span>
+                    <span class="name">Scandium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">22</span>
+                    <span class="symbol">Ti</span>
+                    <span class="name">Titanium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">23</span>
+                    <span class="symbol">V</span>
+                    <span class="name">Vanadium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">24</span>
+                    <span class="symbol">Cr</span>
+                    <span class="name">Chromium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">25</span>
+                    <span class="symbol">Mn</span>
+                    <span class="name">Manganese</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">26</span>
+                    <span class="symbol">Fe</span>
+                    <span class="name">Iron</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">27</span>
+                    <span class="symbol">Co</span>
+                    <span class="name">Cobalt</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">28</span>
+                    <span class="symbol">Ni</span>
+                    <span class="name">Nickel</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">29</span>
+                    <span class="symbol">Cu</span>
+                    <span class="name">Copper</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">30</span>
+                    <span class="symbol">Zn</span>
+                    <span class="name">Zinc</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">31</span>
+                    <span class="symbol">Ga</span>
+                    <span class="name">Gallium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">32</span>
+                    <span class="symbol">Ge</span>
+                    <span class="name">Germanium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">33</span>
+                    <span class="symbol">As</span>
+                    <span class="name">Arsenic</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">34</span>
+                    <span class="symbol">Se</span>
+                    <span class="name">Selenium</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">35</span>
+                    <span class="symbol">Br</span>
+                    <span class="name">Bromine</span>
+                </td>
+
+                <td class="element">
+                    <span class="number">36</span>
+                    <span class="symbol">Kr</span>
+                    <span class="name">Krypton</span>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="highlight">
+
+        <strong>Note:</strong>
+
+        The table continues through periods 5, 6 and 7,
+        including the lanthanides and actinides.
+
+    </div>
+
+</section>
+
+
+<!-- GROUPS -->
+
+<section class="periodic-section" id="groups">
+
+    <h2>5. Groups of the Periodic Table</h2>
+
+    <p>
+        A group is a vertical column of the periodic table.
+        Elements in the same group often have similar chemical
+        properties because they have related valence-electron
+        configurations.
+    </p>
+
+    <h3>Group 1 — Alkali Metals</h3>
+
+    <p>
+        Group 1 contains lithium, sodium, potassium, rubidium,
+        caesium and francium.
+    </p>
+
+    <p>
+        They have one main valence electron and commonly form
+        +1 ions.
+    </p>
+
+    <h3>Group 2 — Alkaline Earth Metals</h3>
+
+    <p>
+        These elements generally have two valence electrons and
+        commonly form +2 ions.
+    </p>
+
+    <h3>Groups 3–12 — Transition Elements</h3>
+
+    <p>
+        These include many familiar metals such as iron, copper,
+        zinc and nickel.
+    </p>
+
+    <p>
+        Transition elements often have variable oxidation states
+        and can form coloured compounds.
+    </p>
+
+    <h3>Group 17 — Halogens</h3>
+
+    <p>
+        Halogens include fluorine, chlorine, bromine, iodine and
+        astatine.
+    </p>
+
+    <p>
+        They have seven valence electrons and commonly gain one
+        electron to form -1 ions.
+    </p>
+
+    <h3>Group 18 — Noble Gases</h3>
+
+    <p>
+        Noble gases include helium, neon, argon, krypton, xenon
+        and radon.
+    </p>
+
+    <p>
+        They generally have very stable outer electron
+        configurations and are comparatively unreactive.
+    </p>
+
+</section>
+
+
+<!-- PERIODS -->
+
+<section class="periodic-section" id="periods">
+
+    <h2>6. Periods</h2>
+
+    <p>
+        A period is a horizontal row in the periodic table.
+        There are seven periods.
+    </p>
+
+    <p>
+        Moving from left to right across a period generally
+        increases atomic number by one.
+    </p>
+
+    <p>
+        Elements within the same period have electrons occupying
+        the same principal energy level, although the sublevels
+        being filled change across the period.
+    </p>
+
+</section>
+
+
+<!-- BLOCKS -->
+
+<section class="periodic-section" id="blocks">
+
+    <h2>7. The s, p, d and f Blocks</h2>
+
+    <p>
+        The periodic table can also be divided according to the
+        type of atomic orbital being filled by the differentiating
+        electron.
+    </p>
+
+    <h3>s-block</h3>
+
+    <p>
+        The s-block contains Groups 1 and 2, together with helium
+        by electron configuration.
+    </p>
+
+    <h3>p-block</h3>
+
+    <p>
+        The p-block contains Groups 13–18.
+    </p>
+
+    <h3>d-block</h3>
+
+    <p>
+        The d-block contains the transition elements.
+    </p>
+
+    <h3>f-block</h3>
+
+    <p>
+        The f-block contains the lanthanides and actinides.
+    </p>
+
+</section>
+
+
+<!-- METALS -->
+
+<section class="periodic-section" id="metals">
+
+    <h2>8. Metals, Nonmetals and Metalloids</h2>
+
+    <h3>Metals</h3>
+
+    <p>
+        Metals generally conduct heat and electricity well,
+        are malleable and ductile, and tend to lose electrons
+        during chemical reactions.
+    </p>
+
+    <h3>Nonmetals</h3>
+
+    <p>
+        Nonmetals generally have poorer electrical conductivity
+        and tend to gain or share electrons.
+    </p>
+
+    <h3>Metalloids</h3>
+
+    <p>
+        Metalloids have properties intermediate between metals
+        and nonmetals.
+    </p>
+
+    <p>
+        Silicon is an important example because of its
+        semiconductor properties.
+    </p>
+
+</section>
+
+
+<!-- ATOMIC RADIUS -->
+
+<section class="periodic-section" id="atomic-radius">
+
+    <h2>9. Atomic Radius</h2>
+
+    <p>
+        Atomic radius describes the approximate size of an atom.
+        Because an electron cloud does not have a sharp outer
+        boundary, atomic radius is not simply the distance from
+        the nucleus to a clearly defined surface.
+    </p>
+
+    <h3>How Is Atomic Radius Defined?</h3>
+
+    <p>
+        Different definitions are used depending on the situation.
+        Common types include covalent radius, metallic radius and
+        van der Waals radius.
+    </p>
+
+    <h3>Covalent Radius</h3>
+
+    <p>
+        The covalent radius is approximately half the distance
+        between the nuclei of two identical atoms joined by a
+        covalent bond.
+    </p>
+
+    <div class="formula">
+        Covalent radius ≈ ½ × internuclear distance
+    </div>
+
+    <h3>Trend Across a Period</h3>
+
+    <p>
+        Atomic radius generally decreases from left to right
+        across a period.
+    </p>
+
+    <p>
+        The reason is that nuclear charge increases while the
+        added electrons are being placed into the same principal
+        energy level. The stronger effective nuclear attraction
+        pulls the electron cloud closer to the nucleus.
+    </p>
+
+    <div class="trend-box">
+
+        <span class="trend-arrow">
+            Across a period:
+            Atomic radius generally ↓
+        </span>
+
+    </div>
+
+    <h3>Trend Down a Group</h3>
+
+    <p>
+        Atomic radius generally increases down a group.
+    </p>
+
+    <p>
+        Each successive period introduces another occupied
+        principal energy level. This places the outer electrons
+        farther from the nucleus and increases shielding.
+    </p>
+
+    <div class="trend-box">
+
+        <span class="trend-arrow">
+            Down a group:
+            Atomic radius generally ↑
+        </span>
+
+    </div>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        There is no single person who "discovered atomic radius."
+        Atomic radius is a calculated or experimentally inferred
+        property whose exact value depends on the definition and
+        bonding environment being used.
+
+    </div>
+
+</section>
+
+
+<!-- IONIC RADIUS -->
+
+<section class="periodic-section" id="ionic-radius">
+
+    <h2>10. Ionic Radius</h2>
+
+    <p>
+        Ionic radius is the approximate size of an ion.
+    </p>
+
+    <h3>Cations</h3>
+
+    <p>
+        A cation is a positively charged ion formed when an atom
+        loses one or more electrons.
+    </p>
+
+    <p>
+        Cations are generally smaller than their corresponding
+        neutral atoms.
+    </p>
+
+    <p>
+        This happens because losing electrons reduces electron
+        repulsion and can remove an entire occupied energy level.
+    </p>
+
+    <h3>Anions</h3>
+
+    <p>
+        An anion is a negatively charged ion formed when an atom
+        gains electrons.
+    </p>
+
+    <p>
+        Anions are generally larger than their corresponding
+        neutral atoms because the additional electrons increase
+        electron-electron repulsion.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Example:</strong>
+
+        Na is larger than Na⁺, while Cl⁻ is larger than Cl.
+
+    </div>
+
+    <h3>Isoelectronic Ions</h3>
+
+    <p>
+        Isoelectronic species have the same number of electrons.
+    </p>
+
+    <p>
+        When comparing isoelectronic ions, the species with more
+        protons generally has the smaller radius because the same
+        number of electrons is attracted by a greater nuclear
+        charge.
+    </p>
+
+</section>
+
+
+<!-- IONISATION ENERGY -->
+
+<section class="periodic-section" id="ionisation">
+
+    <h2>11. Ionisation Energy</h2>
+
+    <p>
+        Ionisation energy is the energy required to remove an
+        electron from a gaseous atom or ion.
+    </p>
+
+    <div class="formula">
+
+        X(g) → X⁺(g) + e⁻
+
+    </div>
+
+    <h3>Across a Period</h3>
+
+    <p>
+        First ionisation energy generally increases from left
+        to right because effective nuclear attraction generally
+        increases.
+    </p>
+
+    <h3>Down a Group</h3>
+
+    <p>
+        Ionisation energy generally decreases down a group because
+        the outer electron is farther from the nucleus and more
+        strongly shielded.
+    </p>
+
+    <h3>Successive Ionisation Energies</h3>
+
+    <p>
+        Removing additional electrons requires additional
+        ionisation energies.
+    </p>
+
+    <p>
+        A very large jump can indicate that all valence electrons
+        have already been removed and the next electron would be
+        removed from an inner shell.
+    </p>
+
+</section>
+
+
+<!-- ELECTRON AFFINITY -->
+
+<section class="periodic-section" id="electron-affinity">
+
+    <h2>12. Electron Affinity</h2>
+
+    <p>
+        Electron affinity describes the energy change associated
+        with adding an electron to a gaseous atom.
+    </p>
+
+    <div class="formula">
+
+        X(g) + e⁻ → X⁻(g)
+
+    </div>
+
+    <p>
+        Electron affinity trends are more complicated than many
+        other periodic trends because electron-electron repulsion,
+        orbital structure and electron configuration affect the
+        energy change.
+    </p>
+
+    <p>
+        Halogens generally have strong tendencies to gain electrons
+        because gaining one electron gives them a filled outer
+        shell.
+    </p>
+
+</section>
+
+
+<!-- ELECTRONEGATIVITY -->
+
+<section class="periodic-section" id="electronegativity">
+
+    <h2>13. Electronegativity</h2>
+
+    <p>
+        Electronegativity is the tendency of an atom in a chemical
+        bond to attract the shared electrons toward itself.
+    </p>
+
+    <h3>Periodic Trend</h3>
+
+    <p>
+        Electronegativity generally increases from left to right
+        across a period.
+    </p>
+
+    <p>
+        It generally decreases down a group.
+    </p>
+
+    <div class="trend-box">
+
+        <span class="trend-arrow">
+            Electronegativity:
+            ↑ across a period
+            <br>
+            ↓ down a group
+        </span>
+
+    </div>
+
+    <h3>Fluorine</h3>
+
+    <p>
+        Fluorine is commonly identified as the most
+        electronegative element on the Pauling scale.
+    </p>
+
+</section>
+
+
+<!-- TRENDS -->
+
+<section class="periodic-section" id="trends">
+
+    <h2>14. Periodic Trends Summary</h2>
+
+    <div class="property-grid">
+
+        <div class="property-card">
+
+            <i class="fas fa-expand"></i>
+
+            <h4>Atomic Radius</h4>
+
+            <p>
+                Generally decreases across a period and increases
+                down a group.
+            </p>
+
+        </div>
+
+        <div class="property-card">
+
+            <i class="fas fa-bolt"></i>
+
+            <h4>Ionisation Energy</h4>
+
+            <p>
+                Generally increases across a period and decreases
+                down a group.
+            </p>
+
+        </div>
+
+        <div class="property-card">
+
+            <i class="fas fa-magnet"></i>
+
+            <h4>Electronegativity</h4>
+
+            <p>
+                Generally increases across a period and decreases
+                down a group.
+            </p>
+
+        </div>
+
+        <div class="property-card">
+
+            <i class="fas fa-plus-minus"></i>
+
+            <h4>Ionic Radius</h4>
+
+            <p>
+                Depends strongly on charge, electron configuration
+                and nuclear attraction.
+            </p>
+
+        </div>
+
+    </div>
+
+    <h3>Why Do These Trends Exist?</h3>
+
+    <p>
+        Most periodic trends can be understood using three major
+        ideas:
+    </p>
+
+    <ul>
+
+        <li>
+            Nuclear charge — the positive charge produced by
+            protons in the nucleus.
+        </li>
+
+        <li>
+            Shielding — the reduction in attraction caused by
+            electrons between the nucleus and an outer electron.
+        </li>
+
+        <li>
+            Distance — the separation between the nucleus and
+            the outer electrons.
+        </li>
+
+    </ul>
+
+    <div class="highlight">
+
+        <strong>Effective nuclear charge:</strong>
+
+        The outer electron does not experience the full attraction
+        of all the protons equally because inner electrons shield
+        it from part of the nuclear charge.
+
+    </div>
+
+</section>
+
+
+<!-- VALENCY -->
+
+<section class="periodic-section" id="valency">
+
+    <h2>15. Valency and Valence Electrons</h2>
+
+    <p>
+        Valence electrons are electrons in the outermost occupied
+        shell that are involved in many chemical reactions and
+        bonding processes.
+    </p>
+
+    <h3>Why Are Valence Electrons Important?</h3>
+
+    <p>
+        The number and arrangement of valence electrons strongly
+        influence how an element reacts.
+    </p>
+
+    <p>
+        For example, Group 1 elements generally have one valence
+        electron and readily lose it.
+    </p>
+
+    <p>
+        Group 17 elements generally have seven valence electrons
+        and tend to gain one.
+    </p>
+
+</section>
+
+
+<!-- REACTIVITY -->
+
+<section class="periodic-section" id="reactivity">
+
+    <h2>16. Reactivity and the Periodic Table</h2>
+
+    <h3>Alkali Metals</h3>
+
+    <p>
+        Alkali-metal reactivity generally increases down the group.
+        The outer electron becomes easier to remove because it is
+        farther from the nucleus and more shielded.
+    </p>
+
+    <h3>Halogens</h3>
+
+    <p>
+        Halogen reactivity generally decreases down the group.
+        Their ability to attract an additional electron generally
+        becomes weaker as atomic size increases.
+    </p>
+
+    <h3>Noble Gases</h3>
+
+    <p>
+        Noble gases are generally unreactive because their electron
+        configurations are particularly stable.
+    </p>
+
+</section>
+
+
+<!-- APPLICATIONS -->
+
+<section class="periodic-section" id="uses">
+
+    <h2>17. Why the Periodic Table Matters</h2>
+
+    <p>
+        The periodic table is more than a list of elements.
+        It allows chemists to predict properties and understand
+        relationships between elements.
+    </p>
+
+    <ul>
+
+        <li>
+            Predicting whether an element is metallic or
+            nonmetallic.
+        </li>
+
+        <li>
+            Predicting common ion charges.
+        </li>
+
+        <li>
+            Understanding chemical bonding.
+        </li>
+
+        <li>
+            Comparing atomic sizes.
+        </li>
+
+        <li>
+            Comparing ionisation energies.
+        </li>
+
+        <li>
+            Understanding electronegativity.
+        </li>
+
+        <li>
+            Predicting chemical reactivity.
+        </li>
+
+        <li>
+            Understanding electron configurations.
+        </li>
+
+        <li>
+            Predicting similarities between elements in the same
+            group.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- ASK INSIDE AI -->
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need More Help?</h3>
+
+    <p>
+        Still confused about periodic trends, atomic radius,
+        ionic radius, groups, periods or electron configuration?
+        Ask Inside AI and get a step-by-step explanation.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"><small></small></i>
+        Ask Insite AI
+    </a>
+
+</div>
+</div>
+
+{% endblock %}

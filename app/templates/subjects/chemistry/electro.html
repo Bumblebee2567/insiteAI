@@ -1,0 +1,1008 @@
+{% extends "base.html" %}
+
+{% block title %}
+Electrochemistry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.electro-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.electro-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.electro-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.electro-header p {
+    color: #9ca3af;
+    max-width: 780px;
+    margin: auto;
+    line-height: 1.7;
+}
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+.electro-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.electro-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.electro-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.electro-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.electro-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.electro-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.electro-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.electro-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.electro-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.electro-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.electro-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.electro-section p,
+.electro-section li {
+    color: #c9d1d9;
+    line-height: 1.75;
+}
+
+.electro-section ul {
+    padding-left: 22px;
+}
+
+.electro-section li {
+    margin-bottom: 7px;
+}
+
+.highlight,
+.exam-tip {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+}
+
+.highlight strong,
+.exam-tip strong {
+    color: #58a6ff;
+}
+
+.formula {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 16px;
+    margin: 15px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.08rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .92rem;
+    margin: 0;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 18px 0;
+}
+
+.electro-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+}
+
+.electro-table th,
+.electro-table td {
+    border: 1px solid #30363d;
+    padding: 12px;
+    text-align: left;
+}
+
+.electro-table th {
+    background: #0d1117;
+    color: #58a6ff;
+}
+
+.electro-table td {
+    color: #c9d1d9;
+    background: #161b22;
+}
+
+.equation-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 16px 0;
+    overflow-x: auto;
+}
+
+.equation-box .label {
+    color: #58a6ff;
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.equation-box code {
+    color: #ffffff;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.steps {
+    margin: 18px 0;
+}
+
+.step {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 15px 18px;
+    margin-bottom: 12px;
+    color: #c9d1d9;
+}
+
+.example-box {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.ask-ai {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+}
+
+@media (max-width: 768px) {
+    .electro-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .electro-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .electro-header p {
+        font-size: .92rem;
+    }
+
+    .electro-section {
+        padding: 18px;
+        border-radius: 13px;
+    }
+
+    .electro-section h2 {
+        font-size: 1.35rem;
+    }
+
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .electro-nav-wrapper {
+        top: 0;
+    }
+
+    .electro-nav a {
+        font-size: .82rem;
+        padding: 8px 12px;
+    }
+
+    .formula {
+        font-size: .95rem;
+        text-align: left;
+    }
+
+    .example-box,
+    .highlight,
+    .exam-tip {
+        padding: 15px;
+    }
+}
+</style>
+
+<div class="electro-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+    <div class="electro-header">
+        <h1><i class="fa-solid fa-bolt"></i> Electrochemistry</h1>
+        <p>
+            A detailed high-school guide to electrolysis, electrodes, ions,
+            oxidation and reduction, electrolytic cells, electrochemical cells,
+            electroplating, half-equations and quantitative electrolysis.
+        </p>
+    </div>
+
+    <div class="electro-nav-wrapper">
+        <nav class="electro-nav">
+            <a href="#overview">Overview</a>
+            <a href="#electrolytes">Electrolytes</a>
+            <a href="#ions">Ions</a>
+            <a href="#electrolysis">Electrolysis</a>
+            <a href="#electrodes">Electrodes</a>
+            <a href="#cells">Cells</a>
+            <a href="#half-equations">Half-Equations</a>
+            <a href="#aqueous">Aqueous Solutions</a>
+            <a href="#discharge">Discharge</a>
+            <a href="#examples">Examples</a>
+            <a href="#electroplating">Electroplating</a>
+            <a href="#electrochemical">Electrochemical Cells</a>
+            <a href="#redox">Redox</a>
+            <a href="#calculations">Calculations</a>
+            <a href="#applications">Applications</a>
+            <a href="#exam">Exam Tips</a>
+        </nav>
+    </div>
+
+    <section class="electro-section" id="overview">
+        <h2>1. What Is Electrochemistry?</h2>
+        <p>
+            Electrochemistry studies the relationship between chemical reactions
+            and electrical energy. Some chemical reactions produce electricity,
+            while electricity can also be used to force chemical reactions.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-plug"></i>
+                <h4>Electrolysis</h4>
+                <p>Electrical energy is used to drive a non-spontaneous chemical reaction.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-battery-full"></i>
+                <h4>Electrochemical Cells</h4>
+                <p>A spontaneous redox reaction can be used to produce electrical energy.</p>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>Key idea:</strong>
+            In an electrolyte, electrical charge is carried through the liquid or
+            molten substance by moving ions.
+        </div>
+    </section>
+
+    <section class="electro-section" id="electrolytes">
+        <h2>2. Electrolytes and Non-Electrolytes</h2>
+
+        <p>
+            An electrolyte conducts electricity when molten or dissolved because
+            it contains mobile ions.
+        </p>
+
+        <h3>Strong Electrolytes</h3>
+        <p>
+            Strong electrolytes produce a large concentration of ions in solution.
+            Many soluble ionic compounds and strong acids are examples.
+        </p>
+
+        <h3>Weak Electrolytes</h3>
+        <p>
+            Weak electrolytes ionize only partially. Ethanoic acid is a familiar
+            example.
+        </p>
+
+        <h3>Non-Electrolytes</h3>
+        <p>
+            Substances such as sugar dissolve as neutral molecules and therefore
+            do not conduct electricity significantly.
+        </p>
+
+        <div class="table-wrap">
+            <table class="electro-table">
+                <tr>
+                    <th>Substance</th>
+                    <th>Main mobile particles</th>
+                    <th>Conducts?</th>
+                </tr>
+                <tr>
+                    <td>Molten NaCl</td>
+                    <td>Na⁺ and Cl⁻</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>NaCl(aq)</td>
+                    <td>Na⁺ and Cl⁻</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>Solid NaCl</td>
+                    <td>Ions fixed in lattice</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Sugar solution</td>
+                    <td>Neutral molecules</td>
+                    <td>No significant conduction</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section class="electro-section" id="ions">
+        <h2>3. Ions and Flow of Charge</h2>
+
+        <p>
+            Positive ions are called <strong>cations</strong>. Negative ions are
+            called <strong>anions</strong>.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-plus"></i>
+                <h4>Cations</h4>
+                <p>Positive ions that move toward the cathode during electrolysis.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-minus"></i>
+                <h4>Anions</h4>
+                <p>Negative ions that move toward the anode during electrolysis.</p>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>Memory rule:</strong>
+            Cations → Cathode. Anions → Anode.
+        </div>
+    </section>
+
+    <section class="electro-section" id="electrolysis">
+        <h2>4. Electrolysis</h2>
+
+        <p>
+            Electrolysis is the decomposition of an electrolyte by passing an
+            electric current through it.
+        </p>
+
+        <div class="formula">
+            Electrical energy → chemical change
+        </div>
+
+        <h3>What Happens?</h3>
+
+        <div class="steps">
+            <div class="step">The electrolyte contains mobile ions.</div>
+            <div class="step">A direct-current power supply creates a potential difference.</div>
+            <div class="step">Positive ions migrate toward the cathode.</div>
+            <div class="step">Negative ions migrate toward the anode.</div>
+            <div class="step">Electron-transfer reactions occur at the electrode surfaces.</div>
+            <div class="step">New substances are formed at the electrodes.</div>
+        </div>
+    </section>
+
+    <section class="electro-section" id="electrodes">
+        <h2>5. Electrodes</h2>
+
+        <p>
+            Electrodes are conducting materials through which current enters or
+            leaves an electrolyte.
+        </p>
+
+        <div class="table-wrap">
+            <table class="electro-table">
+                <tr>
+                    <th>Electrode</th>
+                    <th>Electrolytic cell</th>
+                    <th>Reaction</th>
+                    <th>Attracted ions</th>
+                </tr>
+                <tr>
+                    <td>Cathode</td>
+                    <td>Negative</td>
+                    <td>Reduction</td>
+                    <td>Cations</td>
+                </tr>
+                <tr>
+                    <td>Anode</td>
+                    <td>Positive</td>
+                    <td>Oxidation</td>
+                    <td>Anions</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="highlight">
+            <strong>Important:</strong>
+            Oxidation always occurs at the anode and reduction always occurs at
+            the cathode. The electrode signs depend on the cell type.
+        </div>
+    </section>
+
+    <section class="electro-section" id="cells">
+        <h2>6. Electrolytic Cells</h2>
+
+        <p>
+            An electrolytic cell uses an external electrical source to force a
+            chemical reaction that is not spontaneous under the conditions.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-battery-half"></i>
+                <h4>Power Supply</h4>
+                <p>Provides electrical energy to drive the reaction.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-flask"></i>
+                <h4>Electrolyte</h4>
+                <p>Contains mobile ions that carry charge through the system.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-right"></i>
+                <h4>Cathode</h4>
+                <p>Negative electrode where reduction occurs.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-left"></i>
+                <h4>Anode</h4>
+                <p>Positive electrode where oxidation occurs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="electro-section" id="half-equations">
+        <h2>7. Half-Equations</h2>
+
+        <p>
+            A half-equation represents the electron transfer at one electrode.
+            It must be balanced for atoms and charge.
+        </p>
+
+        <h3>Reduction at the Cathode</h3>
+
+        <div class="equation-box">
+            <div class="label">Copper deposition</div>
+            <code>Cu²⁺ + 2e⁻ → Cu</code>
+        </div>
+
+        <p>
+            Cu²⁺ gains two electrons. Gain of electrons is reduction.
+        </p>
+
+        <h3>Oxidation at the Anode</h3>
+
+        <div class="equation-box">
+            <div class="label">Chloride oxidation</div>
+            <code>2Cl⁻ → Cl₂ + 2e⁻</code>
+        </div>
+
+        <p>
+            Cl⁻ loses electrons. Loss of electrons is oxidation.
+        </p>
+
+        <div class="highlight">
+            <strong>OIL RIG:</strong>
+            Oxidation Is Loss, Reduction Is Gain of electrons.
+        </div>
+    </section>
+
+    <section class="electro-section" id="aqueous">
+        <h2>8. Electrolysis of Aqueous Solutions</h2>
+
+        <p>
+            Aqueous electrolysis is more complicated than molten electrolysis
+            because water also participates in the chemistry and provides
+            hydrogen- and hydroxide-containing species.
+        </p>
+
+        <h3>Example: Copper(II) Sulfate Solution</h3>
+
+        <p>
+            CuSO₄(aq) contains Cu²⁺ and SO₄²⁻, while water contributes to the
+            electrode chemistry. With inert electrodes, Cu²⁺ is commonly reduced
+            at the cathode.
+        </p>
+
+        <div class="equation-box">
+            <div class="label">Cathode</div>
+            <code>Cu²⁺ + 2e⁻ → Cu</code>
+        </div>
+
+        <p>
+            At the inert anode, hydroxide-containing water chemistry commonly
+            leads to oxygen formation.
+        </p>
+
+        <div class="equation-box">
+            <div class="label">Anode</div>
+            <code>4OH⁻ → O₂ + 2H₂O + 4e⁻</code>
+        </div>
+    </section>
+
+    <section class="electro-section" id="discharge">
+        <h2>9. Preferential Discharge</h2>
+
+        <p>
+            When several ions are present, they compete for discharge. Which ion
+            is discharged depends on factors including electrode material,
+            concentration and the relative ease of the electrode reaction.
+        </p>
+
+        <h3>At the Cathode</h3>
+
+        <ul>
+            <li>Less reactive metal ions are often reduced preferentially.</li>
+            <li>Very reactive metal ions such as Na⁺ and K⁺ are generally not deposited from aqueous solutions.</li>
+            <li>Water can instead be reduced to form hydrogen.</li>
+        </ul>
+
+        <h3>At the Anode</h3>
+
+        <ul>
+            <li>Halide ions such as Cl⁻, Br⁻ and I⁻ can be oxidized under suitable conditions.</li>
+            <li>Otherwise hydroxide/water chemistry commonly produces oxygen with inert electrodes.</li>
+        </ul>
+
+        <div class="exam-tip">
+            <strong>Exam tip:</strong>
+            List all ions present before deciding what forms at each electrode.
+        </div>
+    </section>
+
+    <section class="electro-section" id="examples">
+        <h2>10. Worked Examples</h2>
+
+        <div class="example-box">
+            <h4>Example 1 — Molten Sodium Chloride</h4>
+
+            <p>What products form when molten NaCl is electrolysed?</p>
+
+            <p><strong>Step 1:</strong> The ions are Na⁺ and Cl⁻.</p>
+            <p><strong>Step 2:</strong> Na⁺ moves to the cathode.</p>
+            <p><strong>Step 3:</strong> Cl⁻ moves to the anode.</p>
+
+            <div class="equation-box">
+                <div class="label">Cathode</div>
+                <code>Na⁺ + e⁻ → Na</code>
+            </div>
+
+            <div class="equation-box">
+                <div class="label">Anode</div>
+                <code>2Cl⁻ → Cl₂ + 2e⁻</code>
+            </div>
+
+            <p><strong>Products:</strong> sodium metal and chlorine gas.</p>
+        </div>
+
+        <div class="example-box">
+            <h4>Example 2 — Copper(II) Sulfate</h4>
+
+            <p>
+                Copper(II) sulfate solution is electrolysed using inert electrodes.
+                What happens at the cathode?
+            </p>
+
+            <div class="formula">
+                Cu²⁺ + 2e⁻ → Cu
+            </div>
+
+            <p>
+                Copper ions gain electrons and copper is deposited at the cathode.
+            </p>
+        </div>
+
+        <div class="example-box">
+            <h4>Example 3 — Concentrated Brine</h4>
+
+            <p>
+                Concentrated sodium chloride solution contains Na⁺, Cl⁻ and
+                water-derived species. Under suitable industrial conditions,
+                chlorine forms at the anode and hydrogen forms at the cathode.
+            </p>
+
+            <div class="equation-box">
+                <div class="label">Cathode</div>
+                <code>2H₂O + 2e⁻ → H₂ + 2OH⁻</code>
+            </div>
+
+            <div class="equation-box">
+                <div class="label">Anode</div>
+                <code>2Cl⁻ → Cl₂ + 2e⁻</code>
+            </div>
+
+            <p>
+                The solution becomes enriched in sodium hydroxide.
+            </p>
+        </div>
+    </section>
+
+    <section class="electro-section" id="electroplating">
+        <h2>11. Electroplating</h2>
+
+        <p>
+            Electroplating uses electrolysis to coat an object with a thin layer
+            of another metal.
+        </p>
+
+        <h3>Uses</h3>
+
+        <ul>
+            <li>Improving appearance.</li>
+            <li>Protecting against corrosion.</li>
+            <li>Improving surface properties.</li>
+            <li>Reducing the amount of expensive metal required.</li>
+        </ul>
+
+        <p>
+            The object being coated is connected to the negative terminal and
+            becomes the cathode. Metal ions in solution gain electrons and are
+            deposited on it.
+        </p>
+
+        <div class="formula">
+            Cu²⁺ + 2e⁻ → Cu
+        </div>
+    </section>
+
+    <section class="electro-section" id="electrochemical">
+        <h2>12. Electrochemical Cells</h2>
+
+        <p>
+            A galvanic or voltaic cell converts chemical energy from a spontaneous
+            redox reaction into electrical energy.
+        </p>
+
+        <div class="table-wrap">
+            <table class="electro-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Electrolytic Cell</th>
+                    <th>Galvanic/Voltaic Cell</th>
+                </tr>
+                <tr>
+                    <td>Energy conversion</td>
+                    <td>Electrical → chemical</td>
+                    <td>Chemical → electrical</td>
+                </tr>
+                <tr>
+                    <td>Reaction</td>
+                    <td>Non-spontaneous</td>
+                    <td>Spontaneous</td>
+                </tr>
+                <tr>
+                    <td>Anode</td>
+                    <td>Positive</td>
+                    <td>Negative</td>
+                </tr>
+                <tr>
+                    <td>Cathode</td>
+                    <td>Negative</td>
+                    <td>Positive</td>
+                </tr>
+                <tr>
+                    <td>Oxidation</td>
+                    <td>Anode</td>
+                    <td>Anode</td>
+                </tr>
+                <tr>
+                    <td>Reduction</td>
+                    <td>Cathode</td>
+                    <td>Cathode</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="highlight">
+            <strong>Remember:</strong>
+            Oxidation is always at the anode and reduction is always at the
+            cathode. Only the electrode signs change between cell types.
+        </div>
+    </section>
+
+    <section class="electro-section" id="redox">
+        <h2>13. Redox Reactions</h2>
+
+        <p>
+            Electrochemistry is based on oxidation-reduction reactions.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-up"></i>
+                <h4>Oxidation</h4>
+                <p>Loss of electrons and an increase in oxidation state.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-arrow-down"></i>
+                <h4>Reduction</h4>
+                <p>Gain of electrons and a decrease in oxidation state.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="electro-section" id="calculations">
+        <h2>14. Quantitative Electrolysis</h2>
+
+        <p>
+            The amount of material produced depends on the amount of electric
+            charge passed through the cell.
+        </p>
+
+        <div class="formula">
+            Q = It
+        </div>
+
+        <p>
+            Q is charge in coulombs, I is current in amperes and t is time in seconds.
+        </p>
+
+        <h3>Faraday Constant</h3>
+
+        <p>
+            One mole of electrons carries approximately 96,500 coulombs of charge.
+        </p>
+
+        <div class="formula">
+            Q = nF
+        </div>
+
+        <div class="formula">
+            It = nF
+        </div>
+
+        <div class="example-box">
+            <h4>Word Problem</h4>
+
+            <p>
+                A current of 2.0 A flows through an electrolytic cell for
+                30 minutes. Calculate the charge passed.
+            </p>
+
+            <p><strong>Convert time:</strong></p>
+
+            <div class="formula">
+                30 × 60 = 1800 s
+            </div>
+
+            <p><strong>Apply Q = It:</strong></p>
+
+            <div class="formula">
+                Q = 2.0 × 1800 = 3600 C
+            </div>
+
+            <p>
+                Therefore, the charge passed is <strong>3600 C</strong>.
+            </p>
+        </div>
+    </section>
+
+    <section class="electro-section" id="applications">
+        <h2>15. Applications of Electrochemistry</h2>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-coins"></i>
+                <h4>Electroplating</h4>
+                <p>Coating objects with metals for protection or appearance.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-industry"></i>
+                <h4>Metal Extraction</h4>
+                <p>Electrolysis is used to obtain highly reactive metals such as aluminium.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-recycle"></i>
+                <h4>Metal Refining</h4>
+                <p>Electrorefining produces very pure metals such as copper.</p>
+            </div>
+
+            <div class="concept-card">
+                <i class="fa-solid fa-flask"></i>
+                <h4>Chemical Manufacture</h4>
+                <p>Electrolysis is used industrially to produce chlorine, hydrogen and sodium hydroxide.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="electro-section" id="exam">
+        <h2>16. Exam Checklist</h2>
+
+        <ul>
+            <li>Identify every ion present before predicting products.</li>
+            <li>Cations move toward the cathode.</li>
+            <li>Anions move toward the anode.</li>
+            <li>Oxidation occurs at the anode.</li>
+            <li>Reduction occurs at the cathode.</li>
+            <li>Balance half-equations for atoms and charge.</li>
+            <li>Distinguish molten from aqueous electrolysis.</li>
+            <li>Remember that water contributes to aqueous electrolysis.</li>
+            <li>Use Q = It and convert time to seconds.</li>
+            <li>Check electron ratios when doing quantitative questions.</li>
+        </ul>
+
+        <div class="exam-tip">
+            <strong>Core memory line:</strong>
+            An Oxidation — Reduction Redox; oxidation at the anode, reduction at
+            the cathode; cations to cathode, anions to anode.
+        </div>
+    </section>
+
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Need More Help?</h3>
+        <p>
+            Ask Inside AI to explain electrochemistry, solve a calculation,
+            balance a half-equation or create another worked example.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i>
+            Ask Inside AI
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

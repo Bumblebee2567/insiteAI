@@ -1,0 +1,797 @@
+{% extends "base.html" %}
+
+{% block title %}
+Kinematics & Vectors | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section h4 {
+    color: #38bdf8;
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-gauge-high"></i>
+            Kinematics & Vectors in 1D and 2D
+        </h1>
+        <p>
+            An exhaustive, textbook-grade masterclass covering displacement, instantaneous and average velocity, 
+            acceleration, graphical calculus interpretations, vector algebra, relative motion, and complete projectile dynamics.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#scalars">Scalars & Vectors</a>
+        <a href="#kinematics1d">1D Kinematics</a>
+        <a href="#calculus">Graphical & Calculus</a>
+        <a href="#equations">Kinematic Formulas</a>
+        <a href="#vectors2d">2D Vector Analysis</a>
+        <a href="#projectiles">Projectile Motion</a>
+        <a href="#relative">Relative Motion</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Kinematics</h2>
+        </div>
+        <p>
+            Mechanics is the branch of physics concerned with the study of motion and forces. It is subdivided into 
+            <strong>kinematics</strong>—the description of motion without regard to its causes (forces)—and 
+            <strong>dynamics</strong>, which investigates the forces that cause or modify motion.
+        </p>
+        <p>
+            To describe motion mathematically in one, two, or three dimensions, we must establish a coordinate reference frame 
+            consisting of an origin point and mutually orthogonal spatial axes (typically Cartesian x, y, and z coordinates) 
+            paired with a standard clock to measure time intervals.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            All kinematic descriptions are strictly relative to the chosen reference frame. An observer standing stationary 
+            on the Earth measures different velocities for a moving train compared to an observer riding aboard another train.
+        </div>
+    </section>
+
+    <!-- 02 SCALARS & VECTORS -->
+    <section class="phys-section" id="scalars">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Scalars, Vectors, and Tensor Foundations</h2>
+        </div>
+        <p>
+            Physical quantities are classified based on their directional properties and transformation laws under coordinate rotations:
+        </p>
+        <ul>
+            <li><strong>Scalar Quantities:</strong> Quantities completely specified by a single real number with appropriate physical units, possessing no directional attribute. Examples include mass (m), time (t), temperature (T), speed (v), work (W), energy (E), and electric charge (q). They obey the standard laws of algebraic addition.</li>
+            <li><strong>Vector Quantities:</strong> Quantities possessing both a magnitude (a positive real number with units) and a specific spatial direction. Examples include displacement (x or s), velocity (v), acceleration (a), force (F), momentum (p), and electric field (E). Vectors combine according to geometric rules such as the triangle or parallelogram law of addition.</li>
+            <li><strong>Geometric Representation:</strong> A vector is graphically depicted as a directed line segment (an arrow) where the length of the segment is proportional to the vector's magnitude, and the arrowhead indicates its direction in space.</li>
+        </ul>
+
+        <h3>Vector Algebra & Operations</h3>
+        <p>
+            Let vector A and vector B be two vectors in three-dimensional space, and let scalar c be a scalar:
+        </p>
+        <ul>
+            <li><strong>Scalar Multiplication:</strong> Multiplying a vector A by a scalar c scales its magnitude by |c| and reverses its direction if c is less than 0.</li>
+            <li><strong>Vector Addition:</strong> Resultant vector R = vector A + vector B. Geometrically performed by placing the tail of vector B at the head of vector A (head-to-tail method).</li>
+            <li><strong>Vector Subtraction:</strong> vector A - vector B = vector A + (-vector B), where -vector B has the same magnitude as vector B but points in the exact opposite direction.</li>
+            <li><strong>Unit Vectors:</strong> A unit vector (u-hat) is a dimensionless vector of magnitude 1 pointing in the direction of vector A, defined as u-hat = vector A / magnitude of vector A. The standard Cartesian unit vectors are i-hat, j-hat, and k-hat along the x, y, and z axes.</li>
+        </ul>
+    </section>
+
+    <!-- 03 1D KINEMATICS -->
+    <section class="phys-section" id="kinematics1d">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>One-Dimensional Kinematics: Position, Velocity & Acceleration</h2>
+        </div>
+        <p>
+            Motion along a straight line (1D) requires defining a position coordinate x(t) as a continuous function of time t:
+        </p>
+        <ul>
+            <li><strong>Distance (s):</strong> A scalar quantity representing the total accumulated length of the path traveled by an object, regardless of direction. Always greater than or equal to 0.</li>
+            <li><strong>Displacement (delta x):</strong> A vector quantity defined as the change in position: delta x = x<sub>f</sub> - x<sub>i</sub>. It depends solely on the initial and final positions, independent of the path taken.</li>
+            <li><strong>Average Speed (v<sub>avg</sub>):</strong> Total distance traveled divided by the total time elapsed: v<sub>avg</sub> = Total Distance / delta t.</li>
+            <li><strong>Average Velocity (v<sub>av</sub>):</strong> Total displacement divided by the total time elapsed: v<sub>av</sub> = delta x / delta t = (x<sub>2</sub> - x<sub>1</sub>) / (t<sub>2</sub> - t<sub>1</sub>).</li>
+            <li><strong>Instantaneous Velocity (v):</strong> The limiting value of average velocity as the time interval approaches zero. Mathematically, the first derivative of position with respect to time: 
+                v(t) = limit as delta t approaches 0 of (delta x / delta t) = dx / dt.</li>
+            <li><strong>Average Acceleration (a<sub>av</sub>):</strong> The change in velocity divided by the time interval over which the change occurs: 
+                a<sub>av</sub> = delta v / delta t = (v<sub>2</sub> - v<sub>1</sub>) / (t<sub>2</sub> - t<sub>1</sub>).</li>
+            <li><strong>Instantaneous Acceleration (a):</strong> The time derivative of instantaneous velocity, or the second time derivative of position: 
+                a(t) = dv / dt = d<sup>2</sup>x / dt<sup>2</sup>.</li>
+        </ul>
+    </section>
+
+    <!-- 04 GRAPHICAL & CALCULUS -->
+    <section class="phys-section" id="calculus">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Graphical Analysis & Calculus Foundations</h2>
+        </div>
+        <p>
+            Kinematics relies heavily on graphical interpretations and calculus relationships between position, velocity, and acceleration:
+        </p>
+
+        <h3>1. Position vs. Time (x-t) Graphs</h3>
+        <ul>
+            <li>The <strong>slope</strong> at any point on an x-t curve represents the <strong>instantaneous velocity</strong> (v = dx / dt).</li>
+            <li>A straight slanted line indicates constant velocity; a curved line indicates changing velocity (acceleration).</li>
+            <li>The inflection point of an x-t curve corresponds to zero acceleration.</li>
+        </ul>
+
+        <h3>2. Velocity vs. Time (v-t) Graphs</h3>
+        <ul>
+            <li>The <strong>slope</strong> at any point on a v-t curve represents the <strong>instantaneous acceleration</strong> (a = dv / dt).</li>
+            <li>The <strong>area under the curve</strong> (AUC) between two times t<sub>1</sub> and t<sub>2</sub> represents the total <strong>displacement</strong>: 
+                delta x = integral from t<sub>1</sub> to t<sub>2</sub> of v(t) dt.</li>
+            <li>A horizontal line on a v-t graph indicates uniform (constant) velocity and zero acceleration.</li>
+        </ul>
+
+        <h3>3. Acceleration vs. Time (a-t) Graphs</h3>
+        <ul>
+            <li>The <strong>area under the a-t curve</strong> between t<sub>1</sub> and t<sub>2</sub> represents the <strong>change in velocity</strong>: 
+                delta v = integral from t<sub>1</sub> to t<sub>2</sub> of a(t) dt.</li>
+        </ul>
+
+        <div class="phys-info">
+            <strong>Integral Calculus Bridge:</strong><br>
+            If acceleration is known as a function of time a(t), velocity is found via integration: 
+            v(t) = v<sub>0</sub> + integral from 0 to t of a(t) dt. Position is subsequently found by integrating velocity: 
+            x(t) = x<sub>0</sub> + integral from 0 to t of v(t) dt.
+        </div>
+    </section>
+
+    <!-- 05 KINEMATIC EQUATIONS -->
+    <section class="phys-section" id="equations">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Kinematic Equations for Constant Acceleration</h2>
+        </div>
+        <p>
+            When acceleration a is constant (a = constant), the calculus integrations simplify into the standard 
+            kinematic equations. Let initial position x<sub>0</sub> = 0, initial time t<sub>0</sub> = 0, initial velocity be v<sub>0</sub>, and final velocity be v:
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Equation</th>
+                        <th>Name / Purpose</th>
+                        <th>Missing Variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>v = v<sub>0</sub> + at</strong></td>
+                        <td>Velocity-Time Relation</td>
+                        <td>Displacement (delta x)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>delta x = v<sub>0</sub>t + (1/2)at<sup>2</sup></strong></td>
+                        <td>Displacement-Time Relation</td>
+                        <td>Final Velocity (v)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>v<sup>2</sup> = v<sub>0</sub><sup>2</sup> + 2a(delta x)</strong></td>
+                        <td>Velocity-Displacement Relation</td>
+                        <td>Time (t)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>delta x = ((v + v<sub>0</sub>) / 2)t</strong></td>
+                        <td>Average Velocity Relation</td>
+                        <td>Acceleration (a)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>delta x = vt - (1/2)at<sup>2</sup></strong></td>
+                        <td>Displacement with Final Velocity</td>
+                        <td>Initial Velocity (v<sub>0</sub>)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Free Fall Motion under Gravity</h3>
+        <p>
+            A special case of 1D motion with constant acceleration occurs for objects in free fall near the surface of the Earth, 
+            where air resistance is neglected. The acceleration is directed vertically downward with magnitude g approximately equal to 9.81 m/s<sup>2</sup> 
+            (or 9.80 m/s<sup>2</sup> depending on curriculum convention). Setting the upward vertical direction as positive (+y), 
+            we substitute a = -g into the kinematic equations:
+        </p>
+        <ul>
+            <li>v = v<sub>0</sub> - gt</li>
+            <li>y = y<sub>0</sub> + v<sub>0</sub>t - (1/2)gt<sup>2</sup></li>
+            <li>v<sup>2</sup> = v<sub>0</sub><sup>2</sup> - 2g(y - y<sub>0</sub>)</li>
+        </ul>
+    </section>
+
+    <!-- 06 2D VECTOR ANALYSIS -->
+    <section class="phys-section" id="vectors2d">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Two-Dimensional Vector Analysis & Components</h2>
+        </div>
+        <p>
+            Extending motion to two dimensions (the x-y plane) requires treating vectors in component form. 
+            Any vector A can be resolved into orthogonal components along the cartesian axes:
+        </p>
+        <ul>
+            <li><strong>Cartesian Expansion:</strong> vector A = A<sub>x</sub>(i-hat) + A<sub>y</sub>(j-hat)</li>
+            <li><strong>Magnitude Calculation:</strong> Magnitude of vector A = square root of (A<sub>x</sub><sup>2</sup> + A<sub>y</sub><sup>2</sup>)</li>
+            <li><strong>Direction Angle:</strong> theta = arctan(A<sub>y</sub> / A<sub>x</sub>) measured counter-clockwise from the positive x-axis.</li>
+            <li><strong>Component Trigonometry:</strong> A<sub>x</sub> = A cos(theta) and A<sub>y</sub> = A sin(theta).</li>
+            <li><strong>Dot Product (Scalar Product):</strong> vector A dot vector B = A<sub>x</sub>B<sub>x</sub> + A<sub>y</sub>B<sub>y</sub> = AB cos(phi), where phi is the angle between the two vectors.</li>
+            <li><strong>Cross Product (Vector Product in 2D/3D):</strong> vector A cross vector B = (A<sub>x</sub>B<sub>y</sub> - A<sub>y</sub>B<sub>x</sub>)(k-hat) = AB sin(phi) (n-hat).</li>
+        </ul>
+    </section>
+
+    <!-- 07 PROJECTILE MOTION -->
+    <section class="phys-section" id="projectiles">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Projectile Motion in Two Dimensions</h2>
+        </div>
+        <p>
+            Projectile motion describes the curved trajectory of an object launched into the air subject only to the uniform force of gravity 
+            (neglecting air resistance). The foundational principle of projectile motion is that 
+            <strong>horizontal and vertical motions are completely independent of one another</strong>.
+        </p>
+        
+        <h3>Governing Equations</h3>
+        <p>
+            Let an object be launched from the origin (0,0) with initial speed v<sub>0</sub> at an angle theta above the horizontal:
+        </p>
+        <ul>
+            <li><strong>Initial Velocity Components:</strong> 
+                v<sub>0x</sub> = v<sub>0</sub> cos(theta) and v<sub>0y</sub> = v<sub>0</sub> sin(theta).</li>
+            <li><strong>Horizontal Motion (a<sub>x</sub> = 0):</strong> 
+                v<sub>x</sub>(t) = v<sub>0</sub> cos(theta) = constant<br>
+                x(t) = (v<sub>0</sub> cos(theta))t</li>
+            <li><strong>Vertical Motion (a<sub>y</sub> = -g):</strong> 
+                v<sub>y</sub>(t) = v<sub>0</sub> sin(theta) - gt<br>
+                y(t) = (v<sub>0</sub> sin(theta))t - (1/2)gt<sup>2</sup><br>
+                v<sub>y</sub><sup>2</sup> = (v<sub>0</sub> sin(theta))<sup>2</sup> - 2gy</li>
+        </ul>
+
+        <h3>Key Derived Formulas (Symmetric Landing on Level Ground)</h3>
+        <ul>
+            <li><strong>Time of Flight (t<sub>flight</sub>):</strong> Total time the projectile remains in the air before returning to y = 0: 
+                t<sub>flight</sub> = (2v<sub>0</sub> sin(theta)) / g.</li>
+            <li><strong>Maximum Height Reached (H):</strong> Occurs when vertical velocity v<sub>y</sub> = 0 at t = t<sub>flight</sub> / 2: 
+                H = (v<sub>0</sub><sup>2</sup> sin<sup>2</sup>(theta)) / (2g).</li>
+            <li><strong>Horizontal Range (R):</strong> Total horizontal displacement when the projectile lands (y = 0): 
+                R = x(t<sub>flight</sub>) = (v<sub>0</sub><sup>2</sup> sin(2*theta)) / g. 
+                <br>Notice that maximum range is achieved when sin(2*theta) = 1, which occurs at theta = 45 degrees.</li>
+            <li><strong>Equation of Trajectory:</strong> Eliminating time t yields the parabolic path equation: 
+                y = x tan(theta) - (g / (2v<sub>0</sub><sup>2</sup> cos<sup>2</sup>(theta))) x<sup>2</sup>.</li>
+        </ul>
+    </section>
+
+    <!-- 08 RELATIVE MOTION -->
+    <section class="phys-section" id="relative">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Relative Velocity & Reference Frames</h2>
+        </div>
+        <p>
+            The velocity of an object depends fundamentally upon the reference frame of the observer measuring it. 
+            Let frame A be a stationary ground frame, and frame B be a moving reference frame traveling with velocity vector v<sub>BA</sub> 
+            relative to frame A.
+        </p>
+        <ul>
+            <li><strong>Galilean Velocity Transformation:</strong> The velocity of an object P relative to frame A (vector v<sub>PA</sub>) is equal to the vector sum of its velocity relative to frame B (vector v<sub>PB</sub>) and the velocity of frame B relative to frame A (vector v<sub>BA</sub>):
+                <br><strong>vector v<sub>PA</sub> = vector v<sub>PB</sub> + vector v<sub>BA</sub></strong></li>
+            <li><strong>Inversion Property:</strong> vector v<sub>AB</sub> = -vector v<sub>BA</sub>.</li>
+            <li><strong>Classic Applications:</strong> River-crossing problems (swimmer/boat heading against or across a flowing current) and wind-drift navigation for aircraft.</li>
+        </ul>
+    </section>
+
+    <!-- 09 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Interactive Kinematics & Vector Test</h2>
+        </div>
+        <p>Test your mastery of kinematics, vector components, and projectile motion principles.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Projectile Trajectory Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    At what launch angle relative to the horizontal does a projectile achieve its 
+                    <strong>maximum horizontal range</strong> on level ground (neglecting air resistance)?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">45 degrees</option>
+                    <option value="wrong1">30 degrees</option>
+                    <option value="wrong2">60 degrees</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">10</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (1D Multi-Stage Kinematics):</strong>
+            <p>A dragster starts from rest at the origin and accelerates along a straight track with a constant acceleration of 4.50 m/s<sup>2</sup> for 6.00 s. It then maintains that achieved velocity for another 4.00 s, after which a parachute deploys, causing a constant deceleration of 3.00 m/s<sup>2</sup> until the dragster comes to a complete rest. Calculate: (a) the maximum velocity reached, (b) the total distance traveled, and (c) the total time of travel.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>Phase 1 (Acceleration):</strong><br>
+                - Initial velocity v<sub>0</sub> = 0, a<sub>1</sub> = 4.50 m/s<sup>2</sup>, t<sub>1</sub> = 6.00 s.<br>
+                - Final velocity v<sub>1</sub> = v<sub>0</sub> + a<sub>1</sub>t<sub>1</sub> = 0 + (4.50)(6.00) = 27.0 m/s.<br>
+                - Distance d<sub>1</sub> = v<sub>0</sub>t<sub>1</sub> + (1/2)a<sub>1</sub>t<sub>1</sub><sup>2</sup> = 0 + (1/2)(4.50)(6.00)<sup>2</sup> = 81.0 m.<br><br>
+                <strong>Phase 2 (Constant Velocity):</strong><br>
+                - Velocity v<sub>2</sub> = 27.0 m/s, t<sub>2</sub> = 4.00 s.<br>
+                - Distance d<sub>2</sub> = v<sub>2</sub>t<sub>2</sub> = (27.0)(4.00) = 108.0 m.<br><br>
+                <strong>Phase 3 (Deceleration to Rest):</strong><br>
+                - Initial velocity v<sub>2</sub> = 27.0 m/s, final velocity v<sub>3</sub> = 0, deceleration a<sub>3</sub> = -3.00 m/s<sup>2</sup>.<br>
+                - Time taken t<sub>3</sub>: v<sub>3</sub> = v<sub>2</sub> + a<sub>3</sub>t<sub>3</sub> implies 0 = 27.0 - 3.00t<sub>3</sub> implies t<sub>3</sub> = 9.00 s.<br>
+                - Distance d<sub>3</sub>: v<sub>3</sub><sup>2</sup> = v<sub>2</sub><sup>2</sup> + 2a<sub>3</sub>d<sub>3</sub> implies 0 = (27.0)<sup>2</sup> + 2(-3.00)d<sub>3</sub> implies 6.00d<sub>3</sub> = 729 implies d<sub>3</sub> = 121.5 m.<br><br>
+                <strong>Summary Answers:</strong><br>
+                (a) Maximum Velocity = <strong>27.0 m/s</strong>.<br>
+                (b) Total Distance = d<sub>1</sub> + d<sub>2</sub> + d<sub>3</sub> = 81.0 + 108.0 + 121.5 = <strong>310.5 meters</strong>.<br>
+                (c) Total Time = t<sub>1</sub> + t<sub>2</sub> + t<sub>3</sub> = 6.00 + 4.00 + 9.00 = <strong>19.0 seconds</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Calculus-Based Kinematics):</strong>
+            <p>The position of a particle moving along the x-axis is given by the time-dependent equation x(t) = 2.0t<sup>3</sup> - 9.0t<sup>2</sup> + 12.0t - 5.0, where x is in meters and t is in seconds. Determine: (a) expressions for velocity v(t) and acceleration a(t), (b) the times at which the particle is momentarily at rest, and (c) the total distance traveled by the particle during the time interval from t = 0 to t = 3.0 s.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Velocity and Acceleration Derivatives:</strong><br>
+                - Velocity v(t) = dx / dt = d/dt(2.0t<sup>3</sup> - 9.0t<sup>2</sup> + 12.0t - 5.0) = 6.0t<sup>2</sup> - 18.0t + 12.0 m/s.<br>
+                - Acceleration a(t) = dv / dt = d/dt(6.0t<sup>2</sup> - 18.0t + 12.0) = 12.0t - 18.0 m/s<sup>2</sup>.<br><br>
+                <strong>(b) Times when Particle is at Rest (v(t) = 0):</strong><br>
+                - Set 6.0t<sup>2</sup> - 18.0t + 12.0 = 0 implies t<sup>2</sup> - 3.0t + 2.0 = 0.<br>
+                - Factoring yields (t - 1.0)(t - 2.0) = 0.<br>
+                - Therefore, the particle is at rest at <strong>t = 1.0 s</strong> and <strong>t = 2.0 s</strong>.<br><br>
+                <strong>(c) Total Distance Traveled (t = 0 to t = 3.0 s):</strong><br>
+                - Calculate positions at turning points and interval endpoints:<br>
+                &nbsp;&nbsp;&bull; At t = 0: x(0) = -5.0 m.<br>
+                &nbsp;&nbsp;&bull; At t = 1.0 s (turning point 1): x(1) = 2.0(1)<sup>3</sup> - 9.0(1)<sup>2</sup> + 12.0(1) - 5.0 = 0.0 m.<br>
+                &nbsp;&nbsp;&bull; At t = 2.0 s (turning point 2): x(2) = 2.0(8) - 9.0(4) + 12.0(2) - 5.0 = 16 - 36 + 24 - 5 = -1.0 m.<br>
+                &nbsp;&nbsp;&bull; At t = 3.0 s: x(3) = 2.0(27) - 9.0(9) + 12.0(3) - 5.0 = 54 - 81 + 36 - 5 = 4.0 m.<br>
+                - Segment 1 (t = 0 to 1.0): absolute value of (0.0 - (-5.0)) = 5.0 m.<br>
+                - Segment 2 (t = 1.0 to 2.0): absolute value of (-1.0 - 0.0) = 1.0 m.<br>
+                - Segment 3 (t = 2.0 to 3.0): absolute value of (4.0 - (-1.0)) = 5.0 m.<br>
+                - Total Distance = 5.0 + 1.0 + 5.0 = <strong>11.0 meters</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Advanced Projectile Motion):</strong>
+            <p>A rescue plane flying horizontally at a constant altitude of 1200 m with a speed of 80.0 m/s drops an emergency survival package to stranded hikers below. (a) How long does it take for the package to hit the ground? (b) What is the horizontal distance traveled by the package during its fall? (c) What are the horizontal and vertical components of its impact velocity? (Assume g = 9.81 m/s<sup>2</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Time of Fall:</strong><br>
+                - Vertical motion: y(t) = y<sub>0</sub> + v<sub>0y</sub>t - (1/2)gt<sup>2</sup>. Setting initial height y<sub>0</sub> = 1200 m, ground y = 0, and initial vertical velocity v<sub>0y</sub> = 0:<br>
+                - 0 = 1200 - (1/2)(9.81)t<sup>2</sup> implies 4.905 t<sup>2</sup> = 1200 implies t<sup>2</sup> = 244.65 implies t = <strong>15.64 seconds</strong>.<br><br>
+                <strong>(b) Horizontal Range (R):</strong><br>
+                - Horizontal velocity v<sub>0x</sub> = 80.0 m/s (constant throughout flight).<br>
+                - R = v<sub>0x</sub>t = (80.0 m/s)(15.64 s) = <strong>1251.2 meters</strong>.<br><br>
+                <strong>(c) Impact Velocity Components:</strong><br>
+                - Horizontal component: v<sub>x</sub> = v<sub>0x</sub> = <strong>80.0 m/s</strong>.<br>
+                - Vertical component: v<sub>y</sub> = v<sub>0y</sub> - gt = 0 - (9.81)(15.64) = <strong>-153.42 m/s</strong> (downward).<br>
+                - Magnitude of Impact Velocity: v = square root of (80.0<sup>2</sup> + (-153.42)<sup>2</sup>) = square root of (6400 + 23537.7) = square root of (29937.7) approximately equal to 173.0 m/s.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with kinematics or vector analysis?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to explain complex relative velocity setups, vector dot/cross product identities, or calculus-based mechanics.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>The range formula is R = (v<sub>0</sub><sup>2</sup> sin(2*theta)) / g. Since the maximum value of the sine function is 1, theta must be 45 degrees so that 2*theta = 90 degrees.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Due to the sine double-angle trigonometric identity in the range equation, maximum horizontal range on level ground is always achieved at a launch angle of <strong>45 degrees</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

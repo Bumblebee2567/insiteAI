@@ -1,0 +1,1596 @@
+{% extends "base.html" %}
+
+{% block title %}
+More Chemistry Concepts | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.more-chemistry-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+
+.more-chemistry-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.more-chemistry-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.more-chemistry-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+
+.chem-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.chem-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.chem-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.chem-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.chem-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.chem-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.chem-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+
+.chem-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.chem-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.chem-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.chem-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.chem-section p {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.chem-section li {
+    color: #c9d1d9;
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+/* HIGHLIGHT */
+
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* EXAMPLE */
+
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.example-box p {
+    margin-bottom: 8px;
+}
+
+/* ANSWER */
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 13px 16px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+}
+
+/* GRID */
+
+.chem-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.chem-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.chem-card i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.chem-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.chem-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* TABLE */
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.chem-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.chem-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.chem-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+/* WORD PROBLEM */
+
+.word-problem {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.word-problem h4 {
+    color: #79c0ff;
+    margin-top: 0;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .more-chemistry-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .more-chemistry-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .chem-section {
+        padding: 18px;
+    }
+
+    .chem-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chem-nav-wrapper {
+        top: 0;
+    }
+}
+
+</style>
+
+
+<div class="more-chemistry-page">
+
+    <!-- BACK -->
+
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fas fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <!-- HEADER -->
+
+    <div class="more-chemistry-header">
+
+        <h1>More Chemistry Concepts</h1>
+
+        <p>
+            A broad high-school chemistry guide covering matter, atomic
+            structure, periodicity, bonding, reactions, acids and bases,
+            stoichiometry, energy, rates, equilibrium, organic chemistry,
+            electrochemistry and other major areas of chemistry.
+        </p>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="chem-nav-wrapper">
+
+        <nav class="chem-nav">
+
+            <a href="#matter">Matter</a>
+
+            <a href="#atomic">Atomic Structure</a>
+
+            <a href="#periodic">Periodic Table</a>
+
+            <a href="#bonding">Bonding</a>
+
+            <a href="#formulae">Formulae</a>
+
+            <a href="#reactions">Reactions</a>
+
+            <a href="#moles">Moles</a>
+
+            <a href="#acids">Acids & Bases</a>
+
+            <a href="#solutions">Solutions</a>
+
+            <a href="#energy">Energy</a>
+
+            <a href="#rates">Rates</a>
+
+            <a href="#equilibrium">Equilibrium</a>
+
+            <a href="#redox">Redox</a>
+
+            <a href="#electrochem">Electrochemistry</a>
+
+            <a href="#organic">Organic Chemistry</a>
+
+            <a href="#environment">Environmental Chemistry</a>
+
+            <a href="#problems">Word Problems</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- MATTER -->
+
+    <section class="chem-section" id="matter">
+
+        <h2>1. Matter and Its Properties</h2>
+
+        <p>
+            Matter is anything that has mass and occupies space.
+            Everything around us is made of matter, from the air we breathe
+            to the water we drink and the materials used to build houses,
+            phones and machines.
+        </p>
+
+        <h3>States of Matter</h3>
+
+        <div class="chem-grid">
+
+            <div class="chem-card">
+
+                <i class="fas fa-cube"></i>
+
+                <h4>Solid</h4>
+
+                <p>
+                    Particles are closely packed and mainly vibrate around
+                    fixed positions. Solids have a definite shape and volume.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <i class="fas fa-droplet"></i>
+
+                <h4>Liquid</h4>
+
+                <p>
+                    Particles remain relatively close together but can move
+                    past one another. Liquids have a definite volume but take
+                    the shape of their container.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <i class="fas fa-wind"></i>
+
+                <h4>Gas</h4>
+
+                <p>
+                    Particles are widely separated and move freely.
+                    Gases have neither a fixed shape nor a fixed volume.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <i class="fas fa-atom"></i>
+
+                <h4>Plasma</h4>
+
+                <p>
+                    Plasma is an ionized state of matter containing charged
+                    particles. It occurs in phenomena such as stars and
+                    electrical discharges.
+                </p>
+
+            </div>
+
+        </div>
+
+        <h3>Physical and Chemical Changes</h3>
+
+        <p>
+            A physical change does not produce a new substance. A chemical
+            change results in the formation of one or more new substances.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Physical change:</strong>
+            melting ice.
+
+            <br><br>
+
+            <strong>Chemical change:</strong>
+            iron reacting with oxygen to form rust.
+
+        </div>
+
+    </section>
+
+
+    <!-- ATOMIC STRUCTURE -->
+
+    <section class="chem-section" id="atomic">
+
+        <h2>2. Atomic Structure</h2>
+
+        <p>
+            An atom is the basic unit of an element that retains the chemical
+            identity of that element.
+        </p>
+
+        <h3>Subatomic Particles</h3>
+
+        <div class="table-wrapper">
+
+            <table class="chem-table">
+
+                <tr>
+                    <th>Particle</th>
+                    <th>Charge</th>
+                    <th>Relative Mass</th>
+                    <th>Location</th>
+                </tr>
+
+                <tr>
+                    <td>Proton</td>
+                    <td>+1</td>
+                    <td>1</td>
+                    <td>Nucleus</td>
+                </tr>
+
+                <tr>
+                    <td>Neutron</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>Nucleus</td>
+                </tr>
+
+                <tr>
+                    <td>Electron</td>
+                    <td>-1</td>
+                    <td>Approximately 1/1836</td>
+                    <td>Outside nucleus</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <h3>Atomic Number</h3>
+
+        <p>
+            The atomic number is the number of protons in the nucleus of an
+            atom. It identifies the element.
+        </p>
+
+        <div class="formula-box">
+            Atomic number = number of protons
+        </div>
+
+        <h3>Mass Number</h3>
+
+        <div class="formula-box">
+            Mass number = protons + neutrons
+        </div>
+
+        <div class="highlight">
+
+            <strong>Example:</strong>
+            Carbon-12 contains 6 protons and 6 neutrons.
+
+        </div>
+
+        <h3>Isotopes</h3>
+
+        <p>
+            Isotopes are atoms of the same element that have the same number
+            of protons but different numbers of neutrons.
+        </p>
+
+    </section>
+
+
+    <!-- PERIODIC TABLE -->
+
+    <section class="chem-section" id="periodic">
+
+        <h2>3. Periodic Table and Periodicity</h2>
+
+        <p>
+            The periodic table arranges elements according to increasing
+            atomic number and groups elements with related chemical
+            properties.
+        </p>
+
+        <h3>Groups and Periods</h3>
+
+        <ul>
+
+            <li>
+                A vertical column is called a group.
+            </li>
+
+            <li>
+                A horizontal row is called a period.
+            </li>
+
+            <li>
+                Elements in the same group often have similar chemical
+                properties because they have related outer-electron
+                configurations.
+            </li>
+
+        </ul>
+
+        <h3>Important Groups</h3>
+
+        <div class="chem-grid">
+
+            <div class="chem-card">
+
+                <h4>Group 1</h4>
+
+                <p>
+                    Alkali metals. They are generally very reactive metals
+                    and commonly form +1 ions.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Group 2</h4>
+
+                <p>
+                    Alkaline earth metals. They commonly form +2 ions.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Group 17</h4>
+
+                <p>
+                    Halogens. Reactive non-metals that commonly form -1 ions.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Group 18</h4>
+
+                <p>
+                    Noble gases. They have very low chemical reactivity under
+                    ordinary conditions.
+                </p>
+
+            </div>
+
+        </div>
+
+        <h3>Periodic Trends</h3>
+
+        <p>
+            Important periodic trends include atomic radius, ionic radius,
+            ionization energy, electron affinity and electronegativity.
+        </p>
+
+        <div class="highlight">
+
+            <strong>General trend:</strong>
+            Atomic radius generally decreases across a period and increases
+            down a group.
+
+        </div>
+
+    </section>
+
+
+    <!-- BONDING -->
+
+    <section class="chem-section" id="bonding">
+
+        <h2>4. Chemical Bonding</h2>
+
+        <p>
+            Chemical bonding describes the attractive forces that hold atoms
+            or ions together in substances.
+        </p>
+
+        <h3>Ionic Bonding</h3>
+
+        <p>
+            Ionic bonding involves electrostatic attraction between
+            oppositely charged ions. It commonly occurs between metals and
+            non-metals.
+        </p>
+
+        <div class="formula-box">
+            Na → Na⁺ + e⁻
+            <br><br>
+            Cl + e⁻ → Cl⁻
+            <br><br>
+            Na⁺ + Cl⁻ → NaCl
+        </div>
+
+        <h3>Covalent Bonding</h3>
+
+        <p>
+            Covalent bonding involves sharing electron pairs between atoms.
+        </p>
+
+        <div class="formula-box">
+            H₂ &nbsp;&nbsp;&nbsp; O₂ &nbsp;&nbsp;&nbsp; N₂ &nbsp;&nbsp;&nbsp; CH₄
+        </div>
+
+        <h3>Metallic Bonding</h3>
+
+        <p>
+            Metallic bonding involves positive metal ions surrounded by
+            delocalized electrons. This helps explain the electrical and
+            thermal conductivity of metals.
+        </p>
+
+    </section>
+
+
+    <!-- FORMULAE -->
+
+    <section class="chem-section" id="formulae">
+
+        <h2>5. Chemical Formulae and Equations</h2>
+
+        <p>
+            Chemical formulae communicate the composition of substances,
+            while chemical equations represent chemical reactions.
+        </p>
+
+        <h3>Examples</h3>
+
+        <div class="formula-box">
+            H₂O
+        </div>
+
+        <div class="formula-box">
+            CO₂
+        </div>
+
+        <div class="formula-box">
+            CaCO₃
+        </div>
+
+        <h3>Balancing Equations</h3>
+
+        <p>
+            Chemical equations are balanced because atoms are conserved during
+            chemical reactions.
+        </p>
+
+        <div class="formula-box">
+            2H₂ + O₂ → 2H₂O
+        </div>
+
+        <div class="highlight">
+
+            <strong>Remember:</strong>
+            Change coefficients when balancing equations. Do not change the
+            subscripts of chemical formulae.
+
+        </div>
+
+    </section>
+
+
+    <!-- REACTIONS -->
+
+    <section class="chem-section" id="reactions">
+
+        <h2>6. Chemical Reactions</h2>
+
+        <p>
+            Chemical reactions involve atoms or ions being rearranged to form
+            new substances.
+        </p>
+
+        <h3>Common Reaction Types</h3>
+
+        <div class="chem-grid">
+
+            <div class="chem-card">
+
+                <h4>Synthesis</h4>
+
+                <p>
+                    A + B → AB
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Decomposition</h4>
+
+                <p>
+                    AB → A + B
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Single Replacement</h4>
+
+                <p>
+                    A + BC → AC + B
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Double Replacement</h4>
+
+                <p>
+                    AB + CD → AD + CB
+                </p>
+
+            </div>
+
+        </div>
+
+        <h3>Combustion</h3>
+
+        <p>
+            Hydrocarbons commonly burn in oxygen to produce carbon dioxide
+            and water when complete combustion occurs.
+        </p>
+
+        <div class="formula-box">
+            CH₄ + 2O₂ → CO₂ + 2H₂O
+        </div>
+
+    </section>
+
+
+    <!-- MOLES -->
+
+    <section class="chem-section" id="moles">
+
+        <h2>7. The Mole and Stoichiometry</h2>
+
+        <p>
+            The mole is the fundamental chemical unit used to count extremely
+            large numbers of particles.
+        </p>
+
+        <div class="formula-box">
+            n = m / M
+        </div>
+
+        <p>
+            where n is amount in moles, m is mass and M is molar mass.
+        </p>
+
+        <h3>Avogadro's Constant</h3>
+
+        <div class="formula-box">
+            Nₐ ≈ 6.022 × 10²³ mol⁻¹
+        </div>
+
+        <p>
+            One mole contains approximately 6.022 × 10²³ specified particles.
+        </p>
+
+        <h3>Stoichiometry</h3>
+
+        <p>
+            Stoichiometry uses the coefficients in balanced chemical equations
+            to calculate quantities of reactants and products.
+        </p>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                Consider:
+            </p>
+
+            <div class="formula-box">
+                2H₂ + O₂ → 2H₂O
+            </div>
+
+            <p>
+                Two moles of hydrogen react with one mole of oxygen to produce
+                two moles of water.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACIDS BASES -->
+
+    <section class="chem-section" id="acids">
+
+        <h2>8. Acids, Bases and Salts</h2>
+
+        <h3>Acids</h3>
+
+        <p>
+            Acids are substances that can donate hydrogen ions in appropriate
+            chemical contexts. Common acids include hydrochloric acid,
+            sulfuric acid and nitric acid.
+        </p>
+
+        <h3>Bases</h3>
+
+        <p>
+            Bases react with acids and many soluble bases are called alkalis.
+        </p>
+
+        <h3>Neutralisation</h3>
+
+        <p>
+            An acid and a base can react to produce salt and water.
+        </p>
+
+        <div class="formula-box">
+            Acid + Base → Salt + Water
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="formula-box">
+            HCl + NaOH → NaCl + H₂O
+        </div>
+
+        <h3>pH</h3>
+
+        <p>
+            The pH scale is used to describe the acidity or basicity of
+            aqueous solutions.
+        </p>
+
+        <div class="formula-box">
+            pH = -log₁₀[H⁺]
+        </div>
+
+        <div class="highlight">
+
+            <strong>Generally:</strong>
+            Lower pH means greater acidity, while higher pH indicates a more
+            basic solution.
+
+        </div>
+
+    </section>
+
+
+    <!-- SOLUTIONS -->
+
+    <section class="chem-section" id="solutions">
+
+        <h2>9. Solutions and Concentration</h2>
+
+        <p>
+            A solution is a homogeneous mixture in which a solute is dissolved
+            in a solvent.
+        </p>
+
+        <h3>Concentration</h3>
+
+        <div class="formula-box">
+            Concentration = amount of solute / volume of solution
+        </div>
+
+        <p>
+            A common chemistry unit is mol dm⁻³.
+        </p>
+
+        <div class="example-box">
+
+            <h4>Example</h4>
+
+            <p>
+                If 0.50 mol of solute is dissolved to make 2.0 dm³ of solution:
+            </p>
+
+            <div class="formula-box">
+                c = 0.50 / 2.0
+            </div>
+
+            <div class="answer-box">
+                c = <strong>0.25 mol dm⁻³</strong>
+            </div>
+
+        </div>
+
+        <h3>Solubility</h3>
+
+        <p>
+            Solubility describes how much of a substance can dissolve in a
+            particular solvent under specified conditions.
+        </p>
+
+    </section>
+
+
+    <!-- ENERGY -->
+
+    <section class="chem-section" id="energy">
+
+        <h2>10. Energy Changes in Chemical Reactions</h2>
+
+        <p>
+            Chemical reactions involve energy changes. Some reactions release
+            energy while others absorb energy.
+        </p>
+
+        <h3>Exothermic Reactions</h3>
+
+        <p>
+            Exothermic reactions release energy to the surroundings.
+        </p>
+
+        <div class="highlight">
+            <strong>Examples:</strong>
+            combustion and many neutralisation reactions.
+        </div>
+
+        <h3>Endothermic Reactions</h3>
+
+        <p>
+            Endothermic reactions absorb energy from the surroundings.
+        </p>
+
+        <h3>Heat Equation</h3>
+
+        <div class="formula-box">
+            q = mcΔT
+        </div>
+
+        <p>
+            where q is heat energy, m is mass, c is specific heat capacity and
+            ΔT is temperature change.
+        </p>
+
+        <h3>Enthalpy Change</h3>
+
+        <div class="formula-box">
+            ΔH = H(products) - H(reactants)
+        </div>
+
+    </section>
+
+
+    <!-- RATES -->
+
+    <section class="chem-section" id="rates">
+
+        <h2>11. Rate of Chemical Reaction</h2>
+
+        <p>
+            Reaction rate describes how quickly reactants are converted into
+            products.
+        </p>
+
+        <div class="formula-box">
+            Rate = change in quantity / time
+        </div>
+
+        <h3>Factors Affecting Rate</h3>
+
+        <ul>
+
+            <li>Temperature</li>
+
+            <li>Concentration</li>
+
+            <li>Pressure for gases</li>
+
+            <li>Surface area</li>
+
+            <li>Catalysts</li>
+
+        </ul>
+
+        <h3>Collision Theory</h3>
+
+        <p>
+            For a reaction to occur, particles must collide with sufficient
+            energy and with a suitable orientation.
+        </p>
+
+        <h3>Activation Energy</h3>
+
+        <p>
+            Activation energy is the minimum energy required for a successful
+            reaction to occur.
+        </p>
+
+    </section>
+
+
+    <!-- EQUILIBRIUM -->
+
+    <section class="chem-section" id="equilibrium">
+
+        <h2>12. Chemical Equilibrium</h2>
+
+        <p>
+            In a reversible reaction, equilibrium occurs when the forward and
+            reverse reactions continue at equal rates.
+        </p>
+
+        <div class="formula-box">
+            A + B ⇌ C + D
+        </div>
+
+        <h3>Le Chatelier's Principle</h3>
+
+        <p>
+            When a system at equilibrium is disturbed, the system responds
+            in a way that tends to oppose the disturbance.
+        </p>
+
+        <h3>Factors</h3>
+
+        <ul>
+
+            <li>Concentration</li>
+
+            <li>Temperature</li>
+
+            <li>Pressure in gaseous systems</li>
+
+        </ul>
+
+        <div class="highlight">
+
+            <strong>Important:</strong>
+            A catalyst can help a system reach equilibrium faster but does
+            not change the equilibrium position.
+
+        </div>
+
+    </section>
+
+
+    <!-- REDOX -->
+
+    <section class="chem-section" id="redox">
+
+        <h2>13. Oxidation and Reduction</h2>
+
+        <p>
+            Redox reactions involve transfer of electrons or changes in
+            oxidation state.
+        </p>
+
+        <div class="chem-grid">
+
+            <div class="chem-card">
+
+                <h4>Oxidation</h4>
+
+                <p>
+                    Loss of electrons.
+                    <br><br>
+                    OIL: Oxidation Is Loss.
+                </p>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Reduction</h4>
+
+                <p>
+                    Gain of electrons.
+                    <br><br>
+                    RIG: Reduction Is Gain.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="formula-box">
+            Zn → Zn²⁺ + 2e⁻
+        </div>
+
+        <p>
+            Zinc has lost electrons, so zinc has been oxidised.
+        </p>
+
+    </section>
+
+
+    <!-- ELECTROCHEMISTRY -->
+
+    <section class="chem-section" id="electrochem">
+
+        <h2>14. Electrochemistry</h2>
+
+        <p>
+            Electrochemistry studies the relationship between chemical
+            reactions and electrical energy.
+        </p>
+
+        <h3>Electrolysis</h3>
+
+        <p>
+            Electrolysis uses electrical energy to drive a chemical change
+            that would not occur spontaneously under the same conditions.
+        </p>
+
+        <h3>Electrodes</h3>
+
+        <ul>
+
+            <li>
+                Oxidation occurs at the anode.
+            </li>
+
+            <li>
+                Reduction occurs at the cathode.
+            </li>
+
+        </ul>
+
+        <div class="highlight">
+
+            <strong>Memory aid:</strong>
+            AN OX, RED CAT —
+            oxidation at the anode, reduction at the cathode.
+
+        </div>
+
+        <h3>Electrochemical Cells</h3>
+
+        <p>
+            Galvanic or voltaic cells generate electrical energy from
+            spontaneous redox reactions.
+        </p>
+
+    </section>
+
+
+    <!-- ORGANIC -->
+
+    <section class="chem-section" id="organic">
+
+        <h2>15. Organic Chemistry</h2>
+
+        <p>
+            Organic chemistry focuses primarily on carbon-containing
+            compounds.
+        </p>
+
+        <h3>Hydrocarbons</h3>
+
+        <p>
+            Hydrocarbons contain only carbon and hydrogen.
+        </p>
+
+        <div class="chem-grid">
+
+            <div class="chem-card">
+
+                <h4>Alkanes</h4>
+
+                <p>
+                    Saturated hydrocarbons containing only single carbon-carbon
+                    bonds.
+                </p>
+
+                <div class="formula-box">
+                    CₙH₂ₙ₊₂
+                </div>
+
+            </div>
+
+            <div class="chem-card">
+
+                <h4>Alkenes</h4>
+
+                <p>
+                    Unsaturated hydrocarbons containing at least one carbon-
+                    carbon double bond.
+                </p>
+
+                <div class="formula-box">
+                    CₙH₂ₙ
+                </div>
+
+            </div>
+
+        </div>
+
+        <h3>Common Functional Groups</h3>
+
+        <div class="table-wrapper">
+
+            <table class="chem-table">
+
+                <tr>
+                    <th>Family</th>
+                    <th>Functional Group</th>
+                    <th>Example</th>
+                </tr>
+
+                <tr>
+                    <td>Alcohol</td>
+                    <td>-OH</td>
+                    <td>Ethanol</td>
+                </tr>
+
+                <tr>
+                    <td>Carboxylic acid</td>
+                    <td>-COOH</td>
+                    <td>Ethanoic acid</td>
+                </tr>
+
+                <tr>
+                    <td>Alkene</td>
+                    <td>C=C</td>
+                    <td>Ethene</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <h3>Polymerisation</h3>
+
+        <p>
+            Polymerisation is the process in which many small molecules called
+            monomers join together to form a polymer.
+        </p>
+
+    </section>
+
+
+    <!-- ENVIRONMENT -->
+
+    <section class="chem-section" id="environment">
+
+        <h2>16. Environmental Chemistry</h2>
+
+        <p>
+            Chemistry helps us understand atmospheric pollution, water
+            treatment, climate processes and the environmental effects of
+            industrial activity.
+        </p>
+
+        <h3>Major Environmental Issues</h3>
+
+        <ul>
+
+            <li>Greenhouse gases</li>
+
+            <li>Acid rain</li>
+
+            <li>Air pollution</li>
+
+            <li>Water pollution</li>
+
+            <li>Ozone depletion</li>
+
+            <li>Plastic pollution</li>
+
+            <li>Industrial waste</li>
+
+        </ul>
+
+        <h3>Greenhouse Effect</h3>
+
+        <p>
+            Certain gases absorb and re-emit infrared radiation, contributing
+            to warming of Earth's atmosphere.
+        </p>
+
+        <h3>Acid Rain</h3>
+
+        <p>
+            Sulfur and nitrogen oxides released into the atmosphere can
+            contribute to the formation of acidic precipitation.
+        </p>
+
+    </section>
+
+
+    <!-- WORD PROBLEMS -->
+
+    <section class="chem-section" id="problems">
+
+        <h2>17. Chemistry Word Problems</h2>
+
+        <p>
+            Chemistry problems often combine several ideas. Read the question
+            carefully, identify the known quantities, select the appropriate
+            formula and keep track of units.
+        </p>
+
+
+        <div class="word-problem">
+
+            <h4>Problem 1 — Moles</h4>
+
+            <p>
+                A student has 36 g of water. Calculate the number of moles
+                present.
+            </p>
+
+            <p>
+                Relative formula mass of H₂O = 18.
+            </p>
+
+            <div class="formula-box">
+                n = m / M
+            </div>
+
+            <div class="formula-box">
+                n = 36 / 18
+            </div>
+
+            <div class="answer-box">
+                Answer: <strong>2 mol</strong>
+            </div>
+
+        </div>
+
+
+        <div class="word-problem">
+
+            <h4>Problem 2 — Concentration</h4>
+
+            <p>
+                0.20 mol of sodium hydroxide is dissolved to produce
+                500 cm³ of solution. Calculate the concentration in mol dm⁻³.
+            </p>
+
+            <p>
+                Convert:
+            </p>
+
+            <div class="formula-box">
+                500 cm³ = 0.500 dm³
+            </div>
+
+            <div class="formula-box">
+                c = n / V
+            </div>
+
+            <div class="formula-box">
+                c = 0.20 / 0.500
+            </div>
+
+            <div class="answer-box">
+                Answer: <strong>0.40 mol dm⁻³</strong>
+            </div>
+
+        </div>
+
+
+        <div class="word-problem">
+
+            <h4>Problem 3 — Heat Energy</h4>
+
+            <p>
+                A 100 g sample of water is heated through 10°C.
+                If the specific heat capacity of water is
+                4.18 J g⁻¹ °C⁻¹, calculate the heat absorbed.
+            </p>
+
+            <div class="formula-box">
+                q = mcΔT
+            </div>
+
+            <div class="formula-box">
+                q = 100 × 4.18 × 10
+            </div>
+
+            <div class="answer-box">
+                Answer: <strong>4180 J</strong>
+            </div>
+
+        </div>
+
+
+        <div class="word-problem">
+
+            <h4>Problem 4 — Chemical Equation</h4>
+
+            <p>
+                Methane burns completely in oxygen. Write the balanced
+                chemical equation.
+            </p>
+
+            <div class="formula-box">
+                CH₄ + 2O₂ → CO₂ + 2H₂O
+            </div>
+
+            <div class="answer-box">
+                The equation is balanced because the number of each type of
+                atom is the same on both sides.
+            </div>
+
+        </div>
+
+
+        <div class="word-problem">
+
+            <h4>Problem 5 — Stoichiometry</h4>
+
+            <p>
+                Consider the reaction:
+            </p>
+
+            <div class="formula-box">
+                2H₂ + O₂ → 2H₂O
+            </div>
+
+            <p>
+                If 4 mol of hydrogen react completely with excess oxygen,
+                how many moles of water can be produced?
+            </p>
+
+            <p>
+                The mole ratio is:
+            </p>
+
+            <div class="formula-box">
+                2 mol H₂ : 2 mol H₂O
+            </div>
+
+            <div class="answer-box">
+                4 mol H₂ produces <strong>4 mol H₂O</strong>.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK INSITE AI -->
+
+    <div class="ask-ai">
+
+        <i class="fas fa-sparkles"></i>
+
+        <h3>Need Help With Chemistry?</h3>
+
+        <p>
+            Chemistry can become difficult when several concepts appear in
+            the same question. Ask Insite AI for a step-by-step explanation,
+            worked example, formula breakdown or help solving a chemistry
+            problem.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+            <i class="fas fa-comments"></i>
+            Ask Insite AI
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

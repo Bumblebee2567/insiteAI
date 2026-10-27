@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% block title %}
+    Register | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body{
+        background:#0f172a;
+        color:white;
+    }
+
+    .register-wrapper{
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:40px 15px;
+    }
+
+    .register-card{
+        width:100%;
+        max-width:470px;
+        background:#1e293b;
+        border-radius:22px;
+        padding:35px;
+        box-shadow:0 15px 45px rgba(0,0,0,.45);
+        border:1px solid rgba(255,255,255,.06);
+    }
+
+    .logo{
+        width:80px;
+        height:80px;
+        margin:auto;
+        margin-bottom:30px;
+        margin-top: 20px;
+        border-radius:20px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#2563eb,#3b82f6);
+        font-size:34px;
+        box-shadow:0 10px 25px rgba(37,99,235,.45);
+    }
+
+    .title{
+        text-align:center;
+        font-size:2rem;
+        font-weight:700;
+        margin-bottom:8px;
+    }
+
+    .subtitle{
+        text-align:center;
+        color:#94a3b8;
+        margin-bottom:30px;
+    }
+
+    label{
+        margin-top:14px;
+        margin-bottom:8px;
+        font-weight:600;
+    }
+
+    .form-control{
+        background:#0f172a;
+        color:white;
+        border:1px solid #334155;
+        border-radius:12px;
+        padding:12px;
+    }
+
+    .form-control:focus{
+        background:#0f172a;
+        color:white;
+        border-color:#3b82f6;
+        box-shadow:0 0 0 .2rem rgba(59,130,246,.25);
+    }
+
+    .btn-register{
+        width:100%;
+        margin-top:25px;
+        padding:12px;
+        border:none;
+        border-radius:12px;
+        background:linear-gradient(135deg,#2563eb,#3b82f6);
+        color:white;
+        font-size:17px;
+        font-weight:600;
+        transition:.3s;
+    }
+
+    .btn-register:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 25px rgba(37,99,235,.45);
+    }
+
+    .login-text{
+        margin-top:25px;
+        text-align:center;
+        color:#94a3b8;
+    }
+
+    .login-text a{
+        color:#60a5fa;
+        text-decoration:none;
+        font-weight:600;
+    }
+
+    .login-text a:hover{
+        text-decoration:underline;
+    }
+
+    .alert{
+        border-radius:12px;
+    }
+
+    @media(max-width:576px){
+
+        .register-card{
+            padding:28px 22px;
+        }
+
+        .title{
+            font-size:1.7rem;
+        }
+
+    }
+</style>
+
+<div class="register-wrapper">
+
+    <div class="register-card">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="alert alert-{{category}}">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" id="img"/></br>
+        </div>
+
+        <h2 class="title">
+            Insite AI
+        </h2>
+
+        <p class="subtitle">
+            Create your account to begin chatting with your AI assistant.
+        </p>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(
+                class="form-control",
+                placeholder="Choose a username",
+                autocomplete="username"
+            ) }}
+
+            {{ form.email_address.label(class="form-label") }}
+            {{ form.email_address(
+                class="form-control",
+                placeholder="Enter your email",
+                autocomplete="email"
+            ) }}
+
+            {{ form.password1.label(class="form-label") }}
+            {{ form.password1(
+                class="form-control",
+                placeholder="Create a password",
+                autocomplete="new-password"
+            ) }}
+
+            {{ form.password2.label(class="form-label") }}
+            {{ form.password2(
+                class="form-control",
+                placeholder="Confirm password",
+                autocomplete="new-password"
+            ) }}
+
+            {{ form.submit(
+                class="btn-register",
+                value="Create Account"
+            ) }}
+
+        </form>
+
+        <div class="login-text">
+            Already have an account?
+            <a href="{{ url_for('login_page') }}">
+                Login
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

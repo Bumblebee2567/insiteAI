@@ -1,0 +1,670 @@
+{% extends "base.html" %}
+
+{% block title %}
+Momentum & Collisions | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+            Linear Momentum & Collisions
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering linear momentum, impulse-momentum theorem, conservation of momentum, 
+            elastic and inelastic collisions, coefficient of restitution, and center of mass dynamics.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#momentum">Linear Momentum</a>
+        <a href="#impulse">Impulse Theorem</a>
+        <a href="#conservation">Momentum Conservation</a>
+        <a href="#collisions">Collision Types</a>
+        <a href="#restitution">Restitution</a>
+        <a href="#com">Center of Mass</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Momentum Dynamics</h2>
+        </div>
+        <p>
+            While Newton's laws describe forces acting on instantaneous points, momentum and collision analysis provide 
+            a powerful integral framework for examining interactions between bodies over finite intervals of time. 
+            This is particularly crucial in situations where impact forces are extremely large, highly variable, and difficult to measure directly (such as ballistics, car crashes, and subatomic particle scattering).
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Linear momentum combines an object's mass and its velocity. It is a vector quantity that is universally conserved in isolated systems, regardless of whether the internal forces are conservative or non-conservative.
+        </div>
+    </section>
+
+    <!-- 02 LINEAR MOMENTUM -->
+    <section class="phys-section" id="momentum">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Linear Momentum</h2>
+        </div>
+        <p>
+            The linear momentum (vector p) of a particle of mass m moving with velocity vector v is defined as:
+        </p>
+        <div class="phys-info">
+            <strong>Equation:</strong><br>
+            <strong>vector p = m &times; vector v</strong>
+        </div>
+        <ul>
+            <li><strong>Units:</strong> Measured in kilogram meters per second (kg&middot;m/s) or Newton-seconds (N&middot;s).</li>
+            <li><strong>Direction:</strong> Because mass is a positive scalar, the momentum vector always points in the exact same direction as the velocity vector.</li>
+            <li><strong>Newton's Second Law Reformulation:</strong> Newton originally stated his second law not as F = ma, but as the time rate of change of linear momentum: 
+                <strong>vector F<sub>net</sub> = d(vector p) / dt</strong>. For constant mass, this reduces to m(dv/dt) = ma.</li>
+        </ul>
+    </section>
+
+    <!-- 03 IMPULSE -->
+    <section class="phys-section" id="impulse">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Impulse and the Impulse-Momentum Theorem</h2>
+        </div>
+        <p>
+            When a net force acts on an object over a time interval from t<sub>i</sub> to t<sub>f</sub>, it delivers an 
+            <strong>impulse</strong> (vector J) to the object, changing its momentum.
+        </p>
+        <ul>
+            <li><strong>Definition of Impulse:</strong> 
+                <strong>vector J = integral from t<sub>i</sub> to t<sub>f</sub> of vector F(t) dt</strong> = F<sub>avg</sub> &times; delta t.</li>
+            <li><strong>The Impulse-Momentum Theorem:</strong> 
+                The impulse delivered to a system is equal to the exact resulting change in the system's linear momentum:
+                <br><strong>vector J = delta vector p = vector p<sub>f</sub> - vector p<sub>i</sub> = m(vector v<sub>f</sub> - vector v<sub>i</sub>)</strong></li>
+            <li><strong>Graphical Interpretation:</strong> The impulse is equal to the area under the Force vs. Time curve.</li>
+        </ul>
+    </section>
+
+    <!-- 04 CONSERVATION OF MOMENTUM -->
+    <section class="phys-section" id="conservation">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Conservation of Linear Momentum</h2>
+        </div>
+        <p>
+            The principle of conservation of linear momentum is one of the foundational conservation laws of physics:
+        </p>
+        <div class="phys-info">
+            <strong>Statement:</strong><br>
+            If the net external force acting on a system of interacting objects is zero (sum of vector F<sub>ext</sub> = 0), 
+            the total linear momentum of the system remains strictly constant over time:<br>
+            <strong>vector p<sub>total, initial</sub> = vector p<sub>total, final</sub></strong>
+        </div>
+        <ul>
+            <li><strong>Internal vs. External Forces:</strong> Internal forces (forces exerted between objects within the defined system) cancel out in pairs according to Newton's Third Law and cannot alter the total momentum of the system. Only net external forces can change total momentum.</li>
+        </ul>
+    </section>
+
+    <!-- 05 COLLISIONS -->
+    <section class="phys-section" id="collisions">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Types of Collisions</h2>
+        </div>
+        <p>
+            Collisions are classified into distinct categories based on whether total kinetic energy is conserved during the interaction:
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Collision Type</th>
+                        <th>Momentum Conservation</th>
+                        <th>Kinetic Energy Conservation</th>
+                        <th>Key Characteristic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Perfectly Elastic</strong></td>
+                        <td>Conserved</td>
+                        <td>Conserved (delta K = 0)</td>
+                        <td>Objects bounce apart with no loss of mechanical energy (e.g., hard steel balls).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inelastic</strong></td>
+                        <td>Conserved</td>
+                        <td>Not Conserved (delta K &lt; 0)</td>
+                        <td>Objects bounce apart, but some kinetic energy is converted to heat, sound, or deformation.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Perfectly Inelastic</strong></td>
+                        <td>Conserved</td>
+                        <td>Maximum Loss</td>
+                        <td>Objects collide and stick permanently together, moving with a common final velocity.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 06 RESTITUTION -->
+    <section class="phys-section" id="restitution">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Coefficient of Restitution</h2>
+        </div>
+        <p>
+            The <strong>coefficient of restitution</strong> (e) is a scalar value ranging from 0 to 1 that quantifies the elasticity of a collision between two bodies moving in 1D:
+        </p>
+        <div class="phys-info">
+            <strong>Equation:</strong><br>
+            <strong>e = - ((v<sub>2f</sub> - v<sub>1f</sub>) / (v<sub>2i</sub> - v<sub>1i</sub>)) = (Relative speed after collision) / (Relative speed before collision)</strong>
+        </div>
+        <ul>
+            <li>For a <strong>perfectly elastic</strong> collision, e = 1.</li>
+            <li>For a <strong>perfectly inelastic</strong> collision, e = 0.</li>
+            <li>For a typical <strong>inelastic</strong> collision, 0 &lt; e &lt; 1.</li>
+        </ul>
+    </section>
+
+    <!-- 07 CENTER OF MASS -->
+    <section class="phys-section" id="com">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Center of Mass and System Dynamics</h2>
+        </div>
+        <p>
+            The center of mass (COM) is the unique point representing the weighted average position of the mass distribution of a system.
+        </p>
+        <ul>
+            <li><strong>Position Coordinate:</strong> For a system of discrete particles along the x-axis: 
+                x<sub>com</sub> = (sum of m<sub>i</sub>x<sub>i</sub>) / (sum of m<sub>i</sub>).</li>
+            <li><strong>Velocity of Center of Mass:</strong> v<sub>com</sub> = (sum of p<sub>i</sub>) / (sum of m<sub>i</sub>) = p<sub>total</sub> / M<sub>total</sub>.</li>
+            <li><strong>Newton's Second Law for a System:</strong> The center of mass of a multi-particle system moves as though all the system's total mass M were concentrated at that single point, acted upon by the net external force: 
+                <strong>sum of vector F<sub>ext</sub> = M &times; a<sub>com</sub></strong>.</li>
+        </ul>
+    </section>
+
+    <!-- 08 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Interactive Momentum Test</h2>
+        </div>
+        <p>Test your conceptual understanding of impulse, momentum conservation, and collisions.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Collision Physics Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    In a <strong>perfectly inelastic collision</strong> between two objects on a frictionless surface, 
+                    what happens to the total kinetic energy of the system?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">It decreases to a minimum value (some energy is converted to heat/deformation)</option>
+                    <option value="wrong1">It remains completely conserved</option>
+                    <option value="wrong2">It increases due to the impact force</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">09</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Perfectly Inelastic Collision):</strong>
+            <p>A railway car of mass m<sub>1</sub> = 15,000 kg is traveling along a straight track at a speed of 4.00 m/s. It collides with and couples to a second stationary railway car of mass m<sub>2</sub> = 10,000 kg. (a) Calculate the common final velocity of the coupled cars immediately after the collision. (b) Calculate the total loss of kinetic energy during the collision.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Final Velocity (v<sub>f</sub>):</strong><br>
+                - Conservation of Momentum: p<sub>i</sub> = p<sub>f</sub> implies m<sub>1</sub>v<sub>1</sub> + m<sub>2</sub>v<sub>2</sub> = (m<sub>1</sub> + m<sub>2</sub>)v<sub>f</sub>.<br>
+                - (15,000)(4.00) + (10,000)(0) = (15,000 + 10,000)v<sub>f</sub>.<br>
+                - 60,000 = 25,000v<sub>f</sub> implies v<sub>f</sub> = 60,000 / 25,000 = <strong>2.40 m/s</strong>.<br><br>
+                <strong>(b) Loss of Kinetic Energy (delta K):</strong><br>
+                - Initial Kinetic Energy (K<sub>i</sub>): (1/2)m<sub>1</sub>v<sub>1</sub><sup>2</sup> = (1/2)(15,000)(4.00)<sup>2</sup> = 7,500(16.0) = 120,000 J.<br>
+                - Final Kinetic Energy (K<sub>f</sub>): (1/2)(m<sub>1</sub> + m<sub>2</sub>)v<sub>f</sub><sup>2</sup> = (1/2)(25,000)(2.40)<sup>2</sup> = 12,500(5.76) = 72,000 J.<br>
+                - Kinetic Energy Loss (delta K): K<sub>f</sub> - K<sub>i</sub> = 72,000 - 120,000 = <strong>-48,000 Joules</strong> (lost as heat/sound).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Impulse and Average Force):</strong>
+            <p>A tennis ball of mass m = 0.058 kg approaches a racket horizontally with a speed of 30.0 m/s. After being struck, it travels in the exact opposite direction with a speed of 40.0 m/s. The impact lasts for a duration of delta t = 0.0030 s. (a) Calculate the magnitude of the impulse delivered to the ball. (b) Calculate the average force exerted by the racket on the ball during the impact.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Impulse (J):</strong><br>
+                - Choose incoming direction as positive (+x). Then initial velocity v<sub>i</sub> = +30.0 m/s, and final velocity after bounce v<sub>f</sub> = -40.0 m/s.<br>
+                - J = delta p = m(v<sub>f</sub> - v<sub>i</sub>) = 0.058 kg &times; (-40.0 - 30.0) m/s = 0.058 &times; (-70.0) = <strong>-4.06 N&middot;s</strong> (magnitude 4.06 N&middot;s).<br><br>
+                <strong>(b) Average Force (F<sub>avg</sub>):</strong><br>
+                - F<sub>avg</sub> = J / delta t = (-4.06 N&middot;s) / (0.0030 s) approximately equal to <strong>-1353.3 Newtons</strong> (magnitude 1353 N directed outward).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (1D Elastic Collision):</strong>
+            <p>A block of mass m<sub>1</sub> = 2.00 kg moving at 5.00 m/s undergoes a 1D perfectly elastic collision with a stationary block of mass m<sub>2</sub> = 3.00 kg. Calculate the final velocities of both blocks after the collision.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - For a 1D elastic collision with a stationary target (v<sub>2i</sub> = 0), the standard derived velocity formulas are:<br>
+                &nbsp;&nbsp;&bull; v<sub>1f</sub> = ((m<sub>1</sub> - m<sub>2</sub>) / (m<sub>1</sub> + m<sub>2</sub>)) * v<sub>1i</sub><br>
+                &nbsp;&nbsp;&bull; v<sub>2f</sub> = ((2m<sub>1</sub>) / (m<sub>1</sub> + m<sub>2</sub>)) * v<sub>1i</sub><br>
+                - Substitute values (m<sub>1</sub> = 2.00, m_2 = 3.00, v<sub>1i</sub> = 5.00):<br>
+                - v<sub>1f</sub> = ((2.00 - 3.00) / (2.00 + 3.00)) * (5.00) = ((-1.00) / (5.00)) * (5.00) = <strong>-1.00 m/s</strong> (rebounds backward).<br>
+                - v<sub>2f</sub> = ((2 * 2.00) / (2.00 + 3.00)) * (5.00) = ((4.00) / (5.00)) * (5.00) = <strong>+4.00 m/s</strong> (moves forward).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with momentum or collision problems?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down 2D oblique collisions, ballistic pendulum derivations, or center of mass calculus integrals.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>In a perfectly inelastic collision, kinetic energy is not conserved; the objects stick together, resulting in the maximum possible loss of mechanical energy into thermal energy and deformation.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>While momentum is always conserved in collisions, kinetic energy is only conserved in <em>elastic</em> collisions. In perfectly inelastic collisions, kinetic energy decreases significantly.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

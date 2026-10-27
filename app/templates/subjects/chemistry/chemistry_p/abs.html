@@ -1,0 +1,1286 @@
+{% extends "base.html" %}
+
+{% block title %}
+Acid–Base Chemistry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — ACID & BASE PRACTICAL (ACID INTO BASE)
+   ========================================================= */
+
+:root {
+    --ab-bg: #050a12;
+    --ab-panel: #0a111d;
+    --ab-panel-2: #0d1624;
+    --ab-border: rgba(100, 116, 139, .18);
+
+    --ab-text: #f1f5f9;
+    --ab-muted: #94a3b8;
+
+    --ab-blue: #1677b8;
+    --ab-blue-light: #2196d2;
+    --ab-blue-dark: #075985;
+
+    --ab-green: #34d399;
+    --ab-red: #ef4444;
+    --ab-yellow: #facc15;
+}
+
+.acid-base-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--ab-text);
+}
+
+/* BACK */
+.ab-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--ab-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.ab-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+.ab-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.ab-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #eaf6ff;
+}
+
+.ab-header h1 i {
+    color: var(--ab-blue-light);
+    margin-right: 8px;
+}
+
+.ab-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--ab-muted);
+    line-height: 1.75;
+}
+
+/* NAV */
+.ab-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--ab-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.ab-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.ab-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.ab-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTION */
+.ab-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--ab-panel);
+    border: 1px solid var(--ab-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.ab-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.ab-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.ab-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.ab-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.ab-section p,
+.ab-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.ab-section li {
+    margin-bottom: 6px;
+}
+
+/* CARDS */
+.ab-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.ab-grid.two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.ab-grid.three {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.ab-card {
+    padding: 19px;
+    background: #080f1a;
+    border: 1px solid var(--ab-border);
+    border-radius: 12px;
+}
+
+.ab-card i {
+    color: var(--ab-blue-light);
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.ab-card h3 {
+    margin: 0 0 7px;
+    color: white;
+    font-size: 1.05rem;
+}
+
+.ab-card p {
+    margin: 0;
+    color: var(--ab-muted);
+    font-size: .9rem;
+}
+
+/* INFO */
+.ab-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--ab-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.ab-info strong {
+    color: #55b6e9;
+}
+
+/* =========================================================
+   TITRATION LAB — PERFECTED STACKED SYSTEM
+   ========================================================= */
+
+.titration-lab {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--ab-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.lab-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--ab-border);
+}
+
+.lab-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.lab-status {
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #0d2637;
+    color: #55b6e9;
+    font-size: .73rem;
+    font-weight: 700;
+}
+
+/* PRACTICAL AREA */
+.practical-stage {
+    position: relative;
+    height: 460px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #091321 0%, #091321 70%, #080d14 70%, #080d14 100%);
+}
+
+/* BENCH */
+.lab-bench {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 80px;
+    background: #0a1019;
+    border-top: 1px solid rgba(148,163,184,.12);
+}
+
+/* WHITE PAPER SHEET */
+.white-sheet {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 80px;
+    width: 170px;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 2px;
+    opacity: .9;
+    z-index: 3;
+}
+
+/* BURETTE STAND */
+.burette-stand {
+    position: absolute;
+    left: calc(50% + 75px);
+    bottom: 80px;
+    width: 8px;
+    height: 300px;
+    background: #6b7280;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.burette-base {
+    position: absolute;
+    left: 50%;
+    bottom: 80px;
+    width: 220px;
+    height: 11px;
+    background: #4b5563;
+    transform: translateX(-50%);
+    border-radius: 6px;
+    z-index: 2;
+}
+
+.stand-clamp {
+    position: absolute;
+    left: calc(50% + 5px);
+    width: 75px;
+    height: 10px;
+    top: 110px;
+    background: #4b5563;
+    border-radius: 3px;
+    z-index: 8;
+}
+
+/* BURETTE */
+.burette {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 20px;
+    width: 20px;
+    height: 180px;
+    border: 2px solid #9ca3af;
+    border-radius: 4px;
+    background: rgba(226,232,240,.05);
+    z-index: 5;
+}
+
+.burette-liquid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 80%;
+    background: rgba(56, 189, 248, 0.15);
+    border-radius: 1px;
+    transition: height .3s ease;
+}
+
+.burette-scale {
+    position: absolute;
+    left: calc(50% + 22px);
+    top: 20px;
+    width: 40px;
+    height: 180px;
+    font-size: 8px;
+    color: #94a3b8;
+    transform: translateX(-50%);
+    z-index: 4;
+}
+
+.burette-scale span {
+    display: block;
+    height: 24px;
+}
+
+/* TAP */
+.burette-tap {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 200px;
+    width: 32px;
+    height: 10px;
+    background: #9ca3af;
+    border-radius: 3px;
+    z-index: 6;
+}
+
+.burette-tap::after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: 2px;
+    width: 10px;
+    height: 6px;
+    background: #4b5563;
+    border-radius: 1px;
+}
+
+.burette-tip {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 210px;
+    width: 6px;
+    height: 20px;
+    border-left: 2px solid #9ca3af;
+    border-right: 2px solid #9ca3af;
+    clip-path: polygon(0 0, 100% 0, 65% 100%, 35% 100%);
+    z-index: 5;
+}
+
+/* DROP */
+.titration-drop {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 230px;
+    width: 6px;
+    height: 12px;
+    background: rgba(56, 189, 248, 0.4);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    opacity: 0;
+    z-index: 7;
+}
+
+.titration-drop.falling {
+    animation: dropFall .45s linear;
+}
+
+@keyframes dropFall {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 100px) scale(0.65);
+    }
+}
+
+/* FLASK */
+.conical-flask {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 80px;
+    width: 130px;
+    height: 150px;
+    z-index: 4;
+}
+
+/* NECK */
+.flask-neck {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    width: 30px;
+    height: 45px;
+    border-left: 3px solid rgba(203,213,225,.75);
+    border-right: 3px solid rgba(203,213,225,.75);
+    background: rgba(255,255,255,.025);
+}
+
+/* BODY */
+.flask-body {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 40px;
+    width: 130px;
+    height: 110px;
+    border: 3px solid rgba(203,213,225,.75);
+    border-top: 0;
+    clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+    background: rgba(255,255,255,.025);
+    overflow: hidden;
+}
+
+/* CORRECTED TRIANGULAR FLASK LIQUID SHAPE */
+.flask-liquid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 52px;
+    background: rgba(250, 204, 21, 0.8); /* Starts YELLOW (25 cm3 NaOH base + Methyl Orange) */
+    clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+    transition: background .5s ease, height .3s ease;
+}
+
+.swirl-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 25px;
+    border-radius: 50%;
+    background: transparent;
+    opacity: 0;
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+.swirl-overlay.active {
+    animation: swirlMix 1.4s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes swirlMix {
+    0% {
+        opacity: 0.95;
+        transform: translateX(-50%) scale(0.3);
+    }
+    40% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) scale(2);
+    }
+}
+
+/* FLASK LABEL */
+.flask-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -24px;
+    color: #94a3b8;
+    font-size: .72rem;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.lab-controls {
+    padding: 20px;
+    border-top: 1px solid var(--ab-border);
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 14px;
+}
+
+.control {
+    padding: 14px;
+    background: #0a131f;
+    border: 1px solid var(--ab-border);
+    border-radius: 10px;
+}
+
+.control label {
+    display: block;
+    color: #cbd5e1;
+    font-size: .82rem;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+
+.control input,
+.control select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.control output {
+    display: block;
+    margin-top: 7px;
+    color: #55b6e9;
+    font-weight: 800;
+}
+
+/* BUTTONS */
+.lab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 15px;
+}
+
+.lab-button {
+    border: 1px solid rgba(33,150,210,.35);
+    background: #0c1b2a;
+    color: #cfeeff;
+    padding: 9px 13px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.lab-button:hover {
+    background: #0e2639;
+    border-color: rgba(33,150,210,.55);
+}
+
+.lab-button.success {
+    border-color: var(--ab-green);
+    background: rgba(52, 211, 153, 0.1);
+    color: var(--ab-green);
+}
+
+.lab-button.success:hover {
+    background: rgba(52, 211, 153, 0.2);
+}
+
+/* =========================================================
+   TITRATION RECORD & CALCULATIONS
+   ========================================================= */
+
+.titration-record {
+    margin-top: 20px;
+}
+
+.record-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--ab-border);
+    border-radius: 10px;
+}
+
+.record-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.record-table th,
+.record-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--ab-border);
+    text-align: center;
+    color: #cbd5e1;
+    white-space: nowrap;
+}
+
+.record-table th {
+    background: #0a141f;
+    color: #55b6e9;
+    font-size: .82rem;
+}
+
+.record-table tr:last-child td {
+    border-bottom: none;
+}
+
+.record-table input {
+    width: 85px;
+    padding: 6px;
+    background: #07101a;
+    border: 1px solid rgba(148,163,184,.2);
+    border-radius: 6px;
+    color: white;
+    text-align: center;
+}
+
+.calculation-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: #08111d;
+    border: 1px solid var(--ab-border);
+    border-radius: 11px;
+}
+
+.calculation-box h3 {
+    margin-top: 0;
+}
+
+.calculation-line {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(148,163,184,.1);
+    color: #cbd5e1;
+}
+
+.calculation-line:last-child {
+    border-bottom: none;
+}
+
+.calculation-answer {
+    color: #55b6e9;
+    font-weight: 800;
+}
+
+.practical-note {
+    margin-top: 17px;
+    padding: 15px;
+    background: #0a1420;
+    border-radius: 9px;
+    border-left: 3px solid var(--ab-blue);
+    color: #cbd5e1;
+}
+
+/* ASK INSITE AI */
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--ab-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai > i {
+    color: #2196d2;
+    font-size: 31px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: .2s ease;
+}
+
+.ask-ai:hover > i {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ask-ai h3 {
+    margin: 0 0 8px;
+}
+
+.ask-ai p {
+    max-width: 650px;
+    margin: auto;
+    color: var(--ab-muted);
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.ask-ai a:hover {
+    background: #0d5b8e;
+}
+
+/* MOBILE */
+@media (max-width: 760px) {
+    .acid-base-page {
+        width: calc(100% - 18px);
+        margin-top: 15px;
+    }
+    .ab-section {
+        padding: 19px 16px;
+    }
+    .ab-grid.two,
+    .ab-grid.three {
+        grid-template-columns: 1fr;
+    }
+    .control-grid {
+        grid-template-columns: 1fr;
+    }
+    .practical-stage {
+        height: 440px;
+    }
+    .burette-stand {
+        left: calc(50% + 65px);
+    }
+    .stand-clamp {
+        left: calc(50% + 5px);
+        width: 65px;
+    }
+}
+</style>
+
+
+<div class="acid-base-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="ab-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="ab-header">
+        <h1>
+            <i class="fa-solid fa-flask-vial"></i>
+            Acid–Base Practical (Acid into Base)
+        </h1>
+        <p>
+            Study acid–base reactions, indicators, neutralisation and
+            volumetric analysis by dripping acid from the burette into 25 cm<sup>3</sup> of base in the flask.
+        </p>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="ab-nav">
+        <a href="#theory">Theory</a>
+        <a href="#indicators">Indicators</a>
+        <a href="#apparatus">Apparatus</a>
+        <a href="#titration">Titration</a>
+        <a href="#record">Results</a>
+        <a href="#calculation">Calculation</a>
+        <a href="#practical">Practical Notes</a>
+    </nav>
+
+
+    <!-- THEORY -->
+    <section class="ab-section" id="theory">
+        <div class="ab-section-header">
+            <div class="ab-number">01</div>
+            <h2>Acids, Bases and Neutralisation</h2>
+        </div>
+        <p>
+            Acids produce hydrogen ions in aqueous solution, while bases
+            react with acids and can accept hydrogen ions. When an acid
+            reacts with a base, neutralisation occurs.
+        </p>
+
+        <div class="ab-grid two">
+            <div class="ab-card">
+                <i class="fa-solid fa-vial"></i>
+                <h3>Acid</h3>
+                <p>Hydrochloric acid is a strong acid delivered from the burette as the titrant.</p>
+            </div>
+            <div class="ab-card">
+                <i class="fa-solid fa-flask"></i>
+                <h3>Base</h3>
+                <p>Sodium hydroxide is a strong alkali measured precisely at 25 cm<sup>3</sup> in the conical flask.</p>
+            </div>
+        </div>
+
+        <div class="ab-info">
+            <strong>Neutralisation:</strong>
+            hydrochloric acid reacts with sodium hydroxide to produce
+            sodium chloride and water.
+        </div>
+
+        <div class="ab-info">
+            HCl + NaOH &rarr; NaCl + H<sub>2</sub>O
+        </div>
+    </section>
+
+
+    <!-- INDICATORS -->
+    <section class="ab-section" id="indicators">
+        <div class="ab-section-header">
+            <div class="ab-number">02</div>
+            <h2>Indicators</h2>
+        </div>
+        <p>
+            An indicator changes colour over a particular pH range and is
+            used to identify the endpoint of an acid–base titration.
+        </p>
+
+        <div class="ab-grid two">
+            <div class="ab-card">
+                <h3>Methyl Orange (Yellow to Red)</h3>
+                <p>
+                    In alkaline solution (25 cm<sup>3</sup> NaOH in flask), methyl orange is <strong>yellow</strong>.
+                    As hydrochloric acid is added from the burette, the solution turns through orange and becomes <strong>red</strong> in acidic conditions.
+                </p>
+            </div>
+            <div class="ab-card">
+                <h3>Phenolphthalein</h3>
+                <p>
+                    Phenolphthalein is pink in alkaline solution and
+                    becomes colourless when neutralised by acid.
+                </p>
+            </div>
+        </div>
+
+        <div class="ab-info">
+            <strong>For this practical:</strong>
+            methyl orange is selected, so the visible transition is
+            <strong>yellow &rarr; orange &rarr; red</strong> as acid is added to the alkali.
+        </div>
+    </section>
+
+
+    <!-- APPARATUS -->
+    <section class="ab-section" id="apparatus">
+        <div class="ab-section-header">
+            <div class="ab-number">03</div>
+            <h2>Titration Apparatus</h2>
+        </div>
+
+        <div class="ab-grid three">
+            <div class="ab-card">
+                <i class="fa-solid fa-vial"></i>
+                <h3>Burette</h3>
+                <p>Holds the hydrochloric acid and allows its volume to be measured accurately as it is delivered.</p>
+            </div>
+            <div class="ab-card">
+                <i class="fa-solid fa-flask"></i>
+                <h3>Conical Flask</h3>
+                <p>Contains exactly 25 cm<sup>3</sup> of sodium hydroxide base and methyl orange indicator.</p>
+            </div>
+            <div class="ab-card">
+                <i class="fa-solid fa-droplet"></i>
+                <h3>Pipette</h3>
+                <p>Used to measure out the fixed 25 cm<sup>3</sup> volume of base safely into the flask.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- TITRATION -->
+    <section class="ab-section" id="titration">
+        <div class="ab-section-header">
+            <div class="ab-number">04</div>
+            <h2>Interactive Titration (Acid into Base)</h2>
+        </div>
+        <p>
+            The simulation uses the correct practical arrangement:
+            acid is placed in the burette and added gradually to <strong>25 cm<sup>3</sup></strong> of sodium hydroxide base containing methyl orange in the conical flask. The color changes from yellow to red!
+        </p>
+
+        <div class="titration-lab">
+            <div class="lab-top">
+                <h3>Hydrochloric Acid vs Sodium Hydroxide</h3>
+                <span class="lab-status" id="titrationStatusLabel">Starting Point (0.00 mL)</span>
+            </div>
+
+            <div class="practical-stage">
+                <div class="lab-bench"></div>
+
+                <!-- STAND -->
+                <div class="burette-stand"></div>
+                <div class="burette-base"></div>
+                <div class="stand-clamp"></div>
+
+                <!-- BURETTE -->
+                <div class="burette">
+                    <div class="burette-liquid" id="buretteLiquid"></div>
+                </div>
+                <div class="burette-scale">
+                    <span>0</span>
+                    <span>10</span>
+                    <span>20</span>
+                    <span>30</span>
+                    <span>40</span>
+                    <span>50</span>
+                </div>
+
+                <div class="burette-tap"></div>
+                <div class="burette-tip"></div>
+
+                <!-- DROP -->
+                <div class="titration-drop" id="titrationDrop"></div>
+
+                <!-- FLASK -->
+                <div class="conical-flask">
+                    <div class="white-sheet"></div>
+                    <div class="flask-neck"></div>
+                    <div class="flask-body">
+                        <div class="flask-liquid" id="flaskLiquid">
+                            <div class="swirl-overlay" id="swirlOverlay"></div>
+                        </div>
+                    </div>
+                    <div class="flask-label">25 cm<sup>3</sup> NaOH + methyl orange</div>
+                </div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="lab-controls">
+                <div class="control-grid">
+                    <div class="control">
+                        <label>HCl delivered, mL</label>
+                        <input id="acidVolume" type="range" min="0" max="30" step="0.05" value="0">
+                        <output id="acidVolumeValue">0.00 mL</output>
+                    </div>
+
+                    <div class="control">
+                        <label>Acid concentration, mol/L</label>
+                        <input id="acidConcentration" type="range" min="0.05" max="1" step="0.05" value="0.1012">
+                        <output id="acidConcentrationValue">0.10 mol/L</output>
+                    </div>
+
+                    <div class="control">
+                        <label>Base concentration, mol/L</label>
+                        <input id="baseConcentration" type="range" min="0.05" max="1" step="0.05" value="0.10">
+                        <output id="baseConcentrationValue">0.10 mol/L</output>
+                    </div>
+                </div>
+
+                <div class="lab-buttons">
+                    <button type="button" class="lab-button" id="dropButton">Add acid drop</button>
+                    <button type="button" class="lab-button success" id="recordButton">Record Titration Run</button>
+                    <button type="button" class="lab-button" id="resetButton">Reset titration</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- RESULTS -->
+    <section class="ab-section" id="record">
+        <div class="ab-section-header">
+            <div class="ab-number">05</div>
+            <h2>Titration Results</h2>
+        </div>
+        <p>
+            Record the burette readings for the rough titration and repeated
+            accurate titres. The base volume in the flask is fixed at <strong>25 cm<sup>3</sup></strong>.
+        </p>
+
+        <div class="titration-record">
+            <div class="record-table-wrap">
+                <table class="record-table" id="titrationResultsTable">
+                    <thead>
+                        <tr>
+                            <th>Titration</th>
+                            <th>Initial burette reading (mL)</th>
+                            <th>Final burette reading (mL)</th>
+                            <th>Titre (mL)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rough</td>
+                            <td><input class="initial-reading" type="number" step="0.01" value="0.00"></td>
+                            <td><input class="final-reading" type="number" step="0.01" value="24.70"></td>
+                            <td class="titre">24.70</td>
+                        </tr>
+                        <tr>
+                            <td>First</td>
+                            <td><input class="initial-reading" type="number" step="0.01" id="row1-initial" value="0.00"></td>
+                            <td><input class="final-reading" type="number" step="0.01" id="row1-final" value="0.00"></td>
+                            <td class="titre" id="row1-titre">0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Second</td>
+                            <td><input class="initial-reading" type="number" step="0.01" id="row2-initial" value="0.00"></td>
+                            <td><input class="final-reading" type="number" step="0.01" id="row2-final" value="0.00"></td>
+                            <td class="titre" id="row2-titre">0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Third</td>
+                            <td><input class="initial-reading" type="number" step="0.01" id="row3-initial" value="0.00"></td>
+                            <td><input class="final-reading" type="number" step="0.01" id="row3-final" value="0.00"></td>
+                            <td class="titre" id="row3-titre">0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="practical-note">
+            <strong>Concordant titres:</strong>
+            Repeated accurate titres should be within 0.10 cm<sup>3</sup> of each other.
+        </div>
+    </section>
+
+
+    <!-- CALCULATION -->
+    <section class="ab-section" id="calculation">
+        <div class="ab-section-header">
+            <div class="ab-number">06</div>
+            <h2>Titration Calculation</h2>
+        </div>
+        <p>
+            For the reaction <strong>HCl + NaOH &rarr; NaCl + H<sub>2</sub>O</strong>,
+            hydrochloric acid and sodium hydroxide react in a 1:1 mole ratio. Base volume = <strong>25 cm<sup>3</sup></strong>.
+        </p>
+
+        <div class="ab-info">
+            <strong>General mole relationship:</strong><br>
+            C<sub>a</sub>V<sub>a</sub> / n<sub>a</sub> = C<sub>b</sub>V<sub>b</sub> / n<sub>b</sub>
+        </div>
+
+        <div class="calculation-box">
+            <h3>Example calculation</h3>
+            <div class="calculation-line">Mean accurate titre of acid = <span id="meanTitre">24.70</span> mL</div>
+            <div class="calculation-line">Volume of base in flask = <strong>25.00 mL (25 cm<sup>3</sup>)</strong></div>
+            <div class="calculation-line">Concentration of base = <strong>0.100 mol/L</strong></div>
+            <div class="calculation-line">Moles of base = C &times; V = 0.100 &times; 25.00 / 1000 = <span class="calculation-answer">0.00250 mol</span></div>
+            <div class="calculation-line">Since NaOH : HCl = 1 : 1, moles of HCl = <span class="calculation-answer">0.00250 mol</span></div>
+            <div class="calculation-line">Concentration of acid = moles / volume = 0.00250 / 0.02470 = <span class="calculation-answer" id="calculatedConcentration">0.101 mol/L</span></div>
+        </div>
+    </section>
+
+
+    <!-- PRACTICAL -->
+    <section class="ab-section" id="practical">
+        <div class="ab-section-header">
+            <div class="ab-number">07</div>
+            <h2>Practical Procedure</h2>
+        </div>
+        <ol>
+            <li>Rinse the burette with the acid solution and fill it with hydrochloric acid.</li>
+            <li>Record the initial burette reading.</li>
+            <li>Use a pipette and pipette filler to transfer exactly 25 cm<sup>3</sup> of sodium hydroxide into a clean conical flask.</li>
+            <li>Add a few drops of methyl orange indicator to the base. The flask turns yellow.</li>
+            <li>Place the flask directly below the burette tip on a white tile.</li>
+            <li>Open the burette tap and add hydrochloric acid while swirling the flask continuously.</li>
+            <li>As the endpoint approaches, add the acid slowly, drop by drop.</li>
+            <li>With methyl orange, the colour changes from yellow through orange and then red as the solution becomes acidic.</li>
+            <li>Record the final burette reading at the sharp orange endpoint.</li>
+            <li>Calculate the titre and repeat until concordant results are obtained.</li>
+        </ol>
+    </section>
+
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Need help with Acid–Base Practical?</h3>
+        <p>Ask Insite AI to explain titration, indicators, neutralisation, titre calculations or practical chemistry procedures.</p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   ACID–BASE TITRATION SIMULATION (ACID INTO BASE)
+   ========================================================= */
+
+const acidVolume = document.getElementById("acidVolume"); // Acid HCl delivered from burette
+const acidConcentration = document.getElementById("acidConcentration"); // HCl in burette
+const baseConcentration = document.getElementById("baseConcentration"); // NaOH in flask
+
+const acidVolumeValue = document.getElementById("acidVolumeValue");
+const acidConcentrationValue = document.getElementById("acidConcentrationValue");
+const baseConcentrationValue = document.getElementById("baseConcentrationValue");
+
+const flaskLiquid = document.getElementById("flaskLiquid");
+const buretteLiquid = document.getElementById("buretteLiquid");
+const titrationDrop = document.getElementById("titrationDrop");
+const dropButton = document.getElementById("dropButton");
+const recordButton = document.getElementById("recordButton");
+const resetButton = document.getElementById("resetButton");
+const swirlOverlay = document.getElementById("swirlOverlay");
+const titrationStatusLabel = document.getElementById("titrationStatusLabel");
+
+const baseVolumeFlaskML = 25.00; // Fixed 25 cm3 base in flask
+let initialReadingVal = 0.00;
+
+function updateTitration() {
+    const acidML = Number(acidVolume.value);
+    const acidM = Number(acidConcentration.value);
+    const baseM = Number(baseConcentration.value);
+
+    const acidMoles = acidM * (acidML / 1000);
+    const baseMoles = baseM * (baseVolumeFlaskML / 1000);
+
+    // HCl + NaOH is 1:1. 
+    // Starts yellow (excess base), turns orange at endpoint, turns red (excess acid)
+    const difference = baseMoles - acidMoles;
+
+    if (difference > 0.00015) {
+        // Base is in excess -> Yellow
+        flaskLiquid.style.background = "rgba(250, 204, 21, 0.8)";
+    } else if (difference >= -0.00015 && difference <= 0.00015) {
+        // Endpoint -> Orange
+        flaskLiquid.style.background = "rgba(245, 158, 11, 0.85)";
+    } else {
+        // Acid is in excess -> Red
+        flaskLiquid.style.background = "rgba(239, 68, 68, 0.8)";
+    }
+
+    const remaining = Math.max(5, 80 - (acidML / 30) * 72);
+    buretteLiquid.style.height = remaining + "%";
+
+    acidVolumeValue.textContent = acidML.toFixed(2) + " mL";
+    acidConcentrationValue.textContent = acidM.toFixed(4) + " mol/L";
+    baseConcentrationValue.textContent = baseM.toFixed(2) + " mol/L";
+
+    titrationStatusLabel.textContent = "Initial: " + initialReadingVal.toFixed(2) + " mL | Current: " + (initialReadingVal + acidML).toFixed(2) + " mL";
+}
+
+dropButton.addEventListener("click", function() {
+    let current = Number(acidVolume.value);
+    let next = Math.min(30, current + 0.05);
+    acidVolume.value = next.toFixed(2);
+    updateTitration();
+
+    titrationDrop.classList.remove("falling");
+    swirlOverlay.classList.remove("active");
+
+    void titrationDrop.offsetWidth;
+    void swirlOverlay.offsetWidth;
+
+    titrationDrop.classList.add("falling");
+
+    setTimeout(() => {
+        const acidML = Number(acidVolume.value);
+        const acidM = Number(acidConcentration.value);
+        const baseM = Number(baseConcentration.value);
+        const acidMoles = acidM * (acidML / 1000);
+        const baseMoles = baseM * (baseVolumeFlaskML / 1000);
+        const difference = baseMoles - acidMoles;
+
+        if (difference >= -0.0002 && difference <= 0.0002) {
+            swirlOverlay.style.backgroundColor = "rgba(245, 158, 11, 0.9)";
+            swirlOverlay.classList.add("active");
+        }
+    }, 400);
+});
+
+acidVolume.addEventListener("input", updateTitration);
+acidConcentration.addEventListener("input", updateTitration);
+baseConcentration.addEventListener("input", updateTitration);
+
+recordButton.addEventListener("click", function() {
+    const acidML = Number(acidVolume.value);
+    const finalVal = initialReadingVal + acidML;
+
+    const r1Final = document.getElementById("row1-final");
+    const r2Final = document.getElementById("row2-final");
+    const r3Final = document.getElementById("row3-final");
+
+    if (Number(r1Final.value) === 0) {
+        document.getElementById("row1-initial").value = initialReadingVal.toFixed(2);
+        r1Final.value = finalVal.toFixed(2);
+    } else if (Number(r2Final.value) === 0) {
+        document.getElementById("row2-initial").value = initialReadingVal.toFixed(2);
+        r2Final.value = finalVal.toFixed(2);
+    } else if (Number(r3Final.value) === 0) {
+        document.getElementById("row3-initial").value = initialReadingVal.toFixed(2);
+        r3Final.value = finalVal.toFixed(2);
+    } else {
+        alert("All recording slots are filled! Reset to run another set.");
+        return;
+    }
+
+    initialReadingVal = finalVal;
+    acidVolume.value = 0;
+    updateTitreRows();
+    updateTitration();
+});
+
+resetButton.addEventListener("click", function() {
+    acidVolume.value = 0;
+    initialReadingVal = 0.00;
+    acidConcentration.value = 0.1012;
+    baseConcentration.value = 0.10;
+
+    document.getElementById("row1-initial").value = "0.00";
+    document.getElementById("row1-final").value = "0.00";
+    document.getElementById("row2-initial").value = "0.00";
+    document.getElementById("row2-final").value = "0.00";
+    document.getElementById("row3-initial").value = "0.00";
+    document.getElementById("row3-final").value = "0.00";
+
+    updateTitration();
+    titrationDrop.classList.remove("falling");
+    swirlOverlay.classList.remove("active");
+    updateTitreRows();
+});
+
+function updateTitreRows() {
+    const rows = document.querySelectorAll(".record-table tbody tr");
+    rows.forEach(function(row) {
+        const initial = Number(row.querySelector(".initial-reading").value);
+        const final = Number(row.querySelector(".final-reading").value);
+        const titre = Math.max(0, final - initial);
+        row.querySelector(".titre").textContent = titre.toFixed(2);
+    });
+
+    const accurateRows = Array.from(rows).slice(1);
+    const titres = accurateRows.map(row => Number(row.querySelector(".titre").textContent)).filter(value => value > 0);
+
+    let mean = 24.70;
+    if (titres.length) {
+        mean = titres.reduce((a,b) => a + b, 0) / titres.length;
+    }
+
+    document.getElementById("meanTitre").textContent = mean.toFixed(2);
+    const calculatedConc = (0.100 * 25.00) / mean;
+    document.getElementById("calculatedConcentration").textContent = calculatedConc.toFixed(3) + " mol/L";
+}
+
+document.querySelectorAll(".initial-reading, .final-reading").forEach(input => {
+    input.addEventListener("input", updateTitreRows);
+});
+
+updateTitration();
+updateTitreRows();
+</script>
+
+{% endblock %}

@@ -1,0 +1,1647 @@
+{% extends "base.html" %}
+
+{% block title %}
+Acids, Bases & Salts | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.acid-base-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.acid-base-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.acid-base-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.acid-base-header p {
+    color: #9ca3af;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-button:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+.acid-base-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.acid-base-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.acid-base-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.acid-base-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.acid-base-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.acid-base-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.acid-base-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+.acid-base-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.acid-base-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.acid-base-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.acid-base-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.acid-base-section p,
+.acid-base-section li {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.acid-base-section li {
+    margin-bottom: 8px;
+}
+
+/* HIGHLIGHT */
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA */
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 17px;
+    margin: 17px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+/* CONCEPT GRID */
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.concept-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* EXAMPLES */
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 14px 17px;
+    margin-top: 12px;
+    border-radius: 7px;
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+/* TABLE */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+.acid-base-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+.acid-base-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.acid-base-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+    vertical-align: top;
+}
+
+/* ASK AI */
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .acid-base-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .acid-base-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .acid-base-section {
+        padding: 18px;
+    }
+
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .acid-base-nav-wrapper {
+        top: 0;
+    }
+}
+</style>
+
+<div class="acid-base-page">
+
+
+<a href="{{ url_for('chemistry_page') }}" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+    Back
+</a>
+
+
+<div class="acid-base-header">
+
+    <h1>Acids, Bases & Salts</h1>
+
+    <p>
+        A complete introduction to acids, bases and salts, including
+        their properties, theories, indicators, pH, pOH, strong and
+        weak acids and bases, neutralisation, reactions, salt formation,
+        preparation of salts, titration, calculations and everyday
+        applications.
+    </p>
+
+</div>
+
+
+<div class="acid-base-nav-wrapper">
+
+    <nav class="acid-base-nav">
+
+        <a href="#introduction">Introduction</a>
+        <a href="#acids">Acids</a>
+        <a href="#bases">Bases</a>
+        <a href="#theories">Acid-Base Theories</a>
+        <a href="#properties">Properties</a>
+        <a href="#indicators">Indicators</a>
+        <a href="#ph">pH & pOH</a>
+        <a href="#strong-weak">Strong & Weak</a>
+        <a href="#neutralisation">Neutralisation</a>
+        <a href="#reactions">Acid Reactions</a>
+        <a href="#salts">Salts</a>
+        <a href="#salt-preparation">Salt Preparation</a>
+        <a href="#solubility">Salt Solubility</a>
+        <a href="#titration">Titration</a>
+        <a href="#calculations">Calculations</a>
+        <a href="#examples">Examples</a>
+        <a href="#word-problems">Word Problems</a>
+        <a href="#mistakes">Common Mistakes</a>
+
+    </nav>
+
+</div>
+
+
+<section class="acid-base-section" id="introduction">
+
+    <h2>1. Introduction to Acids, Bases and Salts</h2>
+
+    <p>
+        Acids and bases are two important groups of chemical substances.
+        They behave differently because of the particles they produce
+        when dissolved in water.
+    </p>
+
+    <p>
+        Acids are commonly associated with sour substances, while bases
+        are commonly associated with alkaline substances. In chemistry,
+        however, these everyday descriptions are replaced by precise
+        definitions based on chemical behaviour.
+    </p>
+
+    <p>
+        When an acid reacts with a base, a neutralisation reaction can
+        occur. One of the major products is usually a salt.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Big idea:</strong>
+
+        Acids, bases and salts are connected. Understanding acids and
+        bases makes it much easier to understand neutralisation and
+        salt formation.
+
+    </div>
+
+    <div class="concept-grid">
+
+        <div class="concept-card">
+
+            <i class="fas fa-flask"></i>
+
+            <h4>Acid</h4>
+
+            <p>
+                A substance that can donate hydrogen ions or increase
+                the hydrogen-ion concentration of an aqueous solution,
+                depending on the acid-base theory being used.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-vial"></i>
+
+            <h4>Base</h4>
+
+            <p>
+                A substance that can accept hydrogen ions or produce
+                hydroxide ions in water, depending on the theory.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-droplet"></i>
+
+            <h4>Salt</h4>
+
+            <p>
+                An ionic compound formed from the reaction of an acid
+                with a base or through other suitable chemical reactions.
+            </p>
+
+        </div>
+
+
+        <div class="concept-card">
+
+            <i class="fas fa-scale-balanced"></i>
+
+            <h4>Neutralisation</h4>
+
+            <p>
+                A reaction in which acidic and basic properties are
+                reduced by reaction between the two substances.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="acids">
+
+    <h2>2. Acids</h2>
+
+    <p>
+        An acid is a substance that produces hydrogen ions in aqueous
+        solution according to the Arrhenius definition.
+    </p>
+
+    <p>
+        Many acids contain hydrogen in their formula. Examples include
+        hydrochloric acid, sulfuric acid, nitric acid and ethanoic acid.
+    </p>
+
+    <h3>Examples of Common Acids</h3>
+
+    <div class="table-wrapper">
+
+        <table class="acid-base-table">
+
+            <tr>
+                <th>Acid</th>
+                <th>Formula</th>
+                <th>Common Use</th>
+            </tr>
+
+            <tr>
+                <td>Hydrochloric acid</td>
+                <td>HCl</td>
+                <td>Laboratory work and industrial processes</td>
+            </tr>
+
+            <tr>
+                <td>Sulfuric acid</td>
+                <td>H₂SO₄</td>
+                <td>Fertilisers, batteries and industry</td>
+            </tr>
+
+            <tr>
+                <td>Nitric acid</td>
+                <td>HNO₃</td>
+                <td>Fertilisers and chemical manufacture</td>
+            </tr>
+
+            <tr>
+                <td>Ethanoic acid</td>
+                <td>CH₃COOH</td>
+                <td>Present in vinegar</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Hydrogen Ions in Water</h3>
+
+    <p>
+        In water, a bare H⁺ ion does not exist as an isolated particle
+        for any significant time. It associates with water molecules,
+        commonly represented using the hydronium ion H₃O⁺.
+    </p>
+
+    <div class="formula-box">
+        H⁺ + H₂O → H₃O⁺
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="bases">
+
+    <h2>3. Bases</h2>
+
+    <p>
+        A base is a substance that can accept a proton according to the
+        Brønsted-Lowry definition.
+    </p>
+
+    <p>
+        Under the Arrhenius definition, a base produces hydroxide ions
+        in aqueous solution.
+    </p>
+
+    <h3>Examples of Bases</h3>
+
+    <div class="table-wrapper">
+
+        <table class="acid-base-table">
+
+            <tr>
+                <th>Base</th>
+                <th>Formula</th>
+            </tr>
+
+            <tr>
+                <td>Sodium hydroxide</td>
+                <td>NaOH</td>
+            </tr>
+
+            <tr>
+                <td>Potassium hydroxide</td>
+                <td>KOH</td>
+            </tr>
+
+            <tr>
+                <td>Calcium hydroxide</td>
+                <td>Ca(OH)₂</td>
+            </tr>
+
+            <tr>
+                <td>Ammonia</td>
+                <td>NH₃</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Alkalis</h3>
+
+    <p>
+        An alkali is a base that is soluble in water and produces
+        hydroxide ions in aqueous solution.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Important:</strong>
+
+        All alkalis are bases, but not all bases are alkalis.
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="theories">
+
+    <h2>4. Theories of Acids and Bases</h2>
+
+    <h3>Arrhenius Theory</h3>
+
+    <p>
+        According to Arrhenius, an acid increases the concentration of
+        H⁺ in aqueous solution, while a base increases the concentration
+        of OH⁻.
+    </p>
+
+    <div class="formula-box">
+        HCl → H⁺ + Cl⁻
+    </div>
+
+    <div class="formula-box">
+        NaOH → Na⁺ + OH⁻
+    </div>
+
+    <h3>Brønsted-Lowry Theory</h3>
+
+    <p>
+        A Brønsted-Lowry acid is a proton donor, while a
+        Brønsted-Lowry base is a proton acceptor.
+    </p>
+
+    <div class="formula-box">
+        NH₃ + H₂O ⇌ NH₄⁺ + OH⁻
+    </div>
+
+    <p>
+        In this reaction, water donates a proton and behaves as an acid,
+        while ammonia accepts a proton and behaves as a base.
+    </p>
+
+    <h3>Lewis Theory</h3>
+
+    <p>
+        A Lewis acid accepts an electron pair, while a Lewis base donates
+        an electron pair.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Remember:</strong>
+
+        Arrhenius focuses on H⁺ and OH⁻ in water, Brønsted-Lowry focuses
+        on proton transfer, while Lewis focuses on electron-pair transfer.
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="properties">
+
+    <h2>5. Properties of Acids and Bases</h2>
+
+    <h3>Properties of Acids</h3>
+
+    <ul>
+
+        <li>They have pH values below 7 at 25°C when aqueous.</li>
+
+        <li>They react with many metals to produce hydrogen gas.</li>
+
+        <li>They react with carbonates to produce carbon dioxide.</li>
+
+        <li>They can react with bases in neutralisation reactions.</li>
+
+        <li>Strong aqueous acids conduct electricity because they produce ions.</li>
+
+    </ul>
+
+    <h3>Properties of Bases</h3>
+
+    <ul>
+
+        <li>They have pH values above 7 at 25°C when aqueous.</li>
+
+        <li>Many bases feel slippery, although substances should never be tested by touching them.</li>
+
+        <li>They react with acids during neutralisation.</li>
+
+        <li>Alkalis conduct electricity in aqueous solution because they contain mobile ions.</li>
+
+    </ul>
+
+</section>
+
+
+<section class="acid-base-section" id="indicators">
+
+    <h2>6. Acid-Base Indicators</h2>
+
+    <p>
+        Indicators are substances that change colour depending on the
+        acidity or alkalinity of a solution.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="acid-base-table">
+
+            <tr>
+                <th>Indicator</th>
+                <th>Acidic Colour</th>
+                <th>Alkaline Colour</th>
+            </tr>
+
+            <tr>
+                <td>Litmus</td>
+                <td>Red</td>
+                <td>Blue</td>
+            </tr>
+
+            <tr>
+                <td>Methyl orange</td>
+                <td>Red</td>
+                <td>Yellow</td>
+            </tr>
+
+            <tr>
+                <td>Phenolphthalein</td>
+                <td>Colourless</td>
+                <td>Pink</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Universal Indicator</h3>
+
+    <p>
+        Universal indicator contains a mixture of indicators and gives
+        different colours over a broad pH range.
+    </p>
+
+    <p>
+        It can therefore give an approximate measurement of pH rather
+        than simply indicating whether a substance is acidic or alkaline.
+    </p>
+
+</section>
+
+
+<section class="acid-base-section" id="ph">
+
+    <h2>7. pH and pOH</h2>
+
+    <p>
+        The pH scale is used to express the acidity of an aqueous
+        solution.
+    </p>
+
+    <div class="formula-box">
+        pH = -log₁₀[H⁺]
+    </div>
+
+    <p>
+        Here, [H⁺] represents the hydrogen-ion concentration in
+        mol/L.
+    </p>
+
+    <h3>pOH</h3>
+
+    <div class="formula-box">
+        pOH = -log₁₀[OH⁻]
+    </div>
+
+    <p>
+        At 25°C, for aqueous solutions:
+    </p>
+
+    <div class="formula-box">
+        pH + pOH = 14
+    </div>
+
+    <h3>Understanding the Scale</h3>
+
+    <div class="table-wrapper">
+
+        <table class="acid-base-table">
+
+            <tr>
+                <th>pH</th>
+                <th>Nature</th>
+            </tr>
+
+            <tr>
+                <td>Below 7</td>
+                <td>Acidic</td>
+            </tr>
+
+            <tr>
+                <td>7</td>
+                <td>Neutral at 25°C</td>
+            </tr>
+
+            <tr>
+                <td>Above 7</td>
+                <td>Alkaline</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            Find the pH of a solution with
+            [H⁺] = 1.0 × 10⁻³ mol/L.
+        </h4>
+
+        <div class="answer-box">
+
+            pH = -log₁₀[H⁺]
+
+            <br><br>
+
+            pH = -log₁₀(1.0 × 10⁻³)
+
+            <br><br>
+
+            <strong>pH = 3</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="strong-weak">
+
+    <h2>8. Strong and Weak Acids and Bases</h2>
+
+    <p>
+        The terms strong and weak describe the extent to which an acid
+        or base ionises in water. They do not simply mean concentrated
+        and dilute.
+    </p>
+
+    <h3>Strong Acid</h3>
+
+    <p>
+        A strong acid ionises extensively in aqueous solution.
+    </p>
+
+    <p>
+        Examples include HCl, HNO₃ and H₂SO₄, although the details of
+        their ionisation steps differ.
+    </p>
+
+    <h3>Weak Acid</h3>
+
+    <p>
+        A weak acid ionises only partially and establishes an equilibrium
+        between molecules and ions.
+    </p>
+
+    <div class="formula-box">
+        CH₃COOH ⇌ H⁺ + CH₃COO⁻
+    </div>
+
+    <h3>Strong and Weak Bases</h3>
+
+    <p>
+        Strong bases dissociate extensively or react strongly with water,
+        while weak bases establish equilibria and only partially produce
+        their conjugate-acid/hydroxide products.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Very important:</strong>
+
+        Strong does not mean concentrated, and weak does not mean dilute.
+
+        A strong acid can be dilute, while a weak acid can be relatively
+        concentrated.
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="neutralisation">
+
+    <h2>9. Neutralisation</h2>
+
+    <p>
+        Neutralisation is the reaction between an acid and a base.
+        In the simplest strong acid-strong base case, hydrogen ions
+        react with hydroxide ions to form water.
+    </p>
+
+    <div class="formula-box">
+        H⁺ + OH⁻ → H₂O
+    </div>
+
+    <h3>Example</h3>
+
+    <div class="formula-box">
+        HCl + NaOH → NaCl + H₂O
+    </div>
+
+    <p>
+        Hydrochloric acid reacts with sodium hydroxide to produce sodium
+        chloride and water.
+    </p>
+
+    <h3>Another Example</h3>
+
+    <div class="formula-box">
+        H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O
+    </div>
+
+    <p>
+        The equation must be balanced because atoms and charge are
+        conserved.
+    </p>
+
+</section>
+
+
+<section class="acid-base-section" id="reactions">
+
+    <h2>10. Reactions of Acids</h2>
+
+    <h3>Acid + Metal</h3>
+
+    <p>
+        Many acids react with reactive metals to form a salt and
+        hydrogen gas.
+    </p>
+
+    <div class="formula-box">
+        Acid + Metal → Salt + Hydrogen
+    </div>
+
+    <div class="formula-box">
+        2HCl + Mg → MgCl₂ + H₂
+    </div>
+
+    <h3>Acid + Metal Oxide</h3>
+
+    <div class="formula-box">
+        Acid + Metal Oxide → Salt + Water
+    </div>
+
+    <div class="formula-box">
+        2HCl + CuO → CuCl₂ + H₂O
+    </div>
+
+    <h3>Acid + Carbonate</h3>
+
+    <div class="formula-box">
+        Acid + Carbonate → Salt + Water + Carbon Dioxide
+    </div>
+
+    <div class="formula-box">
+        2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂
+    </div>
+
+    <h3>Acid + Hydrogen Carbonate</h3>
+
+    <div class="formula-box">
+        HCl + NaHCO₃ → NaCl + H₂O + CO₂
+    </div>
+
+    <div class="highlight">
+
+        <strong>Test for carbon dioxide:</strong>
+
+        Carbon dioxide turns limewater milky or cloudy.
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="salts">
+
+    <h2>11. Salts</h2>
+
+    <p>
+        A salt is an ionic compound containing positive ions other than
+        H⁺ and negative ions other than OH⁻.
+    </p>
+
+    <p>
+        Salts can be formed in several ways, including acid-base
+        neutralisation, reactions between acids and metals, and reactions
+        involving carbonates.
+    </p>
+
+    <h3>Examples</h3>
+
+    <div class="table-wrapper">
+
+        <table class="acid-base-table">
+
+            <tr>
+                <th>Salt</th>
+                <th>Formula</th>
+                <th>Possible Source</th>
+            </tr>
+
+            <tr>
+                <td>Sodium chloride</td>
+                <td>NaCl</td>
+                <td>HCl + NaOH</td>
+            </tr>
+
+            <tr>
+                <td>Copper(II) sulfate</td>
+                <td>CuSO₄</td>
+                <td>H₂SO₄ + CuO</td>
+            </tr>
+
+            <tr>
+                <td>Calcium chloride</td>
+                <td>CaCl₂</td>
+                <td>HCl + CaCO₃</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Normal Salts</h3>
+
+    <p>
+        A normal salt is formed when all replaceable hydrogen ions of
+        the acid have been replaced by metal ions or ammonium ions.
+    </p>
+
+    <h3>Acid Salts</h3>
+
+    <p>
+        Acid salts retain hydrogen that can potentially participate in
+        further acid-base reactions. Examples include NaHCO₃ and NaHSO₄.
+    </p>
+
+</section>
+
+
+<section class="acid-base-section" id="salt-preparation">
+
+    <h2>12. Preparation of Salts</h2>
+
+    <h3>Method 1 — Acid + Soluble Base</h3>
+
+    <p>
+        When both reactants are soluble and there is no obvious way to
+        separate excess solid directly, titration can be used to obtain
+        an accurately neutralised solution.
+    </p>
+
+    <h3>Method 2 — Acid + Insoluble Base</h3>
+
+    <p>
+        An insoluble base can be added to an acid until no more reacts.
+        Excess solid can then be removed by filtration and the solution
+        can be concentrated and crystallised.
+    </p>
+
+    <h3>Method 3 — Acid + Carbonate</h3>
+
+    <p>
+        An acid can react with a carbonate to produce a salt, water and
+        carbon dioxide.
+    </p>
+
+    <h3>Method 4 — Precipitation</h3>
+
+    <p>
+        Two soluble solutions can react to form an insoluble salt.
+        The solid product is called a precipitate.
+    </p>
+
+    <div class="formula-box">
+        AgNO₃ + NaCl → AgCl + NaNO₃
+    </div>
+
+    <p>
+        Silver chloride forms as an insoluble precipitate.
+    </p>
+
+</section>
+
+
+<section class="acid-base-section" id="solubility">
+
+    <h2>13. Solubility of Salts</h2>
+
+    <p>
+        Some salts dissolve readily in water while others have very low
+        solubility.
+    </p>
+
+    <div class="table-wrapper">
+
+        <table class="acid-base-table">
+
+            <tr>
+                <th>Generally Soluble</th>
+                <th>Important Exceptions</th>
+            </tr>
+
+            <tr>
+                <td>Nitrates</td>
+                <td>Most nitrates are soluble.</td>
+            </tr>
+
+            <tr>
+                <td>Group 1 metal salts</td>
+                <td>Generally soluble.</td>
+            </tr>
+
+            <tr>
+                <td>Ammonium salts</td>
+                <td>Generally soluble.</td>
+            </tr>
+
+            <tr>
+                <td>Most chlorides</td>
+                <td>AgCl and some other chlorides are poorly soluble.</td>
+            </tr>
+
+            <tr>
+                <td>Most sulfates</td>
+                <td>BaSO₄ is insoluble; CaSO₄ and PbSO₄ have low solubility.</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="titration">
+
+    <h2>14. Acid-Base Titration</h2>
+
+    <p>
+        Titration is a laboratory method used to determine the
+        concentration of an unknown solution by reacting it with a
+        solution of known concentration.
+    </p>
+
+    <h3>Important Terms</h3>
+
+    <ul>
+
+        <li>
+            <strong>Titrant:</strong> The solution added from the burette.
+        </li>
+
+        <li>
+            <strong>Analyte:</strong> The solution whose concentration
+            is being determined.
+        </li>
+
+        <li>
+            <strong>Endpoint:</strong> The point indicated by the chosen
+            indicator's colour change.
+        </li>
+
+        <li>
+            <strong>Equivalence point:</strong> The point at which the
+            reacting quantities are present in the exact stoichiometric
+            proportions required by the balanced equation.
+        </li>
+
+    </ul>
+
+    <h3>Basic Titration Procedure</h3>
+
+    <ol>
+
+        <li>Measure a known volume of the unknown solution.</li>
+
+        <li>Place it in a suitable flask.</li>
+
+        <li>Add a few drops of an appropriate indicator.</li>
+
+        <li>Fill the burette with the standard solution.</li>
+
+        <li>Record the initial burette reading.</li>
+
+        <li>Add the titrant while swirling the flask.</li>
+
+        <li>Slow down near the endpoint.</li>
+
+        <li>Record the final burette reading.</li>
+
+        <li>Calculate the titre.</li>
+
+        <li>Use the balanced equation to calculate the unknown concentration.</li>
+
+    </ol>
+
+    <div class="highlight">
+
+        <strong>Remember:</strong>
+
+        The indicator should be selected so that its colour-change range
+        is appropriate for the type of titration being performed.
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="calculations">
+
+    <h2>15. Acid-Base Calculations</h2>
+
+    <p>
+        Many acid-base calculations use the relationship between
+        concentration, volume and number of moles.
+    </p>
+
+    <div class="formula-box">
+        n = C × V
+    </div>
+
+    <p>
+        Volume must be in litres when concentration is expressed in
+        mol/L.
+    </p>
+
+    <h3>For a 1:1 Reaction</h3>
+
+    <p>
+        For a reaction such as:
+    </p>
+
+    <div class="formula-box">
+        HCl + NaOH → NaCl + H₂O
+    </div>
+
+    <p>
+        One mole of HCl reacts with one mole of NaOH. Therefore, at
+        equivalence:
+    </p>
+
+    <div class="formula-box">
+        n(HCl) = n(NaOH)
+    </div>
+
+    <h3>Worked Example</h3>
+
+    <div class="example-box">
+
+        <h4>
+            25.0 mL of HCl is neutralised by 20.0 mL of
+            0.100 mol/L NaOH. Find the concentration of HCl.
+        </h4>
+
+        <div class="answer-box">
+
+            Step 1:
+
+            <br>
+
+            Convert the NaOH volume:
+
+            <br><br>
+
+            20.0 mL = 0.0200 L
+
+            <br><br>
+
+            Step 2:
+
+            <br>
+
+            n(NaOH) = C × V
+
+            <br><br>
+
+            n = 0.100 × 0.0200
+
+            <br><br>
+
+            n = 0.00200 mol
+
+            <br><br>
+
+            Step 3:
+
+            <br>
+
+            The reaction ratio is 1:1, so:
+
+            <br><br>
+
+            n(HCl) = 0.00200 mol
+
+            <br><br>
+
+            Step 4:
+
+            <br>
+
+            HCl volume = 25.0 mL = 0.0250 L
+
+            <br><br>
+
+            C = n / V
+
+            <br><br>
+
+            C = 0.00200 / 0.0250
+
+            <br><br>
+
+            <strong>C(HCl) = 0.0800 mol/L</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="examples">
+
+    <h2>16. Worked Examples</h2>
+
+
+    <div class="example-box">
+
+        <h4>Example 1 — Acid and Metal</h4>
+
+        <p>
+            Write the balanced equation for the reaction between
+            magnesium and hydrochloric acid.
+        </p>
+
+        <div class="answer-box">
+
+            Magnesium forms Mg²⁺, while hydrochloric acid supplies H⁺.
+
+            <br><br>
+
+            <strong>
+                Mg + 2HCl → MgCl₂ + H₂
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 2 — Acid and Carbonate</h4>
+
+        <p>
+            What products form when hydrochloric acid reacts with
+            calcium carbonate?
+        </p>
+
+        <div class="answer-box">
+
+            Acid + carbonate produces:
+
+            <br><br>
+
+            Salt + water + carbon dioxide
+
+            <br><br>
+
+            <strong>
+                2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 3 — pH</h4>
+
+        <p>
+            Calculate the pH of a solution with hydrogen-ion
+            concentration of 1.0 × 10⁻⁵ mol/L.
+        </p>
+
+        <div class="answer-box">
+
+            pH = -log₁₀[H⁺]
+
+            <br><br>
+
+            pH = -log₁₀(1.0 × 10⁻⁵)
+
+            <br><br>
+
+            <strong>pH = 5</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Example 4 — Neutralisation</h4>
+
+        <p>
+            What are the products of sulfuric acid reacting completely
+            with sodium hydroxide?
+        </p>
+
+        <div class="answer-box">
+
+            <strong>
+                H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="word-problems">
+
+    <h2>17. Word Problems</h2>
+
+
+    <div class="example-box">
+
+        <h4>Problem 1</h4>
+
+        <p>
+            A student adds magnesium to hydrochloric acid. Bubbles are
+            produced and a gas is released. Identify the gas and explain
+            why it is formed.
+        </p>
+
+        <div class="answer-box">
+
+            The gas is <strong>hydrogen</strong>.
+
+            <br><br>
+
+            Magnesium displaces hydrogen ions from hydrochloric acid:
+
+            <br><br>
+
+            Mg + 2HCl → MgCl₂ + H₂
+
+            <br><br>
+
+            The hydrogen ions are reduced to hydrogen gas.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 2</h4>
+
+        <p>
+            A student adds hydrochloric acid to marble chips. The chips
+            gradually disappear and bubbles are produced. Explain what
+            is happening.
+        </p>
+
+        <div class="answer-box">
+
+            Marble contains calcium carbonate. It reacts with hydrochloric
+            acid to produce calcium chloride, water and carbon dioxide.
+
+            <br><br>
+
+            2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂
+
+            <br><br>
+
+            The bubbles are carbon dioxide gas.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 3</h4>
+
+        <p>
+            A solution has a pH of 2 while another has a pH of 5.
+            Which is more acidic?
+        </p>
+
+        <div class="answer-box">
+
+            The solution with <strong>pH 2</strong> is more acidic.
+
+            <br><br>
+
+            The pH scale is logarithmic, so the difference represents
+            a large difference in hydrogen-ion concentration.
+
+        </div>
+
+    </div>
+
+
+    <div class="example-box">
+
+        <h4>Problem 4</h4>
+
+        <p>
+            A farmer applies lime to acidic soil. Why can this help the
+            soil?
+        </p>
+
+        <div class="answer-box">
+
+            Lime contains basic substances that can react with acidic
+            components in the soil. This reduces soil acidity and can
+            bring the soil pH closer to a range suitable for particular
+            crops.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="acid-base-section" id="mistakes">
+
+    <h2>18. Common Mistakes</h2>
+
+    <h3>1. Confusing Strong with Concentrated</h3>
+
+    <p>
+        Strong refers to the extent of ionisation, while concentration
+        refers to the amount of solute present per unit volume.
+    </p>
+
+    <h3>2. Thinking Every Base Is an Alkali</h3>
+
+    <p>
+        An alkali is specifically a base that is soluble in water.
+    </p>
+
+    <h3>3. Forgetting to Balance Equations</h3>
+
+    <p>
+        Chemical equations must obey conservation of atoms and charge.
+    </p>
+
+    <h3>4. Forgetting Volume Conversion</h3>
+
+    <p>
+        When using molarity in mol/L, convert millilitres to litres.
+    </p>
+
+    <div class="formula-box">
+        1000 mL = 1 L
+    </div>
+
+    <h3>5. Confusing Endpoint and Equivalence Point</h3>
+
+    <p>
+        The endpoint is the observable indicator change used in a
+        titration. The equivalence point is the stoichiometric point
+        defined by the reaction.
+    </p>
+
+    <h3>6. Assuming pH Changes Linearly</h3>
+
+    <p>
+        The pH scale is logarithmic. A one-unit change in pH represents
+        a tenfold change in hydrogen-ion concentration under the usual
+        concentration-based interpretation.
+    </p>
+
+    <div class="highlight">
+
+        <strong>Best approach:</strong>
+
+        When solving an acid-base problem, first identify the substances,
+        write and balance the chemical equation, convert units, determine
+        the mole relationship, and only then perform the calculation.
+
+    </div>
+
+</section>
+
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With Acids, Bases & Salts?</h3>
+
+    <p>
+        Confused about pH, indicators, strong and weak acids, bases,
+        neutralisation, salt preparation or titration? Ask Insite AI to
+        explain the topic step by step, check your chemical equation,
+        or solve an acid-base problem with you.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

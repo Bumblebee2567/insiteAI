@@ -1,0 +1,1544 @@
+{% extends "base.html" %}
+
+{% block title %}
+Calculus | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .calculus-page {
+        min-height: 100vh;
+        padding: 30px 20px 60px;
+        background: #0b0f14;
+    }
+
+    .calculus-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #ffffff;
+        background: #151c2d;
+        border: 1px solid #263554;
+        padding: 10px 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+        margin-bottom: 28px;
+    }
+
+    .back-button:hover {
+        background: #0d6efd;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    .calculus-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .calculus-header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    .calculus-header h1 i {
+        color: #0d6efd;
+    }
+
+    .calculus-header p {
+        color: #adb5bd;
+        font-size: 17px;
+        max-width: 820px;
+        margin: auto;
+        line-height: 1.7;
+    }
+
+    .topic-navigation {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 35px;
+        padding: 15px;
+        background: #111820;
+        border-radius: 15px;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #0d6efd #111820;
+    }
+
+    .topic-navigation::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .topic-navigation::-webkit-scrollbar-track {
+        background: #111820;
+    }
+
+    .topic-navigation::-webkit-scrollbar-thumb {
+        background: #0d6efd;
+        border-radius: 10px;
+    }
+
+    .topic-navigation a {
+        color: #ffffff;
+        text-decoration: none;
+        background: #1b2633;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: 0.2s ease;
+    }
+
+    .topic-navigation a:hover {
+        background: #0d6efd;
+    }
+
+    .topic-section {
+        background: #111820;
+        border: 1px solid #202b36;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        scroll-margin-top: 90px;
+    }
+
+    .topic-section h2 {
+        color: #4d9cff;
+        font-size: 28px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+    .topic-section h3 {
+        color: #ffffff;
+        font-size: 20px;
+        margin-top: 22px;
+        margin-bottom: 9px;
+    }
+
+    .topic-section p {
+        color: #c5cbd1;
+        line-height: 1.75;
+        margin-bottom: 10px;
+    }
+
+    .topic-section ul {
+        color: #c5cbd1;
+        line-height: 1.8;
+    }
+
+    .topic-section li {
+        margin-bottom: 5px;
+    }
+
+    .formula {
+        background: #0b1118;
+        border-left: 4px solid #0d6efd;
+        padding: 14px 18px;
+        margin: 15px 0;
+        border-radius: 8px;
+        color: #ffffff;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+        line-height: 1.9;
+    }
+
+    .example {
+        background: #172230;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-top: 15px;
+        color: #d9e0e7;
+        line-height: 1.75;
+    }
+
+    .example strong {
+        color: #4d9cff;
+    }
+
+    .definition {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .ai-help {
+        margin-top: 20px;
+        padding: 17px;
+        border-radius: 12px;
+        background: #101827;
+        border: 1px dashed #28518e;
+    }
+
+    .ai-help i {
+        color: #0d6efd;
+        margin-right: 7px;
+    }
+
+    .ai-help p {
+        margin: 6px 0 0;
+        font-size: 14px;
+    }
+
+    .ai-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #151c2d;
+        border: 1px solid #263554;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .ai-button:hover {
+        background: #0d6efd;
+        color: #ffffff;
+    }
+
+    .calculus-footer {
+        text-align: center;
+        margin-top: 45px;
+        color: #748096;
+    }
+
+    .calculus-footer i {
+        color: #0d6efd;
+    }
+
+    @media (max-width: 768px) {
+
+        .calculus-page {
+            padding: 20px 12px 45px;
+        }
+
+        .calculus-header h1 {
+            font-size: 32px;
+        }
+
+        .calculus-header p {
+            font-size: 15px;
+        }
+
+        .topic-section {
+            padding: 20px;
+        }
+
+        .topic-section h2 {
+            font-size: 24px;
+        }
+
+        .topic-section h3 {
+            font-size: 18px;
+        }
+
+        .formula {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="calculus-page">
+
+<div class="calculus-container">
+
+    <a href="{{ url_for('math_page') }}" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back to Mathematics
+    </a>
+
+
+    <header class="calculus-header">
+
+        <h1>
+            <i class="fas fa-chart-line"></i>
+            Calculus
+        </h1>
+
+        <p>
+            Learn how calculus describes change, motion, slopes,
+            rates, maximum and minimum values, roots, differentiation,
+            integration, and the accumulation of quantities.
+        </p>
+
+    </header>
+
+
+    <nav class="topic-navigation">
+
+        <a href="#basics">Calculus Basics</a>
+        <a href="#limits">Limits</a>
+        <a href="#first-principles">First Principle</a>
+        <a href="#derivative">Derivative</a>
+        <a href="#rules">Differentiation Rules</a>
+        <a href="#product">Product Rule</a>
+        <a href="#quotient">Quotient Rule</a>
+        <a href="#chain">Chain Rule</a>
+        <a href="#implicit">Implicit Differentiation</a>
+        <a href="#rates">Rate of Change</a>
+        <a href="#increasing">Increasing & Decreasing</a>
+        <a href="#turning">Turning Points</a>
+        <a href="#roots">Roots</a>
+        <a href="#optimization">Optimization</a>
+        <a href="#word-problems">Word Problems</a>
+        <a href="#integration">Integration</a>
+        <a href="#integral-rules">Integration Rules</a>
+        <a href="#definite">Definite Integrals</a>
+        <a href="#area">Area</a>
+
+    </nav>
+
+
+    <section class="topic-section" id="basics">
+
+        <h2>1. Introduction to Calculus</h2>
+
+        <p>
+            Calculus is the branch of mathematics used to study
+            <span class="definition">change and accumulation</span>.
+        </p>
+
+        <p>
+            It is divided mainly into two connected areas:
+        </p>
+
+        <ul>
+            <li>
+                <strong>Differentiation</strong> — studies rates of
+                change and slopes.
+            </li>
+
+            <li>
+                <strong>Integration</strong> — studies accumulation,
+                total change and areas.
+            </li>
+        </ul>
+
+        <h3>A Simple Idea</h3>
+
+        <p>
+            If the position of a car changes with time, calculus can
+            help determine its instantaneous velocity.
+        </p>
+
+        <div class="formula">
+            Velocity = rate of change of position
+        </div>
+
+        <p>
+            Similarly, if velocity is known, integration can be used
+            to determine displacement.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="limits">
+
+        <h2>2. Limits</h2>
+
+        <p>
+            A limit describes the value that a function approaches
+            as its input approaches a particular value.
+        </p>
+
+        <div class="formula">
+            lim x→a f(x)
+        </div>
+
+        <p>
+            The idea of a limit is important because the derivative
+            is built from a limiting process.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Consider:</strong>
+
+            <div class="formula">
+                f(x) = x²
+            </div>
+
+            <p>
+                As x approaches 2:
+            </p>
+
+            <div class="formula">
+                lim x→2 x² = 4
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="first-principles">
+
+        <h2>3. Differentiation from First Principles</h2>
+
+        <p>
+            First principles gives the fundamental definition of
+            the derivative.
+        </p>
+
+        <div class="formula">
+            f'(x)
+            =
+            lim h→0
+            [f(x+h) - f(x)] / h
+        </div>
+
+        <p>
+            The expression represents the slope of a secant line
+            as two points on a curve move closer together.
+        </p>
+
+        <p>
+            When the distance between the points approaches zero,
+            the secant slope approaches the tangent slope.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the derivative of:</strong>
+
+            <div class="formula">
+                f(x) = x²
+            </div>
+
+            <p>
+                First:
+            </p>
+
+            <div class="formula">
+                f(x+h) = (x+h)²
+                <br>
+                = x² + 2xh + h²
+            </div>
+
+            <p>
+                Substitute into the definition:
+            </p>
+
+            <div class="formula">
+                f'(x)
+                =
+                lim h→0
+                [(x² + 2xh + h²) - x²] / h
+            </div>
+
+            <div class="formula">
+                =
+                lim h→0
+                [2xh + h²] / h
+                <br>
+                =
+                lim h→0 (2x + h)
+                <br>
+                = 2x
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                f'(x) = 2x
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="derivative">
+
+        <h2>4. Derivatives and du/dx</h2>
+
+        <p>
+            A derivative measures the instantaneous rate of change
+            of one quantity with respect to another.
+        </p>
+
+        <p>
+            If y depends on x, we commonly write:
+        </p>
+
+        <div class="formula">
+            dy/dx
+        </div>
+
+        <p>
+            The notation means "the rate at which y changes with
+            respect to x."
+        </p>
+
+        <h3>Power Rule</h3>
+
+        <div class="formula">
+            d/dx (xⁿ) = nxⁿ⁻¹
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Differentiate:</strong>
+
+            <div class="formula">
+                y = x⁵
+            </div>
+
+            <div class="formula">
+                dy/dx = 5x⁴
+            </div>
+
+        </div>
+
+        <h3>Constants</h3>
+
+        <div class="formula">
+            d/dx(c) = 0
+        </div>
+
+        <p>
+            A constant does not change, so its derivative is zero.
+        </p>
+
+        <h3>Constant Multiplication</h3>
+
+        <div class="formula">
+            d/dx [c f(x)] = c f'(x)
+        </div>
+
+        <h3>Sum and Difference</h3>
+
+        <div class="formula">
+            d/dx [f(x) ± g(x)]
+            =
+            f'(x) ± g'(x)
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="rules">
+
+        <h2>5. Basic Differentiation Rules</h2>
+
+        <h3>Polynomial Example</h3>
+
+        <div class="example">
+
+            <strong>Differentiate:</strong>
+
+            <div class="formula">
+                y = 4x⁵ - 3x³ + 7x - 9
+            </div>
+
+            <div class="formula">
+                dy/dx
+                =
+                20x⁴ - 9x² + 7
+            </div>
+
+        </div>
+
+        <h3>Exponential Function</h3>
+
+        <div class="formula">
+            d/dx(eˣ) = eˣ
+        </div>
+
+        <h3>General Exponential</h3>
+
+        <div class="formula">
+            d/dx(aˣ) = aˣ ln(a)
+        </div>
+
+        <h3>Logarithm</h3>
+
+        <div class="formula">
+            d/dx(ln x) = 1/x
+        </div>
+
+        <h3>Trigonometric Functions</h3>
+
+        <div class="formula">
+            d/dx(sin x) = cos x
+            <br>
+            d/dx(cos x) = -sin x
+            <br>
+            d/dx(tan x) = sec²x
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="product">
+
+        <h2>6. Product Rule</h2>
+
+        <p>
+            When two functions are multiplied together, we use the
+            product rule.
+        </p>
+
+        <div class="formula">
+            d/dx(uv)
+            =
+            u(dv/dx) + v(du/dx)
+        </div>
+
+        <p>
+            In short:
+        </p>
+
+        <div class="formula">
+            (uv)' = u'v + uv'
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Differentiate:</strong>
+
+            <div class="formula">
+                y = x² sin x
+            </div>
+
+            <p>
+                Let:
+            </p>
+
+            <div class="formula">
+                u = x²
+                <br>
+                v = sin x
+            </div>
+
+            <div class="formula">
+                u' = 2x
+                <br>
+                v' = cos x
+            </div>
+
+            <p>
+                Therefore:
+            </p>
+
+            <div class="formula">
+                y'
+                =
+                (2x)(sin x)
+                +
+                (x²)(cos x)
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="quotient">
+
+        <h2>7. Quotient Rule</h2>
+
+        <p>
+            When one function is divided by another, the quotient
+            rule is used.
+        </p>
+
+        <div class="formula">
+            d/dx(u/v)
+            =
+            [v(du/dx) - u(dv/dx)] / v²
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Differentiate:</strong>
+
+            <div class="formula">
+                y = x² / (x + 1)
+            </div>
+
+            <p>
+                Let:
+            </p>
+
+            <div class="formula">
+                u = x²
+                <br>
+                v = x + 1
+            </div>
+
+            <div class="formula">
+                u' = 2x
+                <br>
+                v' = 1
+            </div>
+
+            <div class="formula">
+                y'
+                =
+                [(x + 1)(2x) - x²(1)] / (x + 1)²
+            </div>
+
+            <div class="formula">
+                y'
+                =
+                (x² + 2x) / (x + 1)²
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="chain">
+
+        <h2>8. Chain Rule</h2>
+
+        <p>
+            The chain rule is used when one function is inside
+            another function.
+        </p>
+
+        <div class="formula">
+            dy/dx = dy/du × du/dx
+        </div>
+
+        <p>
+            This is why the notation du/dx is particularly useful
+            when differentiating composite functions.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Differentiate:</strong>
+
+            <div class="formula">
+                y = (3x² + 2)⁵
+            </div>
+
+            <p>
+                Let:
+            </p>
+
+            <div class="formula">
+                u = 3x² + 2
+            </div>
+
+            <div class="formula">
+                dy/du = 5u⁴
+                <br>
+                du/dx = 6x
+            </div>
+
+            <div class="formula">
+                dy/dx
+                =
+                5(3x² + 2)⁴(6x)
+            </div>
+
+            <div class="formula">
+                dy/dx = 30x(3x² + 2)⁴
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="implicit">
+
+        <h2>9. Implicit Differentiation</h2>
+
+        <p>
+            Sometimes x and y are mixed together in an equation,
+            so y cannot easily be written as a function of x.
+            In such cases, we differentiate implicitly.
+        </p>
+
+        <h3>Important Rule</h3>
+
+        <div class="formula">
+            d/dx(y) = dy/dx
+        </div>
+
+        <p>
+            For powers of y, the chain rule is required.
+        </p>
+
+        <div class="formula">
+            d/dx(y²) = 2y(dy/dx)
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Given:</strong>
+
+            <div class="formula">
+                x² + y² = 25
+            </div>
+
+            <p>
+                Differentiate both sides:
+            </p>
+
+            <div class="formula">
+                2x + 2y(dy/dx) = 0
+            </div>
+
+            <div class="formula">
+                dy/dx = -x/y
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="rates">
+
+        <h2>10. Rate of Change</h2>
+
+        <p>
+            The derivative is fundamentally a rate of change.
+        </p>
+
+        <div class="formula">
+            Rate of change = dy/dx
+        </div>
+
+        <p>
+            If distance changes with time:
+        </p>
+
+        <div class="formula">
+            ds/dt = velocity
+        </div>
+
+        <p>
+            If velocity changes with time:
+        </p>
+
+        <div class="formula">
+            dv/dt = acceleration
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Given:</strong>
+
+            <div class="formula">
+                s(t) = t³ + 2t²
+            </div>
+
+            <p>
+                Velocity is the derivative of displacement.
+            </p>
+
+            <div class="formula">
+                v(t) = ds/dt
+                <br>
+                = 3t² + 4t
+            </div>
+
+            <p>
+                Acceleration is the derivative of velocity.
+            </p>
+
+            <div class="formula">
+                a(t) = dv/dt
+                <br>
+                = 6t + 4
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="increasing">
+
+        <h2>11. Increasing and Decreasing Functions</h2>
+
+        <p>
+            The first derivative can tell us whether a function is
+            increasing or decreasing.
+        </p>
+
+        <div class="formula">
+            f'(x) > 0
+            → function is increasing
+        </div>
+
+        <div class="formula">
+            f'(x) < 0
+            → function is decreasing
+        </div>
+
+        <p>
+            This is because the derivative represents the slope.
+            A positive slope means the graph rises, while a negative
+            slope means the graph falls.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Given:</strong>
+
+            <div class="formula">
+                f(x) = x³ - 3x
+            </div>
+
+            <p>
+                Differentiate:
+            </p>
+
+            <div class="formula">
+                f'(x) = 3x² - 3
+            </div>
+
+            <p>
+                Factor:
+            </p>
+
+            <div class="formula">
+                f'(x) = 3(x - 1)(x + 1)
+            </div>
+
+            <p>
+                The critical points are:
+            </p>
+
+            <div class="formula">
+                x = -1, 1
+            </div>
+
+            <p>
+                Testing intervals allows us to determine where the
+                function increases and decreases.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="turning">
+
+        <h2>12. Stationary Points and Turning Points</h2>
+
+        <p>
+            A stationary point occurs where the derivative is zero.
+        </p>
+
+        <div class="formula">
+            f'(x) = 0
+        </div>
+
+        <p>
+            A stationary point may be:
+        </p>
+
+        <ul>
+            <li>A local maximum</li>
+            <li>A local minimum</li>
+            <li>A stationary point of inflection</li>
+        </ul>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the stationary points of:</strong>
+
+            <div class="formula">
+                f(x) = x² - 4x + 3
+            </div>
+
+            <div class="formula">
+                f'(x) = 2x - 4
+            </div>
+
+            <p>
+                Set the derivative equal to zero:
+            </p>
+
+            <div class="formula">
+                2x - 4 = 0
+                <br>
+                x = 2
+            </div>
+
+            <p>
+                Find the corresponding y-value:
+            </p>
+
+            <div class="formula">
+                f(2) = 4 - 8 + 3
+                <br>
+                = -1
+            </div>
+
+            <p>
+                Therefore the stationary point is:
+            </p>
+
+            <div class="formula">
+                (2, -1)
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="roots">
+
+        <h2>13. Roots and Intercepts</h2>
+
+        <p>
+            A root of a function is a value of x for which the
+            function equals zero.
+        </p>
+
+        <div class="formula">
+            f(x) = 0
+        </div>
+
+        <p>
+            Graphically, roots are the points where the graph crosses
+            or touches the x-axis.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the roots:</strong>
+
+            <div class="formula">
+                x² - 5x + 6 = 0
+            </div>
+
+            <div class="formula">
+                (x - 2)(x - 3) = 0
+            </div>
+
+            <div class="formula">
+                x = 2
+                <br>
+                x = 3
+            </div>
+
+        </div>
+
+        <h3>Roots and Calculus</h3>
+
+        <p>
+            Roots can also be important when studying the behaviour
+            of a differentiated function.
+        </p>
+
+        <p>
+            For example, solving f'(x) = 0 gives stationary points,
+            while solving f(x) = 0 gives x-intercepts.
+        </p>
+
+    </section>
+
+
+    <section class="topic-section" id="optimization">
+
+        <h2>14. Maximum, Minimum and Optimization</h2>
+
+        <p>
+            Calculus can be used to find the greatest or smallest
+            possible value of a quantity.
+        </p>
+
+        <p>
+            At many local maximum and minimum points:
+        </p>
+
+        <div class="formula">
+            f'(x) = 0
+        </div>
+
+        <p>
+            The second derivative can help determine the nature of
+            the stationary point.
+        </p>
+
+        <div class="formula">
+            f''(x) > 0
+            → local minimum
+            <br><br>
+            f''(x) < 0
+            → local maximum
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the maximum or minimum of:</strong>
+
+            <div class="formula">
+                f(x) = -x² + 6x + 2
+            </div>
+
+            <div class="formula">
+                f'(x) = -2x + 6
+            </div>
+
+            <p>
+                Set the derivative equal to zero:
+            </p>
+
+            <div class="formula">
+                -2x + 6 = 0
+                <br>
+                x = 3
+            </div>
+
+            <p>
+                Since:
+            </p>
+
+            <div class="formula">
+                f''(x) = -2
+            </div>
+
+            <p>
+                The point is a maximum.
+            </p>
+
+            <div class="formula">
+                f(3) = -(3²) + 6(3) + 2
+                <br>
+                = 11
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="word-problems">
+
+        <h2>15. Calculus Word Problems</h2>
+
+        <p>
+            Calculus becomes especially useful when a question
+            describes a real-world quantity changing with time,
+            distance, volume, cost, area or another variable.
+        </p>
+
+        <h3>Rate-of-Change Problem</h3>
+
+        <div class="example">
+
+            <strong>Problem:</strong>
+
+            <p>
+                The distance travelled by a particle is given by:
+            </p>
+
+            <div class="formula">
+                s(t) = t³ - 6t² + 9t
+            </div>
+
+            <p>
+                Find its velocity.
+            </p>
+
+            <div class="formula">
+                v(t) = ds/dt
+            </div>
+
+            <div class="formula">
+                v(t)
+                =
+                3t² - 12t + 9
+            </div>
+
+            <p>
+                Therefore, the velocity at any time t can be found
+                by substituting the required value of t.
+            </p>
+
+        </div>
+
+        <h3>Optimization Problem</h3>
+
+        <div class="example">
+
+            <strong>Problem:</strong>
+
+            <p>
+                A rectangle has perimeter 40 cm. Find the dimensions
+                that give the maximum possible area.
+            </p>
+
+            <p>
+                Let the length be x and the width be y.
+            </p>
+
+            <div class="formula">
+                2x + 2y = 40
+            </div>
+
+            <div class="formula">
+                y = 20 - x
+            </div>
+
+            <p>
+                Area:
+            </p>
+
+            <div class="formula">
+                A = xy
+            </div>
+
+            <div class="formula">
+                A = x(20 - x)
+                <br>
+                A = 20x - x²
+            </div>
+
+            <p>
+                Differentiate:
+            </p>
+
+            <div class="formula">
+                dA/dx = 20 - 2x
+            </div>
+
+            <p>
+                At the maximum:
+            </p>
+
+            <div class="formula">
+                20 - 2x = 0
+                <br>
+                x = 10
+            </div>
+
+            <div class="formula">
+                y = 20 - 10
+                <br>
+                y = 10
+            </div>
+
+            <p>
+                Therefore, the maximum-area rectangle is a square
+                measuring 10 cm by 10 cm.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="integration">
+
+        <h2>16. Introduction to Integration</h2>
+
+        <p>
+            Integration is closely related to differentiation.
+            While differentiation measures instantaneous change,
+            integration can be used to find accumulated change.
+        </p>
+
+        <p>
+            Integration is also used to find areas under curves.
+        </p>
+
+        <div class="formula">
+            ∫ f(x) dx
+        </div>
+
+        <h3>Basic Integration Rule</h3>
+
+        <div class="formula">
+            ∫ xⁿ dx
+            =
+            xⁿ⁺¹/(n + 1) + C
+            , n ≠ -1
+        </div>
+
+        <p>
+            C represents the constant of integration.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Integrate:</strong>
+
+            <div class="formula">
+                ∫ x³ dx
+            </div>
+
+            <div class="formula">
+                = x⁴/4 + C
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="integral-rules">
+
+        <h2>17. Integration Rules</h2>
+
+        <h3>Constant</h3>
+
+        <div class="formula">
+            ∫ c dx = cx + C
+        </div>
+
+        <h3>Constant Multiple</h3>
+
+        <div class="formula">
+            ∫ cf(x) dx
+            =
+            c∫f(x)dx
+        </div>
+
+        <h3>Sum and Difference</h3>
+
+        <div class="formula">
+            ∫[f(x) ± g(x)]dx
+            =
+            ∫f(x)dx ± ∫g(x)dx
+        </div>
+
+        <h3>Exponential</h3>
+
+        <div class="formula">
+            ∫eˣ dx = eˣ + C
+        </div>
+
+        <h3>Logarithmic Form</h3>
+
+        <div class="formula">
+            ∫(1/x)dx = ln|x| + C
+        </div>
+
+        <h3>Trigonometric Integrals</h3>
+
+        <div class="formula">
+            ∫sin x dx = -cos x + C
+            <br><br>
+            ∫cos x dx = sin x + C
+            <br><br>
+            ∫sec²x dx = tan x + C
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Integrate:</strong>
+
+            <div class="formula">
+                ∫(6x² - 4x + 3)dx
+            </div>
+
+            <div class="formula">
+                = 2x³ - 2x² + 3x + C
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="definite">
+
+        <h2>18. Definite Integrals</h2>
+
+        <p>
+            A definite integral has limits and produces a numerical
+            result rather than an arbitrary constant.
+        </p>
+
+        <div class="formula">
+            ∫ₐᵇ f(x) dx
+        </div>
+
+        <p>
+            To evaluate it, first find an antiderivative and then
+            substitute the upper and lower limits.
+        </p>
+
+        <div class="formula">
+            ∫ₐᵇ f(x)dx = F(b) - F(a)
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Evaluate:</strong>
+
+            <div class="formula">
+                ∫₀² x² dx
+            </div>
+
+            <p>
+                First integrate:
+            </p>
+
+            <div class="formula">
+                ∫x²dx = x³/3
+            </div>
+
+            <p>
+                Apply the limits:
+            </p>
+
+            <div class="formula">
+                [x³/3]₀²
+                <br>
+                = 8/3 - 0
+                <br>
+                = 8/3
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="topic-section" id="area">
+
+        <h2>19. Area Under a Curve</h2>
+
+        <p>
+            A definite integral can represent the signed area
+            between a curve and the x-axis.
+        </p>
+
+        <div class="formula">
+            Area = ∫ₐᵇ f(x) dx
+        </div>
+
+        <p>
+            When the function remains above the x-axis, the integral
+            directly gives the geometric area.
+        </p>
+
+        <h3>Area Between Two Curves</h3>
+
+        <p>
+            If one curve lies above another, the area between them is
+            found by integrating their difference.
+        </p>
+
+        <div class="formula">
+            Area
+            =
+            ∫ₐᵇ [upper function - lower function] dx
+        </div>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <strong>Find the area under:</strong>
+
+            <div class="formula">
+                y = x²
+            </div>
+
+            <p>
+                between x = 0 and x = 2.
+            </p>
+
+            <div class="formula">
+                Area
+                =
+                ∫₀² x² dx
+                <br>
+                = 8/3
+            </div>
+
+        </div>
+
+        <div class="ai-help">
+
+            <i class="fas fa-sparkles"></i>
+            <strong>Ask Insite AI</strong>
+
+            <p>
+                Calculus problems can require several steps. You can
+                send a difficult differentiation, integration,
+                rate-of-change or optimization problem to Insite AI
+                and ask for a step-by-step explanation.
+            </p>
+
+            <a href="{{ url_for('chat') }}" class="ai-button">
+                <i class="fas fa-comments"></i>
+                Ask Insite AI
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <div class="calculus-footer">
+
+        <i class="fas fa-sparkles"></i>
+
+        Keep practising. Calculus becomes much easier when you
+        understand what the derivative and integral actually mean,
+        rather than only memorising formulas.
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

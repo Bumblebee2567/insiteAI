@@ -1,0 +1,645 @@
+{% extends "base.html" %}
+
+{% block title %}
+Atomic Physics & Spectra | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-circle-radiation"></i>
+            Atomic Physics & Spectra
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering atomic structure history, Rutherford nuclear scattering, 
+            the Bohr model of hydrogen, quantized energy levels, spectral emission series, and characteristic X-ray production.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#rutherford">Rutherford Model</a>
+        <a href="#bohr">Bohr Model</a>
+        <a href="#spectra">Hydrogen Spectra</a>
+        <a href="#xrays">X-Ray Production</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Atomic Structure</h2>
+        </div>
+        <p>
+            Atomic physics investigates the internal structure of atoms, the interactions between atomic nuclei and orbiting electrons, 
+            and the emission and absorption of electromagnetic radiation by atomic systems. 
+            Understanding atomic spectra provided the crucial empirical foundation that led to the development of modern quantum mechanics.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Atoms are not indivisible elementary particles; they consist of a dense, positively charged nucleus surrounded by negatively charged electrons occupying quantized energy states.
+        </div>
+    </section>
+
+    <!-- 02 RUTHERFORD MODEL -->
+    <section class="phys-section" id="rutherford">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>Rutherford's Nuclear Model</h2>
+        </div>
+        <p>
+            In 1911, Ernest Rutherford, along with Hans Geiger and Ernest Marsden, performed the historic gold foil scattering experiment. 
+            By firing alpha particles (helium nuclei) at extremely thin gold foil, they observed that while most alpha particles passed straight through, 
+            a tiny fraction were deflected at very large angles, and some bounced almost straight back.
+        </p>
+        <ul>
+            <li><strong>The Nuclear Atom Conclusion:</strong> Rutherford concluded that an atom's positive charge and nearly all its mass 
+            are concentrated in a microscopic central region called the <strong>nucleus</strong>, while electrons orbit at a vast distance in empty space.</li>
+            <li><strong>Classical Physics Failure:</strong> Classical electrodynamics predicted that orbiting electrons (accelerating charges) would continuously radiate electromagnetic waves, 
+            spiral inward, and collapse into the nucleus within a fraction of a nanosecond, proving that classical mechanics could not explain stable atoms.</li>
+        </ul>
+    </section>
+
+    <!-- 03 BOHR MODEL -->
+    <section class="phys-section" id="bohr">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>The Bohr Model of Hydrogen</h2>
+        </div>
+        <p>
+            In 1913, Niels Bohr successfully resolved the atomic collapse problem by combining classical mechanics with Planck's quantum hypothesis, 
+            proposing a semi-quantum model specifically for single-electron hydrogen atoms.
+        </p>
+        <ul>
+            <li><strong>Bohr's Postulate of Quantized Angular Momentum:</strong> Electrons can only orbit the nucleus in specific non-radiating circular orbits 
+            where their orbital angular momentum is an integer multiple of reduced Planck's constant (hbar = h / (2 * pi)):
+                <br><strong>Angular Momentum = Principal Quantum Number &times; Reduced Planck's Constant</strong> (L = m<sub>e</sub> * v * r = n * hbar, where n = 1, 2, 3, ...).</li>
+            <li><strong>Quantized Energy Levels of Hydrogen:</strong> 
+                <br><strong>Energy Level n = - (13.6 Electron-Volts) / (Principal Quantum Number squared)</strong> (E<sub>n</sub> = -13.6 eV / n<sup>2</sup>).</li>
+            <li><strong>Photon Emission/Absorption:</strong> When an electron drops from a higher energy level (n<sub>high</sub>) to a lower level (n<sub>low</sub>), 
+            it emits a single photon whose energy equals the energy difference between the states: 
+            <strong>Photon Energy = Energy High - Energy Low = Planck's Constant &times; Frequency</strong> (E = E<sub>high</sub> - E<sub>low</sub> = h * f).</li>
+        </ul>
+    </section>
+
+    <!-- 04 HYDROGEN SPECTRA -->
+    <section class="phys-section" id="spectra">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Hydrogen Emission Spectra & Spectral Series</h2>
+        </div>
+        <p>
+            Excited hydrogen atoms emit light at specific discrete wavelengths known as spectral lines. 
+            These lines are organized into distinct mathematical series depending on the lower energy level (n<sub>f</sub>) to which electrons transition.
+        </p>
+
+        <div class="phys-table-wrapper">
+            <table class="phys-table">
+                <thead>
+                    <tr>
+                        <th>Spectral Series</th>
+                        <th>Lower Energy Level (n<sub>f</sub>)</th>
+                        <th>Upper Energy Level Transitions (n<sub>i</sub>)</th>
+                        <th>Electromagnetic Spectrum Region</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lyman Series</strong></td>
+                        <td>n<sub>f</sub> = 1</td>
+                        <td>n<sub>i</sub> = 2, 3, 4, ...</td>
+                        <td>Ultraviolet (UV)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Balmer Series</strong></td>
+                        <td>n<sub>f</sub> = 2</td>
+                        <td>n<sub>i</sub> = 3, 4, 5, ...</td>
+                        <td>Visible Light & Near-UV</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Paschen Series</strong></td>
+                        <td>n<sub>f</sub> = 3</td>
+                        <td>n<sub>i</sub> = 4, 5, 6, ...</td>
+                        <td>Infrared (IR)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brackett Series</strong></td>
+                        <td>n<sub>f</sub> = 4</td>
+                        <td>n<sub>i</sub> = 5, 6, 7, ...</td>
+                        <td>Infrared (IR)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="phys-info">
+            <strong>Rydberg Equation for Hydrogen Wavelengths:</strong><br>
+            <strong>1 / Wavelength = Rydberg Constant &times; ((1 / Final Level squared) - (1 / Initial Level squared))</strong><br>
+            (1 / lambda = R<sub>H</sub> &times; ((1 / n<sub>f</sub><sup>2</sup>) - (1 / n<sub>i</sub><sup>2</sup>))),<br>
+            where Rydberg constant R<sub>H</sub> &approx; 1.097 &times; 10<sup>7</sup> m<sup>-1</sup>.
+        </div>
+    </section>
+
+    <!-- 05 X-RAY PRODUCTION -->
+    <section class="phys-section" id="xrays">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>X-Ray Production & Characteristic X-Rays</h2>
+        </div>
+        <p>
+            X-rays are high-frequency, highly penetrating electromagnetic waves produced when high-speed, accelerated electrons strike a heavy metal target (such as tungsten) inside an evacuated X-ray tube.
+        </p>
+        <ul>
+            <li><strong>Bremsstrahlung (Braking Radiation):</strong> When high-speed electrons are rapidly decelerated by the electric fields of atomic nuclei in the target metal, 
+            their lost kinetic energy is converted into continuous-spectrum X-ray photons. 
+            The shortest wavelength produced (cutoff wavelength lambda<sub>min</sub>) corresponds to an electron losing 100 percent of its kinetic energy in a single collision:
+                <br><strong>Minimum Wavelength = (Planck's Constant &times; Speed of Light) / Accelerating Voltage</strong> (lambda<sub>min</sub> = (h * c) / (e * V)).</li>
+            <li><strong>Characteristic X-Rays:</strong> Produced when an incident high-speed electron knocks out an inner-shell electron (such as the K-shell) of a target atom, 
+            causing an outer-shell electron to drop down and fill the vacancy while emitting an X-ray photon of precise, discrete characteristic frequency.</li>
+        </ul>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Interactive Atomic Physics Test</h2>
+        </div>
+        <p>Test your conceptual understanding of Bohr orbits, hydrogen spectral series, and X-ray production.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Hydrogen Spectral Series Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Which spectral series of atomic hydrogen corresponds to electron transitions terminating at the ground state 
+                    (n<sub>f</sub> = 1), producing ultraviolet emissions?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">The Lyman Series</option>
+                    <option value="wrong1">The Balmer Series</option>
+                    <option value="wrong2">The Paschen Series</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Bohr Hydrogen Energy Level Transition):</strong>
+            <p>Calculate the energy (in electron-volts) and wavelength (in nanometers) of the photon emitted when an electron in a hydrogen atom 
+            makes a transition from the third excited state (n<sub>i</sub> = 4) to the ground state (n<sub>f</sub> = 1). 
+            (Use E<sub>n</sub> = -13.6 eV / n<sup>2</sup>, h * c = 1240 eV&middot;nm).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Calculate Initial and Final Energies:</strong><br>
+                - Ground state energy (n = 1): E<sub>1</sub> = -13.6 / (1)<sup>2</sup> = -13.6 eV.<br>
+                - Third excited state (n = 4): E<sub>4</sub> = -13.6 / (4)<sup>2</sup> = -13.6 / 16 = -0.85 eV.<br><br>
+                <strong>(b) Photon Energy (E<sub>photon</sub>):</strong><br>
+                - E<sub>photon</sub> = E<sub>4</sub> - E<sub>1</sub> = -0.85 eV - (-13.6 eV) = <strong>12.75 eV</strong>.<br><br>
+                <strong>(c) Photon Wavelength (lambda):</strong><br>
+                - Using hc = 1240 eV&middot;nm: lambda = (1240 eV&middot;nm) / (12.75 eV) &approx; <strong>97.3 nanometers</strong> (Lyman series UV photon).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Balmer Series Wavelength Calculation):</strong>
+            <p>Calculate the wavelength of the first line of the Balmer series in hydrogen (transition from n<sub>i</sub> = 3 to n<sub>f</sub> = 2). 
+            (Use Rydberg constant R<sub>H</sub> = 1.097 &times; 10<sup>7</sup> m<sup>-1</sup>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Rydberg formula: (1 / lambda) = R<sub>H</sub> * ((1 / n<sub>f</sub><sup>2</sup>) - (1 / n<sub>i</sub><sup>2</sup>)).<br>
+                - Substitute n<sub>f</sub> = 2 and n<sub>i</sub> = 3:<br>
+                (1 / lambda) = (1.097 &times; 10<sup>7</sup> m<sup>-1</sup>) &times; ((1 / 2<sup>2</sup>) - (1 / 3<sup>2</sup>)) = (1.097 &times; 10<sup>7</sup>) &times; ((1 / 4) - (1 / 9)).<br>
+                - (1 / 4) - (1 / 9) = 0.250 - 0.1111 = 0.1389.<br>
+                - (1 / lambda) = (1.097 &times; 10<sup>7</sup>) &times; 0.1389 = 1.5238 &times; 10<sup>6</sup> m<sup>-1</sup>.<br>
+                - Invert to find wavelength: lambda = 1 / (1.5238 &times; 10<sup>6</sup> m<sup>-1</sup>) = 6.562 &times; 10<sup>-7</sup> meters = <strong>656 nanometers</strong> (H-alpha red visible line).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Minimum X-Ray Wavelength):</span></strong>
+            <p>An X-ray tube operates at an accelerating voltage of V = 50.0 kV (50,000 Volts). 
+            Calculate the minimum cutoff wavelength (lambda<sub>min</sub>) of the X-rays produced. 
+            (Given h = 6.626 &times; 10<sup>-34</sup> J&middot;s, c = 3.00 &times; 10<sup>8</sup> m/s, e = 1.602 &times; 10<sup>-19</sup> C).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: lambda<sub>min</sub> = (h * c) / (e * V).<br>
+                - Numerator (h * c): (6.626 &times; 10<sup>-34</sup>) &times; (3.00 &times; 10<sup>8</sup>) = 1.9878 &times; 10<sup>-25</sup> J&middot;m.<br>
+                - Denominator (e * V): (1.602 &times; 10<sup>-19</sup> C) &times; (50,000 V) = 8.01 &times; 10<sup>-15</sup> Joules.<br>
+                - Division: lambda<sub>min</sub> = (1.9878 &times; 10<sup>-25</sup>) / (8.01 &times; 10<sup>-15</sup>) = 2.482 &times; 10<sup>-11</sup> meters = <strong>0.0248 nanometers</strong> (0.248 Angstroms).
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with atomic spectra or quantum transitions?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down multi-electron atom quantum numbers, Pauli exclusion principle, or laser stimulated emission processes.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>The Lyman series corresponds to electron transitions terminating at the ground state (n<sub>f</sub> = 1) of hydrogen, releasing high-energy photons in the ultraviolet region of the electromagnetic spectrum.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Transitions terminating at the ground state (n<sub>f</sub> = 1) define the <strong>Lyman Series</strong>, which produces ultraviolet emissions. (The Balmer series terminates at n<sub>f</sub> = 2).</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

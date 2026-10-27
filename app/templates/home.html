@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}
+Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+body{
+    background:#0f172a;
+    color:white;
+}
+
+.hero{
+    min-height:85vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px 20px;
+}
+
+.hero h1{
+    font-size:3.5rem;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.hero h1 span{
+    color:#3b82f6;
+}
+
+.hero p{
+    color:#cbd5e1;
+    max-width:700px;
+    margin:auto;
+    font-size:1.2rem;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    margin-top:35px;
+}
+
+.hero-buttons .btn{
+    padding:14px 35px;
+    border-radius:15px;
+    font-weight:600;
+    margin:10px;
+}
+
+.btn-chat{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-chat:hover{
+    background:#1d4ed8;
+}
+
+.btn-learn{
+    border:2px solid #3b82f6;
+    color:white;
+}
+
+.btn-learn:hover{
+    background:#3b82f6;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+    font-weight:bold;
+}
+
+.feature-card{
+    background:#1e293b;
+    border-radius:18px;
+    padding:30px;
+    height:100%;
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 35px rgba(59,130,246,.25);
+}
+
+.feature-card i{
+    font-size:45px;
+    color:#3b82f6;
+    margin-bottom:20px;
+}
+
+.feature-card h4{
+    margin-bottom:15px;
+}
+
+.feature-card p{
+    color:#cbd5e1;
+}
+
+.why{
+    margin-top:100px;
+}
+
+.why ul{
+    list-style:none;
+    padding:0;
+}
+
+.why li{
+    margin:18px 0;
+    font-size:18px;
+}
+
+.why i{
+    color:#22c55e;
+    margin-right:10px;
+}
+
+.cta{
+    text-align:center;
+    margin:100px 0;
+}
+
+.cta h2{
+    margin-bottom:20px;
+}
+
+.footer{
+    text-align:center;
+    color:#94a3b8;
+    padding:40px;
+    border-top:1px solid #334155;
+}
+
+#img{
+    border-radius: 60px;
+}
+@media(max-width:768px){
+
+.hero h1{
+    font-size:2.4rem;
+}
+
+.hero p{
+    font-size:1rem;
+}
+
+}
+</style>
+
+
+<section class="hero">
+    
+<div>
+<img src="{{ url_for('static', filename='logo.png') }}" id="img"/><br/>
+<h1>
+Welcome to <span>Insite AI</span>
+</h1>
+
+<p>
+
+Your intelligent study companion for Mathematics,
+Physics, coding, document analysis, handwritten notes,
+and image understanding.
+
+</p>
+
+<div class="hero-buttons">
+
+<a href="{{ url_for('chat') }}" class="btn btn-chat">
+
+<i class="fa-solid fa-comments"></i>
+
+Start Chat
+
+</a>
+
+<a href="{{ url_for('more_page') }}" class="btn btn-learn">
+
+Learn More
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<div class="container">
+
+<h2 class="section-title">
+
+Powerful AI Tools
+
+</h2>
+
+<div class="row g-4">
+
+<div class="col-lg-3 col-md-6">
+
+<div class="feature-card">
+
+<i class="fa-solid fa-comments"></i>
+
+<h4>AI Chat</h4>
+
+<p>
+
+Ask questions naturally and receive accurate,
+step-by-step explanations.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="feature-card">
+
+<i class="fa-solid fa-file-pdf"></i>
+
+<h4>PDF Assistant</h4>
+
+<p>
+
+Upload lecture notes or textbooks and ask
+questions instantly.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="feature-card">
+
+<i class="fa-solid fa-image"></i>
+
+<h4>Image Solver</h4>
+
+<p>
+
+Analyze handwritten mathematics and physics
+questions using AI.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="feature-card">
+
+<i class="fa-solid fa-clock-rotate-left"></i>
+
+<h4>Chat History</h4>
+
+<p>
+
+Continue previous conversations anytime without
+losing context.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="container why">
+
+<div class="row align-items-center">
+
+<div class="col-lg-6">
+
+<h2>
+
+Why Choose Insite AI?
+
+</h2>
+
+<ul>
+
+<li><i class="fa-solid fa-circle-check"></i>Step-by-step mathematical solutions</li>
+
+<li><i class="fa-solid fa-circle-check"></i>Advanced physics explanations</li>
+
+<li><i class="fa-solid fa-circle-check"></i>Image and handwriting recognition</li>
+
+<li><i class="fa-solid fa-circle-check"></i>Personal chat history</li>
+
+<li><i class="fa-solid fa-circle-check"></i>Fast AI responses</li>
+
+<li><i class="fa-solid fa-circle-check"></i>Modern and intuitive interface</li>
+
+</ul>
+
+</div>
+
+<div class="col-lg-6 text-center">
+
+<i class="fa-solid fa-brain"
+style="font-size:220px;color:#2563eb;"></i>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="cta">
+
+<h2>
+
+Ready to Study Smarter?
+
+</h2>
+
+<p class="text-secondary">
+
+Join thousands of learners using AI to improve
+their understanding.
+
+</p>
+
+<a href="{{ url_for('study_page') }}"
+class="btn btn-primary btn-lg">
+
+Start Learning
+
+</a>
+
+</div>
+
+
+<div class="footer">
+
+<p>
+
+© 2026 Insite AI • Built with Flask & Gemini AI
+
+</p>
+
+</div>
+
+{% endblock %}

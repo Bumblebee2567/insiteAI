@@ -1,0 +1,658 @@
+{% extends "base.html" %}
+
+{% block title %}
+Organic Characterization | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --org-bg: #050a12;
+    --org-panel: #0a111d;
+    --org-border: rgba(100, 116, 139, .18);
+    --org-text: #f1f5f9;
+    --org-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --org-blue: #1677b8;
+    --org-blue-light: #2196d2;
+
+    --org-green: #34d399;
+    --org-red: #ef4444;
+}
+
+.org-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--org-text);
+}
+
+/* BACK BUTTON */
+
+.org-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--org-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.org-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.org-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.org-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.org-header h1 i {
+    color: var(--org-blue-light);
+    margin-right: 8px;
+}
+
+.org-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--org-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.org-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--org-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.org-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.org-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.org-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.org-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--org-panel);
+    border: 1px solid var(--org-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.org-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.org-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.org-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.org-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.org-section p,
+.org-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.org-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.org-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--org-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.org-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE */
+
+.org-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.org-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.org-table th,
+.org-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--org-border);
+}
+
+.org-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.org-table td {
+    color: #cbd5e1;
+}
+
+.org-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.colour-dot {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    border: 1px solid rgba(255,255,255,.25);
+}
+
+.dot-orange { background: #f97316; }
+.dot-colourless { background: #e2e8f0; }
+.dot-purple { background: #a855f7; }
+.dot-brown { background: #b45309; }
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--org-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* INTERACTIVE TEST */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--org-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--org-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--org-panel);
+    border: 1px solid var(--org-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--org-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--org-green); }
+.test-result.wrong { border-left-color: var(--org-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* QUESTIONS */
+
+.exam-question {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #081321;
+    border: 1px solid var(--org-border);
+    border-radius: 9px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+}
+
+.exam-answer {
+    margin-top: 7px;
+    color: #94a3b8;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--org-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .org-section { padding: 20px; }
+    .org-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="org-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="org-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+    <!-- HEADER -->
+    <header class="org-header">
+        <h1>
+            <i class="fa-solid fa-vials"></i>
+            Organic Characterization
+        </h1>
+        <p>
+            Distinguish between alkanes, alkenes, and terminal alkynes using halogenation 
+            and selective oxidizing agents.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="org-nav">
+        <a href="#aim">Aim</a>
+        <a href="#principle">Principle</a>
+        <a href="#tests">Key Tests</a>
+        <a href="#procedure">Procedure</a>
+        <a href="#summary">Summary Table</a>
+        <a href="#test">Identify</a>
+        <a href="#precautions">Precautions</a>
+        <a href="#questions">Questions</a>
+    </nav>
+
+    <!-- 01 AIM -->
+    <section class="org-section" id="aim">
+        <div class="org-section-header">
+            <div class="org-number">01</div>
+            <h2>Aim of the Experiment</h2>
+        </div>
+        <p>
+            To chemically differentiate between saturated hydrocarbons (alkanes), unsaturated 
+            hydrocarbons (alkenes), and terminal alkynes using characteristic functional group tests.
+        </p>
+        <div class="org-info">
+            <strong>Key idea:</strong><br>
+            Functional groups dictate chemical reactivity. While alkanes are generally unreactive due 
+            to strong single covalent sigma-bonds, alkenes and alkynes undergo rapid addition and oxidation reactions.
+        </div>
+    </section>
+
+    <!-- 02 PRINCIPLE -->
+    <section class="org-section" id="principle">
+        <div class="org-section-header">
+            <div class="org-number">02</div>
+            <h2>Principle of Characterization</h2>
+        </div>
+        <p>
+            Different classes of hydrocarbons react differently with specific chemical reagents:
+        </p>
+        <ul>
+            <li><strong>Alkanes:</strong> Contain only C-C and C-H single bonds. They do not react with bromine water in the dark and resist mild oxidizing agents.</li>
+            <li><strong>Alkenes:</strong> Contain a reactive C=C double bond (pi-bond). They rapidly decolorize bromine water via electrophilic addition.</li>
+            <li><strong>Terminal Alkynes:</strong> Contain a C&equiv;C triple bond with an acidic hydrogen atom at the end of the chain, allowing specific metal-ion complexation tests (e.g., Silver Nitrate or Tollens' reagent).</li>
+        </ul>
+    </section>
+
+    <!-- 03 TESTS -->
+    <section class="org-section" id="tests">
+        <div class="org-section-header">
+            <div class="org-number">03</div>
+            <h2>Key Reagents & Reactions</h2>
+        </div>
+
+        <h3>1. Bromine Water Test (Br<sub>2(aq)</sub>)</h3>
+        <p>
+            Bromine water is an orange-brown solution. When added to an <strong>alkene</strong>, the pi-bond attacks the bromine molecule, forming a colorless dibromoalkane addition product. Alkanes show no reaction unless exposed to UV light (free-radical substitution, which is very slow).
+        </p>
+
+        <h3>2. Potassium Permanganate Test (KMnO<sub>4(aq)</sub> / Baeyer's Reagent)</h3>
+        <p>
+            Cold, dilute alkaline potassium permanganate oxidizes alkenes to diols (glycols), turning the purple solution into a brown manganese dioxide (MnO<sub>2</sub>) precipitate or a clear solution. Alkanes do not react.
+        </p>
+
+        <h3>3. Terminal Alkyne Test (Silver Nitrate / Tollens' Reagent)</h3>
+        <p>
+            Terminal alkynes have a relatively acidic terminal proton (&equiv;C-H). When treated with ammoniacal silver nitrate, they form a white/off-white precipitate of silver acetylide. Internal alkynes do not react because they lack this acidic hydrogen.
+        </p>
+    </section>
+
+    <!-- 04 PROCEDURE -->
+    <section class="org-section" id="procedure">
+        <div class="org-section-header">
+            <div class="org-number">04</div>
+            <h2>Experimental Procedure</h2>
+        </div>
+        <ol class="step-list">
+            <li>Place 1 mL of each hydrocarbon sample (alkane, alkene, alkyne) into separate clean test tubes.</li>
+            <li>Add 2 to 3 drops of bromine water to each test tube and gently shake. Record color changes.</li>
+            <li>Repeat using a fresh set of samples with cold dilute potassium permanganate solution.</li>
+            <li>Perform the silver nitrate test specifically to identify terminal alkynes by checking for precipitate formation.</li>
+        </ol>
+    </section>
+
+    <!-- 05 SUMMARY TABLE -->
+    <section class="org-section" id="summary">
+        <div class="org-section-header">
+            <div class="org-number">05</div>
+            <h2>Summary of Observations</h2>
+        </div>
+
+        <div class="org-table-wrapper">
+            <table class="org-table">
+                <thead>
+                    <tr>
+                        <th>Hydrocarbon Type</th>
+                        <th>Example</th>
+                        <th>Bromine Water (Br<sub>2</sub>)</th>
+                        <th>Cold KMnO<sub>4</sub></th>
+                        <th>Silver Nitrate (AgNO<sub>3</sub>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Alkane</strong></td>
+                        <td>Hexane</td>
+                        <td><span class="colour-dot dot-orange"></span>No reaction (Stays orange)</td>
+                        <td><span class="colour-dot dot-purple"></span>No reaction (Stays purple)</td>
+                        <td>No reaction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alkene</strong></td>
+                        <td>Cyclohexene</td>
+                        <td><span class="colour-dot dot-colourless"></span>Decolorized (Turns colorless)</td>
+                        <td><span class="colour-dot dot-brown"></span>Purple to brown ppt</td>
+                        <td>No reaction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Terminal Alkyne</strong></td>
+                        <td>1-Hexyne</td>
+                        <td><span class="colour-dot dot-colourless"></span>Decolorized</td>
+                        <td><span class="colour-dot dot-brown"></span>Purple to brown ppt</td>
+                        <td><span class="colour-dot dot-colourless"></span>White precipitate formed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="org-section" id="test">
+        <div class="org-section-header">
+            <div class="org-number">06</div>
+            <h2>Interactive Characterization Test</h2>
+        </div>
+        <p>Test your knowledge on identifying unknown organic compounds.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Identify the Compound</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    An unknown hydrocarbon instantly <strong>decolorizes bromine water</strong> in the dark, 
+                    but gives <strong>no precipitate</strong> with ammoniacal silver nitrate. What is it most likely?
+                </div>
+
+                <select class="test-select" id="orgAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="alkane">Alkane (e.g., Hexane)</option>
+                    <option value="alkene">Alkene (e.g., Cyclohexene)</option>
+                    <option value="alkyne">Terminal Alkyne (e.g., 1-Hexyne)</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkOrg">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="orgResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 PRECAUTIONS -->
+    <section class="org-section" id="precautions">
+        <div class="org-section-header">
+            <div class="org-number">07</div>
+            <h2>Precautions & Safety</h2>
+        </div>
+        <ul>
+            <li>Handle liquid hydrocarbons in a well-ventilated fume hood as they are volatile and flammable.</li>
+            <li>Bromine water is toxic and causes skin irritation; wear gloves and safety goggles.</li>
+            <li>Dispose of silver residues properly to prevent explosive silver fulminate formation.</li>
+        </ul>
+    </section>
+
+    <!-- 08 QUESTIONS -->
+    <section class="org-section" id="questions">
+        <div class="org-section-header">
+            <div class="org-number">08</div>
+            <h2>Common Practical Questions</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>1. Why do alkenes react with bromine water while alkanes do not?</strong>
+            <div class="exam-answer">Alkenes possess a reactive carbon-carbon double bond (pi-bond) that undergoes electrophilic addition, whereas alkanes only have stable sigma-bonds.</div>
+        </div>
+
+        <div class="exam-question">
+            <strong>2. How can you distinguish between an alkene and a terminal alkyne?</strong>
+            <div class="exam-answer">Terminal alkynes react with ammoniacal silver nitrate to form a white precipitate due to their acidic terminal proton, whereas alkenes do not react with silver nitrate.</div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--org-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need help with organic chemistry tests?</h3>
+        <p style="color:var(--org-muted); margin:0;">
+            Ask Insite AI to explain mechanisms, functional group tests, or chemical observations.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const orgAnswer = document.getElementById("orgAnswer");
+const checkOrg = document.getElementById("checkOrg");
+const orgResult = document.getElementById("orgResult");
+
+checkOrg.addEventListener("click", function () {
+    const val = orgAnswer.value;
+    orgResult.style.display = "block";
+
+    if (val === "alkene") {
+        orgResult.className = "test-result correct";
+        orgResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Alkenes instantly decolorize bromine water via addition, but lack acidic terminal protons so they do not react with silver nitrate.</div>
+        `;
+    } else if (val === "") {
+        orgResult.className = "test-result wrong";
+        orgResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the hydrocarbon types.</div>
+        `;
+    } else {
+        orgResult.className = "test-result wrong";
+        orgResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Alkanes wouldn't decolorize bromine water, and terminal alkynes would react with silver nitrate. The correct answer is an <strong>Alkene</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

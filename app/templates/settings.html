@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}
+Account Settings | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --settings-bg: #050a12;
+    --settings-panel: #0a111d;
+    --settings-border: rgba(100, 116, 139, .18);
+    --settings-text: #f1f5f9;
+    --settings-muted: #94a3b8;
+    --settings-soft: #cbd5e1;
+    --settings-blue-light: #2196d2;
+}
+
+.settings-page {
+    width: min(1000px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--settings-text);
+}
+
+.settings-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--settings-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.settings-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.settings-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.settings-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.settings-header h1 i {
+    color: var(--settings-blue-light);
+    margin-right: 8px;
+}
+
+.settings-header p {
+    max-width: 750px;
+    margin: 12px auto 0;
+    color: var(--settings-muted);
+}
+
+.settings-card {
+    margin-bottom: 25px;
+    padding: 30px;
+    background: var(--settings-panel);
+    border: 1px solid var(--settings-border);
+    border-radius: 15px;
+}
+
+.settings-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--settings-border);
+    padding-bottom: 15px;
+}
+
+.settings-card-header i {
+    color: var(--settings-blue-light);
+    font-size: 24px;
+}
+
+.settings-card-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #f8fafc;
+}
+
+.settings-form-group {
+    margin-bottom: 20px;
+}
+
+.settings-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--settings-soft);
+    font-weight: 600;
+    font-size: .95rem;
+}
+
+.settings-textarea, .settings-input {
+    width: 100%;
+    background: #070e18;
+    border: 1px solid var(--settings-border);
+    border-radius: 9px;
+    color: white;
+    padding: 12px 15px;
+    font-size: .95rem;
+}
+
+.settings-textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.settings-textarea:focus, .settings-input:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.settings-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.settings-btn:hover {
+    background: #1677b8;
+}
+
+.settings-btn-danger {
+    background: #b91c1c;
+}
+
+.settings-btn-danger:hover {
+    background: #dc2626;
+}
+
+.settings-toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--settings-border);
+}
+
+.settings-toggle-row:last-child {
+    border-bottom: none;
+}
+
+.settings-toggle-info h4 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    color: white;
+}
+
+.settings-toggle-info p {
+    margin: 0;
+    color: var(--settings-muted);
+    font-size: .88rem;
+}
+
+.form-check-input {
+    background-color: #070e18;
+    border-color: var(--settings-border);
+    width: 3em;
+    height: 1.5em;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--settings-blue-light);
+    border-color: var(--settings-blue-light);
+}
+</style>
+
+<div class="settings-page">
+
+    <a href="{{ url_for('profile_page') }}" class="settings-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Profile
+    </a>
+
+    <header class="settings-header">
+        <h1>
+            <i class="fa-solid fa-sliders"></i>
+            Account Settings & AI Preferences
+        </h1>
+        <p>Customize your AI interaction behavior, configure application permissions, manage data activity, and securely delete your account.</p>
+    </header>
+
+    <!-- 01 CUSTOM AI INSTRUCTIONS -->
+    <section class="settings-card">
+        <div class="settings-card-header">
+            <i class="fa-solid fa-robot"></i>
+            <h3>Custom AI Instructions & Prompt Behavior</h3>
+        </div>
+        <p class="text-muted mb-3">
+            Add personal instructions or formatting preferences to guide Insite AI during your chat sessions. 
+            <em>Note: Core system safety and operational guidelines will always override custom user instructions.</em>
+        </p>
+        
+        <form action="{{ url_for('update_ai_preferences') }}" method="POST">
+            <div class="settings-form-group">
+                <label class="settings-form-label" for="customPrompt">Additional AI Prompt Instructions</label>
+                <textarea id="customPrompt" name="custom_prompt" class="settings-textarea" placeholder="e.g., Always explain chemistry reactions with step-by-step molecular breakdowns...">{{ current_user.custom_prompt if current_user.custom_prompt else '' }}</textarea>
+            </div>
+            <button type="submit" class="settings-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Save AI Preferences
+            </button>
+        </form>
+    </section>
+
+    <!-- 02 APPLICATION PREFERENCES -->
+    <section class="settings-card">
+        <div class="settings-card-header">
+            <i class="fa-solid fa-gear"></i>
+            <h3>Application Preferences</h3>
+        </div>
+        
+        <form action="{{ url_for('update_app_preferences') }}" method="POST">
+            <div class="settings-toggle-row">
+                <div class="settings-toggle-info">
+                    <h4>Stream AI Responses</h4>
+                    <p>Enable real-time streaming word-by-word animation when chatting with Insite AI.</p>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="stream_ai" id="streamToggle" {% if current_user.stream_ai %}checked{% endif %}>
+                </div>
+            </div>
+
+            <div class="settings-toggle-row">
+                <div class="settings-toggle-info">
+                    <h4>Code Syntax Highlighting</h4>
+                    <p>Automatically format and highlight code blocks generated in chat and study hubs.</p>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="code_highlight" id="codeToggle" {% if current_user.code_highlight %}checked{% endif %}>
+                </div>
+            </div>
+
+            <div class="settings-toggle-row">
+                <div class="settings-toggle-info">
+                    <h4>Email Study Reminders</h4>
+                    <p>Receive periodic learning tips and JAMB/WAEC practice alerts via email.</p>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="email_reminders" id="emailToggle" {% if current_user.email_reminders %}checked{% endif %}>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="settings-btn">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Toggles
+                </button>
+            </div>
+        </form>
+    </section>
+
+
+    <!-- 04 PERMANENT ACCOUNT DELETION -->
+    <section class="settings-card">
+        <div class="settings-card-header">
+            <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+            <h3 class="text-danger">Delete Account Permanently</h3>
+        </div>
+        <p class="text-muted mb-3">Once you delete your account, all chat history, profile credentials, and saved progress will be erased permanently.</p>
+        
+        <form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('WARNING: Are you absolutely sure? All data will be lost.');">
+            <div class="settings-form-group">
+                <label class="settings-form-label" for="confirmDelete">Type your username (<strong>{{ current_user.username }}</strong>) to confirm:</label>
+                <input type="text" id="confirmDelete" class="settings-input mb-3" placeholder="Enter your username" required>
+            </div>
+            <button type="submit" class="settings-btn settings-btn-danger">
+                <i class="fa-solid fa-user-xmark"></i> Permanently Delete Account
+            </button>
+        </form>
+    </section>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,1664 @@
+{% extends "base.html" %}
+
+{% block title %}
+Distillation Columns | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --dist-panel: #0a111d;
+    --dist-border: rgba(100, 116, 139, .18);
+    --dist-text: #f1f5f9;
+    --dist-muted: #94a3b8;
+    --dist-blue: #1677b8;
+    --dist-blue-light: #2196d2;
+    --dist-green: #34d399;
+    --dist-red: #ef4444;
+}
+
+.distillation-page {
+    min-height: 100vh;
+    background: var(--dist-bg);
+    color: var(--dist-text);
+    padding: 28px 0 60px;
+}
+
+.distillation-container {
+    width: min(1150px, calc(100% - 28px));
+    margin: 0 auto;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--dist-muted);
+    background: var(--dist-panel);
+
+    border: 1px solid var(--dist-border);
+    border-radius: 9px;
+
+    padding: 9px 14px;
+
+    text-decoration: none;
+    font-size: 14px;
+
+    margin-bottom: 24px;
+
+    transition: .2s ease;
+}
+
+.back-btn:hover {
+    color: var(--dist-text);
+    background: rgba(33, 150, 210, .08);
+    border-color: rgba(33, 150, 210, .35);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.distillation-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.distillation-header h1 {
+    margin: 0;
+
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+
+    color: var(--dist-text);
+}
+
+.distillation-header h1 span {
+    color: var(--dist-blue-light);
+}
+
+.distillation-header p {
+    max-width: 760px;
+
+    margin: 12px auto 0;
+
+    color: var(--dist-muted);
+
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.distillation-nav {
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 10px;
+    margin-bottom: 28px;
+
+    background: rgba(10, 17, 29, .94);
+
+    border: 1px solid var(--dist-border);
+    border-radius: 12px;
+
+    backdrop-filter: blur(12px);
+}
+
+.distillation-nav a {
+    color: var(--dist-muted);
+
+    text-decoration: none;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    transition: .2s ease;
+}
+
+.distillation-nav a:hover {
+    color: var(--dist-text);
+    background: rgba(33, 150, 210, .10);
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+.dist-section {
+    background: var(--dist-panel);
+
+    border: 1px solid var(--dist-border);
+    border-radius: 14px;
+
+    padding: 24px;
+    margin-bottom: 18px;
+}
+
+.dist-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0 0 16px;
+
+    font-size: 21px;
+    color: var(--dist-text);
+}
+
+.dist-number {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+
+    background: rgba(22, 119, 184, .15);
+
+    color: var(--dist-blue-light);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+.dist-section p {
+    color: var(--dist-muted);
+
+    line-height: 1.75;
+
+    margin: 0 0 12px;
+}
+
+.dist-section p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   INFO BOX
+========================= */
+
+.info-box {
+    padding: 15px 16px;
+
+    border-radius: 10px;
+
+    background: rgba(33, 150, 210, .07);
+
+    border: 1px solid rgba(33, 150, 210, .18);
+
+    color: var(--dist-muted);
+
+    line-height: 1.7;
+
+    margin-top: 14px;
+}
+
+.info-box strong {
+    color: var(--dist-blue-light);
+}
+
+
+/* =========================
+   LISTS
+========================= */
+
+.dist-list {
+    margin: 0;
+
+    padding-left: 20px;
+
+    color: var(--dist-muted);
+}
+
+.dist-list li {
+    margin-bottom: 9px;
+
+    line-height: 1.65;
+}
+
+.dist-list li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   APPARATUS CARDS
+========================= */
+
+.apparatus-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 16px;
+}
+
+.apparatus-card {
+    padding: 16px;
+
+    border: 1px solid var(--dist-border);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, .015);
+}
+
+.apparatus-card h3 {
+    margin: 0 0 7px;
+
+    font-size: 15px;
+
+    color: var(--dist-blue-light);
+}
+
+.apparatus-card p {
+    font-size: 14px;
+
+    margin: 0;
+}
+
+
+/* =========================
+   METHOD CARDS
+========================= */
+
+.method-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-top: 16px;
+}
+
+.method-card {
+    border: 1px solid var(--dist-border);
+    border-radius: 12px;
+
+    padding: 18px;
+
+    background: rgba(255, 255, 255, .015);
+}
+
+.method-card h3 {
+    margin: 0 0 10px;
+
+    color: var(--dist-blue-light);
+
+    font-size: 17px;
+}
+
+.method-card p {
+    font-size: 14px;
+}
+
+.method-card ul {
+    margin: 10px 0 0;
+}
+
+
+/* =========================
+   COMPARISON TABLE
+========================= */
+
+.table-wrap {
+    overflow-x: auto;
+
+    margin-top: 15px;
+}
+
+.dist-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 620px;
+}
+
+.dist-table th,
+.dist-table td {
+    padding: 13px 14px;
+
+    border: 1px solid var(--dist-border);
+
+    text-align: left;
+
+    font-size: 14px;
+}
+
+.dist-table th {
+    color: var(--dist-blue-light);
+
+    background: rgba(33, 150, 210, .07);
+
+    font-weight: 600;
+}
+
+.dist-table td {
+    color: var(--dist-muted);
+}
+
+
+/* =========================
+   PROCEDURE
+========================= */
+
+.steps {
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.step {
+    display: flex;
+
+    gap: 13px;
+
+    padding: 14px;
+
+    border: 1px solid var(--dist-border);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, .015);
+}
+
+.step-number {
+    flex: 0 0 28px;
+
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: rgba(22, 119, 184, .15);
+
+    color: var(--dist-blue-light);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.step p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   INTERACTIVE QUESTION
+========================= */
+
+.quiz-box {
+    margin-top: 16px;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--dist-border);
+
+    background: rgba(255, 255, 255, .015);
+}
+
+.quiz-question {
+    margin: 0 0 16px;
+
+    color: var(--dist-text);
+
+    font-weight: 600;
+
+    line-height: 1.6;
+}
+
+.quiz-options {
+    display: grid;
+
+    gap: 9px;
+}
+
+.quiz-option {
+    width: 100%;
+
+    text-align: left;
+
+    border: 1px solid var(--dist-border);
+
+    background: #0c1522;
+
+    color: var(--dist-muted);
+
+    padding: 12px 14px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.quiz-option:hover {
+    border-color: rgba(33, 150, 210, .45);
+
+    color: var(--dist-text);
+}
+
+.quiz-option.correct {
+    border-color: rgba(52, 211, 153, .55);
+
+    background: rgba(52, 211, 153, .08);
+
+    color: var(--dist-green);
+}
+
+.quiz-option.wrong {
+    border-color: rgba(239, 68, 68, .55);
+
+    background: rgba(239, 68, 68, .08);
+
+    color: #f87171;
+}
+
+.quiz-result {
+    display: none;
+
+    margin-top: 14px;
+
+    padding: 13px 14px;
+
+    border-radius: 9px;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+.quiz-result.show {
+    display: block;
+}
+
+.quiz-result.success {
+    color: var(--dist-green);
+
+    background: rgba(52, 211, 153, .07);
+
+    border: 1px solid rgba(52, 211, 153, .18);
+}
+
+.quiz-result.error {
+    color: #f87171;
+
+    background: rgba(239, 68, 68, .07);
+
+    border: 1px solid rgba(239, 68, 68, .18);
+}
+
+
+/* =========================
+   COMMON QUESTIONS
+========================= */
+
+.question-list {
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 14px;
+}
+
+.question-item {
+    padding: 14px 16px;
+
+    border: 1px solid var(--dist-border);
+    border-radius: 10px;
+
+    color: var(--dist-muted);
+
+    line-height: 1.65;
+
+    font-size: 14px;
+}
+
+.question-item strong {
+    color: var(--dist-text);
+}
+
+
+/* =========================
+   ASK INSITE AI
+========================= */
+
+.ask-insite {
+    text-align: center;
+
+    padding: 30px 24px;
+
+    margin-top: 22px;
+
+    border: 1px solid rgba(33, 150, 210, .2);
+
+    border-radius: 14px;
+
+    background: rgba(22, 119, 184, .06);
+}
+
+.ask-insite h2 {
+    margin: 0 0 9px;
+
+    color: var(--dist-text);
+
+    font-size: 21px;
+}
+
+.ask-insite p {
+    color: var(--dist-muted);
+
+    margin: 0 auto 18px;
+
+    max-width: 620px;
+
+    line-height: 1.7;
+}
+
+.ask-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: white;
+
+    background: #126da8;
+
+    transition: .2s ease;
+
+    font-size: 14px;
+}
+
+.ask-btn:hover {
+    background: var(--dist-blue);
+
+    color: white;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .distillation-page {
+        padding-top: 20px;
+    }
+
+    .distillation-container {
+        width: min(100% - 20px, 1150px);
+    }
+
+    .dist-section {
+        padding: 18px;
+    }
+
+    .apparatus-grid,
+    .method-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .distillation-nav {
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        flex-wrap: nowrap;
+    }
+
+    .distillation-nav a {
+        white-space: nowrap;
+    }
+
+    .distillation-header h1 {
+        font-size: 30px;
+    }
+
+    .back-btn {
+        margin-bottom: 20px;
+    }
+}
+</style>
+
+
+<div class="distillation-page">
+
+    <div class="distillation-container">
+
+
+        <!-- BACK -->
+
+        <a href="{{ url_for('chemistry_page') }}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Chemistry Practicals
+        </a>
+
+
+        <!-- HEADER -->
+
+        <header class="distillation-header">
+
+            <h1>
+                Distillation <span>Columns</span>
+            </h1>
+
+            <p>
+                Separate mixtures of volatile organic liquids based on
+                different boiling points using simple and fractional
+                distillation setups.
+            </p>
+
+        </header>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="distillation-nav">
+
+            <a href="#aim">Aim</a>
+
+            <a href="#principle">Principle</a>
+
+            <a href="#apparatus">Apparatus</a>
+
+            <a href="#simple">Simple</a>
+
+            <a href="#fractional">Fractional</a>
+
+            <a href="#comparison">Comparison</a>
+
+            <a href="#procedure">Procedure</a>
+
+            <a href="#quiz">Test</a>
+
+            <a href="#precautions">Precautions</a>
+
+            <a href="#questions">Questions</a>
+
+        </nav>
+
+
+        <!-- =========================
+             1. AIM
+        ========================== -->
+
+        <section class="dist-section" id="aim">
+
+            <h2>
+
+                <span class="dist-number">
+                    1
+                </span>
+
+                Aim of Experiment
+
+            </h2>
+
+            <p>
+                To separate mixtures of volatile liquids by exploiting
+                differences in their boiling points using simple or fractional
+                distillation.
+            </p>
+
+            <div class="info-box">
+
+                <strong>Key idea:</strong>
+
+                Distillation involves vaporising a liquid and then
+                condensing the vapour back into a liquid. Components with
+                different boiling points can therefore be separated.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             2. PRINCIPLE
+        ========================== -->
+
+        <section class="dist-section" id="principle">
+
+            <h2>
+
+                <span class="dist-number">
+                    2
+                </span>
+
+                Principle of Distillation
+
+            </h2>
+
+            <p>
+                When a liquid mixture is heated, the component with the lower
+                boiling point generally becomes richer in the vapour phase.
+                The vapour is passed into a condenser where it is cooled and
+                collected as a liquid.
+            </p>
+
+            <p>
+                The effectiveness of the separation depends on the difference
+                between the boiling points of the components and the type of
+                distillation used.
+            </p>
+
+            <div class="info-box">
+
+                <strong>Boiling point:</strong>
+
+                The temperature at which the vapour pressure of a liquid
+                equals the surrounding pressure.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             3. APPARATUS
+        ========================== -->
+
+        <section class="dist-section" id="apparatus">
+
+            <h2>
+
+                <span class="dist-number">
+                    3
+                </span>
+
+                Apparatus &amp; Materials
+
+            </h2>
+
+            <div class="apparatus-grid">
+
+
+                <div class="apparatus-card">
+
+                    <h3>
+                        Distillation Flask
+                    </h3>
+
+                    <p>
+                        Holds the liquid mixture being heated.
+                    </p>
+
+                </div>
+
+
+                <div class="apparatus-card">
+
+                    <h3>
+                        Thermometer
+                    </h3>
+
+                    <p>
+                        Measures the temperature of the vapour entering the
+                        condenser.
+                    </p>
+
+                </div>
+
+
+                <div class="apparatus-card">
+
+                    <h3>
+                        Fractionating Column
+                    </h3>
+
+                    <p>
+                        Used in fractional distillation to provide repeated
+                        vaporisation and condensation.
+                    </p>
+
+                </div>
+
+
+                <div class="apparatus-card">
+
+                    <h3>
+                        Condenser
+                    </h3>
+
+                    <p>
+                        Cools vapour and converts it back into liquid.
+                    </p>
+
+                </div>
+
+
+                <div class="apparatus-card">
+
+                    <h3>
+                        Receiving Flask
+                    </h3>
+
+                    <p>
+                        Collects the condensed distillate.
+                    </p>
+
+                </div>
+
+
+                <div class="apparatus-card">
+
+                    <h3>
+                        Heat Source
+                    </h3>
+
+                    <p>
+                        Provides controlled heating of the mixture.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             4. SIMPLE DISTILLATION
+        ========================== -->
+
+        <section class="dist-section" id="simple">
+
+            <h2>
+
+                <span class="dist-number">
+                    4
+                </span>
+
+                Simple Distillation
+
+            </h2>
+
+            <p>
+                Simple distillation is commonly used when separating a volatile
+                liquid from a non-volatile substance, or when the boiling
+                points of two liquids are sufficiently far apart.
+            </p>
+
+
+            <div class="method-grid">
+
+
+                <div class="method-card">
+
+                    <h3>
+                        When to Use It
+                    </h3>
+
+                    <ul class="dist-list">
+
+                        <li>
+                            Separating a liquid from dissolved non-volatile
+                            substances.
+                        </li>
+
+                        <li>
+                            Separating liquids with a relatively large
+                            boiling-point difference.
+                        </li>
+
+                        <li>
+                            Obtaining a purified volatile liquid.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="method-card">
+
+                    <h3>
+                        Main Features
+                    </h3>
+
+                    <ul class="dist-list">
+
+                        <li>
+                            No fractionating column is normally required.
+                        </li>
+
+                        <li>
+                            The vapour passes directly to the condenser.
+                        </li>
+
+                        <li>
+                            The distillate is collected after condensation.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>Example:</strong>
+
+                Simple distillation can be used to separate water from
+                dissolved salts because the salt is non-volatile.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             5. FRACTIONAL DISTILLATION
+        ========================== -->
+
+        <section class="dist-section" id="fractional">
+
+            <h2>
+
+                <span class="dist-number">
+                    5
+                </span>
+
+                Fractional Distillation
+
+            </h2>
+
+            <p>
+                Fractional distillation is used to separate miscible liquids
+                whose boiling points are relatively close together.
+            </p>
+
+            <p>
+                A fractionating column is placed between the distillation
+                flask and condenser. Inside the column, vapour repeatedly
+                condenses and revaporises, improving the separation of the
+                components.
+            </p>
+
+
+            <div class="info-box">
+
+                <strong>Example:</strong>
+
+                A mixture containing two miscible liquids boiling at about
+                78°C and 100°C can be separated using fractional distillation.
+
+            </div>
+
+
+            <div class="method-grid">
+
+
+                <div class="method-card">
+
+                    <h3>
+                        Fractionating Column
+                    </h3>
+
+                    <p>
+                        The column provides a large surface area where repeated
+                        condensation and vaporisation can occur.
+                    </p>
+
+                </div>
+
+
+                <div class="method-card">
+
+                    <h3>
+                        Better Separation
+                    </h3>
+
+                    <p>
+                        The repeated cycles make the vapour reaching the top of
+                        the column richer in the more volatile component.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             6. COMPARISON
+        ========================== -->
+
+        <section class="dist-section" id="comparison">
+
+            <h2>
+
+                <span class="dist-number">
+                    6
+                </span>
+
+                Simple vs Fractional Distillation
+
+            </h2>
+
+
+            <div class="table-wrap">
+
+                <table class="dist-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Feature
+                            </th>
+
+                            <th>
+                                Simple Distillation
+                            </th>
+
+                            <th>
+                                Fractional Distillation
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                Fractionating column
+                            </td>
+
+                            <td>
+                                Usually not required
+                            </td>
+
+                            <td>
+                                Required
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Boiling-point difference
+                            </td>
+
+                            <td>
+                                Usually larger
+                            </td>
+
+                            <td>
+                                Relatively small
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Repeated vaporisation/condensation
+                            </td>
+
+                            <td>
+                                Limited
+                            </td>
+
+                            <td>
+                                Occurs within the column
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Typical application
+                            </td>
+
+                            <td>
+                                Liquid + non-volatile solute
+                            </td>
+
+                            <td>
+                                Miscible liquids
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             7. PROCEDURE
+        ========================== -->
+
+        <section class="dist-section" id="procedure">
+
+            <h2>
+
+                <span class="dist-number">
+                    7
+                </span>
+
+                Experimental Procedure
+
+            </h2>
+
+
+            <div class="steps">
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        1
+                    </span>
+
+                    <p>
+                        Place the liquid mixture into the distillation flask,
+                        leaving sufficient space for boiling.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        2
+                    </span>
+
+                    <p>
+                        Add suitable anti-bumping granules where appropriate
+                        before heating.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        3
+                    </span>
+
+                    <p>
+                        Assemble the apparatus securely. For fractional
+                        distillation, place the fractionating column between
+                        the flask and condenser.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        4
+                    </span>
+
+                    <p>
+                        Position the thermometer bulb correctly near the
+                        entrance to the condenser so it measures the vapour
+                        temperature.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        5
+                    </span>
+
+                    <p>
+                        Connect the condenser cooling water so that water enters
+                        through the lower inlet and leaves through the upper
+                        outlet.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        6
+                    </span>
+
+                    <p>
+                        Heat the mixture gently and steadily while monitoring
+                        the temperature.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <span class="step-number">
+                        7
+                    </span>
+
+                    <p>
+                        Collect the condensed liquid in the receiving flask and
+                        observe the temperature range during collection.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             8. INTERACTIVE TEST
+        ========================== -->
+
+        <section class="dist-section" id="quiz">
+
+            <h2>
+
+                <span class="dist-number">
+                    8
+                </span>
+
+                Interactive Distillation Test
+
+            </h2>
+
+
+            <div class="quiz-box">
+
+                <p class="quiz-question">
+
+                    A mixture contains two miscible liquids with boiling points
+                    of 78°C and 100°C. Which method is most appropriate for
+                    separating the two liquids?
+
+                </p>
+
+
+                <div class="quiz-options">
+
+
+                    <button
+                        type="button"
+                        class="quiz-option"
+                        data-correct="false"
+                    >
+                        Evaporation
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quiz-option"
+                        data-correct="true"
+                    >
+                        Fractional distillation
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quiz-option"
+                        data-correct="false"
+                    >
+                        Filtration
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quiz-option"
+                        data-correct="false"
+                    >
+                        Decantation
+                    </button>
+
+
+                </div>
+
+
+                <div
+                    id="quizResult"
+                    class="quiz-result"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             9. PRECAUTIONS
+        ========================== -->
+
+        <section class="dist-section" id="precautions">
+
+            <h2>
+
+                <span class="dist-number">
+                    9
+                </span>
+
+                Precautions &amp; Sources of Error
+
+            </h2>
+
+
+            <ul class="dist-list">
+
+                <li>
+                    Make sure the apparatus is securely connected before
+                    heating.
+                </li>
+
+                <li>
+                    Never heat a completely closed distillation system.
+                </li>
+
+                <li>
+                    Position the thermometer bulb correctly so it measures the
+                    vapour temperature.
+                </li>
+
+                <li>
+                    Heat gently to prevent violent boiling and carry-over of
+                    liquid.
+                </li>
+
+                <li>
+                    Ensure cooling water is flowing through the condenser.
+                </li>
+
+                <li>
+                    Do not distil to dryness unless the experimental procedure
+                    specifically requires it and it is safe to do so.
+                </li>
+
+                <li>
+                    Avoid excessive heating because it can reduce the quality
+                    of the separation.
+                </li>
+
+            </ul>
+
+
+            <div class="info-box">
+
+                <strong>Common source of error:</strong>
+
+                Incorrect thermometer placement can give an inaccurate
+                temperature reading and make it difficult to identify the
+                correct fraction.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             10. COMMON QUESTIONS
+        ========================== -->
+
+        <section class="dist-section" id="questions">
+
+            <h2>
+
+                <span class="dist-number">
+                    10
+                </span>
+
+                Common Practical Questions
+
+            </h2>
+
+
+            <div class="question-list">
+
+
+                <div class="question-item">
+
+                    <strong>
+                        Why is fractional distillation used?
+                    </strong>
+
+                    <br>
+
+                    It improves separation of miscible liquids with relatively
+                    close boiling points.
+
+                </div>
+
+
+                <div class="question-item">
+
+                    <strong>
+                        What is the function of the fractionating column?
+                    </strong>
+
+                    <br>
+
+                    It allows repeated condensation and vaporisation,
+                    improving separation between components.
+
+                </div>
+
+
+                <div class="question-item">
+
+                    <strong>
+                        Why is the thermometer bulb placed near the condenser
+                        entrance?
+                    </strong>
+
+                    <br>
+
+                    So that it measures the temperature of the vapour entering
+                    the condenser.
+
+                </div>
+
+
+                <div class="question-item">
+
+                    <strong>
+                        Why does water enter the condenser from the bottom?
+                    </strong>
+
+                    <br>
+
+                    This keeps the condenser jacket filled with cooling water
+                    and provides effective cooling.
+
+                </div>
+
+
+                <div class="question-item">
+
+                    <strong>
+                        What is the distillate?
+                    </strong>
+
+                    <br>
+
+                    The liquid collected after the vapour has been condensed.
+
+                </div>
+
+
+                <div class="question-item">
+
+                    <strong>
+                        What happens if the mixture is heated too strongly?
+                    </strong>
+
+                    <br>
+
+                    Rapid boiling can cause liquid to be carried over and can
+                    reduce the effectiveness of the separation.
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ASK INSITE AI
+        ========================== -->
+
+        <div class="ask-insite">
+
+            <h2>
+                Need Help With Distillation?
+            </h2>
+
+            <p>
+                Ask Insite AI to explain distillation, compare simple and
+                fractional distillation, or help you prepare for practical
+                questions.
+            </p>
+
+            <a
+                href="{{ url_for('chat') }}"
+                class="ask-btn"
+            >
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                Ask Insite AI
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const options = document.querySelectorAll(".quiz-option");
+    const result = document.getElementById("quizResult");
+
+    options.forEach(option => {
+
+        option.addEventListener("click", function () {
+
+            options.forEach(btn => {
+                btn.classList.remove("correct", "wrong");
+            });
+
+
+            if (this.dataset.correct === "true") {
+
+                this.classList.add("correct");
+
+                result.className =
+                    "quiz-result show success";
+
+                result.textContent =
+                    "Correct. Fractional distillation is suitable because the two miscible liquids have relatively close boiling points.";
+
+            } else {
+
+                this.classList.add("wrong");
+
+                result.className =
+                    "quiz-result show error";
+
+                result.textContent =
+                    "Not quite. Try again. A mixture of miscible liquids with relatively close boiling points is separated using fractional distillation.";
+
+            }
+
+        });
+
+    });
+
+});
+</script>
+
+{% endblock %}

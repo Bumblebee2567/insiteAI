@@ -1,0 +1,594 @@
+{% extends "base.html" %}
+
+{% block title %}
+Magnetism & Electromagnetism | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-magnet"></i>
+            Magnetism & Electromagnetism
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering magnetic fields, the Lorentz force on moving charges, 
+            magnetic forces on current-carrying conductors, Ampère's Law, and the generation of magnetic fields by electric currents.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#lorentz">Lorentz Force</a>
+        <a href="#currents">Force on Currents</a>
+        <a href="#ampere">Ampère's Law</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Magnetic Fields</h2>
+        </div>
+        <p>
+            Magnetism is a fundamental force phenomenon associated with moving electric charges and intrinsic magnetic dipole moments of elementary particles. 
+            Unlike electric charges, which can exist as isolated monopoles (single positive or negative charges), magnetic poles always appear in inseparable north-south pairs (dipoles). 
+            A magnetic field (B) is a vector field that exerts forces on moving charges and permanent magnets.
+        </p>
+        <div class="phys-info">
+            <strong>Core Conceptual Principle:</strong><br>
+            Magnetic fields do not exert forces on stationary electric charges. A magnetic force acts only on electric charges that are in motion, 
+            and its direction is always perpendicular to both the velocity vector of the charge and the magnetic field vector.
+        </div>
+    </section>
+
+    <!-- 02 LORENTZ FORCE -->
+    <section class="phys-section" id="lorentz">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>The Lorentz Force on Moving Charges</h2>
+        </div>
+        <p>
+            When an electric charge (q) moves with velocity vector (v) through a region containing both an electric field (E) and a magnetic field (B), 
+            it experiences a combined electromagnetic force known as the <strong>Lorentz Force</strong>:
+        </p>
+        <ul>
+            <li><strong>Lorentz Force Equation:</strong> 
+                <br><strong>Force = Electric Force + Magnetic Force</strong> (F = q * E + q * (v &times; B)).</li>
+            <li><strong>Magnitude of Magnetic Force:</strong> 
+                <br><strong>Magnetic Force = Charge &times; Speed &times; Magnetic Field Strength &times; sine of Angle</strong> (F<sub>B</sub> = |q| * v * B * sin(theta)), 
+                where theta is the angle between the velocity vector and the magnetic field vector. Measured in Newtons (N).</li>
+            <li><strong>Circular Motion in Uniform Magnetic Fields:</strong> Because the magnetic force is always perpendicular to velocity, it performs zero mechanical work. 
+            It causes moving charges to travel in uniform circular orbits with a radius given by: 
+            <strong>Radius = (Mass &times; Speed) / (Charge Magnitude &times; Magnetic Field)</strong> (r = (m * v) / (|q| * B)).</li>
+        </ul>
+    </section>
+
+    <!-- 03 FORCE ON CURRENTS -->
+    <section class="phys-section" id="currents">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Magnetic Force on Current-Carrying Conductors</h2>
+        </div>
+        <p>
+            Because electric current consists of a stream of moving charge carriers within a wire, a current-carrying wire placed inside a magnetic field also experiences a net magnetic force.
+        </p>
+        <ul>
+            <li><strong>Magnetic Force Equation on a Straight Wire:</strong> 
+                <br><strong>Force = Current &times; Length Vector crossed into Magnetic Field Vector</strong> (F = I * (L &times; B)).</li>
+            <li><strong>Magnitude Equation:</strong> 
+                <br><strong>Force = Current &times; Length of Wire in Field &times; Magnetic Field Strength &times; sine of Angle</strong> (F = I * L * B * sin(theta)).</li>
+            <li><strong>Right-Hand Rule:</strong> The direction of the magnetic force is determined by pointing the fingers of the right hand in the direction of conventional current (I), 
+            curling them toward the magnetic field lines (B), and extending the thumb to point in the direction of the resulting magnetic force (F).</li>
+        </ul>
+    </section>
+
+    <!-- 04 AMPÈRE'S LAW -->
+    <section class="phys-section" id="ampere">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Sources of Magnetic Fields & Ampère's Law</h2>
+        </div>
+        <p>
+            Electric currents produce magnetic fields in the space surrounding them. Ampère's Law relates the magnetic field circulating around any closed loop 
+            to the total electric current passing through the surface bounded by that loop.
+        </p>
+        <ul>
+            <li><strong>Ampère's Law Equation:</strong> The line integral of the magnetic field vector around a closed path equals the permeability of free space multiplied by the net enclosed current:
+                <br><strong>Line Integral of Magnetic Field &bull; differential length = Permittivity Constant &times; Enclosed Current</strong> (Integral of (B &bull; dl) = mu<sub>0</sub> * I<sub>enclosed</sub>), 
+                where permeability of free space mu<sub>0</sub> = 4 &times; pi &times; 10<sup>-7</sup> T&middot;m/A.</li>
+            <li><strong>Magnetic Field of a Long Straight Wire:</strong> Applying Ampère's Law to a circular path of radius r around a long straight wire carrying current I yields:
+                <br><strong>Magnetic Field = (Permittivity Constant &times; Current) / (2 &times; pi &times; Distance)</strong> (B = (mu<sub>0</sub> * I) / (2 * pi * r)).</li>
+            <li><strong>Magnetic Field inside a Solenoid:</strong> For a tightly wound solenoid having n turns per unit length carrying current I:
+                <br><strong>Magnetic Field = Permittivity Constant &times; Turns per Unit Length &times; Current</strong> (B = mu<sub>0</sub> * n * I).</li>
+        </ul>
+    </section>
+
+    <!-- 05 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Interactive Magnetism Test</h2>
+        </div>
+        <p>Test your conceptual understanding of Lorentz forces, magnetic fields, and circular motion.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Lorentz Force Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    A proton moves with a velocity vector directed exactly 
+                    <strong>parallel</strong> to a uniform magnetic field line (theta = 0 degrees). What is the magnitude of the magnetic force acting on the proton?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">Zero (no magnetic force acts when velocity is parallel to the field)</option>
+                    <option value="wrong1">Maximum possible magnetic force (F = q * v * B)</option>
+                    <option value="wrong2">Half of the maximum magnetic force</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Magnetic Force on a Moving Charge):</strong>
+            <p>An electron is injected into a uniform magnetic field of strength B = 0.500 Tesla with a speed of v = 2.00 &times; 10<sup>6</sup> m/s. 
+            The velocity vector of the electron is perpendicular to the magnetic field direction (theta = 90 degrees). 
+            Calculate the magnitude of the magnetic force acting on the electron. 
+            (Given that the elementary charge of an electron is e = 1.602 &times; 10<sup>-19</sup> Coulombs).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: F<sub>B</sub> = |q| * v * B * sin(theta).<br>
+                - Since theta = 90 degrees, sin(90 degrees) = 1.<br>
+                - Substitute values:<br>
+                F<sub>B</sub> = (1.602 &times; 10<sup>-19</sup> C) &times; (2.00 &times; 10<sup>6</sup> m/s) &times; (0.500 T) &times; 1.<br>
+                - Numerator calculation: 1.602 &times; 2.00 &times; 0.500 = 1.602.<br>
+                - Exponent calculation: 10<sup>-19</sup> &times; 10<sup>6</sup> = 10<sup>-13</sup>.<br>
+                - Result: F<sub>B</sub> = <strong>1.60 &times; 10<sup>-13</sup> Newtons</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Magnetic Force on a Current-Carrying Wire):</strong>
+            <p>A straight horizontal copper wire of length L = 0.400 m carries a direct current of I = 15.0 Amperes. 
+            The wire is placed perpendicular (theta = 90 degrees) inside a uniform magnetic field of strength B = 0.250 Tesla. 
+            Calculate the magnitude of the magnetic force exerted on the wire.</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: F = I * L * B * sin(theta).<br>
+                - Since theta = 90 degrees, sin(90 degrees) = 1.<br>
+                - Substitute values:<br>
+                F = (15.0 A) &times; (0.400 m) &times; (0.250 T) &times; 1.<br>
+                - Multiplication: 15.0 &times; 0.400 = 6.00.<br>
+                - 6.00 &times; 0.250 = <strong>1.50 Newtons</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Magnetic Field of a Long Straight Wire):</strong>
+            <p>Calculate the magnitude of the magnetic field produced at a radial distance of r = 0.0500 meters away from a long, 
+            straight, thin wire carrying a direct electric current of I = 10.0 Amperes. 
+            (Use mu<sub>0</sub> = 4 &times; pi &times; 10<sup>-7</sup> T&middot;m/A).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: B = (mu<sub>0</sub> * I) / (2 * pi * r).<br>
+                - Substitute values:<br>
+                B = ((4 * pi &times; 10<sup>-7</sup> T&middot;m/A) &times; (10.0 A)) / (2 * pi &times; 0.0500 m).<br>
+                - Simplify the pi terms: (4 &times; pi) / (2 &times; pi) = 2.<br>
+                - B = (2 &times; 10<sup>-7</sup> &times; 10.0) / 0.0500 = (2.00 &times; 10<sup>-6</sup>) / 0.0500.<br>
+                - Division: B = 4.00 &times; 10<sup>-5</sup> Tesla = <strong>40.0 microteslas</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with electromagnetism or Biot-Savart calculations?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down cyclotron resonance frequencies, magnetic dipole torques, or Biot-Savart line integrals.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Because magnetic force depends on the sine of the angle between velocity and the magnetic field (F = q * v * B * sin(theta)), when the velocity vector is parallel to the field (theta = 0 degrees), sin(0) = 0, resulting in zero magnetic force.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>The magnetic force formula involves sin(theta). When motion is parallel to the magnetic field (theta = 0 degrees), the sine of zero is zero, meaning the magnetic force is <strong>zero</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

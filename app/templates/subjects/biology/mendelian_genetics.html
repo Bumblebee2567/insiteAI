@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mendelian & Chromosomal Inheritance | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --bio-bg: #050a12;
+    --bio-panel: #0a111d;
+    --bio-border: rgba(100, 116, 139, .18);
+    --bio-text: #f1f5f9;
+    --bio-muted: #94a3b8;
+    --bio-blue: #1677b8;
+    --bio-blue-light: #2196d2;
+    --bio-cyan: #38bdf8;
+    --bio-green: #34d399;
+    --bio-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.bio-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--bio-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.bio-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--bio-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.bio-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.bio-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.bio-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.bio-header h1 i {
+    color: var(--bio-blue-light);
+    margin-right: 8px;
+}
+
+.bio-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--bio-muted);
+    line-height: 1.75;
+}
+
+.bio-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--bio-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.bio-nav::-webkit-scrollbar { display: none; }
+
+.bio-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.bio-nav a:hover { color: white; background: #0d1a2a; }
+
+.bio-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--bio-panel);
+    border: 1px solid var(--bio-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.bio-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.bio-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bio-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.bio-section h2 { margin: 0; font-size: 1.5rem; color: #f8fafc; }
+.bio-section h3 { color: var(--bio-blue-light); margin-top: 30px; font-size: 1.2rem; border-bottom: 1px solid var(--bio-border); padding-bottom: 6px; }
+.bio-section p, .bio-section li { color: #cbd5e1; line-height: 1.8; }
+.bio-section li { margin-bottom: 8px; }
+
+.bio-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--bio-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+.bio-info strong { color: var(--bio-blue-light); }
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--bio-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+.test-top { padding: 18px 20px; border-bottom: 1px solid var(--bio-border); }
+.test-top h3 { margin: 0; color: white; font-size: 1.1rem; }
+.test-body { padding: 22px; }
+.test-question { color: #cbd5e1; margin-bottom: 15px; line-height: 1.7; }
+.test-select {
+    width: 100%; max-width: 550px; background: var(--bio-panel);
+    border: 1px solid var(--bio-border); border-radius: 8px; color: white; padding: 12px; font-size: .95rem;
+}
+.test-button {
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 15px;
+    padding: 11px 18px; border: none; border-radius: 9px; background: #126da8; color: white; cursor: pointer; font-weight: 700;
+}
+.test-result {
+    display: none; margin-top: 18px; padding: 16px; border-left: 4px solid var(--bio-green); background: #0a131f; border-radius: 8px;
+}
+.test-result.correct { border-left-color: var(--bio-green); }
+.test-result.wrong { border-left-color: var(--bio-red); }
+
+.exam-question {
+    margin-top: 20px; padding: 20px; background: #081321; border: 1px solid var(--bio-border); border-radius: 12px;
+}
+.exam-question strong { color: var(--bio-blue-light); font-size: 1.08rem; display: block; margin-bottom: 10px; }
+.exam-answer {
+    margin-top: 12px; padding: 15px 18px; background: #060e18; border-left: 3px solid var(--bio-blue-light); border-radius: 6px; color: #cbd5e1; line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px; padding: 30px; background: #091321; border: 1px solid var(--bio-border); border-radius: 15px; text-align: center;
+}
+.ask-ai a {
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 16px;
+    padding: 11px 18px; background: #126da8; border-radius: 9px; color: white; text-decoration: none; font-weight: 700;
+}
+</style>
+
+<div class="bio-page">
+    <a href="{{ url_for('biology_page') }}" class="bio-back">
+        <i class="fa-solid fa-arrow-left"></i> Back to Biology Hub
+    </a>
+
+    <header class="bio-header">
+        <h1><i class="fa-solid fa-table"></i> Mendelian & Chromosomal Inheritance</h1>
+        <p>Master monohybrid and dihybrid Punnett square crosses, pedigree chart analysis, incomplete dominance, codominance, and sex-linked inheritance patterns.</p>
+    </header>
+
+    <nav class="bio-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#laws">Mendel's Laws</a>
+        <a href="#crosses">Punnett Crosses</a>
+        <a href="#extensions">Non-Mendelian</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <section class="bio-section" id="intro">
+        <div class="bio-section-header">
+            <div class="bio-number">01</div>
+            <h2>Introduction to Classical Genetics</h2>
+        </div>
+        <p>Classical genetics examines how heritable traits are transmitted from parents to offspring through discrete units of inheritance known as genes.</p>
+        <div class="bio-info">
+            <strong>Core Genetic Principle:</strong><br>
+            Alternative forms of genes, called alleles, account for variations in inherited characters among individuals within a population.
+        </div>
+    </section>
+
+    <section class="bio-section" id="laws">
+        <div class="bio-section-header">
+            <div class="bio-number">02</div>
+            <h2>Mendel's Laws of Inheritance</h2>
+        </div>
+        <ul>
+            <li><strong>Law of Segregation:</strong> Two alleles for a heritable character segregate (separate) during gamete formation and end up in different gametes.</li>
+            <li><strong>Law of Independent Assortment:</strong> Each pair of alleles segregates independently of any other pair of alleles during gamete formation, provided genes are on different chromosomes or far apart on the same chromosome.</li>
+        </ul>
+    </section>
+
+    <section class="bio-section" id="crosses">
+        <div class="bio-section-header">
+            <div class="bio-number">03</div>
+            <h2>Monohybrid and Dihybrid Crosses</h2>
+        </div>
+        <p>Punnett squares are predictive grid diagrams used to calculate the expected phenotypic and genotypic ratios of genetic crosses.</p>
+        <ul>
+            <li><strong>Monohybrid Cross:</strong> Follows a single trait (e.g., flower color). Yields a classic 3:1 phenotypic ratio in the F2 generation for complete dominance.</li>
+            <li><strong>Dihybrid Cross:</strong> Follows two independent traits (e.g., seed color and shape). Yields a classic 9:3:3:1 phenotypic ratio in the F2 generation.</li>
+        </ul>
+    </section>
+
+    <section class="bio-section" id="extensions">
+        <div class="bio-section-header">
+            <div class="bio-number">04</div>
+            <h2>Non-Mendelian & Sex-Linked Inheritance</h2>
+        </div>
+        <ul>
+            <li><strong>Incomplete Dominance:</strong> Heterozygotes display an intermediate blended phenotype (e.g., red and white flowers producing pink offspring).</li>
+            <li><strong>Codominance:</strong> Both alleles are simultaneously and fully expressed in heterozygotes (e.g., AB blood type).</li>
+            <li><strong>Sex-Linked Traits:</strong> Genes located on sex chromosomes (e.g., X-linked recessive traits like hemophilia and red-green color blindness).</li>
+        </ul>
+    </section>
+
+    <section class="bio-section" id="test">
+        <div class="bio-section-header">
+            <div class="bio-number">05</div>
+            <h2>Interactive Genetics Test</h2>
+        </div>
+        <div class="test-box">
+            <div class="test-top"><h3><i class="fa-solid fa-flask"></i> Dihybrid Cross Challenge</h3></div>
+            <div class="test-body">
+                <div class="test-question">
+                    In a standard dihybrid cross between two heterozygous parents (AaBb x AaBb), what fraction of the offspring are expected to exhibit both dominant phenotypes (A_B_)?
+                </div>
+                <select class="test-select" id="bioAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">3/16</option>
+                    <option value="wrong2">1/16</option>
+                    <option value="correct">9/16</option>
+                    <option value="wrong3">12/16</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkBio"><i class="fa-solid fa-check"></i> Check Answer</button>
+                <div class="test-result" id="bioResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bio-section" id="problems">
+        <div class="bio-section-header">
+            <div class="bio-number">06</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+        <div class="exam-question">
+            <strong>Problem 1 (X-Linked Recessive Inheritance):</strong>
+            <p>A color-blind female marries a male with normal vision. What proportion of their sons and daughters are expected to be color-blind?</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Color blindness is an X-linked recessive trait (let allele be X^b, normal be X^B).<br>
+                - Female genotype is homozygous recessive (X^b X^b). Male genotype is normal (X^B Y).<br>
+                - <strong>Sons:</strong> Receive X^b from mother and Y from father &rarr; 100% color blind (X^b Y).<br>
+                - <strong>Daughters:</strong> Receive X^b from mother and X^B from father &rarr; 100% carriers with normal vision (X^B X^b).
+            </div>
+        </div>
+    </section>
+
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--bio-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with pedigree analysis or chi-square test?</h3>
+        <p style="color:var(--bio-muted); margin:0;">Ask Insite AI to explain gene mapping, recombination frequencies, or polygenic inheritance.</p>
+        <a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments"></i> Ask Insite AI</a>
+    </div>
+</div>
+
+<script>
+const bioAnswer = document.getElementById("bioAnswer");
+const checkBio = document.getElementById("checkBio");
+const bioResult = document.getElementById("bioResult");
+checkBio.addEventListener("click", function () {
+    const val = bioAnswer.value;
+    bioResult.style.display = "block";
+    if (val === "correct") {
+        bioResult.className = "test-result correct";
+        bioResult.innerHTML = `<div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div><div>The standard dihybrid phenotypic ratio is 9:3:3:1, where 9/16 exhibit both dominant traits.</div>`;
+    } else if (val === "") {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `<div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div><div>Please choose an option.</div>`;
+    } else {
+        bioResult.className = "test-result wrong";
+        bioResult.innerHTML = `<div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div><div>The correct fraction for both dominant phenotypes in a dihybrid cross is <strong>9/16</strong>.</div>`;
+    }
+});
+</script>
+{% endblock %}

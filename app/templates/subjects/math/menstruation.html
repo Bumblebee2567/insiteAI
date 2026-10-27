@@ -1,0 +1,1170 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+Mensuration | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================
+   MENSURATION PAGE
+   ========================================= */
+
+.mensuration-page {
+    min-height: 100vh;
+    background: #0b0f14;
+    padding: 30px 20px 60px;
+}
+
+/* Back button */
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    background: #212529;
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: 500;
+
+    margin-bottom: 25px;
+
+    transition: 0.2s ease;
+}
+
+.back-button:hover {
+    background: #0d6efd;
+    color: white;
+    transform: translateX(-3px);
+}
+
+/* Page heading */
+
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.page-header p {
+    color: #adb5bd;
+    max-width: 700px;
+    margin: auto;
+}
+
+/* =========================================
+   TOPIC NAVIGATION
+   ========================================= */
+
+.topic-nav-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    margin-bottom: 35px;
+
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+.topic-nav {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+}
+
+/* Topic buttons */
+
+.topic-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+
+    padding: 10px 17px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color: white;
+
+    background: #212529;
+
+    border: 1px solid #343a40;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.2s ease;
+}
+
+.topic-link:hover {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.topic-link.active {
+    background: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Scrollbar */
+
+.topic-nav-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.topic-nav-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.topic-nav-wrapper::-webkit-scrollbar-thumb {
+    background: #343a40;
+    border-radius: 10px;
+}
+
+.topic-nav-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #0d6efd;
+}
+
+/* =========================================
+   TOPIC SECTIONS
+   ========================================= */
+
+.topic-section {
+    background: #17191c;
+
+    border: 1px solid #292d32;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+    scroll-margin-top: 90px;
+}
+
+.topic-section h2 {
+    font-size: 25px;
+    font-weight: 700;
+
+    margin-bottom: 15px;
+}
+
+.topic-section h3 {
+    font-size: 19px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.topic-section p {
+    color: #d1d5db;
+    line-height: 1.7;
+}
+
+.topic-section ul {
+    color: #d1d5db;
+    line-height: 1.8;
+}
+
+/* Formula */
+
+.formula {
+    background: #0d1117;
+
+    border-left: 4px solid #0d6efd;
+
+    padding: 15px 18px;
+
+    border-radius: 8px;
+
+    margin: 15px 0;
+
+    font-size: 17px;
+
+    overflow-x: auto;
+}
+
+/* Example */
+
+.example {
+    background: #111418;
+
+    border: 1px solid #30343a;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    margin-top: 15px;
+}
+
+.example-title {
+    font-weight: 700;
+    color: #ffffff;
+
+    margin-bottom: 10px;
+}
+
+.solution {
+    color: #d1d5db;
+    line-height: 1.8;
+}
+
+/* Ask AI */
+
+.ask-ai {
+    margin-top: 25px;
+
+    background: #0d6efd;
+
+    color: white;
+
+    border-radius: 12px;
+
+    padding: 15px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.ask-ai i {
+    font-size: 20px;
+}
+
+.ask-ai strong {
+    display: block;
+}
+
+.ask-ai span {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .mensuration-page {
+        padding: 20px 14px 45px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .topic-section {
+        padding: 20px 17px;
+    }
+
+    .topic-section h2 {
+        font-size: 22px;
+    }
+
+    .topic-link {
+        padding: 9px 14px;
+        font-size: 13px;
+    }
+
+    .ask-ai {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+
+
+<div class="mensuration-page">
+
+    <!-- BACK BUTTON -->
+
+    <a href="{{ url_for('math_page') }}" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back To Mathematics
+    </a>
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h1>
+            <i class="fas fa-ruler-combined text-primary"></i>
+            Mensuration
+        </h1>
+
+        <p>
+            Learn how to calculate lengths, perimeters, areas,
+            surface areas and volumes of common geometric shapes.
+        </p>
+
+    </div>
+
+
+    <!-- TOPIC NAVIGATION -->
+
+    <div class="topic-nav-wrapper">
+
+        <div class="topic-nav">
+
+            <a href="#measurement" class="topic-link active">
+                Measurement
+            </a>
+
+            <a href="#perimeter" class="topic-link">
+                Perimeter
+            </a>
+
+            <a href="#area" class="topic-link">
+                Area
+            </a>
+
+            <a href="#triangle-area" class="topic-link">
+                Triangles
+            </a>
+
+            <a href="#circle" class="topic-link">
+                Circles
+            </a>
+
+            <a href="#surface-area" class="topic-link">
+                Surface Area
+            </a>
+
+            <a href="#volume" class="topic-link">
+                Volume
+            </a>
+
+            <a href="#composite" class="topic-link">
+                Composite Shapes
+            </a>
+
+            <a href="#unit-conversion" class="topic-link">
+                Unit Conversion
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         1. MEASUREMENT
+         ===================================== -->
+
+    <section class="topic-section" id="measurement">
+
+        <h2>1. Measurement</h2>
+
+        <p>
+            Measurement is the process of finding the size or amount
+            of something. In mensuration, we commonly measure length,
+            perimeter, area and volume.
+        </p>
+
+        <h3>Common Units</h3>
+
+        <ul>
+            <li>Length: millimetres (mm), centimetres (cm), metres (m), kilometres (km)</li>
+            <li>Area: cm², m², km²</li>
+            <li>Volume: cm³, m³</li>
+        </ul>
+
+        <h3>Important Idea</h3>
+
+        <p>
+            The unit you use must match what you are measuring.
+            A length uses units such as metres, while an area uses
+            square metres and volume uses cubic metres.
+        </p>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A table has a length of 2 m.
+
+                <br><br>
+
+                Its measurement is simply:
+
+                <br>
+
+                <strong>2 metres</strong>
+
+                <br><br>
+
+                Since we are measuring only length, we use metres,
+                not square metres or cubic metres.
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Don't understand measurement?</strong>
+                <span>Ask Insite AI to explain it step by step.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         2. PERIMETER
+         ===================================== -->
+
+    <section class="topic-section" id="perimeter">
+
+        <h2>2. Perimeter</h2>
+
+        <p>
+            The perimeter is the total distance around the outside
+            of a two-dimensional shape.
+        </p>
+
+        <p>
+            To find the perimeter, add all the sides of the shape.
+        </p>
+
+        <div class="formula">
+
+            Perimeter = sum of all sides
+
+        </div>
+
+        <h3>Rectangle</h3>
+
+        <div class="formula">
+
+            P = 2(l + w)
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A rectangle has a length of 8 cm and a width of 5 cm.
+
+                <br><br>
+
+                P = 2(l + w)
+
+                <br>
+
+                P = 2(8 + 5)
+
+                <br>
+
+                P = 2 × 13
+
+                <br>
+
+                <strong>P = 26 cm</strong>
+
+            </div>
+
+        </div>
+
+        <h3>Square</h3>
+
+        <div class="formula">
+
+            P = 4s
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A square has a side length of 6 cm.
+
+                <br><br>
+
+                P = 4 × 6
+
+                <br>
+
+                <strong>P = 24 cm</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Need help with perimeter?</strong>
+                <span>Ask Insite AI to show you how to solve it.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         3. AREA
+         ===================================== -->
+
+    <section class="topic-section" id="area">
+
+        <h2>3. Area</h2>
+
+        <p>
+            Area is the amount of space covered by a two-dimensional
+            shape.
+        </p>
+
+        <p>
+            Area is measured in square units such as cm² and m².
+        </p>
+
+        <h3>Rectangle</h3>
+
+        <div class="formula">
+
+            Area = length × width
+
+            <br><br>
+
+            A = lw
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A rectangle has a length of 10 cm and a width of 4 cm.
+
+                <br><br>
+
+                A = 10 × 4
+
+                <br>
+
+                <strong>A = 40 cm²</strong>
+
+            </div>
+
+        </div>
+
+        <h3>Square</h3>
+
+        <div class="formula">
+
+            A = s²
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A square has a side of 7 cm.
+
+                <br><br>
+
+                A = 7²
+
+                <br>
+
+                <strong>A = 49 cm²</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Area confusing you?</strong>
+                <span>Ask Insite AI for a simple explanation.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         4. TRIANGLES
+         ===================================== -->
+
+    <section class="topic-section" id="triangle-area">
+
+        <h2>4. Area of Triangles</h2>
+
+        <p>
+            A triangle has three sides. To find its area, multiply
+            the base by the perpendicular height and divide the result
+            by two.
+        </p>
+
+        <div class="formula">
+
+            A = ½bh
+
+        </div>
+
+        <p>
+            Here, <strong>b</strong> represents the base and
+            <strong>h</strong> represents the perpendicular height.
+        </p>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A triangle has a base of 12 cm and a height of 5 cm.
+
+                <br><br>
+
+                A = ½ × 12 × 5
+
+                <br>
+
+                A = 6 × 5
+
+                <br>
+
+                <strong>A = 30 cm²</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Need help with triangles?</strong>
+                <span>Ask Insite AI to explain the formula and solution.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         5. CIRCLES
+         ===================================== -->
+
+    <section class="topic-section" id="circle">
+
+        <h2>5. Circles</h2>
+
+        <p>
+            A circle is a curved shape in which every point on the
+            circumference is the same distance from the centre.
+        </p>
+
+        <h3>Important Terms</h3>
+
+        <ul>
+
+            <li>
+                <strong>Radius:</strong>
+                distance from the centre to the circumference.
+            </li>
+
+            <li>
+                <strong>Diameter:</strong>
+                distance across the circle through the centre.
+            </li>
+
+            <li>
+                <strong>Circumference:</strong>
+                distance around the circle.
+            </li>
+
+        </ul>
+
+        <div class="formula">
+
+            d = 2r
+
+            <br><br>
+
+            C = 2πr
+
+            <br><br>
+
+            C = πd
+
+        </div>
+
+        <h3>Area of a Circle</h3>
+
+        <div class="formula">
+
+            A = πr²
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A circle has a radius of 7 cm.
+
+                <br><br>
+
+                A = πr²
+
+                <br>
+
+                A = π × 7²
+
+                <br>
+
+                A = 49π
+
+                <br>
+
+                Using π ≈ 22/7:
+
+                <br>
+
+                A = 49 × 22/7
+
+                <br>
+
+                <strong>A = 154 cm²</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Circle formulas confusing?</strong>
+                <span>Ask Insite AI to explain radius, diameter and circumference.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         6. SURFACE AREA
+         ===================================== -->
+
+    <section class="topic-section" id="surface-area">
+
+        <h2>6. Surface Area</h2>
+
+        <p>
+            Surface area is the total area of all the surfaces of
+            a three-dimensional object.
+        </p>
+
+        <h3>Cuboid</h3>
+
+        <div class="formula">
+
+            SA = 2(lw + lh + wh)
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A cuboid has:
+
+                <br>
+
+                l = 5 cm
+
+                <br>
+
+                w = 3 cm
+
+                <br>
+
+                h = 2 cm
+
+                <br><br>
+
+                SA = 2(5×3 + 5×2 + 3×2)
+
+                <br>
+
+                SA = 2(15 + 10 + 6)
+
+                <br>
+
+                SA = 2(31)
+
+                <br>
+
+                <strong>SA = 62 cm²</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Surface area difficult?</strong>
+                <span>Ask Insite AI to break the problem down step by step.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         7. VOLUME
+         ===================================== -->
+
+    <section class="topic-section" id="volume">
+
+        <h2>7. Volume</h2>
+
+        <p>
+            Volume is the amount of space occupied by a
+            three-dimensional object.
+        </p>
+
+        <p>
+            Volume is measured in cubic units such as cm³ and m³.
+        </p>
+
+        <h3>Cuboid</h3>
+
+        <div class="formula">
+
+            V = lwh
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A cuboid has a length of 8 cm, width of 4 cm
+                and height of 3 cm.
+
+                <br><br>
+
+                V = 8 × 4 × 3
+
+                <br>
+
+                V = 32 × 3
+
+                <br>
+
+                <strong>V = 96 cm³</strong>
+
+            </div>
+
+        </div>
+
+        <h3>Cube</h3>
+
+        <div class="formula">
+
+            V = s³
+
+        </div>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                A cube has a side length of 5 cm.
+
+                <br><br>
+
+                V = 5³
+
+                <br>
+
+                V = 5 × 5 × 5
+
+                <br>
+
+                <strong>V = 125 cm³</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Don't understand volume?</strong>
+                <span>Ask Insite AI to explain it with an example.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         8. COMPOSITE SHAPES
+         ===================================== -->
+
+    <section class="topic-section" id="composite">
+
+        <h2>8. Composite Shapes</h2>
+
+        <p>
+            A composite shape is a shape made by combining two or
+            more simpler shapes.
+        </p>
+
+        <p>
+            To find its area, divide the shape into familiar shapes,
+            calculate each area, and then add or subtract as required.
+        </p>
+
+        <div class="example">
+
+            <div class="example-title">
+                Example
+            </div>
+
+            <div class="solution">
+
+                Suppose a shape can be divided into a rectangle and
+                a triangle.
+
+                <br><br>
+
+                Rectangle area = 40 cm²
+
+                <br>
+
+                Triangle area = 15 cm²
+
+                <br><br>
+
+                Total area:
+
+                <br>
+
+                40 + 15
+
+                <br>
+
+                <strong>Total area = 55 cm²</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Composite shapes confusing?</strong>
+                <span>Ask Insite AI to help you split the shape into simpler parts.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         9. UNIT CONVERSION
+         ===================================== -->
+
+    <section class="topic-section" id="unit-conversion">
+
+        <h2>9. Unit Conversion</h2>
+
+        <p>
+            Sometimes a measurement must be converted from one unit
+            to another before solving a problem.
+        </p>
+
+        <h3>Common Length Conversions</h3>
+
+        <ul>
+
+            <li>1 m = 100 cm</li>
+
+            <li>1 cm = 10 mm</li>
+
+            <li>1 km = 1000 m</li>
+
+        </ul>
+
+        <h3>Example</h3>
+
+        <div class="example">
+
+            <div class="example-title">
+                Convert 3 metres to centimetres
+            </div>
+
+            <div class="solution">
+
+                1 m = 100 cm
+
+                <br><br>
+
+                Therefore:
+
+                <br>
+
+                3 × 100 = 300
+
+                <br><br>
+
+                <strong>3 m = 300 cm</strong>
+
+            </div>
+
+        </div>
+
+        <div class="ask-ai">
+
+            <i class="fas fa-sparkles"></i>
+
+            <div>
+                <strong>Need help converting units?</strong>
+                <span>Ask Insite AI and get the conversion explained step by step.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<script>
+
+/* =========================================
+   ACTIVE TOPIC NAVIGATION
+   ========================================= */
+
+const topicLinks = document.querySelectorAll(".topic-link");
+
+const sections = document.querySelectorAll(".topic-section");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 130;
+
+        if (window.scrollY >= sectionTop) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    topicLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,835 @@
+{% extends "base.html" %}
+
+{% block title %}
+Indicators & pH | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — INDICATORS & pH PRACTICAL
+   Dark blue theme — interactive colorimetric lab
+   ========================================================= */
+
+:root {
+    --ind-bg: #050a12;
+    --ind-panel: #0a111d;
+    --ind-panel-2: #0d1624;
+    --ind-border: rgba(100, 116, 139, .18);
+
+    --ind-text: #f1f5f9;
+    --ind-muted: #94a3b8;
+
+    --ind-blue: #1677b8;
+    --ind-blue-light: #2196d2;
+    --ind-blue-dark: #075985;
+
+    --ind-green: #34d399;
+    --ind-red: #ef4444;
+    --ind-yellow: #facc15;
+}
+
+.indicators-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--ind-text);
+}
+
+/* BACK */
+.ind-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--ind-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.ind-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+.ind-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.ind-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #eaf6ff;
+}
+
+.ind-header h1 i {
+    color: var(--ind-blue-light);
+    margin-right: 8px;
+}
+
+.ind-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--ind-muted);
+    line-height: 1.75;
+}
+
+/* NAV */
+.ind-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--ind-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.ind-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.ind-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.ind-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTION */
+.ind-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--ind-panel);
+    border: 1px solid var(--ind-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.ind-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.ind-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.ind-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.ind-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.ind-section p,
+.ind-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.ind-section li {
+    margin-bottom: 6px;
+}
+
+/* CARDS */
+.ind-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.ind-grid.two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.ind-grid.three {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.ind-card {
+    padding: 19px;
+    background: #080f1a;
+    border: 1px solid var(--ind-border);
+    border-radius: 12px;
+}
+
+.ind-card i {
+    color: var(--ind-blue-light);
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.ind-card h3 {
+    margin: 0 0 7px;
+    color: white;
+    font-size: 1.05rem;
+}
+
+.ind-card p {
+    margin: 0;
+    color: var(--ind-muted);
+    font-size: .9rem;
+}
+
+/* INFO */
+.ind-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--ind-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.ind-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE */
+.ind-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--ind-border);
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.ind-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ind-table th,
+.ind-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--ind-border);
+    text-align: left;
+    color: #cbd5e1;
+}
+
+.ind-table th {
+    background: #0a141f;
+    color: #55b6e9;
+    font-size: .85rem;
+}
+
+.ind-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================================
+   VIRTUAL pH INDICATOR LAB (ANIMATED TEST TUBES)
+   ========================================================= */
+
+.pH-lab {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--ind-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.lab-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--ind-border);
+}
+
+.lab-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.lab-status {
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #0d2637;
+    color: #55b6e9;
+    font-size: .73rem;
+    font-weight: 700;
+}
+
+/* TEST TUBE RACK STAGE */
+.rack-stage {
+    position: relative;
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    background: linear-gradient(to bottom, #091321 0%, #091321 75%, #080d14 75%, #080d14 100%);
+    overflow: hidden;
+    padding-top: 20px;
+}
+
+/* LAB BENCH BASEMENT */
+.lab-bench {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 95px;
+    background: #0a1019;
+    border-top: 1px solid rgba(148,163,184,.12);
+}
+
+/* WOODEN TEST TUBE RACK */
+.wooden-rack {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 85px;
+    width: 90%;
+    max-width: 550px;
+    height: 25px;
+    background: linear-gradient(to bottom, #78350f, #451a03);
+    border-radius: 6px;
+    border: 1px solid #92400e;
+    z-index: 2;
+}
+
+/* TEST TUBE CONTAINER */
+.test-tube-assembly {
+    position: relative;
+    width: 80px;
+    height: 260px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* GLASS TEST TUBE */
+.test-tube {
+    position: relative;
+    width: 36px;
+    height: 210px;
+    border: 3px solid rgba(226, 232, 240, 0.6);
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+}
+
+/* LIQUID INSIDE TUBE */
+.tube-liquid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 55%;
+    background: rgba(250, 204, 21, 0.8);
+    border-radius: 0 0 14px 14px;
+    transition: background 0.5s ease, height 0.3s ease;
+}
+
+.tube-liquid::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* FIXED-HEIGHT LABEL CONTAINER TO PREVENT JUMPING */
+.tube-label-box {
+    width: 110px;
+    min-height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.tube-label {
+    color: #cbd5e1;
+    font-size: .78rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.tube-sublabel {
+    color: #94a3b8;
+    font-size: .7rem;
+    margin-top: 2px;
+}
+
+/* CONTROLS */
+.lab-controls {
+    padding: 20px;
+    border-top: 1px solid var(--ind-border);
+}
+
+.control-single {
+    padding: 15px;
+    background: #0a131f;
+    border: 1px solid var(--ind-border);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.control-single label {
+    display: block;
+    color: #cbd5e1;
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.control-single input[type="range"] {
+    width: 100%;
+    max-width: 600px;
+    accent-color: var(--ind-blue-light);
+}
+
+.ph-display-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 14px;
+    background: #0d2637;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    color: var(--ind-blue-light);
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+/* ASK INSITE AI */
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--ind-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai > i {
+    color: #2196d2;
+    font-size: 31px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: .2s ease;
+}
+
+.ask-ai:hover > i {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ask-ai h3 {
+    margin: 0 0 8px;
+}
+
+.ask-ai p {
+    max-width: 650px;
+    margin: auto;
+    color: var(--ind-muted);
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.ask-ai a:hover {
+    background: #0d5b8e;
+}
+
+/* MOBILE */
+@media (max-width: 760px) {
+    .indicators-page {
+        width: calc(100% - 18px);
+        margin-top: 15px;
+    }
+    .ind-section {
+        padding: 19px 16px;
+    }
+    .ind-grid.two,
+    .ind-grid.three {
+        grid-template-columns: 1fr;
+    }
+    .rack-stage {
+        gap: 20px;
+        height: 340px;
+    }
+    .test-tube-assembly {
+        width: 65px;
+    }
+    .test-tube {
+        width: 30px;
+    }
+}
+</style>
+
+
+<div class="indicators-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="ind-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="ind-header">
+        <h1>
+            <i class="fa-solid fa-droplet"></i>
+            Indicators & pH Scale
+        </h1>
+        <p>
+            Investigate pH transitions of common organic indicators, analyze safe colorimetric scales, and test solutions in our interactive virtual test-tube laboratory.
+        </p>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="ind-nav">
+        <a href="#scale">pH Scale</a>
+        <a href="#indicators">Common Indicators</a>
+        <a href="#lab">Virtual Lab</a>
+        <a href="#universal">Universal Indicator</a>
+        <a href="#practical">Practical Procedure</a>
+    </nav>
+
+
+    <!-- pH SCALE THEORY -->
+    <section class="ind-section" id="scale">
+        <div class="ind-section-header">
+            <div class="ind-number">01</div>
+            <h2>The pH Scale</h2>
+        </div>
+        <p>
+            The <strong>pH scale</strong> runs from 0 to 14 and measures how acidic or alkaline (basic) an aqueous solution is. It is based on the concentration of hydrogen ions in the solution.
+        </p>
+
+        <div class="ind-grid three">
+            <div class="ind-card">
+                <i class="fa-solid fa-vial"></i>
+                <h3>Acidic (pH 0 to 6.9)</h3>
+                <p>Solutions with a high concentration of hydrogen ions. Lower pH numbers indicate stronger acidity.</p>
+            </div>
+            <div class="ind-card">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <h3>Neutral (pH 7.0)</h3>
+                <p>Pure water at room temperature. The concentration of hydrogen ions equals hydroxide ions.</p>
+            </div>
+            <div class="ind-card">
+                <i class="fa-solid fa-flask"></i>
+                <h3>Alkaline / Basic (pH 7.1 to 14)</h3>
+                <p>Solutions containing excess hydroxide ions. Higher pH numbers indicate stronger alkalinity.</p>
+            </div>
+        </div>
+
+        <div class="ind-info">
+            <strong>Key formula:</strong>
+            pH = -log<sub>10</sub>[H<sup>+</sup>]. Every whole unit change on the pH scale represents a tenfold change in hydrogen ion concentration.
+        </div>
+    </section>
+
+
+    <!-- COMMON INDICATORS -->
+    <section class="ind-section" id="indicators">
+        <div class="ind-section-header">
+            <div class="ind-number">02</div>
+            <h2>Common Organic Indicators</h2>
+        </div>
+        <p>
+            Indicators are weak organic acids or bases whose ionized and unionized forms have distinct colors. Selecting the right indicator depends on the pH at the equivalence point of a titration.
+        </p>
+
+        <div class="ind-table-wrap">
+            <table class="ind-table">
+                <thead>
+                    <tr>
+                        <th>Indicator</th>
+                        <th>Colour in Acid</th>
+                        <th>Colour in Alkali</th>
+                        <th>Transition pH Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Methyl Orange</strong></td>
+                        <td style="color:#ef4444;">Red</td>
+                        <td style="color:#facc15;">Yellow</td>
+                        <td>3.1 – 4.4 (Orange at endpoint)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phenolphthalein</strong></td>
+                        <td>Colourless</td>
+                        <td style="color:#f472b6;">Pink / Magenta</td>
+                        <td>8.2 – 10.0 (Pale pink at endpoint)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Litmus Solution</strong></td>
+                        <td style="color:#ef4444;">Red</td>
+                        <td style="color:#3b82f6;">Blue</td>
+                        <td>4.5 – 8.3 (Purple at neutral)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- VIRTUAL LAB SIMULATION -->
+    <section class="ind-section" id="lab">
+        <div class="ind-section-header">
+            <div class="ind-number">03</div>
+            <h2>Virtual Colorimetric Indicator Lab</h2>
+        </div>
+        <p>
+            Because we cannot perform this practical physically in person right now, use the interactive slider below to change the solution pH from 1 to 14. Watch how the three test tubes in the test-tube rack respond in real time!
+        </p>
+
+        <div class="pH-lab">
+            <div class="lab-top">
+                <h3>Interactive Test-Tube Rack</h3>
+                <span class="lab-status">Simulation Active</span>
+            </div>
+
+            <!-- TEST TUBE STAGE -->
+            <div class="rack-stage">
+                <div class="lab-bench"></div>
+                <div class="wooden-rack"></div>
+
+                <!-- TEST TUBE 1: METHYL ORANGE -->
+                <div class="test-tube-assembly">
+                    <div class="test-tube">
+                        <div class="tube-liquid" id="moLiquid"></div>
+                    </div>
+                    <div class="tube-label-box">
+                        <span class="tube-label">Methyl Orange</span>
+                        <span class="tube-sublabel" id="moLabel">Red</span>
+                    </div>
+                </div>
+
+                <!-- TEST TUBE 2: PHENOLPHTHALEIN -->
+                <div class="test-tube-assembly">
+                    <div class="test-tube">
+                        <div class="tube-liquid" id="ppLiquid"></div>
+                    </div>
+                    <div class="tube-label-box">
+                        <span class="tube-label">Phenolphthalein</span>
+                        <span class="tube-sublabel" id="ppLabel">Colourless</span>
+                    </div>
+                </div>
+
+                <!-- TEST TUBE 3: UNIVERSAL INDICATOR -->
+                <div class="test-tube-assembly">
+                    <div class="test-tube">
+                        <div class="tube-liquid" id="uiLiquid"></div>
+                    </div>
+                    <div class="tube-label-box">
+                        <span class="tube-label">Universal Indicator</span>
+                        <span class="tube-sublabel" id="uiLabel">Red</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="lab-controls">
+                <div class="control-single">
+                    <label>Adjust Solution pH Level</label>
+                    <input id="phSlider" type="range" min="1" max="14" step="0.5" value="1">
+                    <div class="ph-display-badge" id="phDisplay">pH 1.0 (Strong Acid)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- UNIVERSAL INDICATOR -->
+    <section class="ind-section" id="universal">
+        <div class="ind-section-header">
+            <div class="ind-number">04</div>
+            <h2>Universal Indicator & pH Paper</h2>
+        </div>
+        <p>
+            Unlike single indicators that only show a two-color change, <strong>Universal Indicator</strong> is a blend of several compounds that exhibits a smooth spectrum of colors from pH 1 to 14.
+        </p>
+
+        <div class="ind-grid three">
+            <div class="ind-card">
+                <h3 style="color:#ef4444;">Strong Acids (pH 1–3)</h3>
+                <p>Turns deep red or pink. Indicates high concentration of hydrogen ions.</p>
+            </div>
+            <div class="ind-card">
+                <h3 style="color:#34d399;">Neutral (pH 7)</h3>
+                <p>Turns distinct green. Found in pure water and neutral salt solutions.</p>
+            </div>
+            <div class="ind-card">
+                <h3 style="color:#3b82f6;">Strong Alkalis (pH 12–14)</h3>
+                <p>Turns dark purple or violet. Indicates high concentration of hydroxide ions.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PRACTICAL PROCEDURE -->
+    <section class="ind-section" id="practical">
+        <div class="ind-section-header">
+            <div class="ind-number">05</div>
+            <h2>Practical Laboratory Procedure</h2>
+        </div>
+        <ol>
+            <li>Pour approximately 2 cm<sup>3</sup> of the test solution into a clean test tube.</li>
+            <li>Add 1 to 2 drops of the chosen indicator using a dropping pipette.</li>
+            <li>Swirl the test tube gently to mix the indicator thoroughly into the solution.</li>
+            <li>Observe the resulting color against a white background or tile for clarity.</li>
+            <li>Compare the observed color with a standard colorimetric pH chart to determine the approximate pH.</li>
+            <li>Repeat the process using fresh test tubes and different indicators for accuracy.</li>
+        </ol>
+
+        <div class="ind-info">
+            <strong>Safety Tip:</strong>
+            Always use dropping pipettes carefully to avoid chemical splashes, and wear safety goggles when handling concentrated acids or alkalis.
+        </div>
+    </section>
+
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Need help with Indicators or pH calculations?</h3>
+        <p>Ask Insite AI to explain indicator theory, help calculate hydrogen ion concentrations, or quiz you on colorimetric test observations.</p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   VIRTUAL pH INDICATOR LAB SIMULATION SCRIPT
+   ========================================================= */
+
+const phSlider = document.getElementById("phSlider");
+const phDisplay = document.getElementById("phDisplay");
+
+const moLiquid = document.getElementById("moLiquid");
+const moLabel = document.getElementById("moLabel");
+
+const ppLiquid = document.getElementById("ppLiquid");
+const ppLabel = document.getElementById("ppLabel");
+
+const uiLiquid = document.getElementById("uiLiquid");
+const uiLabel = document.getElementById("uiLabel");
+
+function updateIndicatorLab() {
+    const pH = Number(phSlider.value);
+
+    // Update Badge text
+    let description = "Strong Acid";
+    if (pH > 3 && pH < 6) description = "Weak Acid";
+    else if (pH === 7) description = "Neutral";
+    else if (pH > 7 && pH < 11) description = "Weak Alkali";
+    else if (pH >= 11) description = "Strong Alkali";
+
+    phDisplay.textContent = "pH " + pH.toFixed(1) + " (" + description + ")";
+
+    // 1. Methyl Orange (Red < 3.1, Orange transition 3.1-4.4, Yellow > 4.4)
+    if (pH < 3.1) {
+        moLiquid.style.background = "rgba(239, 68, 68, 0.85)"; // Red
+        moLabel.textContent = "Red";
+    } else if (pH <= 4.4) {
+        moLiquid.style.background = "rgba(249, 115, 22, 0.9)"; // Orange
+        moLabel.textContent = "Orange";
+    } else {
+        moLiquid.style.background = "rgba(250, 204, 21, 0.85)"; // Yellow
+        moLabel.textContent = "Yellow";
+    }
+
+    // 2. Phenolphthalein (Colourless < 8.2, Pale Pink transition, Magenta > 10)
+    if (pH < 8.2) {
+        ppLiquid.style.background = "rgba(220, 235, 245, 0.15)"; // Colourless
+        ppLabel.textContent = "Colourless";
+    } else if (pH <= 10.0) {
+        ppLiquid.style.background = "rgba(244, 143, 177, 0.7)"; // Pale Pink
+        ppLabel.textContent = "Pale Pink";
+    } else {
+        ppLiquid.style.background = "rgba(233, 30, 99, 0.85)"; // Magenta
+        ppLabel.textContent = "Magenta";
+    }
+
+    // 3. Universal Indicator (Smooth rainbow gradient 1 to 14)
+    let uiColor = "rgba(239, 68, 68, 0.85)"; // Red at pH 1
+    let uiText = "Red";
+
+    if (pH <= 2) { uiColor = "#dc2626"; uiText = "Dark Red"; }
+    else if (pH <= 4) { uiColor = "#ea580c"; uiText = "Red-Orange"; }
+    else if (pH <= 5) { uiColor = "#f97316"; uiText = "Orange"; }
+    else if (pH <= 6) { uiColor = "#facc15"; uiText = "Yellow"; }
+    else if (pH === 7) { uiColor = "#34d399"; uiText = "Green (Neutral)"; }
+    else if (pH <= 9) { uiColor = "#22d3ee"; uiText = "Blue-Green"; }
+    else if (pH <= 11) { uiColor = "#3b82f6"; uiText = "Blue"; }
+    else if (pH <= 13) { uiColor = "#8b5cf6"; uiText = "Indigo"; }
+    else { uiColor = "#6d28d9"; uiText = "Violet / Purple"; }
+
+    uiLiquid.style.background = uiColor;
+    uiLabel.textContent = uiText;
+}
+
+phSlider.addEventListener("input", updateIndicatorLab);
+
+// Initialise on load
+updateIndicatorLab();
+</script>
+
+{% endblock %}

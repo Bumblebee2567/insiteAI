@@ -1,0 +1,632 @@
+{% extends "base.html" %}
+
+{% block title %}
+Kinetic Theory of Gases | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --phys-bg: #050a12;
+    --phys-panel: #0a111d;
+    --phys-border: rgba(100, 116, 139, .18);
+    --phys-text: #f1f5f9;
+    --phys-muted: #94a3b8;
+
+    --phys-blue: #1677b8;
+    --phys-blue-light: #2196d2;
+    --phys-cyan: #38bdf8;
+
+    --phys-green: #34d399;
+    --phys-red: #ef4444;
+}
+
+.phys-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--phys-text);
+}
+
+.phys-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--phys-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.phys-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+.phys-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.phys-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.phys-header h1 i {
+    color: var(--phys-blue-light);
+    margin-right: 8px;
+}
+
+.phys-header p {
+    max-width: 920px;
+    margin: 13px auto 0;
+    color: var(--phys-muted);
+    line-height: 1.75;
+}
+
+.phys-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--phys-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.phys-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.phys-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.phys-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.phys-section {
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.phys-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phys-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.phys-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.phys-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--phys-border);
+    padding-bottom: 6px;
+}
+
+.phys-section p,
+.phys-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.phys-section li {
+    margin-bottom: 8px;
+}
+
+.phys-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--phys-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.phys-info strong {
+    color: #55b6e9;
+}
+
+.phys-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.phys-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.phys-table th,
+.phys-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.phys-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.phys-table td {
+    color: #cbd5e1;
+}
+
+.phys-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--phys-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--phys-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--phys-panel);
+    border: 1px solid var(--phys-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--phys-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct { border-left-color: var(--phys-green); }
+.test-result.wrong { border-left-color: var(--phys-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--phys-border);
+    border-radius: 12px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--phys-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover { background: #1677b8; }
+
+@media (max-width: 760px) {
+    .phys-section { padding: 20px; }
+    .phys-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="phys-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('physics_page') }}" class="phys-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Physics Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="phys-header">
+        <h1>
+            <i class="fa-solid fa-wind"></i>
+            Kinetic Theory of Gases & Molecular Dynamics
+        </h1>
+        <p>
+            An exhaustive textbook-grade masterclass covering the microscopic foundations of thermodynamics, ideal gas laws, 
+            molecular velocity distributions, root-mean-square speeds, microscopic pressure derivations, and the equipartition of energy.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="phys-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#ideal_gas">Ideal Gas Law</a>
+        <a href="#molecular_pressure">Molecular Pressure</a>
+        <a href="#rms">RMS Molecular Speed</a>
+        <a href="#equipartition">Equipartition of Energy</a>
+        <a href="#maxwell">Maxwell-Boltzmann</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="phys-section" id="intro">
+        <div class="phys-section-header">
+            <div class="phys-number">01</div>
+            <h2>Introduction to Kinetic Theory</h2>
+        </div>
+        <p>
+            The kinetic theory of gases bridges the microscopic world of atomic motion with the macroscopic properties of matter such as pressure, temperature, and volume. 
+            Instead of treating a gas as a continuous fluid, kinetic theory models a gas as a vast collection of tiny, identical point-like particles (molecules or atoms) in constant, random, rapid motion, colliding elastically with one another and with the walls of their container.
+        </p>
+        <div class="phys-info">
+            <strong>Core Assumptions of an Ideal Gas:</strong><br>
+            1. The gas consists of a very large number of identical molecules moving in random directions with a distribution of speeds.<br>
+            2. The total volume of the gas molecules is negligible compared to the total volume of the container.<br>
+            3. Intermolecular forces are completely negligible except during instantaneous elastic collisions.<br>
+            4. All collisions between molecules and with container walls are perfectly elastic.
+        </div>
+    </section>
+
+    <!-- 02 IDEAL GAS LAW -->
+    <section class="phys-section" id="ideal_gas">
+        <div class="phys-section-header">
+            <div class="phys-number">02</div>
+            <h2>The Ideal Gas Equation of State</h2>
+        </div>
+        <p>
+            Macroscopically, gases under low pressures and high temperatures obey the Ideal Gas Law, which relates pressure (P), volume (V), temperature (T), and quantity of gas:
+        </p>
+        <div class="phys-info">
+            <strong>Macroscopic Form:</strong><br>
+            <strong>Pressure &times; Volume = Number of Moles &times; Universal Gas Constant &times; Absolute Temperature</strong><br>
+            (PV = nRT, where R = 8.314 J/(mol&middot;K) and temperature T is measured strictly in Kelvin).
+        </div>
+        <ul>
+            <li><strong>Microscopic Form:</strong> Using the Boltzmann constant (k<sub>B</sub> = R / N<sub>A</sub> = 1.38 &times; 10<sup>-23</sup> J/K) and the total number of molecules N:
+                <br><strong>Pressure &times; Volume = Number of Molecules &times; Boltzmann Constant &times; Absolute Temperature</strong> (PV = N k<sub>B</sub> T).</li>
+            <li><strong>Gas Laws Combined:</strong> Encapsulates Boyle's Law (P proportional to 1/V at constant T), Charles's Law (V proportional to T at constant P), and Gay-Lussac's Law (P proportional to T at constant V).</li>
+        </ul>
+    </section>
+
+    <!-- 03 MOLECULAR PRESSURE -->
+    <section class="phys-section" id="molecular_pressure">
+        <div class="phys-section-header">
+            <div class="phys-number">03</div>
+            <h2>Microscopic Derivation of Gas Pressure</h2>
+        </div>
+        <p>
+            Pressure inside a gas container is not a static force, but rather the cumulative macroscopic result of billions of microscopic molecular momentum impulses striking the container walls every second.
+        </p>
+        <ul>
+            <li><strong>Derivation Outline:</strong> When a molecule of mass m moving with speed v<sub>x</sub> hits a wall perpendicularly and rebounds elastically, its change in momentum is 2m v<sub>x</sub>. 
+            Dividing this impulse by the time interval between successive wall impacts and summing over all N molecules in a volume V yields:
+                <br><strong>Pressure = (1/3) &times; (Mass Density) &times; (Root-Mean-Square Speed squared)</strong><br>
+                or in terms of total molecules: <strong>Pressure = (1/3) &times; (Number Density) &times; (Mass of Molecule) &times; (Average Speed squared)</strong>.</li>
+        </ul>
+    </section>
+
+    <!-- 04 RMS MOLECULAR SPEED -->
+    <section class="phys-section" id="rms">
+        <div class="phys-section-header">
+            <div class="phys-number">04</div>
+            <h2>Root-Mean-Square Molecular Speed</h2>
+        </div>
+        <p>
+            Because gas molecules travel at a wide range of speeds, we use the <strong>root-mean-square (RMS) speed</strong> (v<sub>rms</sub>) as the statistical representative speed for calculating kinetic energy.
+        </p>
+        <div class="phys-info">
+            <strong>Equations for RMS Speed:</strong><br>
+            <strong>v<sub>rms</sub> = square root of ((3 &times; Universal Gas Constant &times; Absolute Temperature) / Molar Mass)</strong><br>
+            &nbsp;&nbsp;or in terms of Boltzmann constant and single molecule mass (m):<br>
+            <strong>v<sub>rms</sub> = square root of ((3 &times; Boltzmann Constant &times; Absolute Temperature) / Mass of Single Molecule)</strong>
+        </div>
+        <ul>
+            <li><strong>Temperature Dependence:</strong> RMS speed is directly proportional to the square root of the absolute temperature in Kelvin and inversely proportional to the square root of the molar mass. Lighter gas molecules (like hydrogen or helium) move much faster than heavier molecules (like carbon dioxide or nitrogen) at the same temperature.</li>
+        </ul>
+    </section>
+
+    <!-- 05 EQUIPARTITION OF ENERGY -->
+    <section class="phys-section" id="equipartition">
+        <div class="phys-section-header">
+            <div class="phys-number">05</div>
+            <h2>Equipartition of Energy & Internal Energy</h2>
+        </div>
+        <p>
+            The theorem of equipartition of energy states that in thermal equilibrium, every independent degree of freedom (ways a molecule can store energy, such as translational, rotational, or vibrational motion) shares an average thermal energy of (1/2) &times; Boltzmann Constant &times; Absolute Temperature per molecule.
+        </p>
+        <ul>
+            <li><strong>Degrees of Freedom (f):</strong><br>
+                &bull; Monoatomic gases (He, Ne): 3 translational degrees of freedom (f = 3).<br>
+                &bull; Diatomic gases (O<sub>2</sub>, N<sub>2</sub> at room temperature): 3 translational + 2 rotational = 5 degrees of freedom (f = 5).<br>
+                &bull; Polyatomic gases: 6 or more degrees of freedom.</li>
+            <li><strong>Total Internal Energy (U):</strong> 
+                <strong>Internal Energy = (Number of Moles) &times; (Degrees of Freedom / 2) &times; Universal Gas Constant &times; Absolute Temperature</strong> (U = (f/2) nRT).</li>
+        </ul>
+    </section>
+
+    <!-- 06 MAXWELL-BOLTZMANN -->
+    <section class="phys-section" id="maxwell">
+        <div class="phys-section-header">
+            <div class="phys-number">06</div>
+            <h2>Maxwell-Boltzmann Speed Distribution</h2>
+        </div>
+        <p>
+            While the RMS speed gives an average statistical benchmark, the <strong>Maxwell-Boltzmann distribution function</strong> describes the exact probability distribution of speeds among molecules in a gas at a given temperature.
+        </p>
+        <ul>
+            <li><strong>Key Speed Markers on the Distribution Curve:</strong><br>
+                &bull; <strong>Most Probable Speed (v<sub>mp</sub>):</strong> The peak of the distribution curve where the maximum number of molecules travel: 
+                <br><strong>v<sub>mp</sub> = square root of ((2 &times; Universal Gas Constant &times; Temperature) / Molar Mass)</strong>.<br>
+                &bull; <strong>Average (Mean) Speed (v<sub>avg</sub>):</strong> The mathematical average speed of all molecules: 
+                <br><strong>v<sub>avg</sub> = square root of ((8 &times; Universal Gas Constant &times; Temperature) / (pi &times; Molar Mass))</strong>.<br>
+                &bull; <strong>Root-Mean-Square Speed (v<sub>rms</sub>):</strong> 
+                <br><strong>v<sub>rms</sub> = square root of ((3 &times; Universal Gas Constant &times; Temperature) / Molar Mass)</strong>.<br>
+                (Always ordered as: v<sub>mp</sub> &lt; v<sub>avg</sub> &lt; v<sub>rms</sub>).</li>
+            <li><strong>Effect of Temperature:</strong> As temperature increases, the distribution curve flattens and shifts to the right, meaning a greater proportion of molecules attain higher speeds.</li>
+        </ul>
+    </section>
+
+    <!-- 07 INTERACTIVE TEST -->
+    <section class="phys-section" id="test">
+        <div class="phys-section-header">
+            <div class="phys-number">07</div>
+            <h2>Interactive Kinetic Theory Test</h2>
+        </div>
+        <p>Test your conceptual understanding of RMS molecular speeds and the ideal gas law.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-flask"></i> Molecular Speed Challenge</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    If the absolute Kelvin temperature of an ideal gas sample is 
+                    <strong>quadrupled</strong> (T becomes 4T), what happens to the root-mean-square speed (v<sub>rms</sub>) of the gas molecules?
+                </div>
+
+                <select class="test-select" id="physAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="correct">It doubles (increases by a factor of 2)</option>
+                    <option value="wrong1">It quadruples (increases by a factor of 4)</option>
+                    <option value="wrong2">It remains exactly the same</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkPhys">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="physResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 WORKED EXAMPLES -->
+    <section class="phys-section" id="problems">
+        <div class="phys-section-header">
+            <div class="phys-number">08</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (RMS Speed Calculation):</strong>
+            <p>Calculate the root-mean-square (RMS) speed of oxygen molecules (O<sub>2</sub>) at a room temperature of 20.0 degrees Celsius (293.15 K). 
+            Given that the molar mass of oxygen gas is M = 0.0320 kg/mol. (Use R = 8.314 J/(mol&middot;K)).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: v<sub>rms</sub> = square root of ((3 &times; R &times; T) / M).<br>
+                - Convert temperature to Kelvin: T = 20.0 + 273.15 = 293.15 K.<br>
+                - Substitute values:<br>
+                v<sub>rms</sub> = square root of (((3 &times; 8.314 J/(mol&middot;K)) &times; 293.15 K) / (0.0320 kg/mol)).<br>
+                - Numerator: 3 &times; 8.314 &times; 293.15 = 7,309.58 J/mol.<br>
+                - Division: 7,309.58 / 0.0320 = 228,424.4 m<sup>2</sup>/s<sup>2</sup>.<br>
+                - Take square root: v<sub>rms</sub> = square root of (228,424.4) approximately equal to <strong>477.9 m/s</strong>.
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Ideal Gas Law & Number Density):</strong>
+            <p>A rigid steel container of volume 0.500 m<sup>3</sup> holds helium gas (a monoatomic ideal gas) at a pressure of 2.00 &times; 10<sup>5</sup> Pa 
+            and a temperature of 300.0 K. Calculate: (a) the total number of moles of helium gas, and (b) the total internal energy of the gas. 
+            (Use R = 8.314 J/(mol&middot;K)).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                <strong>(a) Number of Moles (n):</strong><br>
+                - Ideal Gas Law: P &times; V = n &times; R &times; T implies n = (P &times; V) / (R &times; T).<br>
+                - n = ((2.00 &times; 10<sup>5</sup> Pa) &times; (0.500 m<sup>3</sup>)) / ((8.314 J/(mol&middot;K)) &times; (300.0 K)).<br>
+                - n = 100,000 / 2,494.2 approximately equal to <strong>40.1 moles</strong>.<br><br>
+                <strong>(b) Total Internal Energy (U):</strong><br>
+                - For a monoatomic ideal gas, degrees of freedom f = 3.<br>
+                - Formula: U = (f/2) &times; n &times; R &times; T = (3/2) &times; P &times; V.<br>
+                - U = 1.5 &times; (2.00 &times; 10<sup>5</sup> Pa) &times; (0.500 m<sup>3</sup>) = 1.5 &times; 100,000 = <strong>150,000 Joules</strong> (150 kJ).
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Comparing Molecular Speeds):</strong>
+            <p>Compare the RMS speed of helium atoms (molar mass = 0.0040 kg/mol) with that of sulfur hexafluoride molecules (molar mass = 0.1460 kg/mol) 
+            when both gases are maintained at the exact same temperature of 300 K. Calculate the ratio of their RMS speeds (v<sub>rms, He</sub> / v<sub>rms, SF6</sub>).</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - Formula: v<sub>rms</sub> = square root of ((3 &times; R &times; T) / M).<br>
+                - Since R, T, and factor 3 are identical for both gases, v<sub>rms</sub> is inversely proportional to the square root of molar mass (M):<br>
+                v<sub>rms, He</sub> / v<sub>rms, SF6</sub> = square root of (M<sub>SF6</sub> / M<sub>He</sub>).<br>
+                - Substitute molar masses: square root of (0.1460 / 0.0040) = square root of (36.5) approximately equal to <strong>6.04</strong>.<br>
+                - Conclusion: Helium atoms travel more than 6 times faster than sulfur hexafluoride molecules at the same temperature!
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--phys-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with kinetic theory or Maxwell-Boltzmann statistics?</h3>
+        <p style="color:var(--phys-muted); margin:0;">
+            Ask Insite AI to break down velocity distribution integrals, mean free path calculations, or real gas van der Waals corrections.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const physAnswer = document.getElementById("physAnswer");
+const checkPhys = document.getElementById("checkPhys");
+const physResult = document.getElementById("physResult");
+
+checkPhys.addEventListener("click", function () {
+    const val = physAnswer.value;
+    physResult.style.display = "block";
+
+    if (val === "correct") {
+        physResult.className = "test-result correct";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Because RMS speed is proportional to the square root of absolute temperature (v<sub>rms</sub> proportional to square root of T), quadrupling T (4T) multiplies the RMS speed by the square root of 4, which equals 2.</div>
+        `;
+    } else if (val === "") {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        physResult.className = "test-result wrong";
+        physResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>RMS speed scales with the square root of temperature, so quadrupling the temperature causes the RMS speed to <strong>double</strong> (increase by a factor of 2).</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

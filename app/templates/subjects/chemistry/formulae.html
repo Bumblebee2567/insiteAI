@@ -1,0 +1,1335 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chemical Formulae | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+.chemical-formulae-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.chemical-formulae-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.chemical-formulae-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.chemical-formulae-header p {
+    color: #9ca3af;
+    max-width: 780px;
+    margin: auto;
+    line-height: 1.7;
+}
+
+/* BACK BUTTON */
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+/* TOPIC NAVIGATION */
+.formulae-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.formulae-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.formulae-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.formulae-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.formulae-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.formulae-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.formulae-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* SECTIONS */
+.formulae-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.formulae-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.formulae-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.formulae-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.formulae-section p {
+    color: #c9d1d9;
+    line-height: 1.8;
+}
+
+.formulae-section li {
+    color: #c9d1d9;
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+/* HIGHLIGHT */
+.highlight {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.highlight strong {
+    color: #58a6ff;
+}
+
+/* FORMULA BOX */
+.formula-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 18px;
+    margin: 18px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+.formula-name {
+    color: #58a6ff;
+    font-size: .9rem;
+    margin-bottom: 8px;
+}
+
+/* EXAMPLE BOX */
+.example-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+.example-box p {
+    margin-bottom: 8px;
+}
+
+/* ANSWER */
+.answer-box {
+    background: #161b22;
+    border-left: 4px solid #3b82f6;
+    padding: 12px 15px;
+    margin-top: 12px;
+    border-radius: 7px;
+}
+
+/* TWO COLUMN CARDS */
+.formula-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.formula-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.formula-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.formula-card p {
+    color: #9ca3af;
+    font-size: .9rem;
+}
+
+/* SYMBOL TABLE */
+.symbol-table-wrapper {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.symbol-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.symbol-table th {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+.symbol-table td {
+    color: #c9d1d9;
+    padding: 12px;
+    border: 1px solid #30363d;
+}
+
+/* WORD PROBLEM */
+.word-problem {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.word-problem h4 {
+    color: #79c0ff;
+    margin-top: 0;
+}
+
+/* ASK AI */
+.ask-ai {
+    background: linear-gradient(
+        135deg,
+        #161b22,
+        #111827
+    );
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .chemical-formulae-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .chemical-formulae-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .formulae-section {
+        padding: 18px;
+    }
+
+    .formula-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .formulae-nav-wrapper {
+        top: 0;
+    }
+}
+</style>
+
+<div class="chemical-formulae-page">
+
+<!-- BACK TO CHEMISTRY -->
+
+<a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+    <i class="fas fa-arrow-left"></i>
+    Back to Chemistry
+</a>
+
+
+<!-- HEADER -->
+
+<div class="chemical-formulae-header">
+
+    <h1>Chemical Formulae</h1>
+
+    <p>
+        Learn how chemical formulae represent elements, compounds,
+        molecules and the ratios in which atoms combine.
+        From writing simple formulae to calculating relative formula
+        mass and using formulae in chemical equations.
+    </p>
+
+</div>
+
+
+<!-- TOPIC NAVIGATION -->
+
+<div class="formulae-nav-wrapper">
+
+    <nav class="formulae-nav">
+
+        <a href="#introduction">Introduction</a>
+
+        <a href="#symbols">Symbols</a>
+
+        <a href="#formula-meaning">Reading Formulae</a>
+
+        <a href="#valency">Valency</a>
+
+        <a href="#ions">Ions</a>
+
+        <a href="#writing">Writing Formulae</a>
+
+        <a href="#common">Common Formulae</a>
+
+        <a href="#mass">Relative Formula Mass</a>
+
+        <a href="#moles">Formulae & Moles</a>
+
+        <a href="#percentage">Percentage Composition</a>
+
+        <a href="#empirical">Empirical Formula</a>
+
+        <a href="#molecular">Molecular Formula</a>
+
+        <a href="#equations">Chemical Equations</a>
+
+        <a href="#word-problems">Word Problems</a>
+
+    </nav>
+
+</div>
+
+
+<!-- INTRODUCTION -->
+
+<section class="formulae-section" id="introduction">
+
+    <h2>1. What Is a Chemical Formula?</h2>
+
+    <p>
+        A chemical formula is a short way of representing a chemical
+        substance. It tells us which elements are present and, in many
+        cases, the ratio in which their atoms or ions are combined.
+    </p>
+
+    <p>
+        Instead of writing the full name of a substance every time,
+        chemists use symbols and numbers to represent it.
+    </p>
+
+    <div class="highlight">
+        <strong>Example:</strong>
+        Water is represented by H₂O. This means that each water molecule
+        contains two hydrogen atoms and one oxygen atom.
+    </div>
+
+    <h3>Why Are Chemical Formulae Important?</h3>
+
+    <ul>
+        <li>They identify chemical substances.</li>
+        <li>They show which elements are present.</li>
+        <li>They can show the ratio of atoms in a compound.</li>
+        <li>They are used in chemical equations.</li>
+        <li>They allow chemists to calculate relative formula masses.</li>
+        <li>They are used in mole calculations and quantitative chemistry.</li>
+    </ul>
+
+</section>
+
+
+<!-- SYMBOLS -->
+
+<section class="formulae-section" id="symbols">
+
+    <h2>2. Chemical Symbols</h2>
+
+    <p>
+        Before writing chemical formulae, you need to understand chemical
+        symbols. Each element has its own symbol.
+    </p>
+
+    <p>
+        The first letter of an element symbol is always capitalized.
+        If a second letter is present, it is lowercase.
+    </p>
+
+    <div class="formula-grid">
+
+        <div class="formula-card">
+            <h4>Hydrogen</h4>
+            <p>Symbol: H</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Oxygen</h4>
+            <p>Symbol: O</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Sodium</h4>
+            <p>Symbol: Na</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Chlorine</h4>
+            <p>Symbol: Cl</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Calcium</h4>
+            <p>Symbol: Ca</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Iron</h4>
+            <p>Symbol: Fe</p>
+        </div>
+
+    </div>
+
+    <div class="highlight">
+        <strong>Important:</strong>
+        CO and Co do not mean the same thing.
+        CO represents carbon monoxide, while Co represents cobalt.
+    </div>
+
+</section>
+
+
+<!-- READING FORMULAE -->
+
+<section class="formulae-section" id="formula-meaning">
+
+    <h2>3. How to Read a Chemical Formula</h2>
+
+    <p>
+        The small number written after an element symbol is called a
+        subscript. It tells us how many atoms of that element are present.
+    </p>
+
+    <div class="formula-box">
+        H₂O
+    </div>
+
+    <p>
+        In H₂O, the subscript 2 belongs to hydrogen. Therefore there are
+        two hydrogen atoms. Oxygen has no subscript, so there is one oxygen
+        atom.
+    </p>
+
+    <h3>Example: CO₂</h3>
+
+    <p>
+        CO₂ contains one carbon atom and two oxygen atoms.
+    </p>
+
+    <h3>Example: CaCl₂</h3>
+
+    <p>
+        CaCl₂ contains one calcium atom and two chlorine atoms.
+    </p>
+
+    <h3>Parentheses in Formulae</h3>
+
+    <p>
+        Parentheses are used when a group of atoms occurs more than once.
+    </p>
+
+    <div class="formula-box">
+        Ca(OH)₂
+    </div>
+
+    <p>
+        The subscript 2 applies to the entire OH group. Therefore the
+        compound contains one calcium atom, two oxygen atoms and two
+        hydrogen atoms.
+    </p>
+
+</section>
+
+
+<!-- VALENCY -->
+
+<section class="formulae-section" id="valency">
+
+    <h2>4. Valency and Writing Formulae</h2>
+
+    <p>
+        Valency describes the combining capacity of an atom or ion.
+        Understanding valency helps us determine the correct formula
+        of many ionic compounds.
+    </p>
+
+    <h3>Common Valencies</h3>
+
+    <div class="symbol-table-wrapper">
+
+        <table class="symbol-table">
+
+            <tr>
+                <th>Element/Ion</th>
+                <th>Symbol</th>
+                <th>Common Valency</th>
+            </tr>
+
+            <tr>
+                <td>Sodium</td>
+                <td>Na</td>
+                <td>1</td>
+            </tr>
+
+            <tr>
+                <td>Potassium</td>
+                <td>K</td>
+                <td>1</td>
+            </tr>
+
+            <tr>
+                <td>Magnesium</td>
+                <td>Mg</td>
+                <td>2</td>
+            </tr>
+
+            <tr>
+                <td>Calcium</td>
+                <td>Ca</td>
+                <td>2</td>
+            </tr>
+
+            <tr>
+                <td>Aluminium</td>
+                <td>Al</td>
+                <td>3</td>
+            </tr>
+
+            <tr>
+                <td>Oxygen</td>
+                <td>O</td>
+                <td>2</td>
+            </tr>
+
+            <tr>
+                <td>Chlorine</td>
+                <td>Cl</td>
+                <td>1</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Example: Magnesium Chloride</h3>
+
+    <p>
+        Magnesium has valency 2 and chlorine has valency 1.
+        Therefore two chlorine ions are required for every magnesium ion.
+    </p>
+
+    <div class="formula-box">
+        MgCl₂
+    </div>
+
+    <h3>Example: Aluminium Oxide</h3>
+
+    <p>
+        Aluminium has valency 3 while oxygen has valency 2.
+        The smallest ratio that balances the charges is 2 aluminium ions
+        to 3 oxide ions.
+    </p>
+
+    <div class="formula-box">
+        Al₂O₃
+    </div>
+
+</section>
+
+
+<!-- IONS -->
+
+<section class="formulae-section" id="ions">
+
+    <h2>5. Ions and Chemical Formulae</h2>
+
+    <p>
+        An ion is an atom or group of atoms that has gained or lost
+        electrons and therefore carries an electrical charge.
+    </p>
+
+    <h3>Positive Ions</h3>
+
+    <p>
+        Positive ions are called cations. They are formed when atoms lose
+        electrons.
+    </p>
+
+    <div class="formula-grid">
+
+        <div class="formula-card">
+            <h4>Sodium ion</h4>
+            <p>Na⁺</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Magnesium ion</h4>
+            <p>Mg²⁺</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Calcium ion</h4>
+            <p>Ca²⁺</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Aluminium ion</h4>
+            <p>Al³⁺</p>
+        </div>
+
+    </div>
+
+    <h3>Negative Ions</h3>
+
+    <p>
+        Negative ions are called anions. They are formed when atoms gain
+        electrons.
+    </p>
+
+    <div class="formula-grid">
+
+        <div class="formula-card">
+            <h4>Chloride</h4>
+            <p>Cl⁻</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Oxide</h4>
+            <p>O²⁻</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Nitride</h4>
+            <p>N³⁻</p>
+        </div>
+
+        <div class="formula-card">
+            <h4>Sulfide</h4>
+            <p>S²⁻</p>
+        </div>
+
+    </div>
+
+    <div class="highlight">
+        <strong>Key idea:</strong>
+        An ionic compound must have an overall electrical charge of zero.
+    </div>
+
+</section>
+
+
+<!-- WRITING FORMULAE -->
+
+<section class="formulae-section" id="writing">
+
+    <h2>6. How to Write Chemical Formulae</h2>
+
+    <p>
+        For ionic compounds, the total positive charge must balance the
+        total negative charge.
+    </p>
+
+    <h3>Step 1: Write the Ions</h3>
+
+    <p>
+        For calcium chloride:
+    </p>
+
+    <div class="formula-box">
+        Ca²⁺ &nbsp;&nbsp; Cl⁻
+    </div>
+
+    <h3>Step 2: Balance the Charges</h3>
+
+    <p>
+        One Ca²⁺ ion needs two Cl⁻ ions.
+    </p>
+
+    <h3>Step 3: Write the Formula</h3>
+
+    <div class="formula-box">
+        CaCl₂
+    </div>
+
+    <div class="example-box">
+
+        <h4>Worked Example: Aluminium Oxide</h4>
+
+        <p>Aluminium ion = Al³⁺</p>
+
+        <p>Oxide ion = O²⁻</p>
+
+        <p>
+            The lowest common total charge is 6.
+        </p>
+
+        <p>
+            2 × Al³⁺ = +6
+        </p>
+
+        <p>
+            3 × O²⁻ = −6
+        </p>
+
+        <div class="answer-box">
+            Formula = <strong>Al₂O₃</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- COMMON FORMULAE -->
+
+<section class="formulae-section" id="common">
+
+    <h2>7. Common Chemical Formulae</h2>
+
+    <div class="symbol-table-wrapper">
+
+        <table class="symbol-table">
+
+            <tr>
+                <th>Substance</th>
+                <th>Formula</th>
+            </tr>
+
+            <tr>
+                <td>Water</td>
+                <td>H₂O</td>
+            </tr>
+
+            <tr>
+                <td>Carbon dioxide</td>
+                <td>CO₂</td>
+            </tr>
+
+            <tr>
+                <td>Carbon monoxide</td>
+                <td>CO</td>
+            </tr>
+
+            <tr>
+                <td>Ammonia</td>
+                <td>NH₃</td>
+            </tr>
+
+            <tr>
+                <td>Methane</td>
+                <td>CH₄</td>
+            </tr>
+
+            <tr>
+                <td>Hydrochloric acid</td>
+                <td>HCl</td>
+            </tr>
+
+            <tr>
+                <td>Sulfuric acid</td>
+                <td>H₂SO₄</td>
+            </tr>
+
+            <tr>
+                <td>Nitric acid</td>
+                <td>HNO₃</td>
+            </tr>
+
+            <tr>
+                <td>Sodium hydroxide</td>
+                <td>NaOH</td>
+            </tr>
+
+            <tr>
+                <td>Calcium carbonate</td>
+                <td>CaCO₃</td>
+            </tr>
+
+            <tr>
+                <td>Sodium chloride</td>
+                <td>NaCl</td>
+            </tr>
+
+            <tr>
+                <td>Calcium oxide</td>
+                <td>CaO</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- RELATIVE FORMULA MASS -->
+
+<section class="formulae-section" id="mass">
+
+    <h2>8. Relative Formula Mass (Mr)</h2>
+
+    <p>
+        Relative formula mass is the sum of the relative atomic masses
+        of all the atoms represented in a chemical formula.
+    </p>
+
+    <div class="formula-box">
+        Mᵣ = sum of the relative atomic masses of all atoms
+    </div>
+
+    <h3>Example: Water</h3>
+
+    <p>
+        Relative atomic mass of hydrogen = 1.
+    </p>
+
+    <p>
+        Relative atomic mass of oxygen = 16.
+    </p>
+
+    <p>
+        Water contains two hydrogen atoms and one oxygen atom.
+    </p>
+
+    <div class="formula-box">
+        Mᵣ(H₂O) = (2 × 1) + 16
+    </div>
+
+    <div class="answer-box">
+        Mᵣ(H₂O) = <strong>18</strong>
+    </div>
+
+    <h3>Example: CaCO₃</h3>
+
+    <div class="formula-box">
+        Mᵣ(CaCO₃) = 40 + 12 + (3 × 16)
+    </div>
+
+    <div class="answer-box">
+        Mᵣ(CaCO₃) = <strong>100</strong>
+    </div>
+
+</section>
+
+
+<!-- MOLES -->
+
+<section class="formulae-section" id="moles">
+
+    <h2>9. Chemical Formulae and Moles</h2>
+
+    <p>
+        Chemical formulae are essential when calculating the number of
+        moles of a substance.
+    </p>
+
+    <div class="formula-box">
+        n = m / M
+    </div>
+
+    <div class="symbol-table-wrapper">
+
+        <table class="symbol-table">
+
+            <tr>
+                <th>Symbol</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>n</td>
+                <td>Amount of substance in moles</td>
+            </tr>
+
+            <tr>
+                <td>m</td>
+                <td>Mass in grams</td>
+            </tr>
+
+            <tr>
+                <td>M</td>
+                <td>Molar mass in g mol⁻¹</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="example-box">
+
+        <h4>Worked Example</h4>
+
+        <p>
+            Calculate the number of moles in 36 g of water.
+        </p>
+
+        <p>
+            Mᵣ of H₂O = 18.
+        </p>
+
+        <div class="formula-box">
+            n = 36 / 18
+        </div>
+
+        <div class="answer-box">
+            Number of moles = <strong>2 mol</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PERCENTAGE COMPOSITION -->
+
+<section class="formulae-section" id="percentage">
+
+    <h2>10. Percentage Composition</h2>
+
+    <p>
+        Percentage composition tells us what percentage of a compound's
+        mass comes from a particular element.
+    </p>
+
+    <div class="formula-box">
+        Percentage by mass =
+        (mass contributed by element / relative formula mass)
+        × 100
+    </div>
+
+    <h3>Example: Percentage of Oxygen in Water</h3>
+
+    <p>
+        H₂O has a relative formula mass of 18.
+        Oxygen contributes 16.
+    </p>
+
+    <div class="formula-box">
+        Percentage oxygen =
+        (16 / 18) × 100
+    </div>
+
+    <div class="answer-box">
+        Percentage oxygen ≈ <strong>88.9%</strong>
+    </div>
+
+</section>
+
+
+<!-- EMPIRICAL FORMULA -->
+
+<section class="formulae-section" id="empirical">
+
+    <h2>11. Empirical Formula</h2>
+
+    <p>
+        The empirical formula shows the simplest whole-number ratio of
+        atoms of each element in a compound.
+    </p>
+
+    <div class="highlight">
+        <strong>Example:</strong>
+        The molecular formula C₆H₁₂O₆ has the empirical formula CH₂O.
+    </div>
+
+    <h3>How to Find an Empirical Formula</h3>
+
+    <ol>
+        <li>Write the mass or percentage of each element.</li>
+        <li>Divide each value by its relative atomic mass.</li>
+        <li>Find the simplest whole-number ratio.</li>
+        <li>Write the empirical formula.</li>
+    </ol>
+
+    <div class="example-box">
+
+        <h4>Worked Example</h4>
+
+        <p>
+            A compound contains 24 g of carbon and 4 g of hydrogen.
+            Find its empirical formula.
+        </p>
+
+        <p>
+            Carbon:
+        </p>
+
+        <div class="formula-box">
+            24 / 12 = 2
+        </div>
+
+        <p>
+            Hydrogen:
+        </p>
+
+        <div class="formula-box">
+            4 / 1 = 4
+        </div>
+
+        <p>
+            Ratio = 2 : 4
+        </p>
+
+        <p>
+            Divide both by 2.
+        </p>
+
+        <div class="answer-box">
+            Simplest ratio = 1 : 2
+            <br><br>
+            Empirical formula = <strong>CH₂</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MOLECULAR FORMULA -->
+
+<section class="formulae-section" id="molecular">
+
+    <h2>12. Molecular Formula</h2>
+
+    <p>
+        The molecular formula shows the actual number of atoms of each
+        element in one molecule.
+    </p>
+
+    <p>
+        The molecular formula is always a whole-number multiple of the
+        empirical formula.
+    </p>
+
+    <div class="formula-box">
+        Molecular formula =
+        empirical formula × n
+    </div>
+
+    <p>
+        Where:
+    </p>
+
+    <div class="formula-box">
+        n = molecular mass / empirical formula mass
+    </div>
+
+    <div class="example-box">
+
+        <h4>Worked Example</h4>
+
+        <p>
+            Suppose a compound has empirical formula CH₂ and a molecular
+            mass of 42.
+        </p>
+
+        <p>
+            Empirical formula mass:
+        </p>
+
+        <div class="formula-box">
+            12 + (2 × 1) = 14
+        </div>
+
+        <p>
+            Therefore:
+        </p>
+
+        <div class="formula-box">
+            n = 42 / 14 = 3
+        </div>
+
+        <div class="answer-box">
+            Molecular formula = <strong>C₃H₆</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CHEMICAL EQUATIONS -->
+
+<section class="formulae-section" id="equations">
+
+    <h2>13. Chemical Formulae in Equations</h2>
+
+    <p>
+        Chemical formulae are used to represent reactants and products
+        in chemical equations.
+    </p>
+
+    <p>
+        For example, hydrogen reacts with oxygen to form water.
+    </p>
+
+    <div class="formula-box">
+        2H₂ + O₂ → 2H₂O
+    </div>
+
+    <h3>Why Are Numbers Placed Before Formulae?</h3>
+
+    <p>
+        The large numbers in front of formulae are called coefficients.
+        They are used to balance chemical equations.
+    </p>
+
+    <div class="highlight">
+        <strong>Important:</strong>
+        Never change the subscripts inside a chemical formula simply to
+        balance an equation. Changing a subscript changes the substance.
+        Balance equations by changing the coefficients.
+    </div>
+
+    <h3>Example</h3>
+
+    <p>Unbalanced:</p>
+
+    <div class="formula-box">
+        H₂ + O₂ → H₂O
+    </div>
+
+    <p>Balanced:</p>
+
+    <div class="formula-box">
+        2H₂ + O₂ → 2H₂O
+    </div>
+
+</section>
+
+
+<!-- WORD PROBLEMS -->
+
+<section class="formulae-section" id="word-problems">
+
+    <h2>14. Chemical Formulae Word Problems</h2>
+
+    <p>
+        Chemical formula questions are often presented as real chemical
+        situations. The important skill is to identify what information
+        the formula gives you and what quantity the question asks for.
+    </p>
+
+    <div class="word-problem">
+
+        <h4>Problem 1</h4>
+
+        <p>
+            A student has 90 g of water. Calculate the number of moles
+            present.
+        </p>
+
+        <p>
+            Mᵣ of H₂O = 18.
+        </p>
+
+        <div class="formula-box">
+            n = m / M
+        </div>
+
+        <div class="formula-box">
+            n = 90 / 18
+        </div>
+
+        <div class="answer-box">
+            Answer = <strong>5 mol</strong>
+        </div>
+
+    </div>
+
+
+    <div class="word-problem">
+
+        <h4>Problem 2</h4>
+
+        <p>
+            Calcium carbonate has the formula CaCO₃.
+            Calculate its relative formula mass.
+        </p>
+
+        <div class="formula-box">
+            Mᵣ = 40 + 12 + (3 × 16)
+        </div>
+
+        <div class="answer-box">
+            Answer = <strong>100</strong>
+        </div>
+
+    </div>
+
+
+    <div class="word-problem">
+
+        <h4>Problem 3</h4>
+
+        <p>
+            A compound contains carbon and hydrogen in the ratio 1 : 2.
+            What is its empirical formula?
+        </p>
+
+        <div class="answer-box">
+            Empirical formula = <strong>CH₂</strong>
+        </div>
+
+    </div>
+
+
+    <div class="word-problem">
+
+        <h4>Problem 4</h4>
+
+        <p>
+            Aluminium reacts with oxygen to form aluminium oxide.
+            Aluminium forms Al³⁺ ions and oxygen forms O²⁻ ions.
+            Determine the formula of the compound.
+        </p>
+
+        <p>
+            The charges must balance:
+        </p>
+
+        <div class="formula-box">
+            2(Al³⁺) + 3(O²⁻)
+        </div>
+
+        <div class="answer-box">
+            Formula = <strong>Al₂O₃</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ASK AI -->
+
+<div class="ask-ai">
+
+    <i class="fas fa-sparkles"></i>
+
+    <h3>Need Help With Chemical Formulae?</h3>
+
+    <p>
+        Don't understand a formula, calculation, empirical formula,
+        molecular formula or chemical equation?
+        Ask Insite AI and get a step-by-step explanation.
+    </p>
+
+    <a href="{{ url_for('chat') }}">
+        <i class="fas fa-comments"></i>
+        Ask Insite AI
+    </a>
+
+</div>
+
+</div>
+
+{% endblock %}

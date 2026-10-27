@@ -1,0 +1,1381 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reaction Rates | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — UNIFIED STYLING (MATCHES ELECTROCHEMISTRY)
+   ========================================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.rates-page {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.rates-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.rates-header h1 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+.rates-header p {
+    color: #9ca3af;
+    max-width: 780px;
+    margin: auto;
+    line-height: 1.7;
+}
+
+.back-chemistry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #e6edf3;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.back-chemistry:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.rates-nav-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    background: #0d1117;
+    padding: 8px 0;
+    margin-bottom: 25px;
+}
+
+.rates-nav {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #161b22;
+}
+
+.rates-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.rates-nav::-webkit-scrollbar-track {
+    background: #161b22;
+    border-radius: 10px;
+}
+
+.rates-nav::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.rates-nav a {
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: .25s;
+}
+
+.rates-nav a:hover {
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.rates-section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+    scroll-margin-top: 90px;
+}
+
+.rates-section h2 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.rates-section h3 {
+    color: #58a6ff;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.rates-section h4 {
+    color: #79c0ff;
+    margin-top: 20px;
+}
+
+.rates-section p,
+.rates-section li {
+    color: #c9d1d9;
+    line-height: 1.75;
+}
+
+.rates-section ul {
+    padding-left: 22px;
+}
+
+.rates-section li {
+    margin-bottom: 7px;
+}
+
+/* ---------- COMMON HELPERS ---------- */
+
+.highlight,
+.exam-tip {
+    background: #0d1117;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 18px;
+    margin: 18px 0;
+    border-radius: 8px;
+}
+
+.highlight strong,
+.exam-tip strong {
+    color: #58a6ff;
+}
+
+.formula {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 16px;
+    margin: 15px 0;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.08rem;
+    font-weight: 600;
+    overflow-x: auto;
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.concept-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.concept-card i {
+    color: #3b82f6;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.concept-card h4 {
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.concept-card p {
+    color: #9ca3af;
+    font-size: .92rem;
+    margin: 0;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 18px 0;
+}
+
+.rates-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+}
+
+.rates-table th,
+.rates-table td {
+    border: 1px solid #30363d;
+    padding: 12px;
+    text-align: left;
+}
+
+.rates-table th {
+    background: #0d1117;
+    color: #58a6ff;
+}
+
+.rates-table td {
+    color: #c9d1d9;
+    background: #161b22;
+}
+
+.equation-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 16px 0;
+    overflow-x: auto;
+}
+
+.equation-box .label {
+    color: #58a6ff;
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.equation-box code {
+    color: #ffffff;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.steps {
+    margin: 18px 0;
+}
+
+.step {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 15px 18px;
+    margin-bottom: 12px;
+    color: #c9d1d9;
+}
+
+.example-box {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 13px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.example-box h4 {
+    color: #58a6ff;
+    margin-top: 0;
+}
+
+/* ---------- ASK AI BOX (EXACT MATCH) ---------- */
+
+.ask-ai {
+    background: linear-gradient(135deg, #161b22, #111827);
+    border: 1px solid #30363d;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ask-ai i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.ask-ai h3 {
+    color: #ffffff;
+}
+
+.ask-ai p {
+    color: #9ca3af;
+}
+
+.ask-ai a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.ask-ai a:hover {
+    background: #2563eb;
+}
+
+/* ---------- CORE HERO IDEA ---------- */
+
+.core-idea {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.idea-main,
+.idea-mini {
+    padding: 20px;
+    border-radius: 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+}
+
+.idea-main {
+    border-left: 4px solid #3b82f6;
+}
+
+.idea-main strong {
+    color: #58a6ff;
+}
+
+.idea-mini {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rate-symbol {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #ffffff; /* Strictly pure white */
+    margin-bottom: 5px;
+}
+
+/* =========================================================
+   COLLISION SIMULATOR (SLATE THEMED)
+   ========================================================= */
+
+.collision-lab {
+    margin-top: 25px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+}
+
+.lab-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.lab-title {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.lab-status {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: .78rem;
+    color: #e6edf3;
+    background: #161b22;
+    border: 1px solid #30363d;
+}
+
+.collision-stage {
+    position: relative;
+    height: 280px;
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(255,255,255,.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.01) 1px, transparent 1px),
+        #0d1117;
+    background-size: 28px 28px;
+    border: 1px solid #30363d;
+}
+
+.reaction-zone {
+    position: absolute;
+    left: 38%;
+    right: 38%;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.03), transparent);
+}
+
+.collision-track {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    top: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #30363d, transparent);
+}
+
+/* 3D Moving Balls (Original high-quality gradient design restored!) */
+
+.particle {
+    position: absolute;
+    top: calc(50% - 25px);
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-weight: 900;
+    color: white;
+    z-index: 5;
+    box-shadow: inset 0 0 15px rgba(255,255,255,.2);
+}
+
+.particle-a {
+    left: 7%;
+    background: radial-gradient(circle at 30% 25%, #67e8f9, #0369a1);
+    box-shadow: 0 0 18px rgba(34, 211, 238, 0.4), inset 0 0 15px rgba(255,255,255,.2);
+}
+
+.particle-b {
+    left: calc(93% - 50px);
+    background: radial-gradient(circle at 30% 25%, #c4b5fd, #6d28d9);
+    box-shadow: 0 0 18px rgba(139, 92, 246, 0.4), inset 0 0 15px rgba(255,255,255,.2);
+}
+
+.impact-flash {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: 0;
+    box-shadow: 0 0 25px #ffffff, 0 0 45px #3b82f6;
+}
+
+.impact-flash.active {
+    animation: impact .45s ease-out;
+}
+
+@keyframes impact {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(7);
+    }
+}
+
+.collision-message {
+    position: absolute;
+    left: 50%;
+    top: 22%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: .85rem;
+    opacity: 0;
+    white-space: nowrap;
+}
+
+.collision-message.show {
+    animation: collisionText 1s ease;
+}
+
+@keyframes collisionText {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 8px);
+    }
+    30% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.lab-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.lab-button {
+    border: 1px solid #30363d;
+    background: #161b22;
+    color: #e6edf3;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.lab-button:hover {
+    border-color: #3b82f6;
+    background: #0d1117;
+}
+
+.lab-slider {
+    flex: 1;
+    min-width: 160px;
+}
+
+.collision-explain {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.collision-point {
+    padding: 12px;
+    border-radius: 8px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    text-align: center;
+}
+
+.collision-point strong {
+    display: block;
+    color: #58a6ff;
+    margin-bottom: 5px;
+}
+
+.collision-point span {
+    color: #9ca3af;
+    font-size: .8rem;
+}
+
+/* ---------- COMPARATIVE BOXES ---------- */
+
+.collision-compare,
+.path-compare,
+.practice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.collision-box,
+.path-card,
+.practice-card {
+    padding: 18px;
+    border-radius: 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+}
+
+.collision-box.good {
+    border-left: 4px solid #2ea043;
+}
+
+.collision-box.good h4 {
+    color: #2ea043;
+}
+
+.collision-box.bad {
+    border-left: 4px solid #f85149;
+}
+
+.collision-box.bad h4 {
+    color: #f85149;
+}
+
+.path-card h4,
+.practice-card h4 {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.path-card.catalyst {
+    border-left: 4px solid #2ea043;
+}
+
+.practice-answer {
+    margin-top: 10px;
+    color: #58a6ff;
+    font-size: .92rem;
+}
+
+/* ---------- ENERGY PROFILE CHART ---------- */
+
+.rr-energy-profile {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+}
+
+.energy-chart {
+    position: relative;
+    width: 100%;
+    height: 390px;
+}
+
+.energy-chart svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.energy-axis {
+    stroke: #30363d;
+    stroke-width: 1.5;
+}
+
+.energy-grid-line {
+    stroke: #161b22;
+    stroke-width: 1;
+    stroke-dasharray: 5 7;
+}
+
+.energy-reaction {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.energy-arrow {
+    stroke: #58a6ff;
+    stroke-width: 2;
+    stroke-dasharray: 4 4;
+}
+
+.energy-label {
+    fill: #9ca3af;
+    font-size: 14px;
+}
+
+.energy-label.main {
+    fill: #ffffff;
+    font-weight: 700;
+}
+
+.energy-label.blue {
+    fill: #58a6ff;
+}
+
+.energy-label.yellow {
+    fill: #e3b341;
+}
+
+.energy-label.red {
+    fill: #f85149;
+}
+
+/* ---------- MEDIA RESPONSIVENESS ---------- */
+
+@media (max-width: 768px) {
+    .rates-page {
+        padding: 12px;
+        margin: 15px auto;
+    }
+
+    .rates-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .rates-header p {
+        font-size: .92rem;
+    }
+
+    .rates-section {
+        padding: 18px;
+        border-radius: 13px;
+    }
+
+    .rates-section h2 {
+        font-size: 1.35rem;
+    }
+
+    .core-idea,
+    .concept-grid,
+    .collision-compare,
+    .path-compare,
+    .practice-grid,
+    .collision-explain {
+        grid-template-columns: 1fr;
+    }
+
+    .rates-nav-wrapper {
+        top: 0;
+    }
+
+    .rates-nav a {
+        font-size: .82rem;
+        padding: 8px 12px;
+    }
+
+    .formula {
+        font-size: .95rem;
+        text-align: left;
+    }
+
+    .example-box,
+    .highlight,
+    .exam-tip {
+        padding: 15px;
+    }
+
+    .collision-stage {
+        height: 245px;
+    }
+
+    .particle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .particle-b {
+        left: calc(93% - 44px);
+    }
+
+    .energy-chart {
+        height: 310px;
+    }
+}
+</style>
+
+<div class="rates-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="back-chemistry">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+    <!-- HEADER -->
+    <header class="rates-header">
+        <h1><i class="fa-solid fa-gauge-high"></i> Reaction Rates</h1>
+        <p>
+            Discover why some chemical reactions happen quickly while others
+            happen slowly. Explore collision theory, temperature, concentration,
+            pressure, surface area, catalysts and activation energy.
+        </p>
+    </header>
+
+    <!-- NAV -->
+    <div class="rates-nav-wrapper">
+        <nav class="rates-nav">
+            <a href="#overview">Overview</a>
+            <a href="#collision">Collision Theory</a>
+            <a href="#factors">Factors</a>
+            <a href="#concentration">Concentration & Pressure</a>
+            <a href="#temperature">Temperature</a>
+            <a href="#surface-area">Surface Area</a>
+            <a href="#nature-of-reactants">Nature of Reactants</a>
+            <a href="#catalyst">Catalysts</a>
+            <a href="#energy">Energy Profile</a>
+            <a href="#experimental">Experimental</a>
+            <a href="#graphs">Graphs</a>
+            <a href="#examples">Examples</a>
+            <a href="#practice">Practice</a>
+        </nav>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="rates-section" id="overview">
+        <h2>1. What Is Reaction Rate?</h2>
+        <p>
+            The rate of a reaction describes how quickly reactants are converted
+            into products. A fast reaction produces products rapidly, while a
+            slow reaction takes more time.
+        </p>
+
+        <div class="core-idea">
+            <div class="idea-main">
+                <strong>The big idea</strong>
+                <p>
+                    Reactions happen when particles collide successfully.
+                    The more successful collisions that occur each second,
+                    the faster the reaction.
+                </p>
+            </div>
+            <div class="idea-mini">
+                <div class="rate-symbol">Rate &uarr;</div>
+                <p>More successful collisions per second</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COLLISION THEORY -->
+    <section class="rates-section" id="collision">
+        <h2>2. Collision Theory</h2>
+        <p>
+            Collision theory explains that particles must collide before
+            a reaction can occur. However, simply touching is not enough.
+            A collision must have enough energy and the correct orientation.
+        </p>
+
+        <div class="formula">
+            Successful collision = sufficient energy + correct orientation
+        </div>
+
+        <h3>Interactive Collision Lab</h3>
+        <p>
+            Watch particles A and B move toward each other. This simulation
+            deliberately makes them <strong>touch and collide</strong> before
+            they bounce apart.
+        </p>
+
+        <div class="collision-lab">
+            <div class="lab-top">
+                <div class="lab-title">⚛ Particle Collision Simulator</div>
+                <div class="lab-status" id="collisionStatus">Waiting for collision</div>
+            </div>
+
+            <div class="collision-stage">
+                <div class="reaction-zone"></div>
+                <div class="collision-track"></div>
+                <div class="particle particle-a" id="particleA">A</div>
+                <div class="particle particle-b" id="particleB">B</div>
+                <div class="impact-flash" id="impactFlash"></div>
+                <div class="collision-message" id="collisionMessage">💥 COLLISION!</div>
+            </div>
+
+            <div class="lab-controls">
+                <button class="lab-button" id="collisionButton">
+                    <i class="fa-solid fa-play"></i> Start Collision
+                </button>
+                <div class="lab-slider">
+                    <label style="color:#94a3b8;font-size:.78rem;display:block;margin-bottom:5px;">Particle speed</label>
+                    <input type="range" id="speedControl" min="1" max="5" value="3" style="width:100%;">
+                </div>
+            </div>
+
+            <div class="collision-explain">
+                <div class="collision-point">
+                    <strong>1. Approach</strong>
+                    <span>A and B move toward each other.</span>
+                </div>
+                <div class="collision-point">
+                    <strong>2. Collision</strong>
+                    <span>The particles physically meet.</span>
+                </div>
+                <div class="collision-point">
+                    <strong>3. Separate</strong>
+                    <span>They bounce apart after impact.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="collision-compare">
+            <div class="collision-box good">
+                <h4><i class="fa-solid fa-check"></i> Effective Collision</h4>
+                <p>
+                    Particles have enough energy and the correct orientation.
+                    Bonds can break and new bonds can form.
+                </p>
+            </div>
+            <div class="collision-box bad">
+                <h4><i class="fa-solid fa-xmark"></i> Ineffective Collision</h4>
+                <p>
+                    Particles collide, but they do not have enough energy or
+                    the orientation is unsuitable.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FACTORS -->
+    <section class="rates-section" id="factors">
+        <h2>3. Factors Affecting Reaction Rate</h2>
+        <p>Several factors can change the frequency and success of collisions.</p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-temperature-high"></i>
+                <h4>Temperature</h4>
+                <p>Increasing temperature makes particles move faster and increases the proportion of particles with enough energy to react.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-flask"></i>
+                <h4>Concentration</h4>
+                <p>A higher concentration means more particles occupy the same volume, increasing collision frequency.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-gauge-high"></i>
+                <h4>Pressure</h4>
+                <p>For gases, increasing pressure brings particles closer together and increases collision frequency.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-cubes"></i>
+                <h4>Surface Area</h4>
+                <p>Breaking a solid into smaller pieces exposes more surface for collisions, usually increasing the reaction rate.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <h4>Catalyst</h4>
+                <p>A catalyst provides an alternative pathway with a lower activation energy.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-flask-vial"></i>
+                <h4>Nature of Reactants</h4>
+                <p>Different substances have different bonding and structural properties, so they can react at different rates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONCENTRATION AND PRESSURE -->
+    <section class="rates-section" id="concentration">
+        <h2>4. Concentration and Gas Pressure</h2>
+        <h3>Liquid Solutions: Concentration</h3>
+        <p>
+            Increasing the concentration of reactants in a solution means there are more reactant 
+            particles packed into the same volume of liquid.
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <strong>More Particles:</strong> Higher concentration = More reactant particles per unit volume.
+            </div>
+            <div class="step">
+                <strong>Shorter Distance:</strong> Particles are closer together, making collisions more frequent.
+            </div>
+            <div class="step">
+                <strong>Higher Frequency:</strong> The frequency of successful collisions increases, speeding up the reaction.
+            </div>
+        </div>
+
+        <h3>Gaseous Mixtures: Pressure</h3>
+        <p>
+            For gases, increasing the pressure (by compressing the gas into a smaller container) 
+            has the exact same physical effect as increasing concentration.
+        </p>
+        
+        <div class="formula">
+            Higher Gas Pressure = More gas particles per unit volume = More frequent collisions
+        </div>
+    </section>
+
+    <!-- TEMPERATURE -->
+    <section class="rates-section" id="temperature">
+        <h2>5. Temperature</h2>
+        <p>
+            Temperature is a direct measure of the average kinetic energy of the particles in a substance. 
+            Increasing the temperature has a highly significant, double-action effect on reaction rate.
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <strong>1. Faster Movement:</strong> Particles gain kinetic energy and move faster. 
+                This leads to more frequent collisions per unit time.
+            </div>
+            <div class="step">
+                <strong>2. Harder Collisions (Dominant Effect):</strong> Because particles move with much higher energy, 
+                a significantly larger fraction of collisions occur with energy greater than or equal to the activation energy (E<sub>a</sub>).
+            </div>
+        </div>
+
+        <div class="exam-tip">
+            <strong>Exam Tip:</strong>
+            When explaining temperature, always mention that the main reason rate increases is because 
+            <strong>a larger fraction of colliding particles have energy >= E<sub>a</sub></strong>. The increase in 
+            collision speed/frequency is a minor contributor.
+        </div>
+    </section>
+
+    <!-- SURFACE AREA -->
+    <section class="rates-section" id="surface-area">
+        <h2>6. Surface Area of Solids</h2>
+        <p>
+            When a solid reacts with a liquid or gas, the reaction can only occur at the boundary interface 
+            where the solid surface meets the fluid. Particles trapped inside the bulk solid cannot react 
+            until the outer layers are stripped away.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-cube"></i>
+                <h4>Single Large Lump</h4>
+                <p>Low surface-area-to-volume ratio. Fewer particles are exposed on the outer surface to collide with surrounding reactants.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-cubes"></i>
+                <h4>Powdered Solid</h4>
+                <p>High surface-area-to-volume ratio. Far more atoms are exposed simultaneously, leading to a much higher collision frequency.</p>
+            </div>
+        </div>
+
+        <div class="equation-box">
+            <div class="label">Example Reaction: Acid and Calcium Carbonate (Marble)</div>
+            <code>CaCO<sub>3</sub> (solid lump) + 2HCl (aq) &rarr; CaCl<sub>2</sub> (aq) + H<sub>2</sub>O (l) + CO<sub>2</sub> (g)  [Slower Rate]</code>
+            <code>CaCO<sub>3</sub> (fine powder) + 2HCl (aq) &rarr; CaCl<sub>2</sub> (aq) + H<sub>2</sub>O (l) + CO<sub>2</sub> (g)  [Much Faster Rate]</code>
+        </div>
+    </section>
+
+    <!-- NATURE OF REACTANTS -->
+    <section class="rates-section" id="nature-of-reactants">
+        <h2>7. Nature of Reactants</h2>
+        <p>
+            Even under the exact same temperature, concentration, and surface area, different 
+            substances react at completely different rates. This is due to their chemical identities, 
+            bonding structures, and state of matter.
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <strong>Bond Types (Covalent vs. Ionic):</strong> 
+                Reactions between simple ions in aqueous solution (e.g., Ag<sup>+</sup> and Cl<sup>-</sup>) are almost instantaneous because no strong covalent bonds need to be broken. Reactions involving the breaking of strong covalent bonds (e.g., organic combustion) are much slower.
+            </div>
+            <div class="step">
+                <strong>State of Matter:</strong> 
+                Gases and liquids react faster than solids because their particles are highly mobile and can mix thoroughly to maximize contact.
+            </div>
+            <div class="step">
+                <strong>Inherent Reactivity Trends:</strong> 
+                Highly active metals (like Sodium or Potassium) react vigorously with water, while less active metals (like Magnesium or Zinc) react incredibly slowly or require steam to react.
+            </div>
+        </div>
+    </section>
+
+    <!-- CATALYST -->
+    <section class="rates-section" id="catalyst">
+        <h2>8. Catalysts</h2>
+        <p>
+            A catalyst increases the reaction rate by providing an alternative
+            reaction pathway with a lower activation energy.
+        </p>
+
+        <div class="path-compare">
+            <div class="path-card">
+                <h4>Without Catalyst</h4>
+                <p>
+                    Higher activation energy &rarr; fewer particles have enough
+                    energy &rarr; slower reaction.
+                </p>
+            </div>
+            <div class="path-card catalyst">
+                <h4>With Catalyst</h4>
+                <p>
+                    Lower activation energy &rarr; more successful collisions &rarr;
+                    faster reaction.
+                </p>
+            </div>
+        </div>
+
+        <div class="formula">
+            Catalyst lowers E<sub>a</sub>
+            <small>It does not change the overall energy change of the reaction.</small>
+        </div>
+    </section>
+
+    <!-- ENERGY PROFILE -->
+    <section class="rates-section" id="energy">
+        <h2>9. Activation Energy</h2>
+        <p>
+            Even when particles collide, they need enough energy to reach the
+            transition state. The minimum energy required is called activation
+            energy, E<sub>a</sub>.
+        </p>
+
+        <div class="rr-energy-profile">
+            <div class="energy-chart">
+                <svg viewBox="0 0 900 390" preserveAspectRatio="none">
+                    <!-- Grid -->
+                    <line x1="80" y1="80" x2="850" y2="80" class="energy-grid-line"/>
+                    <line x1="80" y1="160" x2="850" y2="160" class="energy-grid-line"/>
+                    <line x1="80" y1="240" x2="850" y2="240" class="energy-grid-line"/>
+
+                    <!-- Axes -->
+                    <line x1="80" y1="330" x2="850" y2="330" class="energy-axis"/>
+                    <line x1="80" y1="30" x2="80" y2="330" class="energy-axis"/>
+
+                    <!-- Reaction curve -->
+                    <path d="M130 245 C220 245 260 245 300 245 C340 245 360 70 470 70 C580 70 590 285 680 285 C730 285 790 285 830 285" class="energy-reaction"/>
+
+                    <!-- Activation energy arrow -->
+                    <line x1="465" y1="245" x2="465" y2="70" class="energy-arrow"/>
+                    <text x="480" y="155" class="energy-label red">E<sub>a</sub></text>
+
+                    <!-- ΔH arrow -->
+                    <line x1="700" y1="245" x2="700" y2="285" class="energy-arrow"/>
+                    <text x="715" y="270" class="energy-label yellow">&Delta;H</text>
+
+                    <!-- Labels -->
+                    <text x="115" y="225" class="energy-label main">Reactants</text>
+                    <text x="735" y="308" class="energy-label main">Products</text>
+                    <text x="420" y="50" class="energy-label blue">Transition state</text>
+                    <text x="25" y="190" class="energy-label" transform="rotate(-90 25 190)">Energy</text>
+                    <text x="420" y="370" class="energy-label">Reaction progress</text>
+                </svg>
+            </div>
+        </div>
+
+        <div class="formula">
+            E<sub>a</sub> = Energy of transition state - Energy of reactants
+        </div>
+    </section>
+
+    <!-- EXPERIMENTAL METHODS -->
+    <section class="rates-section" id="experimental">
+        <h2>10. Experimental Methods to Measure Rates</h2>
+        <p>
+            To track a reaction rate experimentally, we must measure how a physical property changes over time. 
+            Three standard laboratory setups are used depending on the reactants:
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <i class="fa-solid fa-weight-scale"></i>
+                <h4>Mass Loss Method</h4>
+                <p>Place the reaction on a digital balance. If a gas (like CO<sub>2</sub>) escapes, the mass drops. Record the decreasing mass at regular time intervals.</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-syringe"></i>
+                <h4>Gas Syringe Method</h4>
+                <p>Connect a sealed flask to a graduated gas syringe. Measure the volume of gas produced (like H<sub>2</sub> or O<sub>2</sub>) at set intervals (e.g. every 15 seconds).</p>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-eye-slash"></i>
+                <h4>Disappearing Cross Method</h4>
+                <p>For precipitation reactions (like sulfur formation). Put a flask over an 'X' on paper. Time how long it takes for the precipitate to block the cross.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GRAPHS -->
+    <section class="rates-section" id="graphs">
+        <h2>11. Rate Graph Analysis</h2>
+        <p>
+            Plotting experimental data (like gas volume vs. time) reveals a distinct curve. The shape of this curve 
+            tells you exactly how the reaction rate evolves:
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <strong>Steep Slope (Start):</strong> Steepest gradient at the beginning. Reactant concentrations are high, collisions are highly frequent, and the reaction is at its fastest.
+            </div>
+            <div class="step">
+                <strong>Gentle Slope (Middle):</strong> The slope curves and flattens out. Reactants are being used up, concentration drops, collisions become less frequent, and the rate slows down.
+            </div>
+            <div class="step">
+                <strong>Flat Line (End):</strong> The curve becomes completely horizontal. One or both reactants are fully depleted, collisions cease, and the reaction has stopped.
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>Calculating Gradient:</strong><br>
+            • To find the instantaneous rate at a specific time "t", draw a straight tangent line touching the curve at "t".<br>
+            • Find the slope of that tangent: <strong>Gradient = (Change in y-axis) / (Change in x-axis)</strong>.
+        </div>
+    </section>
+
+    <!-- EXAMPLES -->
+    <section class="rates-section" id="examples">
+        <h2>12. Worked Examples</h2>
+
+        <div class="example-box">
+            <h4>Example 1 — Temperature</h4>
+            <p>Explain why increasing the temperature usually increases reaction rate.</p>
+            <div class="rr-answer">
+                Higher temperature gives particles more kinetic energy.
+                They collide more frequently and a greater proportion of
+                collisions have enough energy to overcome E<sub>a</sub>.
+            </div>
+        </div>
+
+        <div class="example-box">
+            <h4>Example 2 — Concentration</h4>
+            <p>Why does increasing the concentration of a solution usually increase reaction rate?</p>
+            <div class="rr-answer">
+                There are more reactant particles in the same volume, so collisions occur more frequently.
+            </div>
+        </div>
+
+        <div class="example-box">
+            <h4>Example 3 — Surface Area</h4>
+            <p>Which reacts faster: a large lump of calcium carbonate or the same mass of powdered calcium carbonate?</p>
+            <div class="rr-answer">
+                The powdered calcium carbonate reacts faster because it has a much larger surface area available for collisions.
+            </div>
+        </div>
+    </section>
+
+    <!-- PRACTICE -->
+    <section class="rates-section" id="practice">
+        <h2>13. Practice Questions</h2>
+
+        <div class="practice-grid">
+            <div class="practice-card">
+                <h4>Question 1</h4>
+                <p>What two conditions are required for a collision to be successful?</p>
+                <div class="practice-answer">Sufficient energy and correct orientation.</div>
+            </div>
+            <div class="practice-card">
+                <h4>Question 2</h4>
+                <p>What happens to activation energy when a catalyst is used?</p>
+                <div class="practice-answer">It decreases because an alternative pathway is provided.</div>
+            </div>
+            <div class="practice-card">
+                <h4>Question 3</h4>
+                <p>Why does powdered solid usually react faster than a lump?</p>
+                <div class="practice-answer">Powder has a greater surface area.</div>
+            </div>
+            <div class="practice-card">
+                <h4>Question 4</h4>
+                <p>Why does increasing gas pressure increase reaction rate?</p>
+                <div class="practice-answer">Particles are closer together, increasing collision frequency.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Need help with Reaction Rates?</h3>
+        <p>
+            Ask Insite AI to explain collision theory, solve reaction-rate
+            questions, explain energy profiles, or generate exam-style
+            questions for practice.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+/* =========================================================
+   INSITE AI — REAL COLLISION ANIMATION
+   A and B meet before bouncing apart without overlapping
+   ========================================================= */
+
+const particleA = document.getElementById("particleA");
+const particleB = document.getElementById("particleB");
+
+const collisionButton = document.getElementById("collisionButton");
+const collisionStatus = document.getElementById("collisionStatus");
+const impactFlash = document.getElementById("impactFlash");
+const collisionMessage = document.getElementById("collisionMessage");
+const speedControl = document.getElementById("speedControl");
+
+let running = false;
+let animationFrame = null;
+
+function runCollision() {
+    if (running) return;
+    running = true;
+
+    collisionButton.disabled = true;
+    collisionButton.style.opacity = ".55";
+    collisionStatus.textContent = "Particles approaching...";
+
+    const stage = document.querySelector(".collision-stage");
+    const stageWidth = stage.clientWidth;
+    const particleSize = window.innerWidth <= 800 ? 44 : 50;
+
+    // Starting positions
+    let a = stageWidth * .07;
+    let b = stageWidth * .93 - particleSize;
+
+    // Symmetrical collision meeting boundaries
+    const limitA = stageWidth / 2 - particleSize; 
+    const limitB = stageWidth / 2;                
+
+    const speed = Number(speedControl.value) * .75;
+
+    function animate() {
+        /*
+           APPROACH PHASE
+        */
+        if (a + speed < limitA && b - speed > limitB) {
+            a += speed;
+            b -= speed;
+
+            particleA.style.left = a + "px";
+            particleB.style.left = b + "px";
+
+            animationFrame = requestAnimationFrame(animate);
+            return;
+        }
+
+        /*
+           COLLISION MOMENT (PROACTIVE BOUNDARY LOCK)
+        */
+        particleA.style.left = limitA + "px";
+        particleB.style.left = limitB + "px";
+
+        collisionStatus.textContent = "💥 Collision detected!";
+
+        collisionMessage.classList.remove("show");
+        void collisionMessage.offsetWidth;
+        collisionMessage.classList.add("show");
+
+        impactFlash.classList.remove("active");
+        void impactFlash.offsetWidth;
+        impactFlash.classList.add("active");
+
+        /*
+           BOUNCE PHASE (SEPARATION)
+        */
+        setTimeout(() => {
+            collisionStatus.textContent = "Particles separating...";
+            let bounce = 0;
+
+            function separate() {
+                bounce += speed;
+                let currentA = limitA - bounce;
+                let currentB = limitB + bounce;
+
+                particleA.style.left = currentA + "px";
+                particleB.style.left = currentB + "px";
+
+                if (currentA > stageWidth * .07) {
+                    animationFrame = requestAnimationFrame(separate);
+                } else {
+                    particleA.style.left = (stageWidth * .07) + "px";
+                    particleB.style.left = (stageWidth * .93 - particleSize) + "px";
+
+                    running = false;
+                    collisionButton.disabled = false;
+                    collisionButton.style.opacity = "1";
+                    collisionStatus.textContent = "Ready for another collision";
+                }
+            }
+            separate();
+        }, 430);
+    }
+    animate();
+}
+
+collisionButton.addEventListener("click", runCollision);
+
+// Auto-run once on load
+setTimeout(() => {
+    runCollision();
+}, 900);
+</script>
+
+{% endblock %}

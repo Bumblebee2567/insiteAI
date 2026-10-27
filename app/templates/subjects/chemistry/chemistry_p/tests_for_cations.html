@@ -1,0 +1,1133 @@
+{% extends "base.html" %}
+
+{% block title %}
+Tests for Cations | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — QUALITATIVE ANALYSIS: TESTS FOR CATIONS
+   Dark blue theme — interactive laboratory simulation
+   ========================================================= */
+
+:root {
+    --cat-bg: #050a12;
+    --cat-panel: #0a111d;
+    --cat-panel-2: #0d1624;
+    --cat-border: rgba(100, 116, 139, .18);
+
+    --cat-text: #f1f5f9;
+    --cat-muted: #94a3b8;
+
+    --cat-blue: #1677b8;
+    --cat-blue-light: #2196d2;
+    --cat-blue-dark: #075985;
+
+    --cat-green: #34d399;
+    --cat-red: #ef4444;
+    --cat-orange: #f97316;
+}
+
+.cat-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--cat-text);
+}
+
+/* BACK BUTTON */
+.cat-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--cat-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.cat-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+.cat-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.cat-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #eaf6ff;
+}
+
+.cat-header h1 i {
+    color: var(--cat-blue-light);
+    margin-right: 8px;
+}
+
+.cat-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--cat-muted);
+    line-height: 1.75;
+}
+
+/* STICKY NAV */
+.cat-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--cat-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.cat-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.cat-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.cat-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTION CARD */
+.cat-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--cat-panel);
+    border: 1px solid var(--cat-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.cat-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.cat-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.cat-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.cat-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.cat-section p,
+.cat-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.cat-section li {
+    margin-bottom: 6px;
+}
+
+/* GRID LAYOUTS */
+.cat-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.cat-grid.two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.cat-grid.three {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.cat-card {
+    padding: 19px;
+    background: #080f1a;
+    border: 1px solid var(--cat-border);
+    border-radius: 12px;
+}
+
+.cat-card i {
+    color: var(--cat-blue-light);
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.cat-card h3 {
+    margin: 0 0 7px;
+    color: white;
+    font-size: 1.05rem;
+}
+
+.cat-card p {
+    margin: 0;
+    color: var(--cat-muted);
+    font-size: .9rem;
+}
+
+/* INFO BLOCK */
+.cat-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--cat-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.cat-info strong {
+    color: #55b6e9;
+}
+
+/* TABLE WRAPPERS */
+.cat-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--cat-border);
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.cat-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cat-table th,
+.cat-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--cat-border);
+    text-align: left;
+    color: #cbd5e1;
+}
+
+.cat-table th {
+    background: #0a141f;
+    color: #55b6e9;
+    font-size: .85rem;
+}
+
+.cat-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================================
+   VIRTUAL CATION LAB SIMULATOR
+   ========================================================= */
+
+.cat-lab {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--cat-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.lab-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--cat-border);
+}
+
+.lab-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.lab-status {
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #0d2637;
+    color: #55b6e9;
+    font-size: .73rem;
+    font-weight: 700;
+}
+
+/* STAGE CONTAINER */
+.practical-stage {
+    position: relative;
+    height: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #091321 0%, #091321 70%, #080d14 70%, #080d14 100%);
+    overflow: hidden;
+    padding: 20px;
+}
+
+.lab-bench {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 30%;
+    background: #0a1019;
+    border-top: 1px solid rgba(148,163,184,.12);
+}
+
+/* TEST TUBE GRAPHIC */
+.apparatus-box {
+    position: relative;
+    width: 140px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    z-index: 5;
+}
+
+.virtual-testtube {
+    position: relative;
+    width: 44px;
+    height: 180px;
+    border: 3px solid rgba(203,213,225,0.7);
+    border-top: none;
+    border-radius: 0 0 22px 22px;
+    background: rgba(255,255,255,0.02);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Dynamic Liquid & Precipitate Layer */
+.virtual-fluid {
+    width: 100%;
+    height: 50%;
+    background: rgba(255,255,255,0.05);
+    position: relative;
+    transition: background 0.4s ease, height 0.4s ease;
+}
+
+/* Cloudy Precipitate Overlay Effect */
+.precipitate-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80%;
+    background: transparent;
+    opacity: 0;
+    transition: background 0.5s ease, opacity 0.4s ease, height 0.4s ease;
+    border-radius: 0 0 18px 18px;
+}
+
+/* Cloudy suspension animation */
+.cloudy-active {
+    opacity: 0.85;
+}
+
+/* STEP DESCRIPTION CARD */
+.step-description-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 20px;
+    background: #0a131f;
+    border: 1px solid var(--cat-border);
+    border-radius: 10px;
+    text-align: center;
+    z-index: 5;
+}
+
+.step-title {
+    color: var(--cat-blue-light);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.step-text {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* LAB CONTROLS */
+.lab-controls {
+    padding: 20px;
+    border-top: 1px solid var(--cat-border);
+    background: #08101a;
+}
+
+.control-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.control-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--cat-muted);
+    min-width: 110px;
+}
+
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.lab-btn {
+    border: 1px solid rgba(148,163,184,.15);
+    background: #0b1421;
+    color: #94a3b8;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.lab-btn:hover {
+    color: white;
+    border-color: rgba(33,150,210,.3);
+}
+
+.lab-btn.active {
+    background: var(--cat-blue);
+    color: white;
+    border-color: var(--cat-blue-light);
+}
+
+/* ASK INSITE AI */
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--cat-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai > i {
+    color: #2196d2;
+    font-size: 31px;
+    margin-bottom: 10px;
+}
+
+.ask-ai h3 {
+    margin: 0 0 8px;
+    color: white;
+}
+
+.ask-ai p {
+    max-width: 650px;
+    margin: auto;
+    color: var(--cat-muted);
+    line-height: 1.7;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.ask-ai a:hover {
+    background: #0d5b8e;
+}
+
+/* MOBILE RESPONSIVE Adjustments */
+@media (max-width: 760px) {
+    .cat-page {
+        width: calc(100% - 18px);
+        margin-top: 15px;
+    }
+    .cat-section {
+        padding: 19px 16px;
+    }
+    .cat-grid.two,
+    .cat-grid.three {
+        grid-template-columns: 1fr;
+    }
+    .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
+</style>
+
+
+<div class="cat-page">
+
+    <a href="{{ url_for('chemistry_page') }}" class="cat-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="cat-header">
+        <h1>
+            <i class="fa-solid fa-vial-virus"></i>
+            Tests for Cations
+        </h1>
+        <p>
+            Systematically analyze and identify unknown metal cations in solutions using precise precipitation tests with aqueous sodium hydroxide and ammonia.
+        </p>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="cat-nav">
+        <a href="#principles">Analytical Principles</a>
+        <a href="#matrix">Identification Matrix</a>
+        <a href="#lab">Virtual Precipitation Lab</a>
+        <a href="#equations">Ionic Equations</a>
+    </nav>
+
+
+    <!-- PRINCIPLES OF CATION TESTS -->
+    <section class="cat-section" id="principles">
+        <div class="cat-section-header">
+            <div class="cat-number">01</div>
+            <h2>Analytical Chemistry Principles</h2>
+        </div>
+        <p>
+            Metal cations in aqueous solution form distinct, characteristic precipitates when reacted with hydroxide ions (OH<sup>-</sup>) from <strong>Sodium Hydroxide (NaOH)</strong> or <strong>Aqueous Ammonia (NH<sub>3</sub>)</strong>.
+        </p>
+
+        <div class="cat-grid two">
+            <div class="cat-card">
+                <i class="fa-solid fa-droplet"></i>
+                <h3>1. Adding a Few Drops</h3>
+                <p>Initially, transition metals and post-transition metals precipitate out of solution as insoluble metal hydroxides.</p>
+            </div>
+            <div class="cat-card">
+                <i class="fa-solid fa-arrows-spin"></i>
+                <h3>2. Adding in Excess</h3>
+                <p>Certain precipitates will re-dissolve by reacting further to form soluble complex ions or by showing amphoteric behavior.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- IDENTIFICATION MATRIX TABLE -->
+    <section class="cat-section" id="matrix">
+        <div class="cat-section-header">
+            <div class="cat-number">02</div>
+            <h2>Hydroxide Reaction Database</h2>
+        </div>
+        <p>
+            This master qualitative data matrix contains the observations required for standard practical exams.
+        </p>
+
+        <div class="cat-table-wrap">
+            <table class="cat-table">
+                <thead>
+                    <tr>
+                        <th>Cation</th>
+                        <th>Effect of Sodium Hydroxide (NaOH)</th>
+                        <th>Effect of Aqueous Ammonia (NH<sub>3</sub>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Copper(II) (Cu<sup>2+</sup>)</strong></td>
+                        <td>Pale blue precipitate. Insoluble in excess.</td>
+                        <td style="color:#55b6e9;">Pale blue precipitate. Dissolves in excess to form a deep blue solution.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Iron(II) (Fe<sup>2+</sup>)</strong></td>
+                        <td style="color:#a7f3d0;">Dirty green precipitate. Insoluble in excess.</td>
+                        <td style="color:#a7f3d0;">Dirty green precipitate. Insoluble in excess.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Iron(III) (Fe<sup>3+</sup>)</strong></td>
+                        <td style="color:#f97316;">Red-brown precipitate. Insoluble in excess.</td>
+                        <td style="color:#f97316;">Red-brown precipitate. Insoluble in excess.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aluminium (Al<sup>3+</sup>)</strong></td>
+                        <td>White precipitate. Dissolves in excess to form a colorless solution.</td>
+                        <td>White precipitate. Insoluble in excess.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zinc (Zn<sup>2+</sup>)</strong></td>
+                        <td>White precipitate. Dissolves in excess to form a colorless solution.</td>
+                        <td>White precipitate. Dissolves in excess to form a colorless solution.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Calcium (Ca<sup>2+</sup>)</strong></td>
+                        <td>White precipitate. Insoluble in excess.</td>
+                        <td>No precipitate or very slight white precipitate.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chromium(III) (Cr<sup>3+</sup>)</strong></td>
+                        <td>Grey-green precipitate. Dissolves in excess to form a dark green solution.</td>
+                        <td>Grey-green precipitate. Insoluble in excess.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ammonium (NH<sub>4</sub><sup>+</sup>)</strong></td>
+                        <td>No precipitate. Warming produces ammonia gas (turns damp red litmus paper blue).</td>
+                        <td>No reaction.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- VIRTUAL LABORATORY SIMULATOR -->
+    <section class="cat-section" id="lab">
+        <div class="cat-section-header">
+            <div class="cat-number">03</div>
+            <h2>Virtual Cation Precipitation Lab</h2>
+        </div>
+        <p>
+            Select a metal cation, choose a reagent, and adjust the dosage to visually witness the chemical transformations occurring in the test tube.
+        </p>
+
+        <div class="cat-lab">
+            <div class="lab-top">
+                <h3>Precipitation & Solubilisation Viewer</h3>
+                <span class="lab-status" id="labStatus">Virtual Rack Active</span>
+            </div>
+
+            <!-- THE TEST TUBE -->
+            <div class="practical-stage">
+                <div class="lab-bench"></div>
+
+                <div class="apparatus-box">
+                    <div class="virtual-testtube">
+                        <div class="virtual-fluid" id="tubeLiquid">
+                            <!-- Overlay layer simulating precipitate suspension -->
+                            <div class="precipitate-overlay" id="tubePrecipitate"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-description-card">
+                    <div class="step-title" id="tubeReactionTitle">Copper(II) with NaOH (Few Drops)</div>
+                    <p class="step-text" id="tubeReactionDesc">A pale blue precipitate of Copper(II) hydroxide forms, which remains completely insoluble when excess sodium hydroxide is added.</p>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE PANELS -->
+            <div class="lab-controls">
+                <div class="control-row">
+                    
+                    <!-- Cation Select -->
+                    <div class="control-group">
+                        <span class="control-label">1. Select Cation:</span>
+                        <div class="btn-container">
+                            <button type="button" class="lab-btn active" id="cat-cu" onclick="selectCation('Cu')">Copper (Cu<sup>2+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-fe2" onclick="selectCation('Fe2')">Iron(II) (Fe<sup>2+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-fe3" onclick="selectCation('Fe3')">Iron(III) (Fe<sup>3+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-al" onclick="selectCation('Al')">Aluminium (Al<sup>3+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-zn" onclick="selectCation('Zn')">Zinc (Zn<sup>2+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-ca" onclick="selectCation('Ca')">Calcium (Ca<sup>2+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-cr" onclick="selectCation('Cr')">Chromium(III) (Cr<sup>3+</sup>)</button>
+                            <button type="button" class="lab-btn" id="cat-nh4" onclick="selectCation('NH4')">Ammonium (NH<sub>4</sub><sup>+</sup>)</button>
+                        </div>
+                    </div>
+
+                    <!-- Reagent Select -->
+                    <div class="control-group">
+                        <span class="control-label">2. Select Reagent:</span>
+                        <div class="btn-container">
+                            <button type="button" class="lab-btn active" id="reag-naoh" onclick="selectReagent('NaOH')">Sodium Hydroxide (NaOH)</button>
+                            <button type="button" class="lab-btn" id="reag-nh3" onclick="selectReagent('NH3')">Aqueous Ammonia (NH<sub>3</sub>)</button>
+                        </div>
+                    </div>
+
+                    <!-- Dosage Select -->
+                    <div class="control-group">
+                        <span class="control-label">3. Set Amount:</span>
+                        <div class="btn-container">
+                            <button type="button" class="lab-btn active" id="dose-drops" onclick="selectDosage('drops')">A Few Drops</button>
+                            <button type="button" class="lab-btn" id="dose-excess" onclick="selectDosage('excess')">In Excess</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- IONIC EQUATIONS -->
+    <section class="cat-section" id="equations">
+        <div class="cat-section-header">
+            <div class="cat-number">04</div>
+            <h2>Precipitation & Complexing Equations</h2>
+        </div>
+        <p>
+            Understanding the underlying net ionic equations is critical for matching lab results to dry paper theoretical questions.
+        </p>
+
+        <div class="cat-info">
+            <strong>Standard Precipitation:</strong><br>
+            Cu<sup>2+</sup>(aq) + 2OH<sup>-</sup>(aq) &rarr; Cu(OH)<sub>2</sub>(s) <span style="color:#55b6e9;">(Pale blue precipitate)</span>
+        </div>
+
+        <div class="cat-info">
+            <strong>Amphoteric Dissolution (Aluminium in Excess NaOH):</strong><br>
+            Al(OH)<sub>3</sub>(s) + OH<sup>-</sup>(aq) &rarr; [Al(OH)<sub>4</sub>]<sup>-</sup>(aq) <span style="color:var(--cat-green);">(Soluble, Colorless Tetrahydroxoaluminate Complex)</span>
+        </div>
+
+        <div class="cat-info">
+            <strong>Ligand Exchange / Complexation (Copper in Excess NH<sub>3</sub>):</strong><br>
+            Cu(OH)<sub>2</sub>(s) + 4NH<sub>3</sub>(aq) &rarr; [Cu(NH<sub>3</sub>)<sub>4</sub>]<sup>2+</sup>(aq) + 2OH<sup>-</sup>(aq) <span style="color:#1d4ed8;">(Soluble, Deep Blue Tetraamminediaquacopper Complex)</span>
+        </div>
+    </section>
+
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>Struggling with Qualitative Schemes?</h3>
+        <p>Ask Insite AI to help you build separation flowcharts, test your knowledge with mock practical exam cards, or explain complicated coordination chemistry theories.</p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   VIRTUAL PRECIPITATION LAB SYSTEM
+   ========================================================= */
+
+let currentCation = 'Cu';
+let currentReagent = 'NaOH';
+let currentDosage = 'drops';
+
+// Liquid & Precipitate Display elements
+const tubeLiquid = document.getElementById("tubeLiquid");
+const tubePrecipitate = document.getElementById("tubePrecipitate");
+const reactionTitle = document.getElementById("tubeReactionTitle");
+const reactionDesc = document.getElementById("tubeReactionDesc");
+
+// Configuration map containing colors and analytical logs
+const reactionData = {
+    Cu: {
+        name: "Copper(II) (Cu²⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(56, 189, 248, 0.15)", // faint blue solution
+                pptColor: "rgba(14, 165, 233, 0.85)", // opaque sky blue ppt
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Copper(II) with NaOH (Few Drops)",
+                desc: "A pale blue precipitate of Copper(II) hydroxide forms instantly. Net ionic equation: Cu²⁺(aq) + 2OH⁻(aq) → Cu(OH)₂(s)."
+            },
+            excess: {
+                liqColor: "rgba(56, 189, 248, 0.15)",
+                pptColor: "rgba(14, 165, 233, 0.85)",
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Copper(II) with Excess NaOH",
+                desc: "The pale blue Copper(II) hydroxide precipitate remains completely insoluble in excess sodium hydroxide solution."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(56, 189, 248, 0.15)",
+                pptColor: "rgba(14, 165, 233, 0.85)",
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Copper(II) with Aqueous NH₃ (Few Drops)",
+                desc: "Ammonia acts as a weak base, generating hydroxide ions that produce a pale blue precipitate of Copper(II) hydroxide."
+            },
+            excess: {
+                liqColor: "rgba(30, 58, 138, 0.95)", // Deep intense blue
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Copper(II) with Excess NH₃",
+                desc: "The precipitate dissolves in excess ammonia to form an intense, royal deep blue solution containing the [Cu(NH₃)₄(H₂O)₂]²⁺ complex."
+            }
+        }
+    },
+    Fe2: {
+        name: "Iron(II) (Fe²⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(16, 185, 129, 0.8)", // Green/grey-green ppt
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(II) with NaOH (Few Drops)",
+                desc: "A dirty green precipitate of Iron(II) hydroxide forms immediately upon contact."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(16, 185, 129, 0.8)",
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(II) with Excess NaOH",
+                desc: "The dirty green Iron(II) hydroxide precipitate remains insoluble in excess sodium hydroxide."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(16, 185, 129, 0.8)",
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(II) with Aqueous NH₃ (Few Drops)",
+                desc: "A dirty green precipitate of Iron(II) hydroxide is formed."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(16, 185, 129, 0.8)",
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(II) with Excess NH₃",
+                desc: "The dirty green precipitate remains completely insoluble in excess aqueous ammonia."
+            }
+        }
+    },
+    Fe3: {
+        name: "Iron(III) (Fe³⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255, 237, 213, 0.2)", // pale orange solution
+                pptColor: "rgba(194, 65, 12, 0.9)", // intense red-brown rust ppt
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(III) with NaOH (Few Drops)",
+                desc: "A distinct reddish-brown gelatinous precipitate of Iron(III) hydroxide forms instantly."
+            },
+            excess: {
+                liqColor: "rgba(255, 237, 213, 0.2)",
+                pptColor: "rgba(194, 65, 12, 0.9)",
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(III) with Excess NaOH",
+                desc: "The red-brown Iron(III) hydroxide precipitate remains insoluble in excess sodium hydroxide."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255, 237, 213, 0.2)",
+                pptColor: "rgba(194, 65, 12, 0.9)",
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(III) with Aqueous NH₃ (Few Drops)",
+                desc: "An orange-brown precipitate of Iron(III) hydroxide forms on adding a few drops."
+            },
+            excess: {
+                liqColor: "rgba(255, 237, 213, 0.2)",
+                pptColor: "rgba(194, 65, 12, 0.9)",
+                pptActive: true,
+                pptHeight: "50%",
+                title: "Iron(III) with Excess NH₃",
+                desc: "The reddish-brown precipitate remains highly insoluble in excess aqueous ammonia."
+            }
+        }
+    },
+    Al: {
+        name: "Aluminium (Al³⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(241, 245, 249, 0.92)", // dense chalky white ppt
+                pptActive: true,
+                pptHeight: "55%",
+                title: "Aluminium with NaOH (Few Drops)",
+                desc: "A white gelatinous precipitate of Aluminium hydroxide is formed."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)", // dissolves completely to a clear colorless solution
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Aluminium with Excess NaOH",
+                desc: "Aluminium hydroxide is amphoteric. It reacts with excess hydroxide ions to form the soluble, colorless [Al(OH)₄]⁻ tetrahydroxoaluminate complex."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(241, 245, 249, 0.92)",
+                pptActive: true,
+                pptHeight: "55%",
+                title: "Aluminium with Aqueous NH₃ (Few Drops)",
+                desc: "A white precipitate of Aluminium hydroxide forms."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(241, 245, 249, 0.92)",
+                pptActive: true,
+                pptHeight: "55%",
+                title: "Aluminium with Excess NH₃",
+                desc: "Ammonia is a weak base and doesn't provide enough alkalinity to re-dissolve the amphoteric Al(OH)₃. The white precipitate remains insoluble."
+            }
+        }
+    },
+    Zn: {
+        name: "Zinc (Zn²⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(248, 250, 252, 0.9)", // chalky white ppt
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Zinc with NaOH (Few Drops)",
+                desc: "A white precipitate of Zinc hydroxide is formed immediately."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Zinc with Excess NaOH",
+                desc: "Zinc hydroxide is amphoteric and dissolves completely in excess NaOH to form the soluble colorless tetrahydroxozincate complex."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(248, 250, 252, 0.9)",
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Zinc with Aqueous NH₃ (Few Drops)",
+                desc: "A white precipitate of Zinc hydroxide is produced."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Zinc with Excess NH₃",
+                desc: "Unlike Aluminium, Zinc hydroxide dissolves easily in excess ammonia due to the formation of the soluble [Zn(NH₃)₄]²⁺ tetraamminezinc coordination complex."
+            }
+        }
+    },
+    Ca: {
+        name: "Calcium (Ca²⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(255, 255, 255, 0.95)", // White ppt
+                pptActive: true,
+                pptHeight: "40%",
+                title: "Calcium with NaOH (Few Drops)",
+                desc: "A white precipitate of Calcium hydroxide forms."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(255, 255, 255, 0.95)",
+                pptActive: true,
+                pptHeight: "40%",
+                title: "Calcium with Excess NaOH",
+                desc: "Calcium hydroxide is slightly soluble in water, but remains as a white precipitate in highly concentrated excess alkaline NaOH."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Calcium with Aqueous NH₃ (Few Drops)",
+                desc: "No precipitate is formed. The concentration of hydroxide ions in aqueous ammonia is too low to exceed the solubility product of Ca(OH)₂."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Calcium with Excess NH₃",
+                desc: "No precipitate forms, even in the presence of excess aqueous ammonia."
+            }
+        }
+    },
+    Cr: {
+        name: "Chromium(III) (Cr³⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(110, 139, 116, 0.85)", // Grey-green ppt
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Chromium(III) with NaOH (Few Drops)",
+                desc: "A grey-green precipitate of Chromium(III) hydroxide is formed."
+            },
+            excess: {
+                liqColor: "rgba(16, 124, 65, 0.8)", // Soluble green solution
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Chromium(III) with Excess NaOH",
+                desc: "The grey-green precipitate dissolves to yield a dark green, transparent solution containing the [Cr(OH)₆]³⁻ complex."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(110, 139, 116, 0.85)",
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Chromium(III) with Aqueous NH₃ (Few Drops)",
+                desc: "A grey-green precipitate of Chromium(III) hydroxide forms."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "rgba(110, 139, 116, 0.85)",
+                pptActive: true,
+                pptHeight: "45%",
+                title: "Chromium(III) with Excess NH₃",
+                desc: "The grey-green precipitate remains insoluble in excess aqueous ammonia solution."
+            }
+        }
+    },
+    NH4: {
+        name: "Ammonium (NH₄⁺)",
+        NaOH: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Ammonium with NaOH (Few Drops)",
+                desc: "No precipitate forms. Ammonium ions do not precipitate with hydroxide."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Ammonium with Excess NaOH (And Heating)",
+                desc: "Warming the mixture liberates pungent ammonia gas (NH₃). This gas turns damp red litmus paper blue, providing a diagnostic test for NH₄⁺ ions."
+            }
+        },
+        NH3: {
+            drops: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Ammonium with Aqueous NH₃",
+                desc: "No reaction. There is no interaction between ammonium ions and ammonia."
+            },
+            excess: {
+                liqColor: "rgba(255,255,255,0.05)",
+                pptColor: "transparent",
+                pptActive: false,
+                pptHeight: "0%",
+                title: "Ammonium with Excess NH₃",
+                desc: "No chemical change occurs."
+            }
+        }
+    }
+};
+
+function selectCation(cationCode) {
+    currentCation = cationCode;
+    // Highlight correct button
+    document.querySelectorAll('[id^="cat-"]').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`cat-${cationCode.toLowerCase()}`).classList.add('active');
+    updateSimulation();
+}
+
+function selectReagent(reagentName) {
+    currentReagent = reagentName;
+    document.querySelectorAll('[id^="reag-"]').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`reag-${reagentName.toLowerCase()}`).classList.add('active');
+    updateSimulation();
+}
+
+function selectDosage(dosageValue) {
+    currentDosage = dosageValue;
+    document.querySelectorAll('[id^="dose-"]').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`dose-${dosageValue}`).classList.add('active');
+    updateSimulation();
+}
+
+function updateSimulation() {
+    const data = reactionData[currentCation][currentReagent][currentDosage];
+    
+    // Update liquid color
+    tubeLiquid.style.background = data.liqColor;
+    
+    // Update precipitate overlay
+    if (data.pptActive) {
+        tubePrecipitate.classList.add('cloudy-active');
+        tubePrecipitate.style.background = data.pptColor;
+        tubePrecipitate.style.height = data.pptHeight;
+    } else {
+        tubePrecipitate.classList.remove('cloudy-active');
+        tubePrecipitate.style.background = "transparent";
+        tubePrecipitate.style.height = "0%";
+    }
+    
+    // Update copy
+    reactionTitle.textContent = data.title;
+    reactionDesc.textContent = data.desc;
+}
+
+// Initialise defaults on page load
+updateSimulation();
+</script>
+
+{% endblock %}

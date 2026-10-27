@@ -1,0 +1,1805 @@
+{% extends "base.html" %}
+
+{% block title %}
+Filtration & Washing | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --filter-bg: #050a12;
+    --filter-panel: #0a111d;
+    --filter-border: rgba(100, 116, 139, .18);
+    --filter-text: #f1f5f9;
+    --filter-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --filter-blue: #1677b8;
+    --filter-blue-light: #2196d2;
+
+    --filter-green: #34d399;
+    --filter-red: #ef4444;
+}
+
+.filter-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--filter-text);
+}
+
+/* BACK BUTTON */
+
+.filter-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--filter-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.filter-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.filter-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.filter-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.filter-header h1 i {
+    color: var(--filter-blue-light);
+    margin-right: 8px;
+}
+
+.filter-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--filter-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.filter-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--filter-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.filter-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.filter-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.filter-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--filter-panel);
+    border: 1px solid var(--filter-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.filter-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.filter-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.filter-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.filter-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.filter-section p,
+.filter-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.filter-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.filter-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--filter-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.filter-info strong {
+    color: #55b6e9;
+}
+
+/* METHOD CARDS */
+
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.method-card {
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--filter-border);
+    border-radius: 11px;
+}
+
+.method-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 12px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.25);
+    color: #4aafe3;
+}
+
+.method-card h3 {
+    margin: 0 0 8px;
+    color: #eaf6ff;
+    font-size: 1.05rem;
+}
+
+.method-card p {
+    margin: 0;
+    color: #94a3b8;
+}
+
+/* TABLE */
+
+.filter-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.filter-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+.filter-table th,
+.filter-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--filter-border);
+    vertical-align: top;
+}
+
+.filter-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.filter-table td {
+    color: #cbd5e1;
+}
+
+.filter-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--filter-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* EQUIPMENT DIAGRAM */
+
+.setup-box {
+    margin-top: 20px;
+    padding: 25px;
+    background: #070e18;
+    border: 1px solid var(--filter-border);
+    border-radius: 13px;
+}
+
+.setup-stage {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 35px;
+    min-height: 220px;
+    padding: 20px;
+}
+
+.setup-beaker {
+    position: relative;
+    width: 125px;
+    height: 145px;
+    border: 3px solid #4aafe3;
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+}
+
+.setup-beaker::before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    bottom: 18px;
+    height: 45px;
+    background: rgba(33,150,210,.14);
+    border-radius: 4px 4px 12px 12px;
+}
+
+.setup-funnel {
+    position: relative;
+    width: 100px;
+    height: 120px;
+}
+
+.setup-funnel-top {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    width: 90px;
+    height: 55px;
+    border: 2px solid #4aafe3;
+    border-radius: 50%;
+}
+
+.setup-funnel-cone {
+    position: absolute;
+    top: 27px;
+    left: 27px;
+    width: 48px;
+    height: 70px;
+    border-left: 2px solid #4aafe3;
+    border-right: 2px solid #4aafe3;
+    border-bottom: 2px solid #4aafe3;
+    clip-path: polygon(0 0, 100% 0, 62% 100%, 38% 100%);
+}
+
+.setup-funnel-stem {
+    position: absolute;
+    top: 90px;
+    left: 46px;
+    width: 8px;
+    height: 45px;
+    background: #4aafe3;
+}
+
+.setup-label {
+    text-align: center;
+    margin-top: 15px;
+    color: #94a3b8;
+    font-size: .85rem;
+}
+
+/* VACUUM DIAGRAM */
+
+.vacuum-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.flow-item {
+    padding: 12px 15px;
+    background: #081321;
+    border: 1px solid var(--filter-border);
+    border-radius: 9px;
+    color: #cbd5e1;
+    text-align: center;
+}
+
+.flow-item strong {
+    display: block;
+    color: #55b6e9;
+    margin-bottom: 4px;
+}
+
+.flow-arrow {
+    color: #4aafe3;
+    font-size: 1.3rem;
+}
+
+/* INTERACTIVE */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--filter-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--filter-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--filter-panel);
+    border: 1px solid var(--filter-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--filter-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct {
+    border-left-color: var(--filter-green);
+}
+
+.test-result.wrong {
+    border-left-color: var(--filter-red);
+}
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* QUESTIONS */
+
+.exam-question {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #081321;
+    border: 1px solid var(--filter-border);
+    border-radius: 9px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+}
+
+.exam-answer {
+    margin-top: 7px;
+    color: #94a3b8;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--filter-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    background: #1677b8;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+
+    .filter-section {
+        padding: 20px;
+    }
+
+    .filter-header {
+        padding-top: 28px;
+    }
+
+    .filter-header h1 {
+        font-size: 2rem;
+    }
+
+    .filter-section-header {
+        align-items: flex-start;
+    }
+
+    .filter-section h2 {
+        font-size: 1.25rem;
+    }
+
+    .method-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .setup-stage {
+        gap: 15px;
+        transform: scale(.85);
+        transform-origin: center;
+    }
+
+    .vacuum-flow {
+        flex-direction: column;
+    }
+
+    .flow-arrow {
+        transform: rotate(90deg);
+    }
+}
+</style>
+
+
+<div class="filter-page">
+
+    <!-- BACK -->
+
+    <a href="{{ url_for('chemistry_page') }}" class="filter-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="filter-header">
+
+        <h1>
+            <i class="fa-solid fa-filter"></i>
+            Filtration & Washing
+        </h1>
+
+        <p>
+            Separate suspended insoluble solids from liquids using
+            gravity filtration or vacuum filtration, then wash the
+            collected solid to remove soluble impurities.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="filter-nav">
+
+        <a href="#aim">Aim</a>
+        <a href="#principle">Principle</a>
+        <a href="#apparatus">Apparatus</a>
+        <a href="#gravity">Gravity Filtration</a>
+        <a href="#vacuum">Vacuum Filtration</a>
+        <a href="#washing">Washing</a>
+        <a href="#compare">Compare</a>
+        <a href="#identify">Identify</a>
+        <a href="#precautions">Precautions</a>
+        <a href="#questions">Questions</a>
+
+    </nav>
+
+
+    <!-- 01 AIM -->
+
+    <section class="filter-section" id="aim">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                01
+            </div>
+
+            <h2>
+                Aim of the Experiment
+            </h2>
+
+        </div>
+
+        <p>
+            To separate an insoluble solid from a liquid using filtration
+            and, where necessary, wash the collected solid to remove
+            soluble impurities.
+        </p>
+
+        <div class="filter-info">
+
+            <strong>Key idea:</strong><br>
+
+            Filtration separates substances based on differences in
+            particle size and physical state. The insoluble solid is
+            retained by the filter while the liquid passes through.
+
+        </div>
+
+    </section>
+
+
+    <!-- 02 PRINCIPLE -->
+
+    <section class="filter-section" id="principle">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                02
+            </div>
+
+            <h2>
+                Principle of Filtration
+            </h2>
+
+        </div>
+
+        <p>
+            Filtration is a physical separation technique used when an
+            insoluble solid is suspended in a liquid. A porous filter
+            allows the liquid and dissolved substances to pass through
+            while retaining the larger solid particles.
+        </p>
+
+        <p>
+            The liquid that passes through the filter is called the
+            <strong>filtrate</strong>, while the solid retained on the
+            filter paper is called the <strong>residue</strong>.
+        </p>
+
+
+        <div class="method-grid">
+
+            <div class="method-card">
+
+                <div class="method-icon">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </div>
+
+                <h3>
+                    Gravity Filtration
+                </h3>
+
+                <p>
+                    Gravity pulls the liquid through filter paper placed
+                    inside a funnel. It is simple and useful when the
+                    filtrate is the main product.
+                </p>
+
+            </div>
+
+
+            <div class="method-card">
+
+                <div class="method-icon">
+                    <i class="fa-solid fa-gauge-high"></i>
+                </div>
+
+                <h3>
+                    Vacuum Filtration
+                </h3>
+
+                <p>
+                    Reduced pressure draws the liquid through the filter
+                    more quickly. It is particularly useful when the
+                    solid residue is the desired product.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filter-info">
+
+            <strong>Two important terms:</strong><br>
+
+            <strong>Residue</strong> = solid retained by the filter.<br>
+
+            <strong>Filtrate</strong> = liquid that passes through the filter.
+
+        </div>
+
+    </section>
+
+
+    <!-- 03 APPARATUS -->
+
+    <section class="filter-section" id="apparatus">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                03
+            </div>
+
+            <h2>
+                Apparatus & Materials
+            </h2>
+
+        </div>
+
+        <ul>
+
+            <li>
+                Filter funnel
+            </li>
+
+            <li>
+                Filter paper
+            </li>
+
+            <li>
+                Beaker or conical flask
+            </li>
+
+            <li>
+                Glass rod
+            </li>
+
+            <li>
+                Retort stand and clamp where required
+            </li>
+
+            <li>
+                Mixture containing an insoluble solid
+            </li>
+
+            <li>
+                Wash bottle containing a suitable washing liquid
+            </li>
+
+        </ul>
+
+        <h3>
+            Vacuum Filtration Equipment
+        </h3>
+
+        <ul>
+
+            <li>
+                Büchner funnel
+            </li>
+
+            <li>
+                Filter paper
+            </li>
+
+            <li>
+                Side-arm filter flask
+            </li>
+
+            <li>
+                Vacuum source
+            </li>
+
+            <li>
+                Suitable tubing
+            </li>
+
+        </ul>
+
+        <div class="filter-info">
+
+            <strong>Important:</strong><br>
+
+            The filter paper must fit correctly inside the funnel.
+            Poorly fitted filter paper can allow solid particles to
+            pass through or cause leakage around the edges.
+
+        </div>
+
+    </section>
+
+
+    <!-- 04 GRAVITY FILTRATION -->
+
+    <section class="filter-section" id="gravity">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                04
+            </div>
+
+            <h2>
+                Gravity Filtration
+            </h2>
+
+        </div>
+
+        <p>
+            Gravity filtration uses atmospheric pressure and gravity to
+            pull the liquid through the filter paper.
+        </p>
+
+
+        <div class="setup-box">
+
+            <div class="setup-stage">
+
+                <div>
+
+                    <div class="setup-funnel">
+
+                        <div class="setup-funnel-top"></div>
+
+                        <div class="setup-funnel-cone"></div>
+
+                        <div class="setup-funnel-stem"></div>
+
+                    </div>
+
+                    <div class="setup-label">
+                        Filter funnel
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="setup-beaker"></div>
+
+                    <div class="setup-label">
+                        Collecting flask
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <h3>
+            Procedure
+        </h3>
+
+        <ol class="step-list">
+
+            <li>
+                Fold the filter paper to form a suitable cone and place
+                it inside the funnel.
+            </li>
+
+            <li>
+                Moisten the filter paper with a small amount of the
+                appropriate liquid so that it fits closely against the
+                funnel.
+            </li>
+
+            <li>
+                Place the funnel securely above the receiving container.
+            </li>
+
+            <li>
+                Pour the mixture slowly down a glass rod into the funnel.
+            </li>
+
+            <li>
+                Keep the liquid level below the top edge of the filter
+                paper.
+            </li>
+
+            <li>
+                Allow the liquid to pass through completely.
+            </li>
+
+            <li>
+                The solid remaining on the filter paper is the residue.
+            </li>
+
+        </ol>
+
+
+        <div class="filter-info">
+
+            <strong>Why use a glass rod?</strong><br>
+
+            Pouring the mixture down a glass rod helps control the flow
+            and reduces splashing or damage to the filter paper.
+
+        </div>
+
+    </section>
+
+
+    <!-- 05 VACUUM FILTRATION -->
+
+    <section class="filter-section" id="vacuum">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                05
+            </div>
+
+            <h2>
+                Vacuum Filtration
+            </h2>
+
+        </div>
+
+        <p>
+            Vacuum filtration uses reduced pressure to draw the liquid
+            through the filter. This is generally faster than ordinary
+            gravity filtration.
+        </p>
+
+
+        <div class="vacuum-flow">
+
+            <div class="flow-item">
+
+                <strong>Mixture</strong>
+                Solid + liquid
+
+            </div>
+
+            <div class="flow-arrow">
+                →
+            </div>
+
+            <div class="flow-item">
+
+                <strong>Büchner funnel</strong>
+                Filter paper
+
+            </div>
+
+            <div class="flow-arrow">
+                →
+            </div>
+
+            <div class="flow-item">
+
+                <strong>Filter flask</strong>
+                Filtrate
+
+            </div>
+
+            <div class="flow-arrow">
+                →
+            </div>
+
+            <div class="flow-item">
+
+                <strong>Vacuum</strong>
+                Reduced pressure
+
+            </div>
+
+        </div>
+
+
+        <h3>
+            Procedure
+        </h3>
+
+        <ol class="step-list">
+
+            <li>
+                Place suitable filter paper onto the Büchner funnel.
+            </li>
+
+            <li>
+                Wet the filter paper with a small amount of the
+                appropriate liquid so that it seals against the funnel.
+            </li>
+
+            <li>
+                Assemble the Büchner funnel and filter flask securely.
+            </li>
+
+            <li>
+                Connect the flask to the vacuum source using suitable
+                tubing.
+            </li>
+
+            <li>
+                Start the vacuum and carefully transfer the mixture
+                onto the filter.
+            </li>
+
+            <li>
+                Allow the liquid to be drawn through while the solid
+                remains on the filter.
+            </li>
+
+            <li>
+                Wash the collected solid if required.
+            </li>
+
+        </ol>
+
+
+        <div class="filter-info">
+
+            <strong>Why use vacuum filtration?</strong><br>
+
+            It removes liquid from the solid more quickly and can leave
+            the residue relatively dry compared with ordinary gravity
+            filtration.
+
+        </div>
+
+    </section>
+
+
+    <!-- 06 WASHING -->
+
+    <section class="filter-section" id="washing">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                06
+            </div>
+
+            <h2>
+                Washing the Residue
+            </h2>
+
+        </div>
+
+        <p>
+            After filtration, the solid residue may still contain
+            dissolved impurities from the original solution. Washing
+            the residue helps remove these soluble substances.
+        </p>
+
+
+        <h3>
+            Washing Procedure
+        </h3>
+
+        <ol class="step-list">
+
+            <li>
+                Allow most of the original liquid to pass through the
+                filter.
+            </li>
+
+            <li>
+                Add a small amount of a suitable washing liquid to the
+                residue.
+            </li>
+
+            <li>
+                Spread the washing liquid over the residue so that it
+                contacts the solid thoroughly.
+            </li>
+
+            <li>
+                Allow the washing liquid to pass through the filter.
+            </li>
+
+            <li>
+                Repeat with small portions if further washing is needed.
+            </li>
+
+            <li>
+                Continue filtration until the desired degree of washing
+                has been achieved.
+            </li>
+
+        </ol>
+
+
+        <div class="filter-info">
+
+            <strong>Why use small portions?</strong><br>
+
+            Several small portions of washing liquid can remove soluble
+            impurities efficiently while avoiding unnecessary loss of
+            the desired solid.
+
+        </div>
+
+
+        <h3>
+            Choosing the Washing Liquid
+        </h3>
+
+        <p>
+            The washing liquid should dissolve the unwanted soluble
+            impurities but should not significantly dissolve or react
+            with the desired solid.
+        </p>
+
+    </section>
+
+
+    <!-- 07 COMPARISON -->
+
+    <section class="filter-section" id="compare">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                07
+            </div>
+
+            <h2>
+                Gravity vs Vacuum Filtration
+            </h2>
+
+        </div>
+
+
+        <div class="filter-table-wrapper">
+
+            <table class="filter-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Feature</th>
+                        <th>Gravity Filtration</th>
+                        <th>Vacuum Filtration</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            Driving force
+                        </td>
+
+                        <td>
+                            Gravity
+                        </td>
+
+                        <td>
+                            Reduced pressure
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Speed
+                        </td>
+
+                        <td>
+                            Relatively slower
+                        </td>
+
+                        <td>
+                            Generally faster
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Common equipment
+                        </td>
+
+                        <td>
+                            Funnel and filter paper
+                        </td>
+
+                        <td>
+                            Büchner funnel and filter flask
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Useful when
+                        </td>
+
+                        <td>
+                            The filtrate is the main product
+                        </td>
+
+                        <td>
+                            The solid residue is the main product
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Residue
+                        </td>
+
+                        <td>
+                            Usually retains more liquid
+                        </td>
+
+                        <td>
+                            Usually relatively drier
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="filter-info">
+
+            <strong>Exam tip:</strong><br>
+
+            If the question emphasizes collecting a solid quickly and
+            removing as much liquid as possible, vacuum filtration is
+            often the appropriate method.
+
+        </div>
+
+    </section>
+
+
+    <!-- 08 INTERACTIVE -->
+
+    <section class="filter-section" id="identify">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                08
+            </div>
+
+            <h2>
+                Interactive Filtration Test
+            </h2>
+
+        </div>
+
+        <p>
+            Test your understanding of filtration and choose the most
+            appropriate method.
+        </p>
+
+
+        <div class="test-box">
+
+            <div class="test-top">
+
+                <h3>
+                    <i class="fa-solid fa-filter"></i>
+                    Choose the Filtration Method
+                </h3>
+
+            </div>
+
+
+            <div class="test-body">
+
+                <div class="test-question">
+
+                    You want to collect an
+                    <strong>insoluble solid product</strong>
+                    as quickly as possible and remove as much liquid
+                    as practical.
+
+                    Which method is most appropriate?
+
+                </div>
+
+
+                <select class="test-select" id="filterAnswer">
+
+                    <option value="">
+                        Select an answer...
+                    </option>
+
+                    <option value="gravity">
+                        Gravity filtration
+                    </option>
+
+                    <option value="vacuum">
+                        Vacuum filtration
+                    </option>
+
+                    <option value="decanting">
+                        Decanting
+                    </option>
+
+                    <option value="evaporation">
+                        Evaporation
+
+                    </option>
+
+                </select>
+
+
+                <br>
+
+
+                <button
+                    class="test-button"
+                    id="checkFilter"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+                    Check Answer
+
+                </button>
+
+
+                <div
+                    class="test-result"
+                    id="filterResult"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 09 PRECAUTIONS -->
+
+    <section class="filter-section" id="precautions">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                09
+            </div>
+
+            <h2>
+                Precautions & Sources of Error
+            </h2>
+
+        </div>
+
+
+        <h3>
+            Precautions
+        </h3>
+
+        <ul>
+
+            <li>
+                Use filter paper of the correct size and grade.
+            </li>
+
+            <li>
+                Do not overfill the filter paper.
+            </li>
+
+            <li>
+                Pour the mixture carefully to avoid tearing the filter
+                paper.
+            </li>
+
+            <li>
+                Wet the filter paper before filtration when appropriate.
+            </li>
+
+            <li>
+                Use small portions of washing liquid.
+            </li>
+
+            <li>
+                Ensure vacuum filtration equipment is assembled securely.
+            </li>
+
+        </ul>
+
+
+        <h3>
+            Possible Sources of Error
+        </h3>
+
+        <ul>
+
+            <li>
+                Solid particles passing through damaged filter paper.
+            </li>
+
+            <li>
+                Pouring the mixture too quickly.
+            </li>
+
+            <li>
+                Using an incorrectly fitted filter paper.
+            </li>
+
+            <li>
+                Losing solid during transfer or washing.
+            </li>
+
+            <li>
+                Incomplete washing of the residue.
+            </li>
+
+            <li>
+                Failure to create an adequate vacuum.
+            </li>
+
+        </ul>
+
+
+        <div class="filter-info">
+
+            <strong>Important:</strong><br>
+
+            Washing improves the purity of the residue, but excessive
+            washing can cause some soluble products to be lost.
+
+        </div>
+
+    </section>
+
+
+    <!-- 10 QUESTIONS -->
+
+    <section class="filter-section" id="questions">
+
+        <div class="filter-section-header">
+
+            <div class="filter-number">
+                10
+            </div>
+
+            <h2>
+                Common Practical Questions
+            </h2>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                1. What is filtration?
+            </strong>
+
+            <div class="exam-answer">
+                Filtration is a separation technique used to separate
+                an insoluble solid from a liquid.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                2. What is the residue?
+            </strong>
+
+            <div class="exam-answer">
+                The residue is the insoluble solid retained by the
+                filter paper.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                3. What is the filtrate?
+            </strong>
+
+            <div class="exam-answer">
+                The filtrate is the liquid that passes through the
+                filter paper.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                4. Why is the residue washed?
+            </strong>
+
+            <div class="exam-answer">
+                To remove soluble impurities that remain with the
+                solid after filtration.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                5. Why is vacuum filtration faster than gravity filtration?
+            </strong>
+
+            <div class="exam-answer">
+                Reduced pressure creates a pressure difference that
+                draws the liquid through the filter more quickly.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                6. Which method is usually preferred when the solid is
+                the desired product?
+            </strong>
+
+            <div class="exam-answer">
+                Vacuum filtration is often preferred because it is faster
+                and can produce a relatively drier solid.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                7. Why should the mixture not be poured too quickly?
+            </strong>
+
+            <div class="exam-answer">
+                Pouring too quickly can overflow or damage the filter
+                paper and may cause solid particles to pass through.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                8. Why should small portions of washing liquid be used?
+            </strong>
+
+            <div class="exam-answer">
+                Small portions can remove soluble impurities effectively
+                while reducing unnecessary loss of the desired solid.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                9. What apparatus is commonly used for vacuum filtration?
+            </strong>
+
+            <div class="exam-answer">
+                A Büchner funnel, filter paper, side-arm filter flask,
+                tubing, and a suitable vacuum source.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                10. What is the main difference between filtration and
+                evaporation?
+            </strong>
+
+            <div class="exam-answer">
+                Filtration separates an insoluble solid from a liquid,
+                while evaporation removes a solvent to leave dissolved
+                substances behind.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i
+            class="fa-solid fa-wand-magic-sparkles"
+            style="
+                color:var(--filter-blue-light);
+                font-size:30px;
+                margin-bottom:10px;
+            "
+        ></i>
+
+
+        <h3
+            style="
+                margin:0 0 8px;
+                color:white;
+            "
+        >
+            Need help with a chemistry practical?
+        </h3>
+
+
+        <p
+            style="
+                color:var(--filter-muted);
+                margin:0;
+            "
+        >
+            Ask Insite AI to explain filtration, washing, separation
+            techniques, practical procedures, observations, or other
+            chemistry questions.
+        </p>
+
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const filterAnswer =
+    document.getElementById("filterAnswer");
+
+const checkFilter =
+    document.getElementById("checkFilter");
+
+const filterResult =
+    document.getElementById("filterResult");
+
+
+checkFilter.addEventListener("click", function () {
+
+    const answer = filterAnswer.value;
+
+    filterResult.style.display = "block";
+
+
+    if (answer === "vacuum") {
+
+        filterResult.className =
+            "test-result correct";
+
+        filterResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-check"></i>
+                Correct!
+
+            </div>
+
+            <div>
+
+                <strong>Vacuum filtration</strong> is appropriate
+                because reduced pressure draws the liquid through
+                the filter quickly and helps leave the solid
+                relatively dry.
+
+            </div>
+
+        `;
+
+    }
+
+    else if (answer === "") {
+
+        filterResult.className =
+            "test-result wrong";
+
+        filterResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+                Select an answer.
+
+            </div>
+
+            <div>
+
+                Choose the method that uses reduced pressure to
+                speed up filtration.
+
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+        filterResult.className =
+            "test-result wrong";
+
+        filterResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-xmark"></i>
+                Not quite.
+
+            </div>
+
+            <div>
+
+                The correct answer is
+                <strong>Vacuum filtration</strong>.
+
+                It is useful when the solid is the desired product
+                and rapid removal of liquid is required.
+
+            </div>
+
+        `;
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

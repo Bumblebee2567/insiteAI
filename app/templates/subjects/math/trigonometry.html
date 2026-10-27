@@ -1,0 +1,1100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Trigonometry | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .trig-page {
+        padding: 25px 18px 70px;
+        background: #0b0f19;
+        color: #f5f7ff;
+    }
+
+    /* BACK BUTTON */
+
+    .trig-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+
+        padding: 9px 15px;
+
+        color: #dbe7f5;
+        background: #18212c;
+
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 9px;
+
+        text-decoration: none;
+
+        transition: 0.2s ease;
+    }
+
+    .trig-back:hover {
+        color: white;
+        background: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+
+    /* HEADER */
+
+    .trig-header {
+        text-align: center;
+        padding: 35px 10px 25px;
+    }
+
+    .trig-icon {
+        width: 68px;
+        height: 68px;
+
+        margin: 0 auto 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #69a9ff;
+        background: #18212c;
+
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+
+        font-size: 28px;
+    }
+
+    .trig-header h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .trig-header p {
+        max-width: 720px;
+        margin: auto;
+
+        color: #aeb9c6;
+        line-height: 1.7;
+    }
+
+
+    /* TOPIC NAVIGATION */
+
+    .trig-topic-wrapper {
+        margin: 15px 0 30px;
+    }
+
+    .trig-topic-nav {
+        display: flex;
+        gap: 10px;
+
+        overflow-x: auto;
+
+        padding: 5px 3px 12px;
+
+        scrollbar-width: thin;
+        scrollbar-color: #397fcf transparent;
+    }
+
+    .trig-topic-nav::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .trig-topic-nav::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .trig-topic-nav::-webkit-scrollbar-thumb {
+        background: #397fcf;
+        border-radius: 20px;
+    }
+
+    .trig-topic {
+        flex: 0 0 auto;
+
+        padding: 9px 15px;
+
+        color: #cdd8e4;
+        background: #18212c;
+
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 9px;
+
+        text-decoration: none;
+        white-space: nowrap;
+
+        font-size: 14px;
+
+        transition: 0.2s ease;
+    }
+
+    .trig-topic:hover {
+        color: white;
+        background: #246bb3;
+        border-color: #246bb3;
+    }
+
+
+    /* SECTIONS */
+
+    .trig-section {
+        background: #151e28;
+
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 15px;
+
+        padding: 27px;
+
+        margin-bottom: 24px;
+
+        scroll-margin-top: 95px;
+    }
+
+    .trig-section h2 {
+        color: #f3f6fa;
+
+        font-size: 1.5rem;
+        font-weight: 750;
+
+        margin-bottom: 17px;
+    }
+
+    .trig-section h3 {
+        color: #78b4ff;
+
+        font-size: 1.12rem;
+
+        margin-top: 27px;
+        margin-bottom: 11px;
+    }
+
+    .trig-section p,
+    .trig-section li {
+        color: #cbd4de;
+        line-height: 1.8;
+    }
+
+    .trig-section ul {
+        padding-left: 22px;
+    }
+
+
+    /* FORMULA */
+
+    .trig-formula {
+        background: #1b2632;
+
+        border-left: 4px solid #347fd1;
+
+        padding: 15px 18px;
+
+        margin: 17px 0;
+
+        border-radius: 8px;
+
+        color: #edf4fb;
+
+        overflow-x: auto;
+    }
+
+
+    /* EXAMPLE */
+
+    .trig-example {
+        background: #192532;
+
+        border: 1px solid rgba(68,143,220,0.25);
+
+        padding: 18px;
+
+        margin-top: 19px;
+
+        border-radius: 10px;
+    }
+
+    .trig-example-title {
+        color: #78b4ff;
+
+        font-weight: 700;
+
+        margin-bottom: 9px;
+    }
+
+    .trig-answer {
+        background: #1d2935;
+
+        padding: 13px;
+
+        margin-top: 11px;
+
+        border-radius: 8px;
+
+        border-left: 3px solid #347fd1;
+
+        color: #dce5ee;
+    }
+
+
+    /* ASK INSITE AI */
+
+    .ask-insite {
+        margin-top: 24px;
+
+        padding: 16px 17px;
+
+        background: #18232f;
+
+        border: 1px solid rgba(68,143,220,0.22);
+
+        border-radius: 10px;
+
+        color: #cbd4de;
+    }
+
+    .ask-insite a {
+        color: #78b4ff;
+
+        font-weight: 700;
+
+        text-decoration: none;
+    }
+
+    .ask-insite a:hover {
+        text-decoration: underline;
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 768px) {
+
+        .trig-page {
+            padding: 18px 12px 55px;
+        }
+
+        .trig-header {
+            padding-top: 28px;
+        }
+
+        .trig-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .trig-header p {
+            font-size: 0.95rem;
+        }
+
+        .trig-section {
+            padding: 21px;
+        }
+
+        .trig-section h2 {
+            font-size: 1.35rem;
+        }
+
+        .trig-section h3 {
+            font-size: 1.05rem;
+        }
+
+    }
+
+</style>
+
+
+<div class="trig-page">
+
+    <!-- BACK TO MATHEMATICS -->
+
+    <a href="{{ url_for('math_page') }}" class="trig-back">
+        <i class="fas fa-arrow-left"></i>
+        Mathematics
+    </a>
+
+
+    <!-- HEADER -->
+
+    <div class="trig-header">
+
+        <div class="trig-icon">
+            <i class="fas fa-calculator"></i>
+        </div>
+
+        <h1>Trigonometry</h1>
+
+        <p>
+            Learn the relationship between angles and sides of triangles,
+            trigonometric ratios, identities, equations, graphs,
+            and applications.
+        </p>
+
+    </div>
+
+
+    <!-- SCROLLABLE TOPICS -->
+
+    <div class="trig-topic-wrapper">
+
+        <div class="trig-topic-nav">
+
+            <a href="#basics" class="trig-topic">
+                Basics
+            </a>
+
+            <a href="#angles" class="trig-topic">
+                Angles
+            </a>
+
+            <a href="#right-triangles" class="trig-topic">
+                Right Triangles
+            </a>
+
+            <a href="#ratios" class="trig-topic">
+                Trig Ratios
+            </a>
+
+            <a href="#special-angles" class="trig-topic">
+                Special Angles
+            </a>
+
+            <a href="#unit-circle" class="trig-topic">
+                Unit Circle
+            </a>
+
+            <a href="#identities" class="trig-topic">
+                Identities
+            </a>
+
+            <a href="#equations" class="trig-topic">
+                Equations
+            </a>
+
+            <a href="#graphs" class="trig-topic">
+                Graphs
+            </a>
+
+            <a href="#non-right" class="trig-topic">
+                Non-Right Triangles
+            </a>
+
+            <a href="#applications" class="trig-topic">
+                Applications
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- BASICS -->
+
+    <section class="trig-section" id="basics">
+
+        <h2>1. Trigonometry Basics</h2>
+
+        <p>
+            Trigonometry is the branch of mathematics concerned with
+            relationships between angles and sides of triangles.
+        </p>
+
+        <p>
+            It can be used to find unknown lengths and angles when
+            enough information about a triangle is known.
+        </p>
+
+        <h3>Uses of Trigonometry</h3>
+
+        <ul>
+            <li>Finding unknown sides.</li>
+            <li>Finding unknown angles.</li>
+            <li>Finding heights and distances.</li>
+            <li>Navigation and surveying.</li>
+            <li>Engineering and construction.</li>
+            <li>Physics and wave motion.</li>
+        </ul>
+
+        <div class="ask-insite">
+            <i class="fas fa-sparkles text-primary"></i>
+            Don't understand this topic?
+            <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+        </div>
+
+    </section>
+
+
+    <!-- ANGLES -->
+
+    <section class="trig-section" id="angles">
+
+        <h2>2. Angles</h2>
+
+        <p>
+            An angle represents the amount of rotation between two
+            rays that meet at a common point.
+        </p>
+
+        <h3>Types of Angles</h3>
+
+        <ul>
+            <li><strong>Acute:</strong> greater than 0° and less than 90°.</li>
+            <li><strong>Right:</strong> exactly 90°.</li>
+            <li><strong>Obtuse:</strong> greater than 90° but less than 180°.</li>
+            <li><strong>Straight:</strong> exactly 180°.</li>
+            <li><strong>Reflex:</strong> greater than 180° but less than 360°.</li>
+        </ul>
+
+        <h3>Degrees and Radians</h3>
+
+        <p>
+            Trigonometric angles can be measured in degrees or radians.
+        </p>
+
+        <div class="trig-formula">
+
+            180° = π radians
+
+            <br><br>
+
+            360° = 2π radians
+
+        </div>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                Convert 60° to radians.
+            </p>
+
+            <div class="trig-answer">
+
+                60 × π/180
+
+                <br>
+
+                = π/3 radians
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT TRIANGLES -->
+
+    <section class="trig-section" id="right-triangles">
+
+        <h2>3. Right-Angled Triangles</h2>
+
+        <p>
+            A right-angled triangle has one angle equal to 90°.
+            The side opposite the right angle is the hypotenuse.
+        </p>
+
+        <h3>Pythagorean Theorem</h3>
+
+        <div class="trig-formula">
+            a² + b² = c²
+        </div>
+
+        <p>
+            The theorem allows us to calculate an unknown side when
+            two sides of a right-angled triangle are known.
+        </p>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                A right-angled triangle has shorter sides of 6 cm
+                and 8 cm. Find the hypotenuse.
+            </p>
+
+            <div class="trig-answer">
+
+                c² = 6² + 8²
+
+                <br>
+
+                c² = 36 + 64
+
+                <br>
+
+                c² = 100
+
+                <br>
+
+                c = 10 cm
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RATIOS -->
+
+    <section class="trig-section" id="ratios">
+
+        <h2>4. Trigonometric Ratios</h2>
+
+        <p>
+            The three basic trigonometric ratios for right-angled
+            triangles are sine, cosine and tangent.
+        </p>
+
+        <h3>SOH-CAH-TOA</h3>
+
+        <div class="trig-formula">
+
+            sin θ = opposite / hypotenuse
+
+            <br><br>
+
+            cos θ = adjacent / hypotenuse
+
+            <br><br>
+
+            tan θ = opposite / adjacent
+
+        </div>
+
+        <p>
+            SOH-CAH-TOA is a useful way of remembering which sides
+            belong to each ratio.
+        </p>
+
+        <h3>Finding an Unknown Side</h3>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                A right triangle has a 30° angle and a hypotenuse
+                of 10 cm. Find the opposite side.
+            </p>
+
+            <div class="trig-answer">
+
+                sin 30° = opposite / 10
+
+                <br>
+
+                0.5 = opposite / 10
+
+                <br>
+
+                opposite = 5 cm
+
+            </div>
+
+        </div>
+
+        <h3>Inverse Trigonometric Functions</h3>
+
+        <div class="trig-formula">
+
+            θ = sin⁻¹(opposite / hypotenuse)
+
+            <br><br>
+
+            θ = cos⁻¹(adjacent / hypotenuse)
+
+            <br><br>
+
+            θ = tan⁻¹(opposite / adjacent)
+
+        </div>
+
+    </section>
+
+
+    <!-- SPECIAL ANGLES -->
+
+    <section class="trig-section" id="special-angles">
+
+        <h2>5. Special Angles</h2>
+
+        <p>
+            The angles 0°, 30°, 45°, 60° and 90° occur frequently
+            in trigonometry and have exact values.
+        </p>
+
+        <h3>Sine</h3>
+
+        <div class="trig-formula">
+
+            sin 0° = 0
+
+            <br>
+
+            sin 30° = 1/2
+
+            <br>
+
+            sin 45° = √2/2
+
+            <br>
+
+            sin 60° = √3/2
+
+            <br>
+
+            sin 90° = 1
+
+        </div>
+
+        <h3>Cosine</h3>
+
+        <div class="trig-formula">
+
+            cos 0° = 1
+
+            <br>
+
+            cos 30° = √3/2
+
+            <br>
+
+            cos 45° = √2/2
+
+            <br>
+
+            cos 60° = 1/2
+
+            <br>
+
+            cos 90° = 0
+
+        </div>
+
+        <h3>Tangent</h3>
+
+        <div class="trig-formula">
+
+            tan 0° = 0
+
+            <br>
+
+            tan 30° = √3/3
+
+            <br>
+
+            tan 45° = 1
+
+            <br>
+
+            tan 60° = √3
+
+        </div>
+
+    </section>
+
+
+    <!-- UNIT CIRCLE -->
+
+    <section class="trig-section" id="unit-circle">
+
+        <h2>6. Unit Circle</h2>
+
+        <p>
+            The unit circle is a circle with radius 1 centered at
+            the origin of the coordinate plane.
+        </p>
+
+        <p>
+            It provides a way to define trigonometric functions
+            for angles beyond the basic acute angles of a
+            right-angled triangle.
+        </p>
+
+        <h3>Coordinates</h3>
+
+        <div class="trig-formula">
+
+            (x, y) = (cos θ, sin θ)
+
+        </div>
+
+        <p>
+            The x-coordinate represents cos θ and the y-coordinate
+            represents sin θ.
+        </p>
+
+        <h3>Signs in the Four Quadrants</h3>
+
+        <ul>
+            <li>Quadrant I: all three are positive.</li>
+            <li>Quadrant II: sine is positive.</li>
+            <li>Quadrant III: tangent is positive.</li>
+            <li>Quadrant IV: cosine is positive.</li>
+        </ul>
+
+        <div class="ask-insite">
+            <i class="fas fa-sparkles text-primary"></i>
+            Need help understanding the unit circle?
+            <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+        </div>
+
+    </section>
+
+
+    <!-- IDENTITIES -->
+
+    <section class="trig-section" id="identities">
+
+        <h2>7. Trigonometric Identities</h2>
+
+        <p>
+            A trigonometric identity is an equation that remains true
+            for every value for which both sides are defined.
+        </p>
+
+        <h3>Pythagorean Identity</h3>
+
+        <div class="trig-formula">
+
+            sin²θ + cos²θ = 1
+
+        </div>
+
+        <h3>Other Pythagorean Identities</h3>
+
+        <div class="trig-formula">
+
+            1 + tan²θ = sec²θ
+
+            <br><br>
+
+            1 + cot²θ = csc²θ
+
+        </div>
+
+        <h3>Reciprocal Identities</h3>
+
+        <div class="trig-formula">
+
+            csc θ = 1 / sin θ
+
+            <br>
+
+            sec θ = 1 / cos θ
+
+            <br>
+
+            cot θ = 1 / tan θ
+
+        </div>
+
+        <h3>Quotient Identities</h3>
+
+        <div class="trig-formula">
+
+            tan θ = sin θ / cos θ
+
+            <br>
+
+            cot θ = cos θ / sin θ
+
+        </div>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                If sin θ = 3/5 and θ is acute, find cos θ.
+            </p>
+
+            <div class="trig-answer">
+
+                sin²θ + cos²θ = 1
+
+                <br>
+
+                (3/5)² + cos²θ = 1
+
+                <br>
+
+                9/25 + cos²θ = 1
+
+                <br>
+
+                cos²θ = 16/25
+
+                <br>
+
+                cos θ = 4/5
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EQUATIONS -->
+
+    <section class="trig-section" id="equations">
+
+        <h2>8. Trigonometric Equations</h2>
+
+        <p>
+            Trigonometric equations contain trigonometric functions
+            and require us to find the values of an unknown angle.
+        </p>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                Solve sin θ = 1/2 for 0° ≤ θ ≤ 360°.
+            </p>
+
+            <div class="trig-answer">
+
+                sin⁻¹(1/2) = 30°
+
+                <br><br>
+
+                Sine is positive in Quadrants I and II.
+
+                <br><br>
+
+                θ = 30° or 150°
+
+            </div>
+
+        </div>
+
+        <p>
+            Because trigonometric functions are periodic, an equation
+            can have several solutions within a given interval.
+        </p>
+
+    </section>
+
+
+    <!-- GRAPHS -->
+
+    <section class="trig-section" id="graphs">
+
+        <h2>9. Trigonometric Graphs</h2>
+
+        <p>
+            Sine, cosine and tangent are periodic functions. Their
+            graphs repeat at regular intervals.
+        </p>
+
+        <h3>Sine</h3>
+
+        <div class="trig-formula">
+            y = sin x
+        </div>
+
+        <p>
+            The sine function has a maximum value of 1 and a minimum
+            value of -1.
+        </p>
+
+        <h3>Cosine</h3>
+
+        <div class="trig-formula">
+            y = cos x
+        </div>
+
+        <p>
+            The cosine function also ranges from -1 to 1.
+        </p>
+
+        <h3>Tangent</h3>
+
+        <div class="trig-formula">
+            y = tan x
+        </div>
+
+        <p>
+            Tangent has vertical asymptotes where cosine is zero
+            and has a period of 180° or π radians.
+        </p>
+
+        <h3>General Sine Function</h3>
+
+        <div class="trig-formula">
+            y = A sin(Bx + C) + D
+        </div>
+
+        <p>
+            The constants can change the amplitude, period,
+            horizontal position and vertical position of the graph.
+        </p>
+
+        <div class="ask-insite">
+            <i class="fas fa-sparkles text-primary"></i>
+            Don't understand a trigonometric graph?
+            <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+        </div>
+
+    </section>
+
+
+    <!-- NON RIGHT TRIANGLES -->
+
+    <section class="trig-section" id="non-right">
+
+        <h2>10. Non-Right-Angled Triangles</h2>
+
+        <p>
+            Trigonometry can also be used with triangles that do not
+            contain a right angle.
+        </p>
+
+        <h3>Sine Rule</h3>
+
+        <div class="trig-formula">
+
+            a / sin A = b / sin B = c / sin C
+
+        </div>
+
+        <h3>Cosine Rule</h3>
+
+        <div class="trig-formula">
+
+            a² = b² + c² - 2bc cos A
+
+        </div>
+
+        <h3>Area of a Triangle</h3>
+
+        <div class="trig-formula">
+
+            Area = 1/2 ab sin C
+
+        </div>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                Two sides of a triangle are 8 cm and 10 cm and
+                the included angle is 60°. Find its area.
+            </p>
+
+            <div class="trig-answer">
+
+                Area = 1/2 × 8 × 10 × sin 60°
+
+                <br><br>
+
+                Area = 40 × √3/2
+
+                <br><br>
+
+                Area = 20√3 cm²
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- APPLICATIONS -->
+
+    <section class="trig-section" id="applications">
+
+        <h2>11. Applications of Trigonometry</h2>
+
+        <p>
+            Trigonometry can be used to solve real-world problems
+            involving heights, distances, angles and directions.
+        </p>
+
+        <h3>Angle of Elevation</h3>
+
+        <p>
+            The angle of elevation is measured upward from a
+            horizontal line to an object above the observer.
+        </p>
+
+        <h3>Angle of Depression</h3>
+
+        <p>
+            The angle of depression is measured downward from a
+            horizontal line to an object below the observer.
+        </p>
+
+        <div class="trig-example">
+
+            <div class="trig-example-title">
+                Example
+            </div>
+
+            <p>
+                A person stands 20 m from a building and observes
+                the top at an angle of elevation of 40°. Find the
+                height of the building, ignoring the person's height.
+            </p>
+
+            <div class="trig-answer">
+
+                tan 40° = height / 20
+
+                <br><br>
+
+                height = 20 tan 40°
+
+                <br><br>
+
+                height ≈ 16.78 m
+
+            </div>
+
+        </div>
+
+        <h3>Applications</h3>
+
+        <ul>
+            <li>Surveying.</li>
+            <li>Navigation.</li>
+            <li>Engineering.</li>
+            <li>Construction.</li>
+            <li>Physics.</li>
+            <li>Astronomy.</li>
+            <li>Computer graphics.</li>
+        </ul>
+
+        <div class="ask-insite">
+            <i class="fas fa-sparkles text-primary"></i>
+            Stuck on a trigonometry problem?
+            <a href="{{ url_for('chat') }}">Ask Insite AI</a>
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

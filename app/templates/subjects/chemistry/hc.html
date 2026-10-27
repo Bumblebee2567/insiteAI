@@ -1,0 +1,2500 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hydrocarbons | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================================
+   INSITE AI — HYDROCARBONS
+   DARK CARD / BOX LAYOUT
+   ========================================================= */
+
+:root {
+    --hc-bg: #070b14;
+    --hc-panel: #0d1422;
+    --hc-panel-2: #0a101c;
+    --hc-panel-3: #080e18;
+
+    --hc-border: rgba(148, 163, 184, 0.16);
+
+    --hc-text: #f8fafc;
+    --hc-muted: #94a3b8;
+    --hc-soft: #cbd5e1;
+
+    --hc-blue: #38bdf8;
+    --hc-blue-dark: #0284c7;
+    --hc-purple: #a78bfa;
+    --hc-green: #34d399;
+    --hc-yellow: #fbbf24;
+    --hc-red: #fb7185;
+
+    --hc-radius: 18px;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.hydrocarbon-page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 35px auto 70px;
+    color: var(--hc-text);
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.hc-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 12px;
+
+    background: rgba(17, 26, 43, .85);
+    color: var(--hc-soft);
+
+    text-decoration: none;
+
+    transition: .2s ease;
+}
+
+.hc-back:hover {
+    transform: translateX(-4px);
+    border-color: rgba(56, 189, 248, .55);
+    background: #142033;
+    color: white;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.hc-header {
+    text-align: center;
+    padding: 35px 15px 30px;
+}
+
+.hc-header h1 {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 850;
+
+    letter-spacing: -1.5px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #7dd3fc
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hc-header h1 i {
+    color: var(--hc-blue);
+    margin-right: 8px;
+}
+
+.hc-header p {
+    max-width: 820px;
+    margin: 15px auto 0;
+
+    color: var(--hc-muted);
+
+    line-height: 1.8;
+    font-size: .98rem;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.hc-nav-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+
+    margin-bottom: 25px;
+    padding: 8px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 16px;
+
+    background: rgba(7, 11, 20, .86);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.hc-nav {
+    display: flex;
+    gap: 8px;
+
+    overflow-x: auto;
+    padding: 2px;
+
+    scrollbar-width: none;
+}
+
+.hc-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.hc-nav a {
+    flex: 0 0 auto;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+    border: 1px solid transparent;
+
+    color: var(--hc-muted);
+
+    text-decoration: none;
+    font-size: .84rem;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.hc-nav a:hover {
+    color: white;
+    background: #111a2b;
+    border-color: var(--hc-border);
+}
+
+/* =========================================================
+   MAIN SECTION CARDS
+   ========================================================= */
+
+.hc-section {
+    position: relative;
+
+    padding: 30px;
+    margin-bottom: 22px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: var(--hc-radius);
+
+    background: var(--hc-panel);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
+
+    scroll-margin-top: 90px;
+}
+
+.hc-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.hc-section-number {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: rgba(56, 189, 248, .12);
+    border: 1px solid rgba(56, 189, 248, .25);
+
+    color: var(--hc-blue);
+
+    font-weight: 800;
+}
+
+.hc-section h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.hc-section h3 {
+    margin-top: 28px;
+
+    color: #7dd3fc;
+    font-size: 1.15rem;
+}
+
+.hc-section p,
+.hc-section li {
+    color: var(--hc-soft);
+    line-height: 1.8;
+}
+
+.hc-section li {
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   HIGHLIGHT
+   ========================================================= */
+
+.hc-highlight {
+    margin: 20px 0;
+
+    padding: 17px 19px;
+
+    border: 1px solid rgba(56, 189, 248, .18);
+    border-left: 4px solid var(--hc-blue);
+
+    border-radius: 12px;
+
+    background: rgba(56, 189, 248, .045);
+
+    color: var(--hc-soft);
+
+    line-height: 1.7;
+}
+
+.hc-highlight strong {
+    color: #7dd3fc;
+}
+
+/* =========================================================
+   FORMULA
+   ========================================================= */
+
+.hc-formula {
+    margin: 18px 0;
+    padding: 18px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 13px;
+
+    background: #080e19;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 1.12rem;
+    font-weight: 700;
+
+    overflow-x: auto;
+}
+
+.hc-formula-note {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--hc-muted);
+
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+/* =========================================================
+   CARD GRIDS
+   ========================================================= */
+
+.hc-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.hc-grid.two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hc-grid.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hc-grid.four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* =========================================================
+   CONCEPT CARDS
+   ========================================================= */
+
+.hc-card {
+    padding: 21px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 15px;
+
+    background: var(--hc-panel-2);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.hc-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(56, 189, 248, .35);
+
+    background: #0e1726;
+}
+
+.hc-card i {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--hc-blue);
+
+    font-size: 25px;
+}
+
+.hc-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+    font-size: 1.1rem;
+}
+
+.hc-card p {
+    margin: 0;
+
+    color: var(--hc-muted);
+    font-size: .91rem;
+}
+
+/* =========================================================
+   HYDROCARBON FAMILY CARDS
+   ========================================================= */
+
+.family-card {
+    position: relative;
+
+    padding: 23px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+
+    overflow: hidden;
+}
+
+.family-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 70px;
+    height: 70px;
+
+    border-radius: 0 0 0 70px;
+
+    background: rgba(56, 189, 248, .035);
+}
+
+.family-card h3 {
+    margin: 0 0 8px;
+
+    color: white;
+    font-size: 1.2rem;
+}
+
+.family-card .family-formula {
+    color: var(--hc-blue);
+
+    font-size: 1.2rem;
+    font-weight: 800;
+
+    margin: 12px 0;
+}
+
+.family-card .family-name {
+    color: var(--hc-muted);
+
+    font-size: .85rem;
+}
+
+/* =========================================================
+   CARBON NUMBER BADGE
+   ========================================================= */
+
+.carbon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    margin-bottom: 12px;
+
+    border-radius: 9px;
+
+    background: rgba(167, 139, 250, .12);
+    border: 1px solid rgba(167, 139, 250, .25);
+
+    color: var(--hc-purple);
+
+    font-weight: 800;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.hc-table-wrap {
+    overflow-x: auto;
+
+    border-radius: 13px;
+    border: 1px solid var(--hc-border);
+
+    margin-top: 18px;
+}
+
+.hc-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.hc-table th,
+.hc-table td {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--hc-border);
+
+    text-align: left;
+
+    color: var(--hc-soft);
+}
+
+.hc-table th {
+    background: #0a101c;
+
+    color: #7dd3fc;
+
+    font-weight: 700;
+}
+
+.hc-table tr:last-child td {
+    border-bottom: none;
+}
+
+.hc-table tr:hover td {
+    background: rgba(56,189,248,.035);
+}
+
+/* =========================================================
+   REACTION CARDS
+   ========================================================= */
+
+.reaction-card {
+    padding: 22px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.reaction-card h3 {
+    margin: 0 0 10px;
+
+    color: white;
+}
+
+.reaction-type {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(56,189,248,.1);
+    border: 1px solid rgba(56,189,248,.2);
+
+    color: var(--hc-blue);
+
+    font-size: .72rem;
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   REACTION LAB
+   ========================================================= */
+
+.hc-lab {
+    margin-top: 22px;
+
+    padding: 20px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 16px;
+
+    background: #080e18;
+}
+
+.hc-lab-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+}
+
+.hc-lab-header h3 {
+    margin: 0;
+
+    color: white;
+}
+
+.hc-live {
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(52,211,153,.12);
+
+    border: 1px solid rgba(52,211,153,.3);
+
+    color: var(--hc-green);
+
+    font-size: .7rem;
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.hc-canvas-box {
+    position: relative;
+
+    overflow: hidden;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 12px;
+
+    background: #050810;
+}
+
+#hydrocarbonCanvas {
+    display: block;
+
+    width: 100%;
+    height: 330px;
+}
+
+/* =========================================================
+   LAB CONTROLS
+   ========================================================= */
+
+.hc-controls {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0,1fr));
+
+    gap: 15px;
+
+    margin-top: 15px;
+}
+
+.hc-control {
+    padding: 14px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 12px;
+
+    background: #0a101c;
+}
+
+.hc-control label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--hc-soft);
+
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.hc-control input {
+    width: 100%;
+}
+
+.hc-control output {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--hc-blue);
+
+    font-weight: 800;
+}
+
+/* =========================================================
+   CALCULATION BOX
+   ========================================================= */
+
+.calculation-box {
+    margin-top: 20px;
+
+    padding: 22px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 15px;
+
+    background: #0a101c;
+}
+
+.calculation-box h4 {
+    margin-top: 0;
+
+    color: #7dd3fc;
+}
+
+.calc-step {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 15px 0;
+}
+
+.calc-number {
+    flex: 0 0 32px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: var(--hc-blue);
+
+    color: #06111b;
+
+    font-weight: 900;
+}
+
+.calc-text {
+    color: var(--hc-soft);
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   ANSWER
+   ========================================================= */
+
+.hc-answer {
+    margin-top: 17px;
+
+    padding: 15px 17px;
+
+    border-left: 4px solid var(--hc-green);
+
+    border-radius: 9px;
+
+    background: rgba(52,211,153,.055);
+
+    color: var(--hc-soft);
+}
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
+
+.check-list {
+    display: grid;
+
+    gap: 11px;
+
+    margin-top: 18px;
+}
+
+.check-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 13px 15px;
+
+    border: 1px solid var(--hc-border);
+    border-radius: 11px;
+
+    background: #0a101c;
+
+    color: var(--hc-soft);
+}
+
+.check-item i {
+    color: var(--hc-green);
+
+    margin-top: 3px;
+}
+
+/* =========================================================
+   ASK AI
+   ========================================================= */
+
+.hc-ask-ai {
+    margin-top: 30px;
+
+    padding: 32px;
+
+    border: 1px solid rgba(56,189,248,.18);
+
+    border-radius: 18px;
+
+    background: #0b1320;
+
+    text-align: center;
+}
+
+.hc-ask-ai i {
+    margin-bottom: 12px;
+
+    color: var(--hc-blue);
+
+    font-size: 34px;
+}
+
+.hc-ask-ai h3 {
+    color: white;
+
+    font-size: 1.5rem;
+
+    margin: 0 0 10px;
+}
+
+.hc-ask-ai p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: var(--hc-muted);
+
+    line-height: 1.7;
+}
+
+.hc-ask-ai a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding: 11px 19px;
+
+    border-radius: 11px;
+
+    background: var(--hc-blue);
+
+    color: #06111b;
+
+    text-decoration: none;
+
+    font-weight: 800;
+
+    transition: .2s ease;
+}
+
+.hc-ask-ai a:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .hydrocarbon-page {
+        width: calc(100% - 20px);
+
+        margin: 15px auto 45px;
+
+        overflow: hidden;
+    }
+
+    .hc-header {
+        padding: 25px 5px;
+    }
+
+    .hc-header h1 {
+        font-size: 2rem;
+    }
+
+    .hc-header p {
+        font-size: .9rem;
+    }
+
+    .hc-back {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+
+    .hc-section {
+        padding: 19px 16px;
+        border-radius: 15px;
+    }
+
+    .hc-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .hc-grid.two,
+    .hc-grid.three,
+    .hc-grid.four {
+        grid-template-columns: 1fr;
+    }
+
+    .hc-nav-wrapper {
+        top: 0;
+
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .hc-nav a {
+        padding: 8px 12px;
+
+        font-size: .78rem;
+    }
+
+    .hc-formula {
+        font-size: .95rem;
+
+        padding: 15px;
+    }
+
+    .hc-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .hc-lab {
+        padding: 14px;
+    }
+
+    #hydrocarbonCanvas {
+        height: 240px;
+    }
+
+    .hc-table {
+        min-width: 620px;
+    }
+
+    .hc-table-wrap {
+        overflow-x: auto;
+    }
+
+    .hc-ask-ai {
+        padding: 24px 17px;
+    }
+}
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .hydrocarbon-page {
+        width: calc(100% - 14px);
+    }
+
+    .hc-section {
+        padding: 16px 13px;
+    }
+
+    .hc-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .hc-card,
+    .family-card,
+    .reaction-card {
+        padding: 17px;
+    }
+
+    #hydrocarbonCanvas {
+        height: 210px;
+    }
+}
+</style>
+
+
+<div class="hydrocarbon-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('chemistry_page') }}" class="hc-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry
+    </a>
+
+
+    <!-- HEADER -->
+    <header class="hc-header">
+
+        <h1>
+            <i class="fa-solid fa-atom"></i>
+            Hydrocarbons
+        </h1>
+
+        <p>
+            A complete study of hydrocarbons — their structures,
+            homologous series, naming, physical properties and chemical reactions,
+            with interactive molecular behaviour and calculation-based examples.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <div class="hc-nav-wrapper">
+
+        <nav class="hc-nav">
+
+            <a href="#overview">Overview</a>
+            <a href="#families">Families</a>
+            <a href="#alkanes">Alkanes</a>
+            <a href="#alkenes">Alkenes</a>
+            <a href="#alkynes">Alkynes</a>
+            <a href="#reactions">Reactions</a>
+            <a href="#lab">Reaction Lab</a>
+            <a href="#calculations">Calculations</a>
+            <a href="#properties">Properties</a>
+            <a href="#exam">Exam Checklist</a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         01 OVERVIEW
+         ===================================================== -->
+
+    <section class="hc-section" id="overview">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">01</div>
+
+            <div>
+                <h2>What Are Hydrocarbons?</h2>
+            </div>
+
+        </div>
+
+        <p>
+            <strong>Hydrocarbons</strong> are organic compounds containing only
+            carbon and hydrogen atoms. Carbon's ability to form four covalent
+            bonds allows hydrocarbons to form chains, branches and rings.
+        </p>
+
+        <div class="hc-highlight">
+
+            <strong>Key idea:</strong>
+
+            Hydrocarbons can be classified according to the type of
+            carbon-carbon bonding present in their molecules.
+
+        </div>
+
+
+        <div class="hc-grid three">
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-link"></i>
+
+                <h3>Single Bonds</h3>
+
+                <p>
+                    Saturated hydrocarbons containing only C–C single bonds
+                    are called alkanes.
+                </p>
+
+            </div>
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-arrows-left-right"></i>
+
+                <h3>Double Bonds</h3>
+
+                <p>
+                    Hydrocarbons containing C=C double bonds are called
+                    alkenes.
+                </p>
+
+            </div>
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-grip-lines"></i>
+
+                <h3>Triple Bonds</h3>
+
+                <p>
+                    Hydrocarbons containing C≡C triple bonds are called
+                    alkynes.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         02 FAMILIES
+         ===================================================== -->
+
+    <section class="hc-section" id="families">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">02</div>
+
+            <div>
+                <h2>Hydrocarbon Families</h2>
+            </div>
+
+        </div>
+
+
+        <p>
+            The major homologous series studied at introductory level are
+            alkanes, alkenes and alkynes.
+        </p>
+
+
+        <div class="hc-grid three">
+
+
+            <div class="family-card">
+
+                <div class="carbon-badge">C</div>
+
+                <h3>Alkanes</h3>
+
+                <div class="family-formula">
+                    C<sub>n</sub>H<sub>2n+2</sub>
+                </div>
+
+                <div class="family-name">
+                    Saturated hydrocarbons
+                </div>
+
+            </div>
+
+
+            <div class="family-card">
+
+                <div class="carbon-badge">C=C</div>
+
+                <h3>Alkenes</h3>
+
+                <div class="family-formula">
+                    C<sub>n</sub>H<sub>2n</sub>
+                </div>
+
+                <div class="family-name">
+                    Unsaturated hydrocarbons
+                </div>
+
+            </div>
+
+
+            <div class="family-card">
+
+                <div class="carbon-badge">C≡C</div>
+
+                <h3>Alkynes</h3>
+
+                <div class="family-formula">
+                    C<sub>n</sub>H<sub>2n−2</sub>
+                </div>
+
+                <div class="family-name">
+                    Unsaturated hydrocarbons
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hc-formula">
+
+            General relationship between members of a homologous series:
+
+            <br><br>
+
+            Each successive member differs by a
+            <strong>–CH<sub>2</sub>–</strong> unit.
+
+            <span class="hc-formula-note">
+                Members have similar chemical properties but gradual changes
+                in physical properties.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         03 ALKANES
+         ===================================================== -->
+
+    <section class="hc-section" id="alkanes">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">03</div>
+
+            <div>
+                <h2>Alkanes</h2>
+            </div>
+
+        </div>
+
+
+        <p>
+            Alkanes are saturated hydrocarbons because they contain only
+            carbon-carbon single bonds.
+        </p>
+
+
+        <div class="hc-formula">
+
+            C<sub>n</sub>H<sub>2n+2</sub>
+
+            <span class="hc-formula-note">
+                General formula of open-chain alkanes
+            </span>
+
+        </div>
+
+
+        <h3>First Members of the Series</h3>
+
+
+        <div class="hc-table-wrap">
+
+            <table class="hc-table">
+
+                <tr>
+                    <th>Name</th>
+                    <th>Formula</th>
+                    <th>Number of Carbon Atoms</th>
+                </tr>
+
+                <tr>
+                    <td>Methane</td>
+                    <td>CH<sub>4</sub></td>
+                    <td>1</td>
+                </tr>
+
+                <tr>
+                    <td>Ethane</td>
+                    <td>C<sub>2</sub>H<sub>6</sub></td>
+                    <td>2</td>
+                </tr>
+
+                <tr>
+                    <td>Propane</td>
+                    <td>C<sub>3</sub>H<sub>8</sub></td>
+                    <td>3</td>
+                </tr>
+
+                <tr>
+                    <td>Butane</td>
+                    <td>C<sub>4</sub>H<sub>10</sub></td>
+                    <td>4</td>
+                </tr>
+
+                <tr>
+                    <td>Pentane</td>
+                    <td>C<sub>5</sub>H<sub>12</sub></td>
+                    <td>5</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+        <h3>Major Reaction: Combustion</h3>
+
+        <p>
+            Alkanes undergo combustion in oxygen. Complete combustion produces
+            carbon dioxide and water.
+        </p>
+
+
+        <div class="hc-formula">
+
+            CH<sub>4</sub> + 2O<sub>2</sub>
+            → CO<sub>2</sub> + 2H<sub>2</sub>O
+
+        </div>
+
+
+        <div class="hc-highlight">
+
+            <strong>Incomplete combustion:</strong>
+
+            When oxygen is limited, carbon monoxide and/or carbon may form
+            instead of carbon dioxide.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         04 ALKENES
+         ===================================================== -->
+
+    <section class="hc-section" id="alkenes">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">04</div>
+
+            <div>
+                <h2>Alkenes</h2>
+            </div>
+
+        </div>
+
+
+        <p>
+            Alkenes are unsaturated hydrocarbons containing at least one
+            carbon-carbon double bond.
+        </p>
+
+
+        <div class="hc-formula">
+
+            C<sub>n</sub>H<sub>2n</sub>
+
+            <span class="hc-formula-note">
+                General formula for open-chain alkenes containing one C=C bond
+            </span>
+
+        </div>
+
+
+        <div class="hc-grid two">
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-code-branch"></i>
+
+                <h3>Ethene</h3>
+
+                <p>
+                    C<sub>2</sub>H<sub>4</sub>
+                </p>
+
+                <div class="hc-formula">
+                    CH<sub>2</sub>=CH<sub>2</sub>
+                </div>
+
+            </div>
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-code-branch"></i>
+
+                <h3>Propene</h3>
+
+                <p>
+                    C<sub>3</sub>H<sub>6</sub>
+                </p>
+
+                <div class="hc-formula">
+                    CH<sub>3</sub>CH=CH<sub>2</sub>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <h3>Addition Reactions</h3>
+
+        <p>
+            The double bond makes alkenes more reactive than alkanes.
+            Addition reactions occur across the C=C bond.
+        </p>
+
+
+        <div class="hc-grid two">
+
+
+            <div class="reaction-card">
+
+                <span class="reaction-type">
+                    Hydrogenation
+                </span>
+
+                <h3>Ethene + Hydrogen</h3>
+
+                <div class="hc-formula">
+                    C<sub>2</sub>H<sub>4</sub> + H<sub>2</sub>
+                    → C<sub>2</sub>H<sub>6</sub>
+                </div>
+
+                <p>
+                    Usually carried out using a nickel catalyst.
+                </p>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <span class="reaction-type">
+                    Bromination
+                </span>
+
+                <h3>Ethene + Bromine</h3>
+
+                <div class="hc-formula">
+                    C<sub>2</sub>H<sub>4</sub> + Br<sub>2</sub>
+                    → C<sub>2</sub>H<sub>4</sub>Br<sub>2</sub>
+                </div>
+
+                <p>
+                    Bromine water is decolourised, providing a test for
+                    carbon-carbon double bonds.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         05 ALKYNES
+         ===================================================== -->
+
+    <section class="hc-section" id="alkynes">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">05</div>
+
+            <div>
+                <h2>Alkynes</h2>
+            </div>
+
+        </div>
+
+
+        <p>
+            Alkynes are unsaturated hydrocarbons containing a carbon-carbon
+            triple bond.
+        </p>
+
+
+        <div class="hc-formula">
+
+            C<sub>n</sub>H<sub>2n−2</sub>
+
+            <span class="hc-formula-note">
+                General formula for open-chain alkynes containing one C≡C bond
+            </span>
+
+        </div>
+
+
+        <div class="hc-grid two">
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-link-slash"></i>
+
+                <h3>Ethyne</h3>
+
+                <p>
+                    C<sub>2</sub>H<sub>2</sub>
+                </p>
+
+                <div class="hc-formula">
+                    HC≡CH
+                </div>
+
+            </div>
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-link-slash"></i>
+
+                <h3>Propyne</h3>
+
+                <p>
+                    C<sub>3</sub>H<sub>4</sub>
+                </p>
+
+                <div class="hc-formula">
+                    CH<sub>3</sub>C≡CH
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hc-highlight">
+
+            <strong>Important:</strong>
+
+            The presence of a π bond in double and triple bonds makes
+            alkenes and alkynes capable of addition reactions.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         06 REACTIONS
+         ===================================================== -->
+
+    <section class="hc-section" id="reactions">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">06</div>
+
+            <div>
+                <h2>Important Hydrocarbon Reactions</h2>
+            </div>
+
+        </div>
+
+
+        <div class="hc-grid three">
+
+
+            <div class="reaction-card">
+
+                <span class="reaction-type">
+                    Combustion
+                </span>
+
+                <h3>Hydrocarbon + Oxygen</h3>
+
+                <p>
+                    Produces energy. Complete combustion produces CO₂ and H₂O.
+                </p>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <span class="reaction-type">
+                    Addition
+                </span>
+
+                <h3>Unsaturated Hydrocarbons</h3>
+
+                <p>
+                    Atoms are added across C=C or C≡C bonds.
+                </p>
+
+            </div>
+
+
+            <div class="reaction-card">
+
+                <span class="reaction-type">
+                    Substitution
+                </span>
+
+                <h3>Alkanes</h3>
+
+                <p>
+                    Hydrogen atoms can be replaced by halogen atoms under
+                    suitable conditions.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="hc-table-wrap">
+
+            <table class="hc-table">
+
+                <tr>
+                    <th>Hydrocarbon</th>
+                    <th>Reaction</th>
+                    <th>Typical Result</th>
+                </tr>
+
+                <tr>
+                    <td>Alkane</td>
+                    <td>Combustion</td>
+                    <td>CO₂ + H₂O</td>
+                </tr>
+
+                <tr>
+                    <td>Alkane</td>
+                    <td>Substitution</td>
+                    <td>Haloalkane</td>
+                </tr>
+
+                <tr>
+                    <td>Alkene</td>
+                    <td>Addition</td>
+                    <td>Saturated product</td>
+                </tr>
+
+                <tr>
+                    <td>Alkyne</td>
+                    <td>Addition</td>
+                    <td>More saturated product</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         07 INTERACTIVE LAB
+         ===================================================== -->
+
+    <section class="hc-section" id="lab">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">07</div>
+
+            <div>
+                <h2>Interactive Hydrocarbon Reaction Lab</h2>
+            </div>
+
+        </div>
+
+
+        <p>
+            Adjust temperature and collision energy to explore why
+            hydrocarbon reactions require suitable conditions and successful
+            molecular collisions.
+        </p>
+
+
+        <div class="hc-lab">
+
+            <div class="hc-lab-header">
+
+                <h3>
+                    Reactant Collision Simulator
+                </h3>
+
+                <span class="hc-live">
+                    Simulation active
+                </span>
+
+            </div>
+
+
+            <div class="hc-canvas-box">
+
+                <canvas id="hydrocarbonCanvas"></canvas>
+
+            </div>
+
+
+            <div class="hc-controls">
+
+                <div class="hc-control">
+
+                    <label>
+                        Temperature / Speed
+                    </label>
+
+                    <input
+                        id="hcTemperature"
+                        type="range"
+                        min="0.4"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                    >
+
+                    <output id="hcTemperatureValue">
+                        1.0×
+                    </output>
+
+                </div>
+
+
+                <div class="hc-control">
+
+                    <label>
+                        Collision Energy
+                    </label>
+
+                    <input
+                        id="hcEnergy"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="50"
+                    >
+
+                    <output id="hcEnergyValue">
+                        50%
+                    </output>
+
+                </div>
+
+
+                <div class="hc-control">
+
+                    <label>
+                        Reaction Probability
+                    </label>
+
+                    <output id="hcReactionProbability">
+                        0%
+                    </output>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         08 CALCULATIONS
+         ===================================================== -->
+
+    <section class="hc-section" id="calculations">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">08</div>
+
+            <div>
+                <h2>Hydrocarbon Calculations</h2>
+            </div>
+
+        </div>
+
+
+        <div class="calculation-box">
+
+            <h4>
+                Example: Finding the Molecular Formula of an Alkane
+            </h4>
+
+            <p>
+                An alkane contains 6 carbon atoms. Determine its molecular
+                formula.
+            </p>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">1</div>
+
+                <div class="calc-text">
+                    Use the alkane general formula:
+                    C<sub>n</sub>H<sub>2n+2</sub>
+                </div>
+
+            </div>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">2</div>
+
+                <div class="calc-text">
+                    Substitute n = 6:
+                    C<sub>6</sub>H<sub>2(6)+2</sub>
+                </div>
+
+            </div>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">3</div>
+
+                <div class="calc-text">
+                    Calculate the number of hydrogen atoms:
+                    2(6) + 2 = 14
+                </div>
+
+            </div>
+
+
+            <div class="hc-answer">
+
+                <strong>Answer:</strong>
+
+                C<sub>6</sub>H<sub>14</sub> — hexane.
+
+            </div>
+
+        </div>
+
+
+        <div class="calculation-box">
+
+            <h4>
+                Example: Complete Combustion
+            </h4>
+
+            <p>
+                Balance the combustion equation for propane.
+            </p>
+
+
+            <div class="hc-formula">
+
+                C<sub>3</sub>H<sub>8</sub> + O<sub>2</sub>
+                → CO<sub>2</sub> + H<sub>2</sub>O
+
+            </div>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">1</div>
+
+                <div class="calc-text">
+                    Balance carbon:
+                    C<sub>3</sub>H<sub>8</sub> → 3CO<sub>2</sub>
+                </div>
+
+            </div>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">2</div>
+
+                <div class="calc-text">
+                    Balance hydrogen:
+                    8 hydrogen atoms require 4H<sub>2</sub>O.
+                </div>
+
+            </div>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">3</div>
+
+                <div class="calc-text">
+                    Count oxygen atoms on the right:
+                    6 + 4 = 10 oxygen atoms.
+                </div>
+
+            </div>
+
+
+            <div class="calc-step">
+
+                <div class="calc-number">4</div>
+
+                <div class="calc-text">
+                    Therefore 5O<sub>2</sub> are required.
+                </div>
+
+            </div>
+
+
+            <div class="hc-answer">
+
+                <strong>Balanced equation:</strong>
+
+                C<sub>3</sub>H<sub>8</sub>
+                + 5O<sub>2</sub>
+                →
+                3CO<sub>2</sub>
+                + 4H<sub>2</sub>O
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         09 PROPERTIES
+         ===================================================== -->
+
+    <section class="hc-section" id="properties">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">09</div>
+
+            <div>
+                <h2>Physical Properties</h2>
+            </div>
+
+        </div>
+
+
+        <div class="hc-grid three">
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-temperature-arrow-up"></i>
+
+                <h3>Boiling Point</h3>
+
+                <p>
+                    Boiling points generally increase as molecular size
+                    increases because intermolecular attractions become stronger.
+                </p>
+
+            </div>
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <h3>Solubility</h3>
+
+                <p>
+                    Hydrocarbons are generally non-polar and are poorly soluble
+                    in water.
+                </p>
+
+            </div>
+
+
+            <div class="hc-card">
+
+                <i class="fa-solid fa-fire"></i>
+
+                <h3>Flammability</h3>
+
+                <p>
+                    Many hydrocarbons burn readily in oxygen and release
+                    considerable energy.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="hc-highlight">
+
+            <strong>Trend:</strong>
+
+            As carbon-chain length increases, boiling point generally
+            increases while volatility decreases.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10 EXAM CHECKLIST
+         ===================================================== -->
+
+    <section class="hc-section" id="exam">
+
+        <div class="hc-section-header">
+
+            <div class="hc-section-number">10</div>
+
+            <div>
+                <h2>Hydrocarbons Exam Checklist</h2>
+            </div>
+
+        </div>
+
+
+        <div class="check-list">
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Know the general formulae of alkanes, alkenes and alkynes.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Understand saturated versus unsaturated hydrocarbons.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Know combustion, substitution and addition reactions.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Be able to balance hydrocarbon combustion equations.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Be able to determine molecular formulae from the general
+                    formula of a homologous series.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="hc-ask-ai">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h3>
+            Need help with Hydrocarbons?
+        </h3>
+
+        <p>
+            Ask Insite AI to balance hydrocarbon equations, identify
+            homologous series, solve molecular-formula questions,
+            or explain organic reactions.
+        </p>
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   HYDROCARBON COLLISION LAB
+   ========================================================= */
+
+const hcCanvas = document.getElementById("hydrocarbonCanvas");
+
+if (hcCanvas) {
+
+    const hcCtx = hcCanvas.getContext("2d");
+
+    let hcParticles = [];
+
+    let hcSpeed = 1;
+    let hcEnergy = 50;
+    let hcCollisions = 0;
+
+    const hcTypes = [
+        {
+            color: "#38bdf8",
+            label: "C"
+        },
+        {
+            color: "#a78bfa",
+            label: "H"
+        }
+    ];
+
+
+    function resizeHydrocarbonCanvas() {
+
+        const rect = hcCanvas.getBoundingClientRect();
+
+        const ratio = window.devicePixelRatio || 1;
+
+        hcCanvas.width = rect.width * ratio;
+        hcCanvas.height = rect.height * ratio;
+
+        hcCtx.setTransform(
+            ratio,
+            0,
+            0,
+            ratio,
+            0,
+            0
+        );
+    }
+
+
+    function randomHC(min, max) {
+
+        return Math.random() * (max - min) + min;
+
+    }
+
+
+    function createHCParticle(index) {
+
+        const rect = hcCanvas.getBoundingClientRect();
+
+        const width = rect.width || 600;
+        const height = rect.height || 300;
+
+        return {
+
+            x: randomHC(25, width - 25),
+            y: randomHC(25, height - 25),
+
+            vx: randomHC(-1.2, 1.2),
+            vy: randomHC(-1.2, 1.2),
+
+            radius: index % 3 === 0 ? 10 : 7,
+
+            type: index % 3 === 0 ? 0 : 1
+
+        };
+
+    }
+
+
+    function createHCParticles() {
+
+        hcParticles = [];
+
+        for (let i = 0; i < 32; i++) {
+
+            hcParticles.push(
+                createHCParticle(i)
+            );
+
+        }
+
+    }
+
+
+    function updateHCParticles() {
+
+        const rect = hcCanvas.getBoundingClientRect();
+
+        const width = rect.width || 600;
+        const height = rect.height || 300;
+
+
+        for (const p of hcParticles) {
+
+            p.x += p.vx * hcSpeed;
+            p.y += p.vy * hcSpeed;
+
+
+            if (
+                p.x - p.radius < 5 ||
+                p.x + p.radius > width - 5
+            ) {
+
+                p.vx *= -1;
+
+            }
+
+
+            if (
+                p.y - p.radius < 5 ||
+                p.y + p.radius > height - 5
+            ) {
+
+                p.vy *= -1;
+
+            }
+
+        }
+
+
+        for (let i = 0; i < hcParticles.length; i++) {
+
+            for (let j = i + 1; j < hcParticles.length; j++) {
+
+                const a = hcParticles[i];
+                const b = hcParticles[j];
+
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+
+                const distance =
+                    Math.sqrt(dx * dx + dy * dy) || 1;
+
+                const minDistance =
+                    a.radius + b.radius;
+
+
+                if (distance < minDistance) {
+
+                    const nx = dx / distance;
+                    const ny = dy / distance;
+
+                    const overlap =
+                        minDistance - distance;
+
+                    a.x -= nx * overlap / 2;
+                    a.y -= ny * overlap / 2;
+
+                    b.x += nx * overlap / 2;
+                    b.y += ny * overlap / 2;
+
+
+                    const relativeVelocity =
+                        (a.vx - b.vx) * nx +
+                        (a.vy - b.vy) * ny;
+
+
+                    if (relativeVelocity > 0) {
+
+                        a.vx -= relativeVelocity * nx;
+                        a.vy -= relativeVelocity * ny;
+
+                        b.vx += relativeVelocity * nx;
+                        b.vy += relativeVelocity * ny;
+
+                        hcCollisions++;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    function drawHCParticle(p) {
+
+        const data = hcTypes[p.type];
+
+        hcCtx.beginPath();
+
+        hcCtx.arc(
+            p.x,
+            p.y,
+            p.radius,
+            0,
+            Math.PI * 2
+        );
+
+
+        const gradient =
+            hcCtx.createRadialGradient(
+                p.x - 3,
+                p.y - 3,
+                2,
+                p.x,
+                p.y,
+                p.radius
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "#ffffff"
+        );
+
+        gradient.addColorStop(
+            .25,
+            data.color
+        );
+
+        gradient.addColorStop(
+            1,
+            data.color
+        );
+
+
+        hcCtx.fillStyle = gradient;
+
+        hcCtx.shadowBlur = 12;
+
+        hcCtx.shadowColor = data.color;
+
+        hcCtx.fill();
+
+        hcCtx.shadowBlur = 0;
+
+
+        hcCtx.fillStyle = "#07101e";
+
+        hcCtx.font =
+            "800 8px Arial";
+
+        hcCtx.textAlign =
+            "center";
+
+        hcCtx.textBaseline =
+            "middle";
+
+        hcCtx.fillText(
+            data.label,
+            p.x,
+            p.y
+        );
+
+    }
+
+
+    function drawHydrocarbonCanvas() {
+
+        const rect =
+            hcCanvas.getBoundingClientRect();
+
+        const width =
+            rect.width || 600;
+
+        const height =
+            rect.height || 300;
+
+
+        hcCtx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        hcCtx.strokeStyle =
+            "rgba(148,163,184,.045)";
+
+        hcCtx.lineWidth = 1;
+
+
+        for (
+            let x = 0;
+            x < width;
+            x += 40
+        ) {
+
+            hcCtx.beginPath();
+
+            hcCtx.moveTo(x, 0);
+
+            hcCtx.lineTo(
+                x,
+                height
+            );
+
+            hcCtx.stroke();
+
+        }
+
+
+        for (
+            let y = 0;
+            y < height;
+            y += 40
+        ) {
+
+            hcCtx.beginPath();
+
+            hcCtx.moveTo(0, y);
+
+            hcCtx.lineTo(
+                width,
+                y
+            );
+
+            hcCtx.stroke();
+
+        }
+
+
+        hcParticles.forEach(
+            drawHCParticle
+        );
+
+    }
+
+
+    function animateHC() {
+
+        updateHCParticles();
+
+        drawHydrocarbonCanvas();
+
+        requestAnimationFrame(
+            animateHC
+        );
+
+    }
+
+
+    const temp =
+        document.getElementById(
+            "hcTemperature"
+        );
+
+    const energy =
+        document.getElementById(
+            "hcEnergy"
+        );
+
+
+    if (temp) {
+
+        temp.addEventListener(
+            "input",
+            function () {
+
+                hcSpeed =
+                    Number(this.value);
+
+                document.getElementById(
+                    "hcTemperatureValue"
+                ).textContent =
+                    hcSpeed.toFixed(1) + "×";
+
+            }
+        );
+
+    }
+
+
+    if (energy) {
+
+        energy.addEventListener(
+            "input",
+            function () {
+
+                hcEnergy =
+                    Number(this.value);
+
+                document.getElementById(
+                    "hcEnergyValue"
+                ).textContent =
+                    hcEnergy + "%";
+
+
+                document.getElementById(
+                    "hcReactionProbability"
+                ).textContent =
+                    Math.round(
+                        hcEnergy * hcSpeed / 2
+                    ) + "%";
+
+            }
+        );
+
+    }
+
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            resizeHydrocarbonCanvas();
+
+            createHCParticles();
+
+        }
+    );
+
+
+    resizeHydrocarbonCanvas();
+
+    createHCParticles();
+
+    animateHC();
+
+}
+</script>
+
+{% endblock %}

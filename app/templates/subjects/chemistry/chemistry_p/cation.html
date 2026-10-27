@@ -1,0 +1,1560 @@
+{% extends "base.html" %}
+
+{% block title %}
+Tests for Anions | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --anion-bg: #050a12;
+    --anion-panel: #0a111d;
+    --anion-border: rgba(100, 116, 139, .18);
+    --anion-text: #f1f5f9;
+    --anion-muted: #94a3b8;
+
+    /* Insite AI Blue */
+    --anion-blue: #1677b8;
+    --anion-blue-light: #2196d2;
+
+    --anion-green: #34d399;
+    --anion-red: #ef4444;
+}
+
+.anion-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--anion-text);
+}
+
+/* BACK BUTTON */
+
+.anion-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--anion-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.anion-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+}
+
+/* HEADER */
+
+.anion-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+}
+
+.anion-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.anion-header h1 i {
+    color: var(--anion-blue-light);
+    margin-right: 8px;
+}
+
+.anion-header p {
+    max-width: 850px;
+    margin: 13px auto 0;
+    color: var(--anion-muted);
+    line-height: 1.75;
+}
+
+/* NAVIGATION */
+
+.anion-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--anion-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.anion-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.anion-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.anion-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+/* SECTIONS */
+
+.anion-section {
+    margin-bottom: 20px;
+    padding: 27px;
+    background: var(--anion-panel);
+    border: 1px solid var(--anion-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+}
+
+.anion-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.anion-number {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.anion-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+}
+
+.anion-section h3 {
+    color: #4aafe3;
+    margin-top: 25px;
+}
+
+.anion-section p,
+.anion-section li {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.anion-section li {
+    margin-bottom: 6px;
+}
+
+/* INFORMATION BOX */
+
+.anion-info {
+    margin: 18px 0;
+    padding: 15px 17px;
+    background: #081321;
+    border-left: 3px solid var(--anion-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+}
+
+.anion-info strong {
+    color: #55b6e9;
+}
+
+/* ANION TABLE */
+
+.anion-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.anion-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+.anion-table th,
+.anion-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--anion-border);
+    vertical-align: top;
+}
+
+.anion-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .85rem;
+}
+
+.anion-table td {
+    color: #cbd5e1;
+}
+
+.anion-table tr:hover td {
+    background: rgba(33,150,210,.025);
+}
+
+.positive {
+    color: #34d399 !important;
+}
+
+.warning {
+    color: #fbbf24 !important;
+}
+
+/* PRACTICAL STEPS */
+
+.step-list {
+    counter-reset: practical-step;
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    counter-increment: practical-step;
+    position: relative;
+    padding: 13px 15px 13px 52px;
+    margin-bottom: 10px;
+    background: #081321;
+    border: 1px solid var(--anion-border);
+    border-radius: 10px;
+}
+
+.step-list li::before {
+    content: counter(practical-step);
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(22,119,184,.12);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+/* TEST BOX */
+
+.test-box {
+    margin-top: 22px;
+    background: #070e18;
+    border: 1px solid var(--anion-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 17px 19px;
+    border-bottom: 1px solid var(--anion-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+}
+
+.test-body {
+    padding: 20px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 500px;
+    background: var(--anion-panel);
+    border: 1px solid var(--anion-border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px;
+    font-size: .95rem;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.08);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+}
+
+.test-result {
+    display: none;
+    margin-top: 17px;
+    padding: 15px;
+    border-left: 4px solid var(--anion-green);
+    background: #0a131f;
+    border-radius: 8px;
+}
+
+.test-result.correct {
+    border-left-color: var(--anion-green);
+}
+
+.test-result.wrong {
+    border-left-color: var(--anion-red);
+}
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* EQUATIONS */
+
+.equation-box {
+    margin-top: 15px;
+    padding: 17px;
+    background: #070e18;
+    border: 1px solid var(--anion-border);
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.equation-box code {
+    color: #8fd3f5;
+    font-size: .95rem;
+    white-space: nowrap;
+}
+
+/* QUESTIONS */
+
+.exam-question {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #081321;
+    border: 1px solid var(--anion-border);
+    border-radius: 9px;
+}
+
+.exam-question strong {
+    color: #4aafe3;
+}
+
+.exam-answer {
+    margin-top: 7px;
+    color: #94a3b8;
+}
+
+/* ASK AI */
+
+.ask-ai {
+    margin-top: 25px;
+    padding: 28px;
+    background: #091321;
+    border: 1px solid var(--anion-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 10px 17px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.ask-ai a:hover {
+    background: #1677b8;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+
+    .anion-section {
+        padding: 20px;
+    }
+
+    .anion-header {
+        padding-top: 28px;
+    }
+
+    .anion-header h1 {
+        font-size: 2rem;
+    }
+
+    .anion-section-header {
+        align-items: flex-start;
+    }
+
+    .anion-section h2 {
+        font-size: 1.25rem;
+    }
+}
+</style>
+
+
+<div class="anion-page">
+
+    <!-- BACK -->
+
+    <a href="{{ url_for('chemistry_page') }}" class="anion-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Chemistry Practicals
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="anion-header">
+
+        <h1>
+            <i class="fa-solid fa-flask-vial"></i>
+            Tests for Anions
+        </h1>
+
+        <p>
+            Identify common anions using characteristic reactions,
+            including acidification, gas evolution, precipitation,
+            and the formation of silver and barium compounds.
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="anion-nav">
+
+        <a href="#aim">Aim</a>
+        <a href="#principle">Principle</a>
+        <a href="#apparatus">Apparatus</a>
+        <a href="#procedure">Procedure</a>
+        <a href="#tests">Anion Tests</a>
+        <a href="#equations">Equations</a>
+        <a href="#identify">Identify</a>
+        <a href="#precautions">Precautions</a>
+        <a href="#questions">Questions</a>
+
+    </nav>
+
+
+    <!-- 01 AIM -->
+
+    <section class="anion-section" id="aim">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                01
+            </div>
+
+            <h2>
+                Aim of the Experiment
+            </h2>
+
+        </div>
+
+        <p>
+            To identify common anions in unknown compounds by observing
+            characteristic reactions with acids and selected reagents.
+        </p>
+
+        <div class="anion-info">
+
+            <strong>Key idea:</strong><br>
+
+            Different anions react in characteristic ways. Some produce
+            gases when acidified, while others form insoluble precipitates
+            with silver or barium ions.
+
+        </div>
+
+    </section>
+
+
+    <!-- 02 PRINCIPLE -->
+
+    <section class="anion-section" id="principle">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                02
+            </div>
+
+            <h2>
+                Principle of Anion Testing
+            </h2>
+
+        </div>
+
+        <p>
+            Qualitative analysis uses chemical reactions to identify ions
+            by their observable properties. The presence of an anion may
+            be indicated by gas evolution, a colour change, or the
+            formation of an insoluble precipitate.
+        </p>
+
+        <p>
+            In these tests, dilute acids are commonly used to investigate
+            carbonate and sulfite ions, while silver nitrate and barium
+            salts are used to test for selected halides and sulfate ions.
+        </p>
+
+        <div class="anion-info">
+
+            <strong>Important:</strong><br>
+
+            A positive result should be interpreted together with the
+            appropriate confirmatory test. A single observation may not
+            always uniquely identify an unknown ion.
+
+        </div>
+
+        <h3>
+            Main Types of Tests
+        </h3>
+
+        <ul>
+
+            <li>
+                <strong>Acid + anion:</strong>
+                may produce a characteristic gas.
+            </li>
+
+            <li>
+                <strong>Silver nitrate:</strong>
+                can produce precipitates with halide ions.
+            </li>
+
+            <li>
+                <strong>Barium solution:</strong>
+                can produce a white precipitate with sulfate ions.
+            </li>
+
+            <li>
+                <strong>Aluminium reduction:</strong>
+                can be used in a confirmatory test for nitrate ions.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- 03 APPARATUS -->
+
+    <section class="anion-section" id="apparatus">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                03
+            </div>
+
+            <h2>
+                Apparatus & Materials
+            </h2>
+
+        </div>
+
+        <ul>
+
+            <li>
+                Test tubes and test-tube rack
+            </li>
+
+            <li>
+                Dropping pipettes
+            </li>
+
+            <li>
+                Dilute hydrochloric acid
+            </li>
+
+            <li>
+                Silver nitrate solution
+            </li>
+
+            <li>
+                Barium nitrate or barium chloride solution
+            </li>
+
+            <li>
+                Dilute nitric acid
+            </li>
+
+            <li>
+                Sodium hydroxide solution
+            </li>
+
+            <li>
+                Aluminium foil or aluminium powder for nitrate testing
+            </li>
+
+            <li>
+                Limewater for carbon dioxide testing
+            </li>
+
+            <li>
+                Unknown salt samples
+            </li>
+
+            <li>
+                Safety goggles and appropriate laboratory equipment
+            </li>
+
+        </ul>
+
+        <div class="anion-info">
+
+            <strong>Laboratory safety:</strong><br>
+
+            Handle acids and silver salts carefully. Avoid direct contact
+            with reagents and wear appropriate eye protection throughout
+            the experiment.
+
+        </div>
+
+    </section>
+
+
+    <!-- 04 PROCEDURE -->
+
+    <section class="anion-section" id="procedure">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                04
+            </div>
+
+            <h2>
+                General Experimental Procedure
+            </h2>
+
+        </div>
+
+        <ol class="step-list">
+
+            <li>
+                Place a small amount of the unknown salt solution into
+                a clean test tube.
+            </li>
+
+            <li>
+                Add the appropriate reagent for the anion being tested.
+            </li>
+
+            <li>
+                Observe carefully for gas evolution, colour changes,
+                or formation of a precipitate.
+            </li>
+
+            <li>
+                If a gas is produced, carry out the appropriate gas test
+                to help identify it.
+            </li>
+
+            <li>
+                Where required, acidify the solution before adding the
+                confirmatory reagent.
+            </li>
+
+            <li>
+                Record the observation and compare it with the expected
+                result for each anion.
+            </li>
+
+            <li>
+                Repeat the test using clean apparatus when testing
+                another unknown sample.
+            </li>
+
+        </ol>
+
+        <div class="anion-info">
+
+            <strong>Good practical technique:</strong><br>
+
+            Use clean test tubes and separate droppers where possible.
+            Contamination from another ion can produce a misleading
+            observation.
+
+        </div>
+
+    </section>
+
+
+    <!-- 05 TESTS -->
+
+    <section class="anion-section" id="tests">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                05
+            </div>
+
+            <h2>
+                Tests for Common Anions
+            </h2>
+
+        </div>
+
+        <p>
+            The table below summarizes the main observations used to
+            identify the selected anions.
+        </p>
+
+
+        <div class="anion-table-wrapper">
+
+            <table class="anion-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Anion</th>
+                        <th>Reagent / Test</th>
+                        <th>Observation</th>
+                        <th>Inference</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            <strong>Chloride</strong>
+                            (Cl<sup>−</sup>)
+                        </td>
+
+                        <td>
+                            Acidify with dilute nitric acid, then add
+                            silver nitrate solution.
+                        </td>
+
+                        <td class="positive">
+                            White precipitate.
+                        </td>
+
+                        <td>
+                            Chloride ions are present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Bromide</strong>
+                            (Br<sup>−</sup>)
+                        </td>
+
+                        <td>
+                            Acidify with dilute nitric acid, then add
+                            silver nitrate solution.
+                        </td>
+
+                        <td class="positive">
+                            Cream precipitate.
+                        </td>
+
+                        <td>
+                            Bromide ions are present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Iodide</strong>
+                            (I<sup>−</sup>)
+                        </td>
+
+                        <td>
+                            Acidify with dilute nitric acid, then add
+                            silver nitrate solution.
+                        </td>
+
+                        <td class="positive">
+                            Yellow precipitate.
+                        </td>
+
+                        <td>
+                            Iodide ions are present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Sulfate</strong>
+                            (SO<sub>4</sub><sup>2−</sup>)
+                        </td>
+
+                        <td>
+                            Acidify the solution, then add a soluble
+                            barium salt solution.
+                        </td>
+
+                        <td class="positive">
+                            White precipitate.
+                        </td>
+
+                        <td>
+                            Sulfate ions are present.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Sulfite</strong>
+                            (SO<sub>3</sub><sup>2−</sup>)
+                        </td>
+
+                        <td>
+                            Add dilute hydrochloric acid.
+                        </td>
+
+                        <td class="warning">
+                            Colourless gas with a choking smell is evolved.
+                        </td>
+
+                        <td>
+                            Sulfur dioxide (SO<sub>2</sub>) is produced.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Carbonate</strong>
+                            (CO<sub>3</sub><sup>2−</sup>)
+                        </td>
+
+                        <td>
+                            Add dilute hydrochloric acid and pass the gas
+                            into limewater.
+                        </td>
+
+                        <td class="positive">
+                            Effervescence; limewater turns milky.
+                        </td>
+
+                        <td>
+                            Carbon dioxide is produced.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Nitrate</strong>
+                            (NO<sub>3</sub><sup>−</sup>)
+                        </td>
+
+                        <td>
+                            Add sodium hydroxide and aluminium, then warm
+                            carefully.
+                        </td>
+
+                        <td class="positive">
+                            Ammonia gas is produced.
+                        </td>
+
+                        <td>
+                            Nitrate ions are present.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="anion-info">
+
+            <strong>Halide comparison:</strong><br>
+
+            Silver nitrate gives different precipitate colours with
+            chloride, bromide and iodide ions: white, cream and yellow
+            respectively.
+
+        </div>
+
+    </section>
+
+
+    <!-- 06 EQUATIONS -->
+
+    <section class="anion-section" id="equations">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                06
+            </div>
+
+            <h2>
+                Important Ionic Equations
+            </h2>
+
+        </div>
+
+
+        <h3>
+            Chloride Test
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                Ag<sup>+</sup>(aq) + Cl<sup>−</sup>(aq)
+                → AgCl(s)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Bromide Test
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                Ag<sup>+</sup>(aq) + Br<sup>−</sup>(aq)
+                → AgBr(s)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Iodide Test
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                Ag<sup>+</sup>(aq) + I<sup>−</sup>(aq)
+                → AgI(s)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Sulfate Test
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                Ba<sup>2+</sup>(aq) + SO<sub>4</sub><sup>2−</sup>(aq)
+                → BaSO<sub>4</sub>(s)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Carbonate + Acid
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                CO<sub>3</sub><sup>2−</sup>(aq)
+                + 2H<sup>+</sup>(aq)
+                → CO<sub>2</sub>(g)
+                + H<sub>2</sub>O(l)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Sulfite + Acid
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                SO<sub>3</sub><sup>2−</sup>(aq)
+                + 2H<sup>+</sup>(aq)
+                → SO<sub>2</sub>(g)
+                + H<sub>2</sub>O(l)
+            </code>
+
+        </div>
+
+
+        <h3>
+            Carbon Dioxide Test
+        </h3>
+
+        <div class="equation-box">
+
+            <code>
+                CO<sub>2</sub>(g)
+                + Ca(OH)<sub>2</sub>(aq)
+                → CaCO<sub>3</sub>(s)
+                + H<sub>2</sub>O(l)
+            </code>
+
+        </div>
+
+    </section>
+
+
+    <!-- 07 INTERACTIVE TEST -->
+
+    <section class="anion-section" id="identify">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                07
+            </div>
+
+            <h2>
+                Interactive Anion Identification
+            </h2>
+
+        </div>
+
+        <p>
+            Use the observation below to identify the most likely anion.
+        </p>
+
+
+        <div class="test-box">
+
+            <div class="test-top">
+
+                <h3>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Identify the Unknown Anion
+                </h3>
+
+            </div>
+
+
+            <div class="test-body">
+
+                <div class="test-question">
+
+                    A solution produces a
+                    <strong>white precipitate</strong>
+                    when acidified with dilute nitric acid and silver
+                    nitrate solution is added.
+
+                    Which anion is most likely present?
+
+                </div>
+
+
+                <select class="test-select" id="anionAnswer">
+
+                    <option value="">
+                        Select an answer...
+                    </option>
+
+                    <option value="chloride">
+                        Chloride (Cl⁻)
+                    </option>
+
+                    <option value="bromide">
+                        Bromide (Br⁻)
+                    </option>
+
+                    <option value="iodide">
+                        Iodide (I⁻)
+                    </option>
+
+                    <option value="sulfate">
+                        Sulfate (SO₄²⁻)
+                    </option>
+
+                    <option value="carbonate">
+                        Carbonate (CO₃²⁻)
+                    </option>
+
+                </select>
+
+
+                <br>
+
+
+                <button
+                    class="test-button"
+                    id="checkAnion"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+                    Check Answer
+
+                </button>
+
+
+                <div
+                    class="test-result"
+                    id="anionResult"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 08 PRECAUTIONS -->
+
+    <section class="anion-section" id="precautions">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                08
+            </div>
+
+            <h2>
+                Precautions & Sources of Error
+            </h2>
+
+        </div>
+
+
+        <h3>
+            Precautions
+        </h3>
+
+        <ul>
+
+            <li>
+                Wear appropriate eye protection when handling acids
+                and chemical reagents.
+            </li>
+
+            <li>
+                Use clean test tubes and droppers.
+            </li>
+
+            <li>
+                Add reagents carefully and use small quantities.
+            </li>
+
+            <li>
+                Acidify solutions only with the specified acid and
+                amount required for the test.
+            </li>
+
+            <li>
+                Do not directly smell gases produced during reactions.
+            </li>
+
+            <li>
+                Perform gas tests carefully and in a well-ventilated
+                laboratory.
+            </li>
+
+        </ul>
+
+
+        <h3>
+            Possible Sources of Error
+        </h3>
+
+        <ul>
+
+            <li>
+                Contamination of the sample or apparatus.
+            </li>
+
+            <li>
+                Adding an incorrect reagent.
+            </li>
+
+            <li>
+                Using excessive quantities of reagents.
+            </li>
+
+            <li>
+                Misinterpreting similar precipitate colours.
+            </li>
+
+            <li>
+                Failure to acidify a sample when the procedure requires it.
+            </li>
+
+        </ul>
+
+        <div class="anion-info">
+
+            <strong>Safety reminder:</strong><br>
+
+            Never deliberately inhale gases produced during qualitative
+            analysis. Gas observations should be made safely using the
+            appropriate laboratory procedure.
+
+        </div>
+
+    </section>
+
+
+    <!-- 09 QUESTIONS -->
+
+    <section class="anion-section" id="questions">
+
+        <div class="anion-section-header">
+
+            <div class="anion-number">
+                09
+            </div>
+
+            <h2>
+                Common Practical Questions
+            </h2>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                1. What reagent is used to test for halide ions?
+            </strong>
+
+            <div class="exam-answer">
+                Acidified silver nitrate solution.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                2. What colour precipitate is produced by chloride ions?
+            </strong>
+
+            <div class="exam-answer">
+                White.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                3. What colour precipitate is produced by bromide ions?
+            </strong>
+
+            <div class="exam-answer">
+                Cream.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                4. What colour precipitate is produced by iodide ions?
+            </strong>
+
+            <div class="exam-answer">
+                Yellow.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                5. How can sulfate ions be identified?
+            </strong>
+
+            <div class="exam-answer">
+                Acidify the solution and add a soluble barium salt.
+                A white precipitate of barium sulfate indicates sulfate ions.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                6. What gas is produced when a sulfite reacts with an acid?
+            </strong>
+
+            <div class="exam-answer">
+                Sulfur dioxide, SO<sub>2</sub>.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                7. What gas is produced when a carbonate reacts with an acid?
+            </strong>
+
+            <div class="exam-answer">
+                Carbon dioxide, CO<sub>2</sub>.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                8. What observation confirms carbon dioxide?
+            </strong>
+
+            <div class="exam-answer">
+                The gas turns limewater milky.
+            </div>
+
+        </div>
+
+
+        <div class="exam-question">
+
+            <strong>
+                9. What gas is produced in the nitrate test?
+            </strong>
+
+            <div class="exam-answer">
+                Ammonia, which can be identified by its characteristic
+                alkaline properties.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <div class="ask-ai">
+
+        <i
+            class="fa-solid fa-wand-magic-sparkles"
+            style="
+                color:var(--anion-blue-light);
+                font-size:30px;
+                margin-bottom:10px;
+            "
+        ></i>
+
+
+        <h3
+            style="
+                margin:0 0 8px;
+                color:white;
+            "
+        >
+            Need help with a chemistry practical?
+        </h3>
+
+
+        <p
+            style="
+                color:var(--anion-muted);
+                margin:0;
+            "
+        >
+            Ask Insite AI to explain qualitative analysis, anion tests,
+            ionic equations, observations, inferences, or other chemistry
+            practical questions.
+        </p>
+
+
+        <a href="{{ url_for('chat') }}">
+
+            <i class="fa-solid fa-comments"></i>
+            Ask Insite AI
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const anionAnswer =
+    document.getElementById("anionAnswer");
+
+const checkAnion =
+    document.getElementById("checkAnion");
+
+const anionResult =
+    document.getElementById("anionResult");
+
+
+checkAnion.addEventListener("click", function () {
+
+    const answer = anionAnswer.value;
+
+    anionResult.style.display = "block";
+
+
+    if (answer === "chloride") {
+
+        anionResult.className =
+            "test-result correct";
+
+        anionResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-check"></i>
+                Correct!
+
+            </div>
+
+            <div>
+
+                Chloride ions (Cl<sup>−</sup>) produce a
+                <strong>white precipitate</strong> of silver chloride
+                when acidified with nitric acid and treated with
+                silver nitrate.
+
+            </div>
+
+        `;
+
+    }
+
+    else if (answer === "") {
+
+        anionResult.className =
+            "test-result wrong";
+
+        anionResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+                Select an answer.
+
+            </div>
+
+            <div>
+
+                Choose the anion you think produces the
+                white silver nitrate precipitate.
+
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+        anionResult.className =
+            "test-result wrong";
+
+        anionResult.innerHTML = `
+
+            <div class="test-result-title">
+
+                <i class="fa-solid fa-circle-xmark"></i>
+                Not quite.
+
+            </div>
+
+            <div>
+
+                The correct answer is
+                <strong>
+                    Chloride (Cl<sup>−</sup>)
+                </strong>.
+
+                Chloride ions produce a white precipitate
+                of silver chloride.
+
+            </div>
+
+        `;
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

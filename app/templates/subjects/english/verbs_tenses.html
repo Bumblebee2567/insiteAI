@@ -1,0 +1,674 @@
+{% extends "base.html" %}
+
+{% block title %}
+Verbs, Tenses & Concord | Insite AI
+{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --eng-bg: #050a12;
+    --eng-panel: #0a111d;
+    --eng-border: rgba(100, 116, 139, .18);
+    --eng-text: #f1f5f9;
+    --eng-muted: #94a3b8;
+
+    --eng-blue: #1677b8;
+    --eng-blue-light: #2196d2;
+    --eng-cyan: #38bdf8;
+
+    --eng-green: #34d399;
+    --eng-red: #ef4444;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eng-page {
+    width: min(1150px, calc(100% - 28px));
+    margin: 30px auto 70px;
+    color: var(--eng-text);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.eng-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    background: #0b1421;
+    border: 1px solid var(--eng-border);
+    border-radius: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.eng-back:hover {
+    color: white;
+    border-color: rgba(33,150,210,.45);
+    background: #0d1a2a;
+    transform: translateX(-3px);
+}
+
+.eng-header {
+    text-align: center;
+    padding: 35px 10px 25px;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eng-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #eaf6ff;
+}
+
+.eng-header h1 i {
+    color: var(--eng-blue-light);
+    margin-right: 8px;
+}
+
+.eng-header p {
+    max-width: 820px;
+    margin: 13px auto 0;
+    color: var(--eng-muted);
+    line-height: 1.75;
+}
+
+.eng-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 7px;
+    margin-bottom: 22px;
+    background: rgba(5,10,18,.94);
+    border: 1px solid var(--eng-border);
+    border-radius: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.eng-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.eng-nav a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.eng-nav a:hover {
+    color: white;
+    background: #0d1a2a;
+}
+
+.eng-section {
+    margin-bottom: 25px;
+    padding: 32px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    scroll-margin-top: 75px;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.eng-section:hover {
+    border-color: rgba(33,150,210,.35);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.eng-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eng-number {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 9px;
+    background: rgba(22,119,184,.13);
+    border: 1px solid rgba(22,119,184,.28);
+    color: #3aa5df;
+    font-weight: 800;
+}
+
+.eng-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.eng-section h3 {
+    color: #4aafe3;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--eng-border);
+    padding-bottom: 6px;
+}
+
+.eng-section h4 {
+    color: #38bdf8;
+    margin-top: 20px;
+    font-size: 1.05rem;
+}
+
+.eng-section p,
+.eng-section li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.eng-section li {
+    margin-bottom: 8px;
+}
+
+.eng-info {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #081321;
+    border-left: 4px solid var(--eng-blue);
+    border-radius: 9px;
+    color: #cbd5e1;
+    transition: transform .2s ease;
+}
+
+.eng-info:hover {
+    transform: translateX(4px);
+}
+
+.eng-info strong {
+    color: #55b6e9;
+}
+
+.eng-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.eng-table th,
+.eng-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.eng-table th {
+    background: #081321;
+    color: #4aafe3;
+    font-size: .88rem;
+}
+
+.eng-table td {
+    color: #cbd5e1;
+}
+
+.eng-table tr:hover td {
+    background: rgba(33,150,210,.04);
+}
+
+.test-box {
+    margin-top: 25px;
+    background: #070e18;
+    border: 1px solid var(--eng-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.test-top {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--eng-border);
+}
+
+.test-top h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.test-body {
+    padding: 22px;
+}
+
+.test-question {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.test-select {
+    width: 100%;
+    max-width: 550px;
+    background: var(--eng-panel);
+    border: 1px solid var(--eng-border);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.test-select:focus {
+    outline: none;
+    border-color: rgba(33,150,210,.6);
+    box-shadow: 0 0 0 3px rgba(33,150,210,.12);
+}
+
+.test-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #126da8;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.test-button:hover {
+    background: #1677b8;
+    transform: translateY(-2px);
+}
+
+.test-result {
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--eng-green);
+    background: #0a131f;
+    border-radius: 8px;
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.test-result.correct { border-left-color: var(--eng-green); }
+.test-result.wrong { border-left-color: var(--eng-red); }
+
+.test-result-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.exam-question {
+    margin-top: 20px;
+    padding: 20px;
+    background: #081321;
+    border: 1px solid var(--eng-border);
+    border-radius: 12px;
+    transition: border-color .2s ease;
+}
+
+.exam-question:hover {
+    border-color: rgba(33,150,210,.3);
+}
+
+.exam-question strong {
+    color: #4aafe3;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.exam-answer {
+    margin-top: 12px;
+    padding: 15px 18px;
+    background: #060e18;
+    border-left: 3px solid #2196d2;
+    border-radius: 6px;
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.ask-ai {
+    margin-top: 30px;
+    padding: 30px;
+    background: #091321;
+    border: 1px solid var(--eng-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ask-ai a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    background: #126da8;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.ask-ai a:hover { 
+    background: #1677b8; 
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .eng-section { padding: 20px; }
+    .eng-header h1 { font-size: 2rem; }
+}
+</style>
+
+
+<div class="eng-page">
+
+    <!-- BACK -->
+    <a href="{{ url_for('english_page') }}" class="eng-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to English Hub
+    </a>
+
+    <!-- HEADER -->
+    <header class="eng-header">
+        <h1>
+            <i class="fa-solid fa-clock"></i>
+            Verbs, Tenses & Concord
+        </h1>
+        <p>
+            Master subject-verb agreement rules, auxiliary and modal verbs, sequence of tenses, 
+            and conditional sentence structures frequently tested in JAMB and WAEC.
+        </p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="eng-nav">
+        <a href="#intro">Introduction</a>
+        <a href="#concord">Subject-Verb Agreement</a>
+        <a href="#tenses">Tenses & Sequence</a>
+        <a href="#modals">Modal Verbs</a>
+        <a href="#conditionals">Conditionals</a>
+        <a href="#test">Interactive Test</a>
+        <a href="#problems">Worked Examples</a>
+    </nav>
+
+    <!-- 01 INTRODUCTION -->
+    <section class="eng-section" id="intro">
+        <div class="eng-section-header">
+            <div class="eng-number">01</div>
+            <h2>Introduction to Verbs & Concord</h2>
+        </div>
+        <p>
+            Verbs are the core engine of any sentence, expressing action, occurrence, or state of being. In English examinations, 
+            questions on verbs heavily test <strong>Concord</strong> (subject-verb agreement), tense consistency, and correct modal usage.
+        </p>
+        <p>
+            Mastering concord ensures that your verbs match their subjects in number (singular or plural) and person, regardless of 
+            intervening prepositional phrases or deceptive modifiers.
+        </p>
+        <div class="eng-info">
+            <strong>Core Grammatical Principle:</strong><br>
+            A singular subject must always take a singular verb (marked by an '-s' or '-es' in the present tense), while a plural 
+            subject takes a plural verb.
+        </div>
+    </section>
+
+    <!-- 02 SUBJECT-VERB AGREEMENT -->
+    <section class="eng-section" id="concord">
+        <div class="eng-section-header">
+            <div class="eng-number">02</div>
+            <h2>Subject-Verb Agreement (Concord)</h2>
+        </div>
+        <p>
+            Examiners frequently test complex agreement structures where the subject is separated from the verb by interrupting phrases.
+        </p>
+        <ul>
+            <li><strong>Indefinite Pronouns:</strong> Words like <em>everyone, everybody, someone, nobody, each, either,</em> and <em>neither</em> always take <strong>singular</strong> verbs.<br>
+                <em>Example:</em> Each of the students <strong>has</strong> a textbook. (Not *have*).
+            </li>
+            <li><strong>Compound Subjects Joined by "And":</strong> Usually take plural verbs (e.g., *John and Mary <strong>are</strong> coming*). However, if they form a single meal or concept, use a singular verb:<br>
+                <em>Example:</em> Rice and stew <strong>is</strong> my favorite meal.
+            </li>
+            <li><strong>Correlative Conjunctions (*Either...or*, *Neither...nor*):</strong> The verb agrees with the subject closest to it.<br>
+                <em>Example:</em> Neither the teacher nor the students <strong>were</strong> present.
+            </li>
+        </ul>
+
+        <div class="eng-table-wrapper">
+            <table class="eng-table">
+                <thead>
+                    <tr>
+                        <th>Subject Structure</th>
+                        <th>Verb Agreement</th>
+                        <th>Example Sentence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Quantifiers (*A number of* vs *The number of*)</td>
+                        <td>Plural vs Singular</td>
+                        <td>*A number of students <strong>are</strong> here.* vs *The number of students <strong>is</strong> small.*</td>
+                    </tr>
+                    <tr>
+                        <td>Expressions with fractions (*Half of / Two-thirds of*)</td>
+                        <td>Depends on the noun following</td>
+                        <td>*Half of the water <strong>was</strong> spilled.* / *Half of the mangoes <strong>were</strong> eaten.*</td>
+                    </tr>
+                    <tr>
+                        <td>Plural-looking titles (*Mathematics, Physics*)</td>
+                        <td>Singular verb</td>
+                        <td>*Mathematics <strong>is</strong> a fascinating subject.*</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 03 TENSES & SEQUENCE -->
+    <section class="eng-section" id="tenses">
+        <div class="eng-section-header">
+            <div class="eng-number">03</div>
+            <h2>Tenses & Sequence of Tenses</h2>
+        </div>
+        <p>
+            Tenses indicate the time of an action. In complex sentences, the tense in the main clause dictates the appropriate tense in the subordinate clause.
+        </p>
+        <ul>
+            <li><strong>Present / Future Main Clause:</strong> Can be followed by any tense required by the context.<br>
+                <em>Example:</em> He knows that she <strong>will win</strong> the race.
+            </li>
+            <li><strong>Past Main Clause:</strong> Requires a past tense in the subordinate clause (sequence of tenses).<br>
+                <em>Example:</em> He knew that she <strong>would win</strong> the race.
+            </li>
+            <li><strong>Universal Truths:</strong> Always remain in the simple present tense, even after a past tense main verb.<br>
+                <em>Example:</em> Galileo proved that the Earth <strong>moves</strong> around the sun. (Not *moved*).
+            </li>
+        </ul>
+    </section>
+
+    <!-- 04 MODAL VERBS -->
+    <section class="eng-section" id="modals">
+        <div class="eng-section-header">
+            <div class="eng-number">04</div>
+            <h2>Auxiliary & Modal Verbs</h2>
+        </div>
+        <p>
+            Modal verbs (such as <em>can, could, shall, should, will, would, may, might, must</em>) express necessity, possibility, permission, or ability.
+        </p>
+        <ul>
+            <li><strong>Grammatical Rule:</strong> Modals are always followed by the bare infinitive (the root verb without "to").<br>
+                ❌ *Incorrect:* She can <strong>to speaks</strong> fluent French.<br>
+                ✔️ *Correct:* She can <strong>speak</strong> fluent French.
+            </li>
+            <li><strong>No Agreement Suffixes:</strong> Modals do not take an "-s" in the third-person singular (e.g., *He <strong>must</strong> go*, not *he musts*).</li>
+        </ul>
+    </section>
+
+    <!-- 05 CONDITIONAL SENTENCES -->
+    <section class="eng-section" id="conditionals">
+        <div class="eng-section-header">
+            <div class="eng-number">05</div>
+            <h2>Conditional Sentences</h2>
+        </div>
+        <p>
+            Conditional sentences express the result of a particular condition. JAMB and WAEC test these structures rigorously:
+        </p>
+        <ul>
+            <li><strong>First Conditional (Real Present/Future):</strong> If + present simple, future simple (will + infinitive).<br>
+                <em>Example:</em> If he comes early, we <strong>will start</strong> the meeting.
+            </li>
+            <li><strong>Second Conditional (Hypothetical Present/Future):</strong> If + past simple, would + infinitive.<br>
+                <em>Example:</em> If I won the lottery, I <strong>would buy</strong> a mansion.
+            </li>
+            <li><strong>Third Conditional (Past Unreal):</strong> If + past perfect, would have + past participle.<br>
+                <em>Example:</em> If she had studied hard, she <strong>would have passed</strong> the exam.
+            </li>
+        </ul>
+    </section>
+
+    <!-- 06 INTERACTIVE TEST -->
+    <section class="eng-section" id="test">
+        <div class="eng-section-header">
+            <div class="eng-number">06</div>
+            <h2>Interactive Concord Test</h2>
+        </div>
+        <p>Test your understanding of subject-verb agreement rules tested in past questions.</p>
+
+        <div class="test-box">
+            <div class="test-top">
+                <h3><i class="fa-solid fa-spell-check"></i> JAMB Objective Test Item</h3>
+            </div>
+            <div class="test-body">
+                <div class="test-question">
+                    Choose the correct option to complete the sentence:<br>
+                    <em>"Each of the boys __________ given a prize for excellence."</em>
+                </div>
+
+                <select class="test-select" id="engAnswer">
+                    <option value="">Select an answer...</option>
+                    <option value="wrong1">were</option>
+                    <option value="wrong2">have been</option>
+                    <option value="correct">was</option>
+                    <option value="wrong3">are</option>
+                </select>
+                <br>
+                <button class="test-button" id="checkEng">
+                    <i class="fa-solid fa-check"></i> Check Answer
+                </button>
+
+                <div class="test-result" id="engResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 WORKED EXAMPLES -->
+    <section class="eng-section" id="problems">
+        <div class="eng-section-header">
+            <div class="eng-number">07</div>
+            <h2>Exhaustive Worked Exam Examples</h2>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 1 (Subject-Verb Agreement with Intervening Phrases):</strong>
+            <p>Identify the correct verb form in this sentence and explain why: *"The basket of mangoes (is / are) ripe."*</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Solution:</strong><br>
+                - <strong>Identify Subject and Prepositional Phrase:</strong> The prepositional phrase <em>"of mangoes"</em> comes between the subject and the verb. Many students mistakenly agree the verb with "mangoes".<br>
+                - <strong>True Subject:</strong> The actual subject is the singular noun <em>"basket"</em>.<br>
+                - <strong>Correct Version:</strong> *"The basket of mangoes <strong>is</strong> ripe."*
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 2 (Conditional Sentence Correction):</strong>
+            <p>Correct the grammatical error in this past exam sentence: *"If I had known about the traffic, I would take another route."*</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Identify Conditional Type:</strong> The clause <em>"If I had known"</em> uses the past perfect tense, which indicates a **Third Conditional** (past unreal situation).<br>
+                - <strong>Correct Structure:</strong> The main clause in a third conditional must use <em>"would have + past participle"</em>.<br>
+                - <strong>Correct Version:</strong> *"If I had known about the traffic, I <strong>would have taken</strong> another route."*
+            </div>
+        </div>
+
+        <div class="exam-question">
+            <strong>Problem 3 (Correlative Concord Rule):</strong>
+            <p>Explain why the verb is singular in this sentence: *"Neither the manager nor his assistant (was / were) present at the meeting."*</p>
+            <div class="exam-answer">
+                <strong>Detailed Step-by-Step Explanation:</strong><br>
+                - <strong>Grammatical Rule:</strong> When subjects are joined by correlative conjunctions like *either...or* or *neither...nor*, the verb agrees with the subject **closest to it**.<br>
+                - <strong>Application:</strong> The subject closest to the verb is <em>"his assistant"</em>, which is singular. Therefore, the singular verb <strong>"was"</strong> is correct.
+            </div>
+        </div>
+    </section>
+
+    <!-- ASK AI -->
+    <div class="ask-ai">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--eng-blue-light); font-size:30px; margin-bottom:10px;"></i>
+        <h3 style="margin:0 0 8px; color:white;">Need further assistance with verb tenses or exam prep?</h3>
+        <p style="color:var(--eng-muted); margin:0;">
+            Ask Insite AI to explain subjunctive moods, participle phrases, or provide more JAMB practice questions.
+        </p>
+        <a href="{{ url_for('chat') }}">
+            <i class="fa-solid fa-comments"></i> Ask Insite AI
+        </a>
+    </div>
+
+</div>
+
+<script>
+const engAnswer = document.getElementById("engAnswer");
+const checkEng = document.getElementById("checkEng");
+const engResult = document.getElementById("engResult");
+
+checkEng.addEventListener("click", function () {
+    const val = engAnswer.value;
+    engResult.style.display = "block";
+
+    if (val === "correct") {
+        engResult.className = "test-result correct";
+        engResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-check"></i> Correct!</div>
+            <div>Indefinite pronouns like "Each" are grammatically singular and require the singular past tense verb "was".</div>
+        `;
+    } else if (val === "") {
+        engResult.className = "test-result wrong";
+        engResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-exclamation"></i> Select an answer.</div>
+            <div>Please choose one of the options provided before checking.</div>
+        `;
+    } else {
+        engResult.className = "test-result wrong";
+        engResult.innerHTML = `
+            <div class="test-result-title"><i class="fa-solid fa-circle-xmark"></i> Not quite.</div>
+            <div>Remember that words starting with "Each" take singular verbs. The correct option is <strong>was</strong>.</div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}
